@@ -3,25 +3,22 @@ from pathlib import Path
 from itertools import combinations
 from sentence_transformers import SentenceTransformer
 
+# PATHS (possibly in separate config file later)
+PROJECT_ROOT = Path(__file__).parent.parent
+DATA_DIR = PROJECT_ROOT / "data" / "raw"
+RESULTS_DIR = PROJECT_ROOT / "experiment_results"
+
 # 1. Load a pretrained Sentence Transformer model
 SBERT = SentenceTransformer("all-MiniLM-L6-v2")  # just some basic SBERT encoder
 
-# CHANGE! --> no hardcoded paths
-# df = pd.read_csv(
-#     "C:/Users/liv/git/thesis/vaa-question-similarity/data/raw/smart vote data/smartvote_2019_NR_Questions.csv"
-# )
-
-# CHANGE! paths --> diff file/look up path handling
-root = Path(__file__).parent.parent
-data_df_path = root / "data" / "raw" / "smart vote data" / "df_Questions_2019.pk1"
-experiment_path = root / "experiments" / "similarities.csv"
+data_df_path = DATA_DIR / "smart vote data" / "df_Questions_2019.pk1"
+experiment_path = RESULTS_DIR / "similarities.csv"
 
 # make list of questions
 df = pd.read_pickle(data_df_path)
 questions = df["question_en"].tolist()
 
 embeddings = SBERT.encode(questions)
-
 
 similarities = SBERT.similarity(embeddings, embeddings)
 results = []
