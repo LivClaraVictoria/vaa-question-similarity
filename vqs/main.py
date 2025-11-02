@@ -2,40 +2,46 @@ import pandas as pd
 from pathlib import Path
 from itertools import combinations
 from sentence_transformers import SentenceTransformer
+import distance
 
 # PATHS (possibly in separate config file later)
 PROJECT_ROOT = Path(__file__).parent.parent
-DATA_DIR = PROJECT_ROOT / "data" / "raw"
+DATA_DIR = PROJECT_ROOT / "data"
 RESULTS_DIR = PROJECT_ROOT / "experiment_results"
 
-# 1. Load a pretrained Sentence Transformer model
-SBERT = SentenceTransformer("all-MiniLM-L6-v2")  # just some basic SBERT encoder
+# Choose distance metric
+metric: str = "SBERT"
+dist: distance.Distance = distance.Distance(metric)
 
-data_df_path = DATA_DIR / "smart vote data" / "df_Questions_2019.pk1"
-experiment_path = RESULTS_DIR / "similarities.csv"
+# What data to use
+data: str = "fake"
 
-# make list of questions
-df = pd.read_pickle(data_df_path)
-questions = df["question_en"].tolist()
 
-embeddings = SBERT.encode(questions)
+def main():
+    if data == "fake":
+        data_df_path = DATA_DIR / "fake" / "questions.csv"
+        df = pd.read_csv(data_df_path)
+        questions = df["question"].tolist()
 
-similarities = SBERT.similarity(embeddings, embeddings)
-results = []
-for i, j in combinations(range(len(questions)), 2):
-    results.append(
-        {"Qu1": questions[i], "Qu2": questions[j], "Similarity": similarities[i][j]}
-    )
+    else:
+        data_df_path = DATA_DIR / "raw" / "smart vote data" / "df_Questions_2019.pk1"
+        df = pd.read_pickle(data_df_path)
+        questions = df["question_en"].tolist()
 
-df_results = pd.DataFrame(results)
-df_results.sort_values(by="Similarity", ascending=False, inplace=True)
-df_results.to_csv(experiment_path, index=False)
+    experiment_path = RESULTS_DIR / "similarities.csv"
 
-# # 2. Calculate embeddings by calling model.encode()
-# embeddings = SBERT.encode(sentences)
-# print(embeddings.shape)
-# # [3, 384]
+    # make list of questions
 
-# # 3. Calculate the embedding similarities
-# similarities = SBERT.similarity(embeddings, embeddings)
-# print(similarities)
+    results = dist.calculate_distance(questions=questions)
+
+    if data == "fake":
+        for d in results:
+            print(d["Similarity"], d["Qu1"], d["Qu2"])
+    else:
+        df_results = pd.DataFrame(results)
+        df_results.sort_values(by="Similarity", ascending=False, inplace=True)
+        df_results.to_csv(experiment_path, index=False)
+
+
+if __name__ == "__main__":
+    main()
