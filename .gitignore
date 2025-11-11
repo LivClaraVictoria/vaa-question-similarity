@@ -1,4 +1,5 @@
-data/raw
+data/raw/*
+!data/raw/.gitkeep
 data/cleaned/*
 !data/cleaned/README.md
 .vscode/
