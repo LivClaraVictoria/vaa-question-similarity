@@ -31,6 +31,7 @@ def get_data(data_type):
     return questions
 
 
+# TODO: data visualization? evaluation methods?
 def handle_data(similarities: list[dict]):
     # TODO: handle paths better (put somewhere else idk)
     "Paths for experiment results:"

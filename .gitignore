@@ -1,2 +1,4 @@
 data/raw
+data/cleaned/*
+!data/cleaned/README.md
 .vscode/
