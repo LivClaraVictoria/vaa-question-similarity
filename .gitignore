@@ -4,4 +4,5 @@ data/cleaned/*
 !data/cleaned/README.md
 .vscode/
 __pycache__/
+scripts/tests.py
 CLAUDE.md
