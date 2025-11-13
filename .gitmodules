@@ -1,0 +1,3 @@
+[submodule "dependencies/rsfp"]
+	path = dependencies/rsfp
+	url = git@gitlab.ethz.ch:disco-students/fs24/recommender-systems-for-politics.git
