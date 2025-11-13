@@ -1,17 +1,34 @@
-# paths.py
+# Base configuration for VAA Question Similarity Analysis
 from pathlib import Path
 
-# --- DEFAULT FILE PATHS ---
+# --- FILE PATHS ---
 PROJECT_ROOT = Path(__file__).parent.parent
 DATA_DIR = PROJECT_ROOT / "data"
+CLEANED_DIR = DATA_DIR / "cleaned"
+RAW_DIR = DATA_DIR / "raw"
 RESULTS_DIR = PROJECT_ROOT / "experiment_results"
 
 # Specific data files
-fake_data_path = DATA_DIR / "fake" / "questions.csv"
-smartvote_data_path = DATA_DIR / "raw" / "smart vote data" / "df_Questions_2019.pk1"
+FAKE_DATA_PATH = DATA_DIR / "fake" / "questions.csv"
+VOTERS_19_PREFIX = "df_voters19"
+VOTERS_PREFIX = "df_voters"
+CANDIDATES_19_PREFIX = "df_candidates19"
+CANDIDATES_PREFIX = "df_candidates"
 
-# --- DEFAULT PARAMETERS ---
-dist: str = "SBERT"
-data_choice: str = "fake"
-learning_rate: float = 0.01
-batch_size: int = 32
+# --- ANALYSIS PARAMETERS ---
+# Distance/similarity metric to use
+"""
+Options:
+- "SBERT": Sentence-BERT embeddings with cosine similarity
+"""
+dist = "SBERT"
+
+# Data source to use
+data_choice = "fake"  # Options: "fake", "cleaned", "raw"
+
+# Model parameters
+learning_rate = 0.01
+batch_size = 32
+
+# SBERT specific parameters (if using SBERT)
+sbert_model_name = "all-MiniLM-L6-v2"

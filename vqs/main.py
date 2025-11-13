@@ -1,45 +1,85 @@
 import pandas as pd
 from pathlib import Path
+import argparse
+import importlib.util
+import sys
+from types import SimpleNamespace
 import vqs.similarity_metrics as similarity_metrics
 
-# --- FILE PATHS --- (possibly in separate config file later)
-PROJECT_ROOT = Path(__file__).parent.parent
-DATA_DIR = PROJECT_ROOT / "data"
-RESULTS_DIR = PROJECT_ROOT / "experiment_results"
+# from configs.base_constants import *
 
-# --- Pick distance metric --- (possibly change to input from terminal?)
-dist: str = "SBERT"
 
-# --- Pick what data to use ---
-"""
-"fake" | ...
-"""
+def load_config(config_path: Path):
+    """
+    Loads a config .py file by executing it and capturing its variables
+    into a namespace object.
+    """
 
-data_choice: str = "fake"
+    # 1. Read the raw text of the config file
+    try:
+        config_script = config_path.read_text()
+    except FileNotFoundError:
+        print(f"Error: Config file not found at: {config_path}")
+        sys.exit(1)
+
+    # 2. Create an empty "container" (a dictionary)
+    #    This is where the variables from the config file will live.
+    config_vars = {}
+
+    # 3. Execute the config file's script.
+    #    All variables (from the import and the overrides)
+    #    are loaded into the 'config_vars' dictionary.
+    try:
+        exec(config_script, config_vars)
+    except Exception as e:
+        print(f"Error while loading config file {config_path}:\n{e}")
+        sys.exit(1)
+
+    # 4. Convert the dictionary into an object (SimpleNamespace).
+    #    This lets you use dot notation (like config.dist)
+    #    instead of dictionary notation (like config['dist']).
+    config = SimpleNamespace(**config_vars)
+
+    # We remove these two internal Python variables, just to keep it clean
+    config_vars.pop("__builtins__", None)
+    config_vars.pop("__name__", None)
+
+    return config
 
 
 # TODO: clean data (use Dustin's methods), define paths to 2 diff Smartvote datasets
-def get_data(data_type):
-    if data_type == "fake":
-        data_df_path = DATA_DIR / "fake" / "questions.csv"
+def get_data(config):
+    if config.data_choice == "fake":
+        data_df_path = config.DATA_DIR / "fake" / "questions.csv"
         df = pd.read_csv(data_df_path)
         questions = df["question"].tolist()
-    else:
-        data_df_path = DATA_DIR / "raw" / "smart vote data" / "df_Questions_2019.pk1"
+    elif config.data_choice == "cleaned":
+        # Use cleaned/processed data
+        data_df_path = config.CLEANED_DIR / "df_voters_topmatch.csv"
+        df = pd.read_csv(data_df_path)
+        questions = df["question_en"].tolist()  # Adjust column name as needed
+    elif config.data_choice == "raw":
+        data_df_path = (
+            config.DATA_DIR / "raw" / "smart vote data" / "df_Questions_2019.pk1"
+        )
         df = pd.read_pickle(data_df_path)
         questions = df["question_en"].tolist()
+    else:
+        raise ValueError(
+            f"Unknown data_choice: {config.data_choice}. Options: 'fake', 'cleaned', 'raw'"
+        )
     return questions
 
 
 # TODO: data visualization? evaluation methods?
-def handle_data(similarities: list[dict]):
+def handle_data(similarities: list[dict], config):
     # TODO: handle paths better (put somewhere else idk)
     "Paths for experiment results:"
-    experiment_path = RESULTS_DIR / "similarities.csv"
+    experiment_path = config.RESULTS_DIR / "similarities.csv"
 
     similarities.sort(key=lambda item: item["Similarity"], reverse=True)
 
-    if data_choice.lower() == "fake":
+    if config.data_choice.lower() == "fake":
         print("Sorted similarities: ")
         for item in similarities:
             print(item["Qu1"], "\n", item["Qu2"], "\n", item["Similarity"])
@@ -58,20 +98,33 @@ def get_calculator(dist: str) -> similarity_metrics.DistanceCalculator:
         raise NotImplementedError(f"Distance metric '{dist}' is not implemented.")
 
 
-def main():
+def main(config):
     # get questions as list
     print("Loading data...")
-    questions = get_data(data_choice)
+    questions = get_data(config)
 
     print("Initializing distance metric...")
-    calculator = get_calculator(dist)
+    calculator = get_calculator(config.dist)
 
     print("Calculating distances...")
     results = calculator.calculate_distance(questions=questions)
 
     print("Handling the results...")
-    handle_data(similarities=results)
+    handle_data(similarities=results, config=config)
 
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(description="Run question similarity analysis")
+    parser.add_argument(
+        "--config",
+        type=str,
+        required=True,
+        help="Path to the configuration file (e.g., configs/base_constants.py or configs/fake/sbert_config.py)",
+    )
+    args = parser.parse_args()
+
+    # Load the configuration
+    config = load_config(args.config)
+
+    # Run main with the loaded config
+    main(config)
