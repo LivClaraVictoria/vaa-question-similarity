@@ -18,7 +18,9 @@ class SBERTCalculator(DistanceCalculator):
         print(f"SBERT model '{model_name}' loaded.")
 
     def calculate_distance(self, questions: list[str]) -> list[dict]:
-        embeddings = self.model.encode(questions)
+        embeddings = self.model.encode(
+            questions
+        )  # emb = model.encode(texts, normalize_embeddings=True) to normalize
         similarities = self.model.similarity(embeddings, embeddings)
         # see similarity method: model.similarity_fn_name
 
