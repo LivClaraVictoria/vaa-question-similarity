@@ -20,6 +20,7 @@ class SBERTCalculator(DistanceCalculator):
     def calculate_distance(self, questions: list[str]) -> list[dict]:
         embeddings = self.model.encode(questions)
         similarities = self.model.similarity(embeddings, embeddings)
+        # see similarity method: model.similarity_fn_name
 
         results = []
         for i, j in combinations(range(len(questions)), 2):

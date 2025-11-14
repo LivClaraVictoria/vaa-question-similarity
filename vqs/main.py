@@ -4,7 +4,7 @@ import argparse
 import importlib.util
 import sys
 from types import SimpleNamespace
-import vqs.similarity_metrics as similarity_metrics
+import similarity_metrics as similarity_metrics
 
 # from configs.base_constants import *
 
@@ -24,7 +24,7 @@ def load_config(config_path: Path):
 
     # 2. Create an empty "container" (a dictionary)
     #    This is where the variables from the config file will live.
-    config_vars = {}
+    config_vars = {"__file__": str(config_path)}
 
     # 3. Execute the config file's script.
     #    All variables (from the import and the overrides)
@@ -124,7 +124,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # Load the configuration
-    config = load_config(args.config)
+    config = load_config(Path(args.config))
 
     # Run main with the loaded config
     main(config)
