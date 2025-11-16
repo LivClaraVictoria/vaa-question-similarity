@@ -25,15 +25,22 @@ RESULTS_DIR = PROJECT_ROOT / "experiment_results"
 
 # Specific data files
 FAKE_DATA_PATH = DATA_DIR / "fake" / "questions.csv"
+
+# raw data paths
 RAW_CAND_2023_PATH = RAW_DIR / "sv23_ETHZ" / "23_ch_nr_candidates_de_2024_03_06.csv"
 RAW_VOTERS_2023_PATH = CLEANED_DIR / "df_voters_topmatch.parquet"
 RAW_CAND_2019_PATH = RAW_DIR / "smart vote data" / "smartvote_2019_Candidates_NR.csv"
 RAW_VOTERS_2019_PATH = RAW_DIR / "smart vote data" / "sv_Voter_1xNR_V1_0_ethz.csv"
 
+# cleaned data paths
 VOTERS_19_PREFIX = "df_voters19"
 VOTERS_PREFIX = "df_voters"
 CANDIDATES_19_PREFIX = "df_candidates19"
 CANDIDATES_PREFIX = "df_candidates"
+
+# questions
+QUESTIONS_2023_PATH = CLEANED_DIR / "df_questions.parquet"
+QUESTIONS_2019_PATH = CLEANED_DIR / "df_questions19.parquet"
 
 # --- ANALYSIS PARAMETERS ---
 # Distance/similarity metric to use

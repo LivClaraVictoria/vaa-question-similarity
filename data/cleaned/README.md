@@ -26,4 +26,4 @@ To regenerate the cleaned data files:
 
 4.  **Run the Script:**
     From his repository's directory, the following command was run:
-    `python -c 'from rsfp.data import build_all, build_all19; print("--- Starting data build for 2019 ---"); build_all19(verbose=True); print("--- 2019 data build complete ---"); print("\n--- Starting data build for 2023 ---"); build_all(verbose=True); print("\n All data has been processed and saved.")'`
+    `python -c 'from rsfp.data import build_all, build_all19; from rsfp.constants import CACHE_FOLDER; print("--- Starting data build for 2019 ---"); _, _, df_questions19 = build_all19(verbose=True); df_questions19.to_parquet(CACHE_FOLDER / "df_questions19.parquet"); print("--- 2019 data build complete ---"); print("\n--- Starting data build for 2023 ---"); _, _, df_questions = build_all(verbose=True); df_questions.to_parquet(CACHE_FOLDER / "df_questions.parquet"); print("\n All data has been processed and saved.")'`
