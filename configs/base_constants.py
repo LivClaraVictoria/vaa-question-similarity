@@ -17,20 +17,27 @@ except NameError:
     PROJECT_ROOT = Path(__file__).parent.parent
     print("Loaded 'base_constants' in script mode.")
 
-
+# data paths
 DATA_DIR = PROJECT_ROOT / "data"
 CLEANED_DIR = DATA_DIR / "cleaned"
 RAW_DIR = DATA_DIR / "raw"
+FAKE_DIR = DATA_DIR / "fake"
+DATA_2023_DIR = DATA_DIR / "sv23_ETHZ"
+DATA_2019_DIR = DATA_DIR / "smart vote data"
+
+# experiment results path
 RESULTS_DIR = PROJECT_ROOT / "experiment_results"
 
-# Specific data files
-FAKE_DATA_PATH = DATA_DIR / "fake" / "questions.csv"
 
-# raw data paths
-RAW_CAND_2023_PATH = RAW_DIR / "sv23_ETHZ" / "23_ch_nr_candidates_de_2024_03_06.csv"
+# Specific data files
+FAKE_DATA_FILE = FAKE_DIR / "questions.csv"
+TIMESTAMP_FILE = DATA_2023_DIR / "sv23 Voters-NR_time_recDATE.csv"
+
+# raw data file paths
+RAW_CAND_2023_PATH = DATA_2023_DIR / "23_ch_nr_candidates_de_2024_03_06.csv"
 RAW_VOTERS_2023_PATH = CLEANED_DIR / "df_voters_topmatch.parquet"
-RAW_CAND_2019_PATH = RAW_DIR / "smart vote data" / "smartvote_2019_Candidates_NR.csv"
-RAW_VOTERS_2019_PATH = RAW_DIR / "smart vote data" / "sv_Voter_1xNR_V1_0_ethz.csv"
+RAW_CAND_2019_PATH = DATA_2019_DIR / "smartvote_2019_Candidates_NR.csv"
+RAW_VOTERS_2019_PATH = DATA_2019_DIR / "sv_Voter_1xNR_V1_0_ethz.csv"
 
 # cleaned data paths
 VOTERS_19_PREFIX = "df_voters19"
