@@ -22,8 +22,8 @@ DATA_DIR = PROJECT_ROOT / "data"
 CLEANED_DIR = DATA_DIR / "cleaned"
 RAW_DIR = DATA_DIR / "raw"
 FAKE_DIR = DATA_DIR / "fake"
-DATA_2023_DIR = DATA_DIR / "sv23_ETHZ"
-DATA_2019_DIR = DATA_DIR / "smart vote data"
+DATA_2023_DIR = RAW_DIR / "sv23_ETHZ"
+DATA_2019_DIR = RAW_DIR / "smart vote data"
 
 # experiment results path
 RESULTS_DIR = PROJECT_ROOT / "experiment_results"
@@ -36,7 +36,7 @@ TIMESTAMP_FILE = DATA_2023_DIR / "sv23 Voters-NR_time_recDATE.csv"
 # raw data file paths
 RAW_CAND_2023_PATH = DATA_2023_DIR / "23_ch_nr_candidates_de_2024_03_06.csv"
 RAW_VOTERS_2023_PATH = CLEANED_DIR / "df_voters_topmatch.parquet"
-RAW_CAND_2019_PATH = DATA_2019_DIR / "smartvote_2019_Candidates_NR.csv"
+RAW_CAND_2019_PATH = DATA_2019_DIR / "smartvote_2019_candidates_NR.csv"
 RAW_VOTERS_2019_PATH = DATA_2019_DIR / "sv_Voter_1xNR_V1_0_ethz.csv"
 
 # cleaned data paths
@@ -58,7 +58,7 @@ Options:
 dist = "SBERT"
 
 # Data source to use
-data_choice = "fake"  # Options: "fake", "cleaned", "raw"
+data_choice = "fake"  # Options: "fake", "2023", "2019"
 
 # Model parameters
 learning_rate = 0.01
