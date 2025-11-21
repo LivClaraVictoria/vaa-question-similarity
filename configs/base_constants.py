@@ -64,6 +64,7 @@ data_year = "2023"  # Options: "2019", "2023"
 
 load_voters = False  # false by default, set true for methods where you want to look into correlation
 load_candidates = False  # false by default, set true for methods where you want to look into correlation
+results_file_type = "csv"  # "parquet" for when you use voter dataset
 
 # Model parameters
 learning_rate = 0.01

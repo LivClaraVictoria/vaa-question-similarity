@@ -6,6 +6,7 @@ import sys
 from types import SimpleNamespace
 import vqs.similarity_metrics as similarity_metrics
 from vqs.data_loader import load_dataset
+from vqs.results import save_results
 
 # from configs.base_constants import *
 
@@ -84,10 +85,10 @@ def main(config):
     calculator = get_calculator(config.dist)
 
     print("Calculating distances...")
-    results = calculator.calculate_distance(dataset)
+    results: pd.DataFrame = calculator.calculate_distance(dataset)
 
     print("Handling the results...")
-    handle_data(similarities=results, config=config)
+    sorted_results = save_results(df=results, config=config)
 
 
 if __name__ == "__main__":

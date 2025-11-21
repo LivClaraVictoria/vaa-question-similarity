@@ -1,11 +1,12 @@
 from itertools import combinations
 from sentence_transformers import SentenceTransformer  # type: ignore
 from abc import ABC, abstractmethod
+import pandas as pd
 
 
 class DistanceCalculator(ABC):
     @abstractmethod
-    def calculate_distance(self, dataset: dict) -> list[dict]:
+    def calculate_distance(self, dataset: dict) -> pd.DataFrame:
         pass
 
 
@@ -17,7 +18,7 @@ class SBERTCalculator(DistanceCalculator):
         self.model = SentenceTransformer(model_name)
         print(f"SBERT model '{model_name}' loaded.")
 
-    def calculate_distance(self, dataset: dict) -> list[dict]:
+    def calculate_distance(self, dataset: dict) -> pd.DataFrame:
         questions_df = dataset["questions"]
         questions_en = questions_df["question_EN"].tolist()
         embeddings = self.model.encode(
@@ -35,4 +36,4 @@ class SBERTCalculator(DistanceCalculator):
                     "Similarity": float(similarities[i][j]),  # Good to cast from tensor
                 }
             )
-        return results
+        return pd.DataFrame(results)
