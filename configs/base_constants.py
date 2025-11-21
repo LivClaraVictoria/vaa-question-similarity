@@ -48,6 +48,7 @@ CANDIDATES_PREFIX = "df_candidates"
 # questions
 QUESTIONS_2023_PATH = CLEANED_DIR / "df_questions.parquet"
 QUESTIONS_2019_PATH = CLEANED_DIR / "df_questions19.parquet"
+# --------------------------------------------------------------------------------------
 
 # --- ANALYSIS PARAMETERS ---
 # Distance/similarity metric to use
@@ -58,7 +59,11 @@ Options:
 dist = "SBERT"
 
 # Data source to use
-data_choice = "fake"  # Options: "fake", "2023", "2019"
+data_choice = "cleaned"  # Options: "fake", "cleaned", "raw"
+data_year = "2023"  # Options: "2019", "2023"
+
+load_voters = False  # false by default, set true for methods where you want to look into correlation
+load_candidates = False  # false by default, set true for methods where you want to look into correlation
 
 # Model parameters
 learning_rate = 0.01

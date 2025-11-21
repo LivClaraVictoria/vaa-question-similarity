@@ -4,14 +4,15 @@ import argparse
 import importlib.util
 import sys
 from types import SimpleNamespace
-import similarity_metrics as similarity_metrics
+import vqs.similarity_metrics as similarity_metrics
+from vqs.data_loader import load_dataset
 
 # from configs.base_constants import *
 
 
 def load_config(config_path: Path):
     """
-    Loads a config .py file by executing it and capturing its variables
+    Loads a config.py file by executing it and capturing its variables
     into a namespace object.
     """
 
@@ -47,30 +48,6 @@ def load_config(config_path: Path):
     return config
 
 
-# TODO: clean data (use Dustin's methods), define paths to 2 diff Smartvote datasets
-def get_data(config):
-    if config.data_choice == "fake":
-        data_df_path = config.DATA_DIR / "fake" / "questions.csv"
-        df = pd.read_csv(data_df_path)
-        questions = df["question"].tolist()
-    elif config.data_choice == "cleaned":
-        # Use cleaned/processed data
-        data_df_path = config.CLEANED_DIR / "df_voters_topmatch.csv"
-        df = pd.read_csv(data_df_path)
-        questions = df["question_en"].tolist()  # Adjust column name as needed
-    elif config.data_choice == "raw":
-        data_df_path = (
-            config.DATA_DIR / "raw" / "smart vote data" / "df_Questions_2019.pk1"
-        )
-        df = pd.read_pickle(data_df_path)
-        questions = df["question_en"].tolist()
-    else:
-        raise ValueError(
-            f"Unknown data_choice: {config.data_choice}. Options: 'fake', 'cleaned', 'raw'"
-        )
-    return questions
-
-
 # TODO: data visualization? evaluation methods?
 def handle_data(similarities: list[dict], config):
     # TODO: handle paths better (put somewhere else idk)
@@ -101,13 +78,13 @@ def get_calculator(dist: str) -> similarity_metrics.DistanceCalculator:
 def main(config):
     # get questions as list
     print("Loading data...")
-    questions = get_data(config)
+    dataset = load_dataset(config)
 
     print("Initializing distance metric...")
     calculator = get_calculator(config.dist)
 
     print("Calculating distances...")
-    results = calculator.calculate_distance(questions=questions)
+    results = calculator.calculate_distance(dataset)
 
     print("Handling the results...")
     handle_data(similarities=results, config=config)
