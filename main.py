@@ -37,6 +37,7 @@ def load_config(config_path: Path):
         print(f"Error while loading config file {config_path}:\n{e}")
         sys.exit(1)
 
+    # lmao you should have just made it into an object from the start (TODO)
     # 4. Convert the dictionary into an object (SimpleNamespace).
     #    This lets you use dot notation (like config.dist)
     #    instead of dictionary notation (like config['dist']).

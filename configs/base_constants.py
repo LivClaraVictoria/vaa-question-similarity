@@ -1,7 +1,9 @@
 # Base configuration for VAA Question Similarity Analysis
+import os
 from pathlib import Path
 
 # --- FILE PATHS ---
+# root directory
 try:
     # get_ipython() only exists in IPython/Jupyter
     get_ipython()  # type: ignore
@@ -17,8 +19,17 @@ except NameError:
     PROJECT_ROOT = Path(__file__).parent.parent
     print("Loaded 'base_constants' in script mode.")
 
-# data paths
-DATA_DIR = PROJECT_ROOT / "data"
+# data directory (changes if on cluster)
+cluster_path_env = os.getenv("CLUSTER_DATA_PATH")
+
+if cluster_path_env:
+    DATA_DIR = Path(cluster_path_env)
+    print(f"Cluster environment detected! Using data path: {DATA_DIR}")
+else:
+    DATA_DIR = PROJECT_ROOT / "data"
+    print(f"Local environment detected. Using data path: {DATA_DIR}")
+
+# additional data paths
 CLEANED_DIR = DATA_DIR / "cleaned"
 RAW_DIR = DATA_DIR / "raw"
 FAKE_DIR = DATA_DIR / "fake"
