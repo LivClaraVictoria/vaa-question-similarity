@@ -12,7 +12,7 @@ class DistanceCalculator(ABC):
 
 class SBERTCalculator(DistanceCalculator):
 
-    # load model once instead of every time we calcualte distance
+    # load model once instead of every time we calculate distance
     # actually idk if this makes a difference?
     def __init__(self, model_name: str = "all-MiniLM-L6-v2"):
         self.model = SentenceTransformer(model_name)
@@ -21,9 +21,16 @@ class SBERTCalculator(DistanceCalculator):
     def calculate_distance(self, dataset: dict) -> pd.DataFrame:
         questions_df = dataset["questions"]
         questions_en = questions_df["question_EN"].tolist()
+        categories = (
+            questions_df["category"].tolist()
+            if "category" in questions_df.columns
+            else None
+        )
+
         embeddings = self.model.encode(
-            questions_en
+            questions_en, normalize_embeddings=True
         )  # emb = model.encode(texts, normalize_embeddings=True) to normalize
+
         similarities = self.model.similarity(embeddings, embeddings)
         # see similarity method: model.similarity_fn_name
 
@@ -33,6 +40,8 @@ class SBERTCalculator(DistanceCalculator):
                 {
                     "Qu1": questions_en[i],
                     "Qu2": questions_en[j],
+                    "Cat1": categories[i] if categories else None,
+                    "Cat2": categories[j] if categories else None,
                     "Similarity": float(similarities[i][j]),  # Good to cast from tensor
                 }
             )

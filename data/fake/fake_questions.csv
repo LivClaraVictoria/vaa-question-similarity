@@ -1,10 +1,12 @@
-id,question_EN
-1,Should we raise taxes?
-2,Should we not raise taxes?
-3,Do you agree that taxes should be increased?
-4,The government must collect more revenue from citizens to fund services.
-5,Do you agree that money should be collected from people to support the functioning of the state?
-6,Should we raise animals in our backyards?
-7,Should we raise the minimum wage?
-8,We should implement a tax on plastic bags to reduce waste.
-9,I hate filing my taxes every year.
+id,category,question_EN
+1,ANCHOR,Should we raise taxes?
+2,Negation,Should we not raise taxes?
+3,Easy Paraphrase,Do you agree that taxes should be increased?
+4,Easy Paraphrase Negation,Do you agree that taxes should not be increased?
+5,Hard Paraphrase,The government must collect more revenue from citizens to fund services.
+6,Hard Paraphrase Negation,The government must not collect more revenue from citizens to fund services.
+7,Hard Paraphrase,Do you agree that money should be collected from people to support the functioning of the state?
+8,Trap,Should we raise animals in our backyards?
+9,Trap,Should we raise the minimum wage?
+10,Trap,We should implement a tax on plastic bags to reduce waste.
+11,Trap,I hate filing my taxes every year.
