@@ -66,6 +66,7 @@ QUESTIONS_2019_PATH = CLEANED_DIR / "df_questions19.parquet"
 """
 Options:
 - "SBERT": Sentence-BERT embeddings with cosine similarity
+- "SBERT_EUCLIDEAN": Sentence-BERT embeddings with Euclidean distance (on normalized embeddings): equivalent to sqrt(2 - 2*cosine_similarity)
 """
 dist = "SBERT"
 
@@ -75,7 +76,7 @@ data_year = "2023"  # Options: "2019", "2023"
 
 load_voters = False  # false by default, set true for methods where you want to look into correlation
 load_candidates = False  # false by default, set true for methods where you want to look into correlation
-results_file_type = "csv"  # "parquet" for when you use voter dataset
+results_file_type = "csv"  # "parquet" for using voter dataset
 
 # Model parameters
 learning_rate = 0.01

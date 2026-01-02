@@ -50,6 +50,56 @@ def load_config(config_path: Path):
     return config
 
 
+# for on-the-fly changes to config
+def apply_overrides(config, overrides):
+    """
+    Parses a list of "key=value" strings and updates the config object.
+    """
+    if not overrides:
+        return config
+
+    print(f"\n--- Applying CLI Overrides ---")
+    for item in overrides:
+        if "=" not in item:
+            print(
+                f"Warning: Ignoring malformed override '{item}'. Use 'key=value' format."
+            )
+            continue
+
+        key, value_str = item.split("=", 1)
+
+        # Check if the key exists in the config to avoid typos
+        if not hasattr(config, key):
+            print(
+                f"Warning: New config key '{key}' is being added (was not in config file)."
+            )
+
+        # --- Type Inference ---
+        # 1. Boolean
+        if value_str.lower() == "true":
+            val = True
+        elif value_str.lower() == "false":
+            val = False
+        # 2. Integer
+        elif value_str.isdigit() or (
+            value_str.startswith("-") and value_str[1:].isdigit()
+        ):
+            val = int(value_str)
+        # 3. Float (looks for a dot)
+        elif value_str.replace(".", "", 1).isdigit():
+            val = float(value_str)
+        # 4. String (default)
+        else:
+            val = value_str
+
+        # Update the SimpleNamespace config object
+        setattr(config, key, val)
+        print(f" -> Set '{key}' to: {val} ({type(val).__name__})")
+
+    print("------------------------------\n")
+    return config
+
+
 # TODO: data visualization? evaluation methods?
 def handle_data(similarities: list[dict], config):
     # TODO: handle paths better (put somewhere else idk)
@@ -100,6 +150,15 @@ if __name__ == "__main__":
         required=True,
         help="Path to the configuration file (e.g., configs/base_constants.py or configs/fake/sbert_config.py)",
     )
+
+    # Overrides (this format: key=value)
+    # Ex: python main.py --config configs/base_constants.py dist=SBERT_EUCLIDEAN data_year=2019
+    parser.add_argument(
+        "overrides",
+        nargs="*",  # accepts zero or more arguments after --config
+        help="Arguments to override config values, e.g. data_year=2019 dist=SBERT",
+    )
+
     args = parser.parse_args()
 
     # Load the configuration
