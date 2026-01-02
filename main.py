@@ -104,6 +104,8 @@ def get_calculator(dist: str) -> similarity_metrics.DistanceCalculator:
     if dist.upper() == "SBERT":
         # could pass specific model
         return similarity_metrics.SBERTCalculator()
+    elif dist.upper() == "SBERT_EUCLIDEAN":
+        return similarity_metrics.SBERTCalculator(use_Euclidean=True)
     else:
         raise NotImplementedError(f"Distance metric '{dist}' is not implemented.")
 
