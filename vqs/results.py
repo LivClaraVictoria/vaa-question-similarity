@@ -1,3 +1,4 @@
+from datetime import datetime
 import pandas as pd
 from pathlib import Path
 import time
@@ -10,7 +11,7 @@ def get_experiment_filename(config) -> str:
     """
     # Fallback if 'data_year' isn't set, e.g., for fake data
     if config.data_choice == "fake":
-        year = "fake"
+        year = datetime.now().strftime("%Y%m%d_%H%M")
     else:
         year = config.data_year
 
@@ -25,6 +26,10 @@ def save_results(df: pd.DataFrame, config) -> pd.DataFrame:
     Returns the DataFrame for further use if needed.
     """
 
+    if config.data_choice == "fake":
+        target_sentence = "Should we raise taxes?"
+        df = df[df["Qu1"] == target_sentence]
+
     if "Similarity" in df.columns:
         df.sort_values(by="Similarity", ascending=False, inplace=True)
     elif "Distance" in df.columns:
@@ -32,7 +37,9 @@ def save_results(df: pd.DataFrame, config) -> pd.DataFrame:
     else:
         print("⚠️WARNING⚠️: No 'Similarity' or 'Distance' column found for sorting.")
 
-    output_dir = config.RESULTS_DIR
+    output_dir = (
+        config.FAKE_RESULTS_DIR if config.data_choice == "fake" else config.RESULTS_DIR
+    )
     output_dir.mkdir(exist_ok=True)
 
     # Generate filename

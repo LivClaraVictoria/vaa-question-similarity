@@ -38,6 +38,7 @@ DATA_2019_DIR = RAW_DIR / "smart vote data"
 
 # experiment results path
 RESULTS_DIR = PROJECT_ROOT / "experiment_results"
+FAKE_RESULTS_DIR = RESULTS_DIR / "fake_results"
 
 
 # Specific data files

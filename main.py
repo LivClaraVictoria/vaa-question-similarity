@@ -100,25 +100,6 @@ def apply_overrides(config, overrides):
     return config
 
 
-# TODO: data visualization? evaluation methods?
-def handle_data(similarities: list[dict], config):
-    # TODO: handle paths better (put somewhere else idk)
-    "Paths for experiment results:"
-    experiment_path = config.RESULTS_DIR / "similarities.csv"
-
-    similarities.sort(key=lambda item: item["Similarity"], reverse=True)
-
-    if config.data_choice.lower() == "fake":
-        print("Sorted similarities: ")
-        for item in similarities:
-            print(item["Qu1"], "\n", item["Qu2"], "\n", item["Similarity"])
-            print("\n")
-    else:
-        df_results = pd.DataFrame(similarities)
-        # df_results.sort_values(by="Similarity", ascending=False, inplace=True)
-        df_results.to_csv(experiment_path, index=False)
-
-
 def get_calculator(dist: str) -> similarity_metrics.DistanceCalculator:
     if dist.upper() == "SBERT":
         # could pass specific model
