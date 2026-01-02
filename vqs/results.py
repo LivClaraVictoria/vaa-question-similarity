@@ -9,7 +9,11 @@ def get_experiment_filename(config) -> str:
     Example: "similarity_SBERT_2023.csv"
     """
     # Fallback if 'data_year' isn't set, e.g., for fake data
-    year = config.data_year
+    if config.data_choice == "fake":
+        year = "fake"
+    else:
+        year = config.data_year
+
     dist_method = config.dist
 
     return f"{dist_method}_{year}.{config.results_file_type}"
@@ -20,7 +24,14 @@ def save_results(df: pd.DataFrame, config) -> pd.DataFrame:
     Sorts similarities, and saves to CSV or parquet.
     Returns the DataFrame for further use if needed.
     """
-    df.sort_values(by="Similarity", ascending=False, inplace=True)
+
+    if "Similarity" in df.columns:
+        df.sort_values(by="Similarity", ascending=False, inplace=True)
+    elif "Distance" in df.columns:
+        df.sort_values(by="Distance", ascending=True, inplace=True)
+    else:
+        print("⚠️WARNING⚠️: No 'Similarity' or 'Distance' column found for sorting.")
+
     output_dir = config.RESULTS_DIR
     output_dir.mkdir(exist_ok=True)
 

@@ -41,7 +41,7 @@ RESULTS_DIR = PROJECT_ROOT / "experiment_results"
 
 
 # Specific data files
-FAKE_DATA_FILE = FAKE_DIR / "questions.csv"
+FAKE_DATA_FILE = FAKE_DIR / "fake_questions.csv"
 TIMESTAMP_FILE = DATA_2023_DIR / "sv23 Voters-NR_time_recDATE.csv"
 
 # raw data file paths
@@ -63,6 +63,7 @@ QUESTIONS_2019_PATH = CLEANED_DIR / "df_questions19.parquet"
 
 # --- ANALYSIS PARAMETERS ---
 # Distance/similarity metric to use
+# Create new config files for different metrics if needed, or just override in command line
 """
 Options:
 - "SBERT": Sentence-BERT embeddings with cosine similarity

@@ -46,6 +46,10 @@ def load_dataset(config) -> dict:
                 term=int(config.data_year),
             )  # type: ignore
 
+    elif config.data_choice == "fake":
+        df_q = pd.read_csv(config.FAKE_DATA_FILE)
+        data_map["questions"] = SVDataFrame(df_q)  # type: ignore
+
     else:
         raise NotImplementedError("Only cleaned data implemented for now.")
 
