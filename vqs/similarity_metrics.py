@@ -72,10 +72,8 @@ class E5Calculator(DistanceCalculator):
     def __init__(
         self,
         model_name: str = "intfloat/multilingual-e5-large",
-        instruction: bool = False,
     ):
         self.model = SentenceTransformer(model_name)
-        self.instruction = instruction
         print(f"E5 model '{model_name}' loaded.")
 
     def calculate_distance(self, dataset: dict) -> pd.DataFrame:
@@ -109,6 +107,72 @@ class E5Calculator(DistanceCalculator):
                     "Qu2": questions_en[j],
                     "Cat1": categories[i] if categories else None,
                     "Cat2": categories[j] if categories else None,
+                    "Distance": euclidean_dist,
+                }
+            )
+
+        return pd.DataFrame(results)
+
+
+# asymmetric E5 (retrieval-style)
+# only implemented for fake data so far!
+class AsymmetricE5Calculator(DistanceCalculator):
+    def __init__(self, model_name: str = "intfloat/multilingual-e5-large"):
+        self.model = SentenceTransformer(model_name)
+        print(f"Asymmetric E5 model '{model_name}' loaded.")
+
+    def calculate_distance(self, dataset: dict) -> pd.DataFrame:
+        questions_df = dataset["questions"]
+
+        # 1. Separate the Anchor (Query) from the others (Passages)
+        # We assume there is exactly one anchor based on your description
+        anchor_row = questions_df[questions_df["category"] == "ANCHOR"]
+        passage_rows = questions_df[questions_df["category"] != "ANCHOR"]
+
+        if anchor_row.empty:
+            raise ValueError("No question with category 'ANCHOR' found.")
+
+        # Extract text
+        anchor_text = anchor_row.iloc[0]["question_EN"]
+        passage_texts = passage_rows["question_EN"].tolist()
+        passage_cats = (
+            passage_rows["category"].tolist()
+            if "category" in passage_rows.columns
+            else [None] * len(passage_texts)
+        )
+
+        # 2. Prepare Inputs with Correct Prefixes
+        # The Anchor gets "query: ", the rest get "passage: "
+        query_input = [f"query: {anchor_text}"]
+        passage_inputs = [f"passage: {p}" for p in passage_texts]
+
+        # 3. Encode separately
+        # Normalize to allow the Cosine -> Euclidean shortcut
+        query_embedding = self.model.encode(query_input, normalize_embeddings=True)
+        passage_embeddings = self.model.encode(
+            passage_inputs, normalize_embeddings=True
+        )
+
+        # 4. Calculate Similarity (1 vs N)
+        # This returns a tensor of shape (1, num_passages)
+        similarities = self.model.similarity(query_embedding, passage_embeddings)
+
+        results = []
+        # We iterate through the passages to pair them with the single anchor
+        for idx, passage_text in enumerate(passage_texts):
+            cosine_score = float(similarities[0][idx])
+
+            # 5. Convert Cosine Similarity to Euclidean Distance
+            # EuclideanDist = sqrt(2 * (1 - CosineSim))
+            dist_squared = 2 * (1 - cosine_score)
+            euclidean_dist = (max(0, dist_squared)) ** 0.5
+
+            results.append(
+                {
+                    "Qu1": anchor_text,
+                    "Qu2": passage_text,
+                    "Cat1": "ANCHOR",
+                    "Cat2": passage_cats[idx],
                     "Distance": euclidean_dist,
                 }
             )

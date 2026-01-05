@@ -106,6 +106,8 @@ def get_calculator(dist: str) -> similarity_metrics.DistanceCalculator:
         return similarity_metrics.SBERTCalculator(use_Euclidean=True)
     elif dist.upper() == "E5":
         return similarity_metrics.E5Calculator()
+    elif dist.upper() == "E5-ASYMMETRIC":
+        return similarity_metrics.AsymmetricE5Calculator()
     else:
         raise NotImplementedError(f"Distance metric '{dist}' is not implemented.")
 

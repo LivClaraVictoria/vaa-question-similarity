@@ -70,6 +70,7 @@ Options:
 - "SBERT": Sentence-BERT embeddings with cosine similarity
 - "SBERT_EUCLIDEAN": Sentence-BERT embeddings with Euclidean distance (on normalized embeddings): equivalent to sqrt(2 - 2*cosine_similarity)
 - "E5": E5 model embeddings with euclidean distance on normalized embeddings
+- "E5-asymmetric": E5 model retrieval-style (query/passage) with eucdlidean distance on normalized embeddings
 - "E5-instruct": E5 model with instructions, euclidean distance on normalized embeddings
 """
 dist = "SBERT"
