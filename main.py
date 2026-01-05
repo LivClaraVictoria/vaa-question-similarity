@@ -50,7 +50,6 @@ def load_config(config_path: Path):
     return config
 
 
-# for on-the-fly changes to config
 def apply_overrides(config, overrides):
     """
     Parses a list of "key=value" strings and updates the config object.
@@ -81,16 +80,15 @@ def apply_overrides(config, overrides):
         elif value_str.lower() == "false":
             val = False
         # 2. Integer
-        elif value_str.isdigit() or (
-            value_str.startswith("-") and value_str[1:].isdigit()
-        ):
-            val = int(value_str)
-        # 3. Float (looks for a dot)
-        elif value_str.replace(".", "", 1).isdigit():
-            val = float(value_str)
-        # 4. String (default)
         else:
-            val = value_str
+            # Try to convert to int, then float, finally keep as string
+            try:
+                val = int(value_str)
+            except ValueError:
+                try:
+                    val = float(value_str)
+                except ValueError:
+                    val = value_str  # it's a string
 
         # Update the SimpleNamespace config object
         setattr(config, key, val)
@@ -106,6 +104,8 @@ def get_calculator(dist: str) -> similarity_metrics.DistanceCalculator:
         return similarity_metrics.SBERTCalculator()
     elif dist.upper() == "SBERT_EUCLIDEAN":
         return similarity_metrics.SBERTCalculator(use_Euclidean=True)
+    elif dist.upper() == "E5":
+        return similarity_metrics.E5Calculator()
     else:
         raise NotImplementedError(f"Distance metric '{dist}' is not implemented.")
 
@@ -136,6 +136,7 @@ if __name__ == "__main__":
 
     # Overrides (this format: key=value)
     # Ex: python main.py --config configs/base_constants.py dist=SBERT_EUCLIDEAN data_year=2019
+    # If you want to test something without creating a whole new config file
     parser.add_argument(
         "overrides",
         nargs="*",  # accepts zero or more arguments after --config
@@ -143,9 +144,8 @@ if __name__ == "__main__":
     )
 
     args = parser.parse_args()
-
-    # Load the configuration
     config = load_config(Path(args.config))
+    config = apply_overrides(config, args.overrides)
 
     # Run main with the loaded config
     main(config)

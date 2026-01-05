@@ -1,0 +1,11 @@
+Qu1,Qu2,Cat1,Cat2,Distance
+Should we raise taxes?,Should we not raise taxes?,ANCHOR,Negation,0.25933090202773945
+Should we raise taxes?,Do you agree that taxes should be increased?,ANCHOR,Easy Paraphrase,0.2891078604084489
+Should we raise taxes?,Should we raise the minimum wage?,ANCHOR,Trap,0.33839299776755183
+Should we raise taxes?,Do you agree that taxes should not be increased?,ANCHOR,Easy Paraphrase Negation,0.37768799300779454
+Should we raise taxes?,Do you agree that money should be collected from people to support the functioning of the state?,ANCHOR,Hard Paraphrase,0.5104784895636544
+Should we raise taxes?,Should we raise animals in our backyards?,ANCHOR,Trap,0.5271228468889204
+Should we raise taxes?,The government must collect more revenue from citizens to fund services.,ANCHOR,Hard Paraphrase,0.5565163992413087
+Should we raise taxes?,We should implement a tax on plastic bags to reduce waste.,ANCHOR,Trap,0.5739403912831688
+Should we raise taxes?,I hate filing my taxes every year.,ANCHOR,Trap,0.5877306140605401
+Should we raise taxes?,The government must not collect more revenue from citizens to fund services.,ANCHOR,Hard Paraphrase Negation,0.6010926628846665
