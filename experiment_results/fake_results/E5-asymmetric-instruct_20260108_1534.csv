@@ -1,0 +1,11 @@
+Qu1,Qu2,Cat1,Cat2,Distance,Type
+Should we raise taxes?,Do you agree that taxes should be increased?,ANCHOR,Easy Paraphrase,0.3423238125684031,Asymmetric (Query-Passage)
+Should we raise taxes?,Should we not raise taxes?,ANCHOR,Negation,0.3691993949166048,Asymmetric (Query-Passage)
+Should we raise taxes?,Do you agree that taxes should not be increased?,ANCHOR,Easy Paraphrase Negation,0.4234054496994637,Asymmetric (Query-Passage)
+Should we raise taxes?,Should we raise the minimum wage?,ANCHOR,Trap,0.4837778163275769,Asymmetric (Query-Passage)
+Should we raise taxes?,Do you agree that money should be collected from people to support the functioning of the state?,ANCHOR,Hard Paraphrase,0.5130416426980698,Asymmetric (Query-Passage)
+Should we raise taxes?,The government must collect more revenue from citizens to fund services.,ANCHOR,Hard Paraphrase,0.5685284025667904,Asymmetric (Query-Passage)
+Should we raise taxes?,Should we raise animals in our backyards?,ANCHOR,Trap,0.5886158066584736,Asymmetric (Query-Passage)
+Should we raise taxes?,We should implement a tax on plastic bags to reduce waste.,ANCHOR,Trap,0.6103043927085389,Asymmetric (Query-Passage)
+Should we raise taxes?,The government must not collect more revenue from citizens to fund services.,ANCHOR,Hard Paraphrase Negation,0.6429756581339762,Asymmetric (Query-Passage)
+Should we raise taxes?,I hate filing my taxes every year.,ANCHOR,Trap,0.6431003292234156,Asymmetric (Query-Passage)

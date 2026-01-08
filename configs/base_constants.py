@@ -71,10 +71,11 @@ Options:
 - "SBERT_EUCLIDEAN": Sentence-BERT embeddings with Euclidean distance (on normalized embeddings): equivalent to sqrt(2 - 2*cosine_similarity)
 - "E5": E5 model embeddings with euclidean distance on normalized embeddings
 - "E5-asymmetric": E5 model retrieval-style (query/passage) with eucdlidean distance on normalized embeddings
-- "E5-instruct": E5 model with instructions, euclidean distance on normalized embeddings
+- "E5-instruct": E5 model (symmetric: query/query) with instructions, euclidean distance on normalized embeddings
+- "E5-asymmetric-instruct": E5 model retrieval-style with instructions, euclidean distance on normalized embeddings
 """
 dist = "SBERT"
-E5_instruction: str = "Political question"  # TODO: actual instruction handling
+E5_instruction: str = "Retrieve semantically similar political questions."
 
 # Data source to use
 data_choice = "cleaned"  # Options: "fake", "cleaned", "raw"

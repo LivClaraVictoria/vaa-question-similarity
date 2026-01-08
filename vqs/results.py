@@ -123,7 +123,7 @@ def _plot_fake_results(df: pd.DataFrame, config, timestamp) -> None:
     plt.axvline(x=threshold_val, color="grey", linestyle="--", label="Likely Threshold")
 
     # 6. Formatting
-    plt.title(f"Metric Test: {metric_col} to Anchor {title_suffix}", fontsize=14)
+    plt.title(f"{config.dist} on {config.data_choice} data {title_suffix}", fontsize=14)
     plt.xlabel(metric_col)
     plt.ylabel("Comparison Question")
 

@@ -98,7 +98,9 @@ def apply_overrides(config, overrides):
     return config
 
 
-def get_calculator(dist: str) -> similarity_metrics.DistanceCalculator:
+def get_calculator(
+    dist: str, config: SimpleNamespace
+) -> similarity_metrics.DistanceCalculator:
     if dist.upper() == "SBERT":
         # could pass specific model
         return similarity_metrics.SBERTCalculator()
@@ -108,6 +110,14 @@ def get_calculator(dist: str) -> similarity_metrics.DistanceCalculator:
         return similarity_metrics.E5Calculator()
     elif dist.upper() == "E5-ASYMMETRIC":
         return similarity_metrics.AsymmetricE5Calculator()
+    elif dist.upper() == "E5-INSTRUCT":
+        return similarity_metrics.E5InstructCalculator(
+            instruction=config.E5_instruction
+        )
+    elif dist.upper() == "E5-ASYMMETRIC-INSTRUCT":
+        return similarity_metrics.AsymmetricE5InstructCalculator(
+            instruction=config.E5_instruction
+        )
     else:
         raise NotImplementedError(f"Distance metric '{dist}' is not implemented.")
 
@@ -118,7 +128,7 @@ def main(config):
     dataset = load_dataset(config)
 
     print("Initializing distance metric...")
-    calculator = get_calculator(config.dist)
+    calculator = get_calculator(config.dist, config)
 
     print("Calculating distances...")
     results: pd.DataFrame = calculator.calculate_distance(dataset)

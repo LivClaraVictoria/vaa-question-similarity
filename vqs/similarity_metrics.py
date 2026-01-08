@@ -178,3 +178,135 @@ class AsymmetricE5Calculator(DistanceCalculator):
             )
 
         return pd.DataFrame(results)
+
+
+class E5InstructCalculator(DistanceCalculator):
+    """
+    Symmetric Calculator: Treats ALL sentences as queries with the instruction.
+    Calculates pairwise distances (N x N) for every combination in the dataset.
+    """
+
+    def __init__(
+        self,
+        model_name: str = "intfloat/multilingual-e5-large-instruct",
+        instruction: str = "Retrieve semantically similar political questions.",
+    ):
+        self.model = SentenceTransformer(model_name)
+        self.instruction = instruction
+        print(f"Symmetric E5 Instruct loaded with instruction: '{self.instruction}'")
+
+    def calculate_distance(self, dataset: dict) -> pd.DataFrame:
+        questions_df = dataset["questions"]
+        questions_en = questions_df["question_EN"].tolist()
+        categories = (
+            questions_df["category"].tolist()
+            if "category" in questions_df.columns
+            else [None] * len(questions_en)
+        )
+
+        # For Symmetric STS (Semantic Textual Similarity), we treat BOTH texts
+        # as queries containing the instruction.
+        formatted_inputs = [
+            f"Instruction: {self.instruction}\nQuery: {q}" for q in questions_en
+        ]
+
+        # Encode all
+        embeddings = self.model.encode(formatted_inputs, normalize_embeddings=True)
+
+        # Calculate Similarity Matrix
+        similarities = self.model.similarity(embeddings, embeddings)
+
+        results = []
+        for i, j in combinations(range(len(questions_en)), 2):
+            cosine_score = float(similarities[i][j])
+
+            # Euclidean Distance shortcut
+            dist_squared = 2 * (1 - cosine_score)
+            euclidean_dist = (max(0, dist_squared)) ** 0.5
+
+            results.append(
+                {
+                    "Qu1": questions_en[i],
+                    "Qu2": questions_en[j],
+                    "Cat1": categories[i],
+                    "Cat2": categories[j],
+                    "Distance": euclidean_dist,
+                    "Type": "Symmetric (Query-Query)",
+                }
+            )
+
+        return pd.DataFrame(results)
+
+
+class AsymmetricE5InstructCalculator(DistanceCalculator):
+    """
+    Asymmetric Calculator: Treats 'ANCHOR' as the Query (with instruction)
+    and all others as Passages (raw text).
+    Calculates distances between the Anchor and the Passages (1 vs N).
+    """
+
+    def __init__(
+        self,
+        model_name: str = "intfloat/multilingual-e5-large-instruct",
+        instruction: str = "Retrieve semantically similar political questions.",
+    ):
+        self.model = SentenceTransformer(model_name)
+        self.instruction = instruction
+        print(f"Asymmetric E5 Instruct loaded with instruction: '{self.instruction}'")
+
+    def calculate_distance(self, dataset: dict) -> pd.DataFrame:
+        questions_df = dataset["questions"]
+
+        # Identify Anchor vs Passages
+        anchor_row = questions_df[questions_df["category"] == "ANCHOR"]
+        passage_rows = questions_df[questions_df["category"] != "ANCHOR"]
+
+        if anchor_row.empty:
+            raise ValueError("No question with category 'ANCHOR' found.")
+
+        anchor_text = anchor_row.iloc[0]["question_EN"]
+        passage_texts = passage_rows["question_EN"].tolist()
+        passage_cats = (
+            passage_rows["category"].tolist()
+            if "category" in passage_rows.columns
+            else [None] * len(passage_texts)
+        )
+
+        # Format Inputs
+        # 1. Anchor gets the Instruction + Query prefix
+        formatted_anchor = [f"Instruction: {self.instruction}\nQuery: {anchor_text}"]
+
+        # 2. Passages get NO prefix (Raw text)
+        formatted_passages = passage_texts
+
+        # Encode separately
+        anchor_embedding = self.model.encode(
+            formatted_anchor, normalize_embeddings=True
+        )
+        passage_embeddings = self.model.encode(
+            formatted_passages, normalize_embeddings=True
+        )
+
+        # Calculate Similarity (1 Anchor vs N Passages)
+        similarities = self.model.similarity(anchor_embedding, passage_embeddings)
+
+        results = []
+        for idx, passage_text in enumerate(passage_texts):
+            cosine_score = float(similarities[0][idx])
+
+            # Euclidean Distance shortcut
+            dist_squared = 2 * (1 - cosine_score)
+            euclidean_dist = (max(0, dist_squared)) ** 0.5
+
+            results.append(
+                {
+                    "Qu1": anchor_text,
+                    "Qu2": passage_text,
+                    "Cat1": "ANCHOR",
+                    "Cat2": passage_cats[idx],
+                    "Distance": euclidean_dist,
+                    "Type": "Asymmetric (Query-Passage)",
+                }
+            )
+
+        return pd.DataFrame(results)
