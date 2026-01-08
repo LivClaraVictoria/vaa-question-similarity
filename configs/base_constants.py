@@ -75,7 +75,9 @@ Options:
 - "E5-asymmetric-instruct": E5 model retrieval-style with instructions, euclidean distance on normalized embeddings
 """
 dist = "SBERT"
-E5_instruction: str = "Retrieve semantically similar political questions."
+E5_instruction: str = (
+    "Retrieve political questions that have the same meaning."  # "Retrieve semantically similar political questions."
+)
 
 # Data source to use
 data_choice = "cleaned"  # Options: "fake", "cleaned", "raw"

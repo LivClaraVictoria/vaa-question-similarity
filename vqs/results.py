@@ -84,15 +84,14 @@ def _plot_fake_results(df: pd.DataFrame, config, timestamp) -> None:
         # Define semantic palette matching your CSV categories
         palette = {
             "ANCHOR": "black",
-            # Semantically Identical (Greens) -> Should be Close / High Similarity
-            "Easy Paraphrase": "green",
-            "Hard Paraphrase": "green",
-            # Logically Connected / Opposites (Blues/Teals) -> Should be Relatively Close
-            "Negation": "green",
-            "Easy Paraphrase Negation": "green",
-            "Hard Paraphrase Negation": "green",
-            # Different Topics / Traps (Reds) -> Should be Far / Low Similarity
-            "Trap": "red",
+            "Negation": "teal",
+            "Easy Paraphrase": "seagreen",
+            "Easy Paraphrase Negation": "mediumaquamarine",
+            "Hard Paraphrase": "mediumseagreen",
+            "Hard Paraphrase Negation": "lightseagreen",
+            "Antonym": "cadetblue",
+            "Syntax Trap": "firebrick",
+            "Keyword Trap": "indianred",
         }
     else:
         print("⚠️ Warning: No 'Cat2' column found. Plot will not be color-coded.")

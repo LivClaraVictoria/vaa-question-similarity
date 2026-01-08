@@ -6,7 +6,7 @@ id,category,question_EN
 5,Hard Paraphrase,The government must collect more revenue from citizens to fund services.
 6,Hard Paraphrase Negation,The government must not collect more revenue from citizens to fund services.
 7,Hard Paraphrase,Do you agree that money should be collected from people to support the functioning of the state?
-8,Trap,Should we raise animals in our backyards?
-9,Trap,Should we raise the minimum wage?
-10,Trap,We should implement a tax on plastic bags to reduce waste.
-11,Trap,I hate filing my taxes every year.
+8,Syntax Trap,Should we raise animals in our backyards?
+9,Syntax Trap,Should we raise the minimum wage?
+10,Keyword Trap,We should implement a tax on plastic bags to reduce waste.
+11,Keyword Trap,I hate filing my taxes every year.
