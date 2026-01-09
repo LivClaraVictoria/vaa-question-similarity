@@ -76,7 +76,7 @@ Options:
 """
 dist = "SBERT"
 E5_instruction: str = (
-    "Retrieve political questions that have the same meaning."  # "Retrieve semantically similar political questions."
+    "Retrieve political questions that deal with the same topic."  # "Retrieve semantically similar political questions."
 )
 
 # Data source to use

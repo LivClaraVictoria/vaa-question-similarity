@@ -1,3 +1,4 @@
+import textwrap
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -71,7 +72,7 @@ def save_results(df: pd.DataFrame, config) -> pd.DataFrame:
 
 def _plot_fake_results(df: pd.DataFrame, config, timestamp) -> None:
     # 1. Setup Plot Dimensions
-    plt.figure(figsize=(12, 8))
+    plt.figure(figsize=(12, 9))
     sns.set_theme(style="whitegrid")
 
     # 2. Determine Color Palette based on 'Cat2'
@@ -116,19 +117,37 @@ def _plot_fake_results(df: pd.DataFrame, config, timestamp) -> None:
         hue=hue_col,
         palette=palette,
         dodge=False,  # Keeps bars thick and aligned
+        width=0.5,
     )
 
     # 5. Add Reference Line (The "Visual Cliff")
     plt.axvline(x=threshold_val, color="grey", linestyle="--", label="Likely Threshold")
 
     # 6. Formatting
-    plt.title(f"{config.dist} on {config.data_choice} data {title_suffix}", fontsize=14)
+    plt.suptitle(
+        f"{config.dist} on {config.data_choice} data {title_suffix}", fontsize=14
+    )
     plt.xlabel(metric_col)
     plt.ylabel("Comparison Question")
+
+    if "instruct" in config.dist.lower():
+        # Safely get instruction (defaults to string if missing)
+        instruction_text = getattr(
+            config, "E5_instruction", "Instruction not found in config"
+        )
+
+        # Wrap text so it doesn't run off the plot (e.g., width 80 chars)
+        wrapped_inst = "\n".join(
+            textwrap.wrap(f"Instruction: {instruction_text}", width=80)
+        )
+
+        # Add as a smaller subtitle
+        plt.title(wrapped_inst, fontsize=10, style="italic", pad=10, color="dimgrey")
 
     # Place legend outside the plot area so it doesn't cover data
     plt.legend(bbox_to_anchor=(1.05, 1), loc="upper left", title="Category")
     plt.tight_layout()
+    plt.subplots_adjust(top=0.85)
 
     # 7. Save Plot
     # Uses the same timestamp/name as the CSV for easy matching
