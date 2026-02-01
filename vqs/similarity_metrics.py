@@ -19,6 +19,9 @@ class BaseDistanceCalculator(ABC):
         self.instruction = instruction
         self.is_asymmetric = is_asymmetric
         self.use_euclidean = use_euclidean
+        self.value_name: str = (
+            "Distance" if self.use_euclidean else "Similarity"
+        )  # lazy, maybe change later
 
         mode_str = "Asymmetric" if is_asymmetric else "Symmetric"
         metric_str = "Euclidean" if use_euclidean else "Cosine"
@@ -57,8 +60,6 @@ class BaseDistanceCalculator(ABC):
         similarities = self.model.similarity(emb_queries, emb_targets)
         results = []
 
-        value_name: str = "Distance" if self.use_euclidean else "Similarity"
-
         # Extract
         if self.is_asymmetric:
             for i in range(len(questions)):
@@ -77,7 +78,7 @@ class BaseDistanceCalculator(ABC):
                         {
                             "Qu1": questions[i],
                             "Qu2": questions[j],
-                            value_name: final_value,
+                            self.value_name: final_value,
                             "Type": "Real-Asymmetric",
                         }
                     )
@@ -91,7 +92,7 @@ class BaseDistanceCalculator(ABC):
                     {
                         "Qu1": questions[i],
                         "Qu2": questions[j],
-                        value_name: final_value,
+                        self.value_name: final_value,
                         "Type": "Real-Symmetric",
                     }
                 )
@@ -130,7 +131,7 @@ class BaseDistanceCalculator(ABC):
                     "Qu2": text,
                     "Cat1": "ANCHOR",
                     "Cat2": passage_cats[i],
-                    "Value": final_value,
+                    self.value_name: final_value,
                     "Type": f"Fake-{'Asymmetric' if self.is_asymmetric else 'Symmetric'}",
                 }
             )
