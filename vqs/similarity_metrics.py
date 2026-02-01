@@ -1,312 +1,211 @@
-from itertools import combinations
-from sentence_transformers import SentenceTransformer  # type: ignore
 from abc import ABC, abstractmethod
+from typing import Any
+from itertools import combinations
 import pandas as pd
+from sentence_transformers import SentenceTransformer  # type: ignore
 
 
-class DistanceCalculator(ABC):
+# --- 1. Base Class ---
+class BaseDistanceCalculator(ABC):
+    def __init__(
+        self,
+        model_name: str,
+        instruction: str | None = None,
+        # DEFAULTS: The standard for your project
+        is_asymmetric: bool = False,
+        use_euclidean: bool = True,
+    ):
+        self.model = SentenceTransformer(model_name)
+        self.instruction = instruction
+        self.is_asymmetric = is_asymmetric
+        self.use_euclidean = use_euclidean
+
+        mode_str = "Asymmetric" if is_asymmetric else "Symmetric"
+        metric_str = "Euclidean" if use_euclidean else "Cosine"
+        print(f"[{model_name}] loaded. Mode: {mode_str} | Metric: {metric_str}")
+
     @abstractmethod
-    def calculate_distance(self, dataset: dict) -> pd.DataFrame:
+    def format_input(self, text: str, role: str) -> str:
+        """role: 'query' or 'passage'"""
         pass
 
+    def _cosine_to_euclidean(self, cosine_score: float) -> float:
+        # max(0, ...) to avoid small negative values due to floating point errors
+        return (max(0, 2 * (1 - cosine_score))) ** 0.5
 
-# SBERT
-class SBERTCalculator(DistanceCalculator):
-
-    # load model once instead of every time we calculate distance
-    # actually idk if this makes a difference?
-    def __init__(
-        self, model_name: str = "all-MiniLM-L6-v2", use_Euclidean: bool = False
-    ):
-        self.model = SentenceTransformer(model_name)
-        self.use_Euclidean = use_Euclidean
-        print(f"SBERT model '{model_name}' loaded.")
-
-    def calculate_distance(self, dataset: dict) -> pd.DataFrame:
+    def calculate_distance(self, dataset: dict, config: Any) -> pd.DataFrame:
         questions_df = dataset["questions"]
-        questions_en = questions_df["question_EN"].tolist()
-        categories = (
-            questions_df["category"].tolist()
-            if "category" in questions_df.columns
-            else None
-        )
 
-        embeddings = self.model.encode(
-            questions_en, normalize_embeddings=True
-        )  # normalizing is necessary for euclidean distance and doesn't make a difference for cosine
+        if config.data_choice == "fake":
+            return self._calculate_anchor_topology(questions_df)
+        else:
+            return self._calculate_real_topology(questions_df)
 
-        # if self.use_Euclidean:
-        #     self.model.similarity_fn_name = "euclidean"
-        # uses negative euclidean, so not ideal for us
+    def _calculate_real_topology(self, df: pd.DataFrame) -> pd.DataFrame:
+        questions = df["question_EN"].tolist()
 
-        similarities = self.model.similarity(embeddings, embeddings)
-        # see similarity method: model.similarity_fn_name
+        # Encode
+        fmt_queries = [self.format_input(q, role="query") for q in questions]
+        emb_queries = self.model.encode(fmt_queries, normalize_embeddings=True)
 
+        if self.is_asymmetric:
+            fmt_targets = [self.format_input(q, role="passage") for q in questions]
+            emb_targets = self.model.encode(fmt_targets, normalize_embeddings=True)
+        else:
+            emb_targets = emb_queries
+
+        similarities = self.model.similarity(emb_queries, emb_targets)
         results = []
-        for i, j in combinations(range(len(questions_en)), 2):
-            score = float(similarities[i][j])  # cast from tensor
 
-            if self.use_Euclidean:
-                # Euclidean Dist = sqrt(2 * (1 - CosineSimilarity))
-                # Clamping max(0, ...) prevents crash if float precision makes (1 - 1.0000001) negative
-                dist_squared = 2 * (1 - score)
-                metric_value = (max(0, dist_squared)) ** 0.5
-                metric_name = "Distance"
-            else:
-                metric_value = score
-                metric_name = "Similarity"
-            results.append(
-                {
-                    "Qu1": questions_en[i],
-                    "Qu2": questions_en[j],
-                    "Cat1": categories[i] if categories else None,
-                    "Cat2": categories[j] if categories else None,
-                    metric_name: metric_value,
-                }
-            )
-        return pd.DataFrame(results)
+        value_name: str = "Distance" if self.use_euclidean else "Similarity"
 
+        # Extract
+        if self.is_asymmetric:
+            for i in range(len(questions)):
+                for j in range(len(questions)):
+                    if i == j:
+                        final_value = 0.0 if self.use_euclidean else 1.0
+                    else:
+                        score = float(similarities[i][j])
+                        final_value = (
+                            self._cosine_to_euclidean(score)
+                            if self.use_euclidean
+                            else score
+                        )
 
-# E5
-class E5Calculator(DistanceCalculator):
-    def __init__(
-        self,
-        model_name: str = "intfloat/multilingual-e5-large",
-    ):
-        self.model = SentenceTransformer(model_name)
-        print(f"E5 model '{model_name}' loaded.")
-
-    def calculate_distance(self, dataset: dict) -> pd.DataFrame:
-        questions_df = dataset["questions"]
-        questions_en = questions_df["question_EN"].tolist()
-        categories = (
-            questions_df["category"].tolist()
-            if "category" in questions_df.columns
-            else None
-        )
-
-        # E5 models expect a "query: " or "passage: " prefix. (Use query passage for text retrieval. Query query for symmetric tasks)
-        inputs = [f"query: {q}" for q in questions_en]
-
-        # We normalize embeddings so that Dot Product == Cosine Similarity
-        embeddings = self.model.encode(inputs, normalize_embeddings=True)
-        similarities = self.model.similarity(embeddings, embeddings)
-
-        results = []
-        for i, j in combinations(range(len(questions_en)), 2):
-            cosine_score = float(similarities[i][j])
-
-            # Formula: EuclideanDist = sqrt(2 * (1 - CosineSim))
-            # Use max(0, ...) to prevent floating point errors (e.g., -0.0000001)
-            dist_squared = 2 * (1 - cosine_score)
-            euclidean_dist = (max(0, dist_squared)) ** 0.5
-
-            results.append(
-                {
-                    "Qu1": questions_en[i],
-                    "Qu2": questions_en[j],
-                    "Cat1": categories[i] if categories else None,
-                    "Cat2": categories[j] if categories else None,
-                    "Distance": euclidean_dist,
-                }
-            )
+                    results.append(
+                        {
+                            "Qu1": questions[i],
+                            "Qu2": questions[j],
+                            value_name: final_value,
+                            "Type": "Real-Asymmetric",
+                        }
+                    )
+        else:
+            for i, j in combinations(range(len(questions)), 2):
+                score = float(similarities[i][j])
+                final_value = (
+                    self._cosine_to_euclidean(score) if self.use_euclidean else score
+                )
+                results.append(
+                    {
+                        "Qu1": questions[i],
+                        "Qu2": questions[j],
+                        value_name: final_value,
+                        "Type": "Real-Symmetric",
+                    }
+                )
 
         return pd.DataFrame(results)
 
-
-# asymmetric E5 (retrieval-style)
-# only implemented for fake data so far!
-class AsymmetricE5Calculator(DistanceCalculator):
-    def __init__(self, model_name: str = "intfloat/multilingual-e5-large"):
-        self.model = SentenceTransformer(model_name)
-        print(f"Asymmetric E5 model '{model_name}' loaded.")
-
-    def calculate_distance(self, dataset: dict) -> pd.DataFrame:
-        questions_df = dataset["questions"]
-
-        # 1. Separate the Anchor (Query) from the others (Passages)
-        # We assume there is exactly one anchor based on your description
-        anchor_row = questions_df[questions_df["category"] == "ANCHOR"]
-        passage_rows = questions_df[questions_df["category"] != "ANCHOR"]
+    def _calculate_anchor_topology(self, df: pd.DataFrame) -> pd.DataFrame:
+        anchor_row = df[df["category"] == "ANCHOR"]
+        passage_rows = df[df["category"] != "ANCHOR"]
 
         if anchor_row.empty:
-            raise ValueError("No question with category 'ANCHOR' found.")
-
-        # Extract text
-        anchor_text = anchor_row.iloc[0]["question_EN"]
-        passage_texts = passage_rows["question_EN"].tolist()
-        passage_cats = (
-            passage_rows["category"].tolist()
-            if "category" in passage_rows.columns
-            else [None] * len(passage_texts)
-        )
-
-        # 2. Prepare Inputs with Correct Prefixes
-        # The Anchor gets "query: ", the rest get "passage: "
-        query_input = [f"query: {anchor_text}"]
-        passage_inputs = [f"passage: {p}" for p in passage_texts]
-
-        # 3. Encode separately
-        # Normalize to allow the Cosine -> Euclidean shortcut
-        query_embedding = self.model.encode(query_input, normalize_embeddings=True)
-        passage_embeddings = self.model.encode(
-            passage_inputs, normalize_embeddings=True
-        )
-
-        # 4. Calculate Similarity (1 vs N)
-        # This returns a tensor of shape (1, num_passages)
-        similarities = self.model.similarity(query_embedding, passage_embeddings)
-
-        results = []
-        # We iterate through the passages to pair them with the single anchor
-        for idx, passage_text in enumerate(passage_texts):
-            cosine_score = float(similarities[0][idx])
-
-            # 5. Convert Cosine Similarity to Euclidean Distance
-            # EuclideanDist = sqrt(2 * (1 - CosineSim))
-            dist_squared = 2 * (1 - cosine_score)
-            euclidean_dist = (max(0, dist_squared)) ** 0.5
-
-            results.append(
-                {
-                    "Qu1": anchor_text,
-                    "Qu2": passage_text,
-                    "Cat1": "ANCHOR",
-                    "Cat2": passage_cats[idx],
-                    "Distance": euclidean_dist,
-                }
-            )
-
-        return pd.DataFrame(results)
-
-
-class E5InstructCalculator(DistanceCalculator):
-    """
-    Symmetric Calculator: Treats ALL sentences as queries with the instruction.
-    Calculates pairwise distances (N x N) for every combination in the dataset.
-    """
-
-    def __init__(
-        self,
-        model_name: str = "intfloat/multilingual-e5-large-instruct",
-        instruction: str = "Retrieve semantically similar political questions.",
-    ):
-        self.model = SentenceTransformer(model_name)
-        self.instruction = instruction
-        print(f"Symmetric E5 Instruct loaded with instruction: '{self.instruction}'")
-
-    def calculate_distance(self, dataset: dict) -> pd.DataFrame:
-        questions_df = dataset["questions"]
-        questions_en = questions_df["question_EN"].tolist()
-        categories = (
-            questions_df["category"].tolist()
-            if "category" in questions_df.columns
-            else [None] * len(questions_en)
-        )
-
-        # For Symmetric STS (Semantic Textual Similarity), we treat BOTH texts
-        # as queries containing the instruction.
-        formatted_inputs = [
-            f"Instruction: {self.instruction}\nQuery: {q}" for q in questions_en
-        ]
-
-        # Encode all
-        embeddings = self.model.encode(formatted_inputs, normalize_embeddings=True)
-
-        # Calculate Similarity Matrix
-        similarities = self.model.similarity(embeddings, embeddings)
-
-        results = []
-        for i, j in combinations(range(len(questions_en)), 2):
-            cosine_score = float(similarities[i][j])
-
-            # Euclidean Distance shortcut
-            dist_squared = 2 * (1 - cosine_score)
-            euclidean_dist = (max(0, dist_squared)) ** 0.5
-
-            results.append(
-                {
-                    "Qu1": questions_en[i],
-                    "Qu2": questions_en[j],
-                    "Cat1": categories[i],
-                    "Cat2": categories[j],
-                    "Distance": euclidean_dist,
-                    "Type": "Symmetric (Query-Query)",
-                }
-            )
-
-        return pd.DataFrame(results)
-
-
-class AsymmetricE5InstructCalculator(DistanceCalculator):
-    """
-    Asymmetric Calculator: Treats 'ANCHOR' as the Query (with instruction)
-    and all others as Passages (raw text).
-    Calculates distances between the Anchor and the Passages (1 vs N).
-    """
-
-    def __init__(
-        self,
-        model_name: str = "intfloat/multilingual-e5-large-instruct",
-        instruction: str = "Retrieve semantically similar political questions.",
-    ):
-        self.model = SentenceTransformer(model_name)
-        self.instruction = instruction
-        print(f"Asymmetric E5 Instruct loaded with instruction: '{self.instruction}'")
-
-    def calculate_distance(self, dataset: dict) -> pd.DataFrame:
-        questions_df = dataset["questions"]
-
-        # Identify Anchor vs Passages
-        anchor_row = questions_df[questions_df["category"] == "ANCHOR"]
-        passage_rows = questions_df[questions_df["category"] != "ANCHOR"]
-
-        if anchor_row.empty:
-            raise ValueError("No question with category 'ANCHOR' found.")
+            raise ValueError("Fake dataset selected, but no 'ANCHOR' category found.")
 
         anchor_text = anchor_row.iloc[0]["question_EN"]
         passage_texts = passage_rows["question_EN"].tolist()
-        passage_cats = (
-            passage_rows["category"].tolist()
-            if "category" in passage_rows.columns
-            else [None] * len(passage_texts)
-        )
+        passage_cats = passage_rows["category"].tolist()
 
-        # Format Inputs
-        # 1. Anchor gets the Instruction + Query prefix
-        formatted_anchor = [f"Instruction: {self.instruction}\nQuery: {anchor_text}"]
+        fmt_anchor = [self.format_input(anchor_text, role="query")]
+        target_role = "passage" if self.is_asymmetric else "query"
+        fmt_targets = [self.format_input(p, role=target_role) for p in passage_texts]
 
-        # 2. Passages get NO prefix (Raw text)
-        formatted_passages = passage_texts
+        emb_anchor = self.model.encode(fmt_anchor, normalize_embeddings=True)
+        emb_targets = self.model.encode(fmt_targets, normalize_embeddings=True)
 
-        # Encode separately
-        anchor_embedding = self.model.encode(
-            formatted_anchor, normalize_embeddings=True
-        )
-        passage_embeddings = self.model.encode(
-            formatted_passages, normalize_embeddings=True
-        )
-
-        # Calculate Similarity (1 Anchor vs N Passages)
-        similarities = self.model.similarity(anchor_embedding, passage_embeddings)
+        similarities = self.model.similarity(emb_anchor, emb_targets)
 
         results = []
-        for idx, passage_text in enumerate(passage_texts):
-            cosine_score = float(similarities[0][idx])
-
-            # Euclidean Distance shortcut
-            dist_squared = 2 * (1 - cosine_score)
-            euclidean_dist = (max(0, dist_squared)) ** 0.5
-
+        for i, text in enumerate(passage_texts):
+            score = float(similarities[0][i])
+            final_value = (
+                self._cosine_to_euclidean(score) if self.use_euclidean else score
+            )
             results.append(
                 {
                     "Qu1": anchor_text,
-                    "Qu2": passage_text,
+                    "Qu2": text,
                     "Cat1": "ANCHOR",
-                    "Cat2": passage_cats[idx],
-                    "Distance": euclidean_dist,
-                    "Type": "Asymmetric (Query-Passage)",
+                    "Cat2": passage_cats[i],
+                    "Value": final_value,
+                    "Type": f"Fake-{'Asymmetric' if self.is_asymmetric else 'Symmetric'}",
                 }
             )
 
         return pd.DataFrame(results)
+
+
+# --- 2. Subclasses ---
+
+
+class SBERTCalculator(BaseDistanceCalculator):
+    def __init__(self, config: Any, **kwargs):
+        model_name = getattr(config, "sbert_model_name", "all-MiniLM-L6-v2")
+        # Pass kwargs to override defaults (e.g. use_euclidean=False)
+        super().__init__(model_name=model_name, **kwargs)
+
+    def format_input(self, text: str, role: str) -> str:
+        return text
+
+
+class E5Calculator(BaseDistanceCalculator):
+    def __init__(self, config: Any, **kwargs):
+        model_name = getattr(config, "e5_model_name", "intfloat/multilingual-e5-large")
+        super().__init__(model_name=model_name, **kwargs)
+
+    def format_input(self, text: str, role: str) -> str:
+        if role == "query":
+            return f"query: {text}"
+        return f"passage: {text}"
+
+
+class E5InstructCalculator(BaseDistanceCalculator):
+    def __init__(self, config: Any, **kwargs):
+        model_name = getattr(
+            config, "e5_instruct_model_name", "intfloat/multilingual-e5-large-instruct"
+        )
+        instruction = getattr(config, "E5_instruction", "")
+        super().__init__(model_name=model_name, instruction=instruction, **kwargs)
+
+    def format_input(self, text: str, role: str) -> str:
+        if role == "query":
+            return f"Instruction: {self.instruction}\nQuery: {text}"
+        return text
+
+
+# --- 3. The Registry (Configuration) ---
+
+METRIC_REGISTRY = {
+    # Deviates from default (Euclidean=False)
+    "SBERT": {"class": SBERTCalculator, "kwargs": {"use_euclidean": False}},
+    "SBERT_EUCLIDEAN": {"class": SBERTCalculator, "kwargs": {}},
+    "E5": {"class": E5Calculator, "kwargs": {}},
+    "E5-ASYMMETRIC": {"class": E5Calculator, "kwargs": {"is_asymmetric": True}},
+    "E5-INSTRUCT": {"class": E5InstructCalculator, "kwargs": {}},
+    "E5-ASYMMETRIC-INSTRUCT": {
+        "class": E5InstructCalculator,
+        "kwargs": {"is_asymmetric": True},
+    },
+}
+
+
+# --- 4. The Factory ---
+
+
+def get_calculator(config: Any) -> BaseDistanceCalculator:
+    dist_method = config.dist.upper()
+
+    if dist_method not in METRIC_REGISTRY:
+        available = ", ".join(METRIC_REGISTRY.keys())
+        raise NotImplementedError(
+            f"Metric '{config.dist}' is not found in registry. Options: {available}"
+        )
+
+    entry = METRIC_REGISTRY[dist_method]
+    CalculatorClass = entry["class"]
+    specific_args = entry["kwargs"]
+
+    return CalculatorClass(config, **specific_args)

@@ -4,7 +4,7 @@ import argparse
 import importlib.util
 import sys
 from types import SimpleNamespace
-import vqs.similarity_metrics as similarity_metrics
+from vqs.similarity_metrics import get_calculator, BaseDistanceCalculator
 from vqs.data_loader import load_dataset
 from vqs.results import save_results
 
@@ -98,41 +98,21 @@ def apply_overrides(config, overrides):
     return config
 
 
-def get_calculator(
-    dist: str, config: SimpleNamespace
-) -> similarity_metrics.DistanceCalculator:
-    if dist.upper() == "SBERT":
-        # could pass specific model
-        return similarity_metrics.SBERTCalculator()
-    elif dist.upper() == "SBERT_EUCLIDEAN":
-        return similarity_metrics.SBERTCalculator(use_Euclidean=True)
-    elif dist.upper() == "E5":
-        return similarity_metrics.E5Calculator()
-    elif dist.upper() == "E5-ASYMMETRIC":
-        return similarity_metrics.AsymmetricE5Calculator()
-    elif dist.upper() == "E5-INSTRUCT":
-        return similarity_metrics.E5InstructCalculator(
-            instruction=config.E5_instruction
-        )
-    elif dist.upper() == "E5-ASYMMETRIC-INSTRUCT":
-        return similarity_metrics.AsymmetricE5InstructCalculator(
-            instruction=config.E5_instruction
-        )
-    else:
-        raise NotImplementedError(f"Distance metric '{dist}' is not implemented.")
-
-
 def main(config):
-    # get questions as list
+    # 1. Load data: get questions as list
     print("Loading data...")
     dataset = load_dataset(config)
 
-    print("Initializing distance metric...")
-    calculator = get_calculator(config.dist, config)
+    # 2. Get Calculator (Using the factory from similarity_metrics)
+    print(f"Initializing distance metric: {config.dist}...")
+    calculator: BaseDistanceCalculator = get_calculator(config)
 
+    # 3. Calculate Distances
+    # We pass 'config' so the calculator can detect Real vs Fake topology
     print("Calculating distances...")
-    results: pd.DataFrame = calculator.calculate_distance(dataset)
+    results: pd.DataFrame = calculator.calculate_distance(dataset, config)
 
+    # 4. Save Results
     print("Handling the results...")
     sorted_results = save_results(df=results, config=config)
 

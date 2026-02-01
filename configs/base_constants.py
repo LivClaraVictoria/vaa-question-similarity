@@ -65,6 +65,8 @@ QUESTIONS_2019_PATH = CLEANED_DIR / "df_questions19.parquet"
 # --- ANALYSIS PARAMETERS ---
 # Distance/similarity metric to use
 # Create new config files for different metrics if needed, or just override in command line
+
+# terminal config instruction: python main.py --config configs/base_constants.py dist=SBERT_EUCLIDEAN for instance
 """
 Options:
 - "SBERT": Sentence-BERT embeddings with cosine similarity
