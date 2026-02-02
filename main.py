@@ -7,6 +7,7 @@ from types import SimpleNamespace
 from vqs.similarity_metrics import get_calculator, BaseDistanceCalculator
 from vqs.data_loader import load_dataset
 from vqs.results import save_results
+from vqs.clone_robust_weighting import CloneRobustReweighter
 
 # from configs.base_constants import *
 
@@ -103,18 +104,23 @@ def main(config):
     print("Loading data...")
     dataset = load_dataset(config)
 
-    # 2. Get Calculator (Using the factory from similarity_metrics)
+    # 2. Calculate Distance (Using the factory from similarity_metrics)
     print(f"Initializing distance metric: {config.dist}...")
     calculator: BaseDistanceCalculator = get_calculator(config)
-
-    # 3. Calculate Distances
-    # We pass 'config' so the calculator can detect Real vs Fake topology
     print("Calculating distances...")
     results: pd.DataFrame = calculator.calculate_distance(dataset, config)
 
-    # 4. Save Results
+    # 3. Save Results
     print("Handling the results...")
     sorted_results = save_results(df=results, config=config)
+
+    # 4. Applying Damien's Method
+
+    print("Applying Clone-Robust Weighting...")
+    reweighter = CloneRobustReweighter(config)
+    reweighted_results = reweighter.reweight(results)
+
+    # 5. Save and Display Reweighted Results
 
 
 if __name__ == "__main__":
