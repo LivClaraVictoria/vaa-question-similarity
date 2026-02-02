@@ -39,6 +39,10 @@ DATA_2019_DIR = RAW_DIR / "smart vote data"
 # experiment results path
 RESULTS_DIR = PROJECT_ROOT / "experiment_results"
 FAKE_RESULTS_DIR = RESULTS_DIR / "fake_results"
+CLEANED_RESULTS_DIR = RESULTS_DIR / "cleaned_results"
+QU_WEIGHT_DIR = RESULTS_DIR / "question_weighting_results"
+P1_WEIGHT_DIR = QU_WEIGHT_DIR / "paper_1"
+P2_WEIGHT_DIR = QU_WEIGHT_DIR / "paper_2"
 
 
 # Specific data files
@@ -62,7 +66,21 @@ QUESTIONS_2023_PATH = CLEANED_DIR / "df_questions.parquet"
 QUESTIONS_2019_PATH = CLEANED_DIR / "df_questions19.parquet"
 # --------------------------------------------------------------------------------------
 
-# --- ANALYSIS PARAMETERS ---
+# --- GENERAL PARAMETERS ---
+
+# Data source to use
+data_choice = "cleaned"  # Options: "fake", "cleaned", "raw"
+data_year = "2023"  # Options: "2019", "2023"
+
+load_voters = False  # false by default, set true for methods where you want to look into correlation
+load_candidates = False  # false by default, set true for methods where you want to look into correlation
+results_file_type = "csv"  # "parquet" for using voter dataset
+
+# Method Choice for clone robust weighting
+method_choice = "P2"  # Options: "P1", "P2"
+
+
+# --- DISTANCE/SIMILARITY PARAMETERS ---
 # Distance/similarity metric to use
 # Create new config files for different metrics if needed, or just override in command line
 
@@ -81,17 +99,6 @@ E5_instruction: str = (
     "Retrieve political questions that deal with the same topic."  # "Retrieve semantically similar political questions."
 )
 
-# Data source to use
-data_choice = "cleaned"  # Options: "fake", "cleaned", "raw"
-data_year = "2023"  # Options: "2019", "2023"
-
-load_voters = False  # false by default, set true for methods where you want to look into correlation
-load_candidates = False  # false by default, set true for methods where you want to look into correlation
-results_file_type = "csv"  # "parquet" for using voter dataset
-
-# Model parameters
-learning_rate = 0.01
-batch_size = 32
-
-# SBERT specific parameters (if using SBERT)
-sbert_model_name = "all-MiniLM-L6-v2"
+# --- CLONE-ROBUST WEIGHTING PARAMETERS ---
+apply_clone_robust_weighting = True  # whether to apply the method at all
+alpha: float = 0.6  # locality parameter, r in [0, alpha]

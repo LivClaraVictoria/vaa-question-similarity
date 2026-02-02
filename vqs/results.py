@@ -49,7 +49,9 @@ def save_results(df: pd.DataFrame, config) -> pd.DataFrame:
 
     # 3. Save data
     output_dir = (
-        config.FAKE_RESULTS_DIR if config.data_choice == "fake" else config.RESULTS_DIR
+        config.FAKE_RESULTS_DIR
+        if config.data_choice == "fake"
+        else config.CLEANED_RESULTS_DIR
     )
     output_dir.mkdir(exist_ok=True)
 

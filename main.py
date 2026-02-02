@@ -8,6 +8,7 @@ from vqs.similarity_metrics import get_calculator, BaseDistanceCalculator
 from vqs.data_loader import load_dataset
 from vqs.results import save_results
 from vqs.clone_robust_weighting import CloneRobustReweighter
+from vqs.clone_robust_analysis import save_reweighting_results
 
 # from configs.base_constants import *
 
@@ -115,12 +116,16 @@ def main(config):
     sorted_results = save_results(df=results, config=config)
 
     # 4. Applying Damien's Method
+    if config.data_choice != "fake":
+        print("Applying Clone-Robust Weighting...")
+        reweighter = CloneRobustReweighter(config)
+        reweighted_results = reweighter.reweight(results)
 
-    print("Applying Clone-Robust Weighting...")
-    reweighter = CloneRobustReweighter(config)
-    reweighted_results = reweighter.reweight(results)
-
-    # 5. Save and Display Reweighted Results
+        # 5. Save and Display Reweighted Results
+        print("Saving reweighted results...")
+        save_reweighting_results(
+            df=reweighted_results, config=config, method_key=config.method_choice
+        )
 
 
 if __name__ == "__main__":
