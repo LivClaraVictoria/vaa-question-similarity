@@ -105,7 +105,7 @@ def main(config):
     print("Loading data...")
     dataset = load_dataset(config)
 
-    # 2. Calculate Distance (Using the factory from similarity_metrics)
+    # 2. Calculate Distance
     print(f"Initializing distance metric: {config.dist}...")
     calculator: BaseDistanceCalculator = get_calculator(config)
     print("Calculating distances...")
@@ -113,7 +113,7 @@ def main(config):
 
     # 3. Save Results
     print("Handling the results...")
-    sorted_results = save_results(df=results, config=config)
+    sorted_results = save_results(df=results, config=config)  # without ID column
 
     # 4. Applying Damien's Method
     if config.data_choice != "fake":

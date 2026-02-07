@@ -45,7 +45,9 @@ class BaseDistanceCalculator(ABC):
             return self._calculate_real_topology(questions_df)
 
     def _calculate_real_topology(self, df: pd.DataFrame) -> pd.DataFrame:
+        # 1. Capture IDs and Text as a pair
         questions = df["question_EN"].tolist()
+        question_ids = df["ID_question"].tolist()
 
         # Encode
         fmt_queries = [self.format_input(q, role="query") for q in questions]
@@ -57,32 +59,33 @@ class BaseDistanceCalculator(ABC):
         else:
             emb_targets = emb_queries
 
-        similarities = self.model.similarity(emb_queries, emb_targets)
+        similarities = self.model.similarity(
+            emb_queries, emb_targets
+        )  # TODO: double check asymmetric case
         results = []
 
-        # Extract
+        # 2. Extract with IDs
         if self.is_asymmetric:
             for i in range(len(questions)):
                 for j in range(len(questions)):
-                    if i == j:
-                        final_value = 0.0 if self.use_euclidean else 1.0
-                    else:
-                        score = float(similarities[i][j])
-                        final_value = (
-                            self._cosine_to_euclidean(score)
-                            if self.use_euclidean
-                            else score
-                        )
-
+                    score = float(similarities[i][j])
+                    final_value = (
+                        self._cosine_to_euclidean(score)
+                        if self.use_euclidean
+                        else score
+                    )
                     results.append(
                         {
                             "Qu1": questions[i],
                             "Qu2": questions[j],
+                            "ID1": question_ids[i],
+                            "ID2": question_ids[j],
                             self.value_name: final_value,
                             "Type": "Real-Asymmetric",
                         }
                     )
         else:
+            # combinations(..., 2) only does unique pairs (triangle of the matrix)
             for i, j in combinations(range(len(questions)), 2):
                 score = float(similarities[i][j])
                 final_value = (
@@ -92,6 +95,8 @@ class BaseDistanceCalculator(ABC):
                     {
                         "Qu1": questions[i],
                         "Qu2": questions[j],
+                        "ID1": question_ids[i],
+                        "ID2": question_ids[j],
                         self.value_name: final_value,
                         "Type": "Real-Symmetric",
                     }
