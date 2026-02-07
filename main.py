@@ -92,7 +92,7 @@ def apply_overrides(config, overrides):
                 except ValueError:
                     val = value_str  # it's a string
 
-        # Update the SimpleNamespace config object
+        # Update the SimpleNamespace config object (ugh why didn't I just make it an object)
         setattr(config, key, val)
         print(f" -> Set '{key}' to: {val} ({type(val).__name__})")
 
