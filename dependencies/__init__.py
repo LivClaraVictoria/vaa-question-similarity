@@ -10,3 +10,4 @@ from .rsfp.rsfp.constants import (
     ID2DISTRICT,
     ID2LANGUAGE,
 )
+from .rsfp.rsfp.matching import add_candidate_voting_recommendations

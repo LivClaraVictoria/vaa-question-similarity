@@ -9,6 +9,7 @@ from vqs.data_loader import load_dataset
 from vqs.results import save_results
 from vqs.clone_robust_weighting import CloneRobustReweighter
 from vqs.clone_robust_analysis import save_reweighting_results
+from vqs.recommendation_engine import RecommendationEngine
 
 # from configs.base_constants import *
 
@@ -126,6 +127,17 @@ def main(config):
         save_reweighting_results(
             df=reweighted_results, config=config, method_key=config.method_choice
         )
+
+        if config.load_voters and config.load_candidates:
+            # 6. Calculate old and new recommendations
+            print("Calculating recommendations and changes...")
+            rec_engine = RecommendationEngine(config=config, data_map=dataset)
+            recommendation_df = rec_engine.evaluate_pipeline(
+                df_weights=reweighted_results
+            )
+
+            # 7. Analyze and save recommendation changes
+            # TODO
 
 
 if __name__ == "__main__":

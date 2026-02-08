@@ -102,3 +102,6 @@ E5_instruction: str = (
 # --- CLONE-ROBUST WEIGHTING PARAMETERS ---
 apply_clone_robust_weighting = True  # whether to apply the method at all
 alpha: float = 0.6  # locality parameter, r in [0, alpha]
+
+# --- RECOMMENDATION ENGINE PARAMETERS ---
+n_recommendations = 10  # how many candidates to recommend per voter
