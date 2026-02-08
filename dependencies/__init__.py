@@ -9,5 +9,10 @@ from .rsfp.rsfp.constants import (
     ID2EDUCATION,
     ID2DISTRICT,
     ID2LANGUAGE,
+    ANSWER_POSSIBILITIES,
+    ROW_COL_INDICES,
+    L1_DIST_MAT,
+    DIRECTIONAL_DIST_MAT,
+    HYBRID_DIST_MAT,
 )
 from .rsfp.rsfp.matching import add_candidate_voting_recommendations

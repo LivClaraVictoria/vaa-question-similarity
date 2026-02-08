@@ -1,6 +1,7 @@
 # Base configuration for VAA Question Similarity Analysis
 import os
 from pathlib import Path
+import sys
 
 # --- FILE PATHS ---
 # root directory
@@ -28,6 +29,7 @@ if cluster_path_env:
 else:
     DATA_DIR = PROJECT_ROOT / "data"
     print(f"Local environment detected. Using data path: {DATA_DIR}")
+
 
 # additional data paths
 CLEANED_DIR = DATA_DIR / "cleaned"

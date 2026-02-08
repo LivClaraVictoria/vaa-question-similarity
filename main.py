@@ -1,9 +1,10 @@
 import pandas as pd
 from pathlib import Path
+import sys
 import argparse
 import importlib.util
-import sys
 from types import SimpleNamespace
+
 from vqs.similarity_metrics import get_calculator, BaseDistanceCalculator
 from vqs.data_loader import load_dataset
 from vqs.results import save_results
@@ -40,7 +41,6 @@ def load_config(config_path: Path):
         print(f"Error while loading config file {config_path}:\n{e}")
         sys.exit(1)
 
-    # lmao you should have just made it into an object from the start (TODO)
     # 4. Convert the dictionary into an object (SimpleNamespace).
     #    This lets you use dot notation (like config.dist)
     #    instead of dictionary notation (like config['dist']).
@@ -93,7 +93,7 @@ def apply_overrides(config, overrides):
                 except ValueError:
                     val = value_str  # it's a string
 
-        # Update the SimpleNamespace config object (ugh why didn't I just make it an object)
+        # Update the SimpleNamespace config object
         setattr(config, key, val)
         print(f" -> Set '{key}' to: {val} ({type(val).__name__})")
 
