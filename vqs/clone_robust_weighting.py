@@ -119,4 +119,4 @@ class CloneRobustReweighter:
         # Add the text back in by mapping the IDs --> pd contains columns ID_question, Question, Weight
         results_df["Question"] = results_df["ID_question"].map(id_to_text)
 
-        return results_df.sort_values(by="Weight", ascending=False)
+        return results_df
