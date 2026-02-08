@@ -137,7 +137,8 @@ def main(config):
             )
 
             # 7. Analyze and save recommendation changes
-            # TODO
+            print("Analyzing recommendation changes...")
+            print(recommendation_df.columns.tolist())
 
 
 if __name__ == "__main__":

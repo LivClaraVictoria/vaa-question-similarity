@@ -51,6 +51,12 @@ def load_dataset(config) -> dict:
         data_map["questions"] = SVDataFrame(df_q)  # type: ignore
 
     else:
-        raise NotImplementedError("Only cleaned data implemented for now.")
+        raise NotImplementedError("Only cleaned and fake data implemented for now.")
+
+    # Optional subsetting for quick testing
+    if hasattr(config, "subset_n") and config.subset_n is not None:
+        print(f"!!! SANITY CHECK MODE: Subsetting data to {config.subset_n} rows !!!")
+        if "voters" in data_map:
+            data_map["voters"] = data_map["voters"].iloc[: config.subset_n]
 
     return data_map

@@ -42,9 +42,14 @@ class RecommendationEngine:
         )
 
     def evaluate_pipeline(self, df_weights, dist_method="L2_sv") -> pd.DataFrame:
-        baseline_recs: pd.DataFrame = self.run_baseline(dist_method=dist_method)  # type: ignore
+        baseline_recs_df: pd.DataFrame = self.run_baseline(dist_method=dist_method)  # type: ignore
         crw_recs_df: pd.DataFrame = self.run_crw(df_weights, dist_method=dist_method)  # type: ignore
-        crw_prefixed_df: pd.DataFrame = crw_recs_df.add_prefix("CRW")
-        recommendation_df: pd.DataFrame = baseline_recs.join(crw_prefixed_df)
+
+        match_cols = [c for c in crw_recs_df.columns if "match" in c or "Dist" in c]
+        crw_subset_prefixed = crw_recs_df[match_cols].add_prefix("CRW_")
+        recommendation_df = baseline_recs_df.join(crw_subset_prefixed)
+        print(
+            "SUCCESS: Baseline and CRW recommendations calculated and combined into a single DataFrame."
+        )
 
         return recommendation_df

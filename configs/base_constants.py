@@ -78,6 +78,8 @@ load_voters = False  # false by default, set true for methods where you want to 
 load_candidates = False  # false by default, set true for methods where you want to look into correlation
 results_file_type = "csv"  # "parquet" for using voter dataset
 
+subset_n = None  # for quick testing: set to an integer to subset the data, or None to use full data
+
 # Method Choice for clone robust weighting
 method_choice = "P2"  # Options: "P1", "P2"
 
