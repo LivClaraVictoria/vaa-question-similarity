@@ -6,3 +6,4 @@ data/cleaned/*
 __pycache__/
 scripts/tests.py
 CLAUDE.md
+cache/*

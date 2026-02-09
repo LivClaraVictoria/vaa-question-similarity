@@ -7,20 +7,21 @@ class RecommendationEngine:
         self.config = config
         self.df_voters = data_map["voters"]
         self.df_candidates = data_map["candidates"]
+        self.dist_method = config.rec_dist_method
 
-    def run_baseline(self, dist_method="L2_sv"):
+    def run_baseline(self):
         """Calculates recommendations using standard 1.0/2.0 weights."""
-        print(f"Running Baseline ({dist_method})...")
+        print(f"Running Baseline ({self.dist_method})...")
         return add_candidate_voting_recommendations(
             df_voters=self.df_voters.copy(),
             df_candidates=self.df_candidates,
-            distance_method=dist_method,
+            distance_method=self.dist_method,
             n_recommendations=self.config.n_recommendations,
         )
 
-    def run_crw(self, df_weights, dist_method="L2_sv"):
+    def run_crw(self, df_weights):
         """Injects CRW weights, then calculates recommendations."""
-        print(f"Running CRW ({dist_method})...")
+        print(f"Running CRW ({self.dist_method})...")
         voters_modified = self.df_voters.copy()
         weight_lookup = df_weights.set_index("ID_question")["Weight"].to_dict()
 
@@ -37,13 +38,13 @@ class RecommendationEngine:
         return add_candidate_voting_recommendations(
             df_voters=voters_modified,
             df_candidates=self.df_candidates,
-            distance_method=dist_method,
+            distance_method=self.dist_method,
             n_recommendations=self.config.n_recommendations,
         )
 
-    def evaluate_pipeline(self, df_weights, dist_method="L2_sv") -> pd.DataFrame:
-        baseline_recs_df: pd.DataFrame = self.run_baseline(dist_method=dist_method)  # type: ignore
-        crw_recs_df: pd.DataFrame = self.run_crw(df_weights, dist_method=dist_method)  # type: ignore
+    def evaluate_pipeline(self, df_weights) -> pd.DataFrame:
+        baseline_recs_df: pd.DataFrame = self.run_baseline()  # type: ignore
+        crw_recs_df: pd.DataFrame = self.run_crw(df_weights)  # type: ignore
 
         match_cols = [c for c in crw_recs_df.columns if "match" in c or "Dist" in c]
         crw_subset_prefixed = crw_recs_df[match_cols].add_prefix("CRW_")

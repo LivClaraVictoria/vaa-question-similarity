@@ -11,6 +11,7 @@ from vqs.results import save_results
 from vqs.clone_robust_weighting import CloneRobustReweighter
 from vqs.clone_robust_analysis import save_reweighting_results
 from vqs.recommendation_engine import RecommendationEngine
+from vqs.rec_change_analysis import RecChangeAnalyzer
 
 # from configs.base_constants import *
 
@@ -125,7 +126,7 @@ def main(config):
         # 5. Save and Display Reweighted Results
         print("Saving reweighted results...")
         save_reweighting_results(
-            df=reweighted_results, config=config, method_key=config.method_choice
+            df=reweighted_results, config=config, method_key=config.crw_paper_choice
         )
 
         if config.load_voters and config.load_candidates:
@@ -138,7 +139,11 @@ def main(config):
 
             # 7. Analyze and save recommendation changes
             print("Analyzing recommendation changes...")
-            print(recommendation_df.columns.tolist())
+            analyzer = RecChangeAnalyzer(config)
+            # This will check for cache (use crw weights to calculate the hash), calculate if needed, save CSV, and save the plot
+            recommendation_df = analyzer.analyze(
+                df_recommendations=recommendation_df, df_weights=reweighted_results
+            )
 
 
 if __name__ == "__main__":

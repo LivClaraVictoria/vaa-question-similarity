@@ -66,6 +66,11 @@ CANDIDATES_PREFIX = "df_candidates"
 # questions
 QUESTIONS_2023_PATH = CLEANED_DIR / "df_questions.parquet"
 QUESTIONS_2019_PATH = CLEANED_DIR / "df_questions19.parquet"
+
+# cache paths
+CACHE_DIR = PROJECT_ROOT / "cache"
+RECOMMENDATION_ANALYSIS_CACHE_DIR = CACHE_DIR / "recommendation_analysis"
+
 # --------------------------------------------------------------------------------------
 
 # --- GENERAL PARAMETERS ---
@@ -81,7 +86,7 @@ results_file_type = "csv"  # "parquet" for using voter dataset
 subset_n = None  # for quick testing: set to an integer to subset the data, or None to use full data
 
 # Method Choice for clone robust weighting
-method_choice = "P2"  # Options: "P1", "P2"
+crw_paper_choice = "P2"  # Options: "P1", "P2"
 
 
 # --- DISTANCE/SIMILARITY PARAMETERS ---
@@ -90,7 +95,7 @@ method_choice = "P2"  # Options: "P1", "P2"
 
 # terminal config instruction: python main.py --config configs/base_constants.py dist=SBERT_EUCLIDEAN for instance
 """
-Options:
+Options for dist:
 - "SBERT": Sentence-BERT embeddings with cosine similarity
 - "SBERT_EUCLIDEAN": Sentence-BERT embeddings with Euclidean distance (on normalized embeddings): equivalent to sqrt(2 - 2*cosine_similarity)
 - "E5": E5 model embeddings with euclidean distance on normalized embeddings
@@ -109,3 +114,24 @@ alpha: float = 0.6  # locality parameter, r in [0, alpha]
 
 # --- RECOMMENDATION ENGINE PARAMETERS ---
 n_recommendations = 10  # how many candidates to recommend per voter
+
+"""
+(see https://gitlab.ethz.ch/disco-students/fs24/recommender-systems-for-politics or the submodule for more info)
+Options for rec_dist_method:
+"L2",
+"L2_sv",
+"L1",
+"AC",
+"angular_unweighted",
+"angular",
+"mahalanobis_unweighted",
+"DM_L1",
+"DM_L1_BONUS",
+"DM_L2",
+"DM_HYBRID",
+"DM_DIRECTIONAL"
+"""
+rec_dist_method = "L2_sv"  # which distance method to use for recommendations
+
+# --- RECOMMENDATION ANALYSIS PARAMETERS ---
+p_rbo = 0.9  # RBO parameter: how steeply to discount lower ranks (0.9 means top 10 items get ~86% of the weight)
