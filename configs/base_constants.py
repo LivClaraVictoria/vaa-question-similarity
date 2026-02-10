@@ -69,7 +69,7 @@ QUESTIONS_2019_PATH = CLEANED_DIR / "df_questions19.parquet"
 
 # cache paths
 CACHE_DIR = PROJECT_ROOT / "cache"
-RECOMMENDATION_ANALYSIS_CACHE_DIR = CACHE_DIR / "recommendation_analysis"
+RECOMMENDATION_CACHE_DIR = CACHE_DIR / "recommendations"
 DISTANCE_CACHE_DIR = CACHE_DIR / "distance_calculations"
 
 # --------------------------------------------------------------------------------------

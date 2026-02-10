@@ -1,5 +1,6 @@
 import pandas as pd
 from dependencies import add_candidate_voting_recommendations
+from cache_management import CacheManager
 
 
 class RecommendationEngine:
@@ -8,6 +9,17 @@ class RecommendationEngine:
         self.df_voters = data_map["voters"]
         self.df_candidates = data_map["candidates"]
         self.dist_method = config.rec_dist_method
+
+        # Parameters that affect the recommendationcalculations and should be included in the cache hash
+        self.important_params_list = [
+            "data_year",
+            "dist",
+            "alpha",
+            "crw_paper_choice",
+            "rec_dist_method",
+            "n_recommendations",
+            "subset_n",
+        ]
 
     def run_baseline(self):
         """Calculates recommendations using standard 1.0/2.0 weights."""
@@ -43,6 +55,23 @@ class RecommendationEngine:
         )
 
     def evaluate_pipeline(self, df_weights) -> pd.DataFrame:
+
+        # 1. Initialize Cache
+        prefix = f"recs_{self.config.data_year}_{self.config.rec_dist_method}"
+        cacher = CacheManager(
+            config=self.config,
+            cache_dir=self.config.RECOMMENDATION_CACHE_DIR,
+            prefix=prefix,
+            params_list=self.important_params_list,
+        )
+
+        # 2. Check Cache
+        cached_df = cacher.load_if_exists()
+        if cached_df is not None:
+            return cached_df
+
+        # 3. Compute if no cache found
+        print("No cache found for recommendations. Computing pipeline...")
         baseline_recs_df: pd.DataFrame = self.run_baseline()  # type: ignore
         crw_recs_df: pd.DataFrame = self.run_crw(df_weights)  # type: ignore
 
@@ -53,4 +82,6 @@ class RecommendationEngine:
             "SUCCESS: Baseline and CRW recommendations calculated and combined into a single DataFrame."
         )
 
+        # 4. Save to Cache & return
+        cacher.save(recommendation_df)
         return recommendation_df

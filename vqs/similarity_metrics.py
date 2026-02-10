@@ -26,8 +26,11 @@ class BaseDistanceCalculator(ABC):
         self.use_euclidean = use_euclidean
         self.value_name: str = "Distance" if self.use_euclidean else "Similarity"
 
+        # Parameters that affect the distance calculation and should be included in the cache hash
         # TODO: include use_euclidean
-        self.important_params_list = ["data_year", "dist"] + (additional_params or [])
+        self.important_params_list = ["data_year", "dist", "subset_n"] + (
+            additional_params or []
+        )
 
         mode_str = "Asymmetric" if is_asymmetric else "Symmetric"
         metric_str = "Euclidean" if use_euclidean else "Cosine"
