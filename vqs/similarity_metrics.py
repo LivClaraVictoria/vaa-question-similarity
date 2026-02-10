@@ -57,7 +57,7 @@ class BaseDistanceCalculator(ABC):
     def _calculate_real_topology(self, df: pd.DataFrame) -> pd.DataFrame:
 
         # 1. Check if cached results exist
-        prefix = f"{self.config.dist}_{self.config.data_year}"
+        prefix = f"dist_{self.config.data_year}_{self.config.dist}"
         cacher = CacheManager(
             config=self.config,
             cache_dir=self.config.DISTANCE_CACHE_DIR,
