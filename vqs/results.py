@@ -1,5 +1,8 @@
 import textwrap
 import pandas as pd
+import matplotlib
+
+matplotlib.use("Agg")  # for computations on the cluster
 import matplotlib.pyplot as plt
 import seaborn as sns
 import traceback  # For printing detailed error logs

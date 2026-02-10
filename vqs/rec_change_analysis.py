@@ -1,5 +1,8 @@
 import pandas as pd
 import numpy as np
+import matplotlib
+
+matplotlib.use("Agg")  # for computations on the cluster
 import matplotlib.pyplot as plt
 import seaborn as sns
 from pathlib import Path
