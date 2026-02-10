@@ -70,6 +70,7 @@ QUESTIONS_2019_PATH = CLEANED_DIR / "df_questions19.parquet"
 # cache paths
 CACHE_DIR = PROJECT_ROOT / "cache"
 RECOMMENDATION_ANALYSIS_CACHE_DIR = CACHE_DIR / "recommendation_analysis"
+DISTANCE_CACHE_DIR = CACHE_DIR / "distance_calculations"
 
 # --------------------------------------------------------------------------------------
 
@@ -104,9 +105,10 @@ Options for dist:
 - "E5-asymmetric-instruct": E5 model retrieval-style with instructions, euclidean distance on normalized embeddings
 """
 dist = "SBERT"
-E5_instruction: str = (
-    "Retrieve political questions that deal with the same topic."  # "Retrieve semantically similar political questions."
+E5_instruction: str | None = (
+    None  # "Retrieve political questions that deal with the same topic."  # "Retrieve semantically similar political questions."
 )
+
 
 # --- CLONE-ROBUST WEIGHTING PARAMETERS ---
 apply_clone_robust_weighting = True  # whether to apply the method at all

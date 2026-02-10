@@ -3,28 +3,35 @@ from typing import Any
 from itertools import combinations
 import pandas as pd
 from sentence_transformers import SentenceTransformer  # type: ignore
+from cache_management import CacheManager
 
 
 # --- 1. Base Class ---
 class BaseDistanceCalculator(ABC):
     def __init__(
         self,
+        config,
         model_name: str,
         instruction: str | None = None,
-        # DEFAULTS: The standard for your project
         is_asymmetric: bool = False,
         use_euclidean: bool = True,
+        additional_params: (
+            list[str] | None
+        ) = None,  # cannot use [] as default value because it's mutable
     ):
+        self.config = config
         self.model = SentenceTransformer(model_name)
         self.instruction = instruction
         self.is_asymmetric = is_asymmetric
         self.use_euclidean = use_euclidean
-        self.value_name: str = (
-            "Distance" if self.use_euclidean else "Similarity"
-        )  # lazy, maybe change later
+        self.value_name: str = "Distance" if self.use_euclidean else "Similarity"
+
+        # TODO: include use_euclidean
+        self.important_params_list = ["data_year", "dist"] + (additional_params or [])
 
         mode_str = "Asymmetric" if is_asymmetric else "Symmetric"
         metric_str = "Euclidean" if use_euclidean else "Cosine"
+
         print(f"[{model_name}] loaded. Mode: {mode_str} | Metric: {metric_str}")
 
     @abstractmethod
@@ -45,7 +52,23 @@ class BaseDistanceCalculator(ABC):
             return self._calculate_real_topology(questions_df)
 
     def _calculate_real_topology(self, df: pd.DataFrame) -> pd.DataFrame:
-        # 1. Capture IDs and Text as a pair
+
+        # 1. Check if cached results exist
+        prefix = f"{self.config.dist}_{self.config.data_year}"
+        cacher = CacheManager(
+            config=self.config,
+            cache_dir=self.config.DISTANCE_CACHE_DIR,
+            prefix=prefix,
+            params_list=self.important_params_list,
+        )
+
+        cached_df = cacher.load_if_exists()
+        if cached_df is not None:
+            return cached_df
+
+        # If not:
+        # 2. Capture IDs and Text as a pair
+        print("No cache found. Starting computation...")
         questions = df["question_EN"].tolist()
         question_ids = df["ID_question"].tolist()
 
@@ -101,8 +124,9 @@ class BaseDistanceCalculator(ABC):
                         "Type": "Real-Symmetric",
                     }
                 )
-
-        return pd.DataFrame(results)
+        results_df = pd.DataFrame(results)
+        cacher.save(results_df)
+        return results_df
 
     def _calculate_anchor_topology(self, df: pd.DataFrame) -> pd.DataFrame:
         anchor_row = df[df["category"] == "ANCHOR"]
@@ -151,7 +175,7 @@ class SBERTCalculator(BaseDistanceCalculator):
     def __init__(self, config: Any, **kwargs):
         model_name = getattr(config, "sbert_model_name", "all-MiniLM-L6-v2")
         # Pass kwargs to override defaults (e.g. use_euclidean=False)
-        super().__init__(model_name=model_name, **kwargs)
+        super().__init__(config, model_name=model_name, **kwargs)
 
     def format_input(self, text: str, role: str) -> str:
         return text
@@ -160,7 +184,7 @@ class SBERTCalculator(BaseDistanceCalculator):
 class E5Calculator(BaseDistanceCalculator):
     def __init__(self, config: Any, **kwargs):
         model_name = getattr(config, "e5_model_name", "intfloat/multilingual-e5-large")
-        super().__init__(model_name=model_name, **kwargs)
+        super().__init__(config, model_name=model_name, **kwargs)
 
     def format_input(self, text: str, role: str) -> str:
         if role == "query":
@@ -174,7 +198,13 @@ class E5InstructCalculator(BaseDistanceCalculator):
             config, "e5_instruct_model_name", "intfloat/multilingual-e5-large-instruct"
         )
         instruction = getattr(config, "E5_instruction", "")
-        super().__init__(model_name=model_name, instruction=instruction, **kwargs)
+        super().__init__(
+            config,
+            model_name=model_name,
+            instruction=instruction,
+            additional_params=["E5_instruction"],
+            **kwargs,
+        )
 
     def format_input(self, text: str, role: str) -> str:
         if role == "query":
