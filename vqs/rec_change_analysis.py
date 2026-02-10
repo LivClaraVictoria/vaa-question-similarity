@@ -155,5 +155,5 @@ class RecChangeAnalyzer:
         # Save with hash to avoid overwriting different experiments
         plot_path = self.output_dir / f"similarity_dist_{data_hash}.png"
         plt.savefig(plot_path)
-        print(f"📈 Plot saved to: {plot_path}")
+        print(f"Plot saved to: {plot_path}")
         plt.close()
