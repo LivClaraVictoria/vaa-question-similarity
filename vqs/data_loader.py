@@ -1,4 +1,5 @@
 from pathlib import Path
+from networkx import config
 import pandas as pd
 from dependencies import SVDataFrame
 
@@ -52,6 +53,35 @@ def load_dataset(config) -> dict:
 
     else:
         raise NotImplementedError("Only cleaned and fake data implemented for now.")
+
+    # Optional Canton Filtering
+    if (
+        config.filter_districts
+        and config.data_choice != "fake"
+        and ("voters" in data_map or "candidates" in data_map)
+    ):
+        cantonID_map = (
+            config.DISTRICT2ID if config.data_year == "2023" else config.DISTRICT2ID19
+        )
+        target_id = cantonID_map.get(config.district)
+
+        if target_id is None:
+            print(
+                f"Warning: District '{config.district}' not found for year {config.data_year}. Skipping filter."
+            )
+        else:
+            print(f"Filtering data for district: {config.district} (ID: {target_id})")
+            if "voters" in data_map:
+                df = data_map["voters"]
+                voter_district_col = (
+                    "districtID" if config.data_year == "2023" else "ID_district"
+                )
+                data_map["voters"] = df[df[voter_district_col] == target_id].copy()
+
+            # Filter Candidates (ID_election)
+            if "candidates" in data_map:
+                df = data_map["candidates"]
+                data_map["candidates"] = df[df["ID_district"] == target_id].copy()
 
     # Optional subsetting for quick testing
     if hasattr(config, "subset_n") and config.subset_n is not None:

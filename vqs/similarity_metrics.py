@@ -28,8 +28,19 @@ class BaseDistanceCalculator(ABC):
 
         # Parameters that affect the distance calculation and should be included in the cache hash
         # TODO: include use_euclidean
-        self.important_params_list = ["data_year", "dist", "subset_n"] + (
-            additional_params or []
+        self.important_params_list = (
+            (
+                [
+                    "data_year",
+                    "dist",
+                    "subset_n",
+                    "filter_districts",
+                ]
+                + (additional_params or [])
+                + ["district"]
+            )
+            if config.filter_districts
+            else []
         )
 
         mode_str = "Asymmetric" if is_asymmetric else "Symmetric"

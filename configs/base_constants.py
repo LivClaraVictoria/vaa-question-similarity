@@ -30,7 +30,7 @@ else:
     DATA_DIR = PROJECT_ROOT / "data"
     print(f"Local environment detected. Using data path: {DATA_DIR}")
 
-
+# --- CONSTANTS -----
 # additional data paths
 CLEANED_DIR = DATA_DIR / "cleaned"
 RAW_DIR = DATA_DIR / "raw"
@@ -72,6 +72,66 @@ CACHE_DIR = PROJECT_ROOT / "cache"
 RECOMMENDATION_CACHE_DIR = CACHE_DIR / "recommendations"
 DISTANCE_CACHE_DIR = CACHE_DIR / "distance_calculations"
 
+
+# District to ID mapping (taken from constants.py in Dustin's repo)
+# Important note on column names in the dataframes: in 2023 dataset, it's "ID_district" for candidates, "districtID" for voters, in 2019 dataset, it's "ID_district" for both
+DISTRICT2ID = {
+    "AG": 927,
+    "AR": 928,
+    "AI": 929,
+    "BL": 930,
+    "BS": 931,
+    "BE": 932,
+    "FR": 933,
+    "GE": 934,
+    "GL": 935,
+    "GR": 936,
+    "JU": 937,
+    "LU": 938,
+    "NE": 939,
+    "NW": 940,
+    "OW": 941,
+    "SH": 942,
+    "SZ": 943,
+    "SO": 944,
+    "SG": 945,
+    "TI": 946,
+    "TG": 947,
+    "UR": 948,
+    "VD": 949,
+    "VS": 950,
+    "ZG": 951,
+    "ZH": 952,
+}
+DISTRICT2ID19 = {
+    "AG": 1,
+    "AR": 2,
+    "AI": 3,
+    "BL": 4,
+    "BS": 5,
+    "BE": 6,
+    "FR": 7,
+    "GE": 8,
+    "GL": 9,
+    "GR": 10,
+    "JU": 11,
+    "LU": 12,
+    "NE": 13,
+    "NW": 14,
+    "OW": 15,
+    "SH": 16,
+    "SZ": 17,
+    "SO": 18,
+    "SG": 19,
+    "TI": 20,
+    "TG": 21,
+    "UR": 22,
+    "VD": 23,
+    "VS": 24,
+    "ZH": 25,
+    "ZG": 26,
+}
+
 # --------------------------------------------------------------------------------------
 
 # --- GENERAL PARAMETERS ---
@@ -83,6 +143,10 @@ data_year = "2023"  # Options: "2019", "2023"
 load_voters = False  # false by default, set true for methods where you want to look into correlation
 load_candidates = False  # false by default, set true for methods where you want to look into correlation
 results_file_type = "csv"  # "parquet" for using voter dataset
+
+# Canton Filtering
+filter_districts = False
+district = "ZH"  # e.g. "ZH", "BE", etc. (only relevant if filter_districts=True)
 
 subset_n = None  # for quick testing: set to an integer to subset the data, or None to use full data
 

@@ -19,11 +19,13 @@ class RecommendationEngine:
             "rec_dist_method",
             "n_recommendations",
             "subset_n",
-        ]
+            "filter_districts",
+        ] + (["district"] if config.filter_districts else [])
 
     def run_baseline(self):
         """Calculates recommendations using standard 1.0/2.0 weights."""
         print(f"Running Baseline ({self.dist_method})...")
+        # possibly need to set progress_bar=False to run on cluster
         return add_candidate_voting_recommendations(
             df_voters=self.df_voters.copy(),
             df_candidates=self.df_candidates,
@@ -46,7 +48,7 @@ class RecommendationEngine:
                 print(
                     f"⚠️ Warning: Expected column '{target_col}' not found in voters DataFrame. Skipping weight injection for question ID {q_id}."
                 )
-
+        # possibly need to set progress_bar=False to run on cluster
         return add_candidate_voting_recommendations(
             df_voters=voters_modified,
             df_candidates=self.df_candidates,
