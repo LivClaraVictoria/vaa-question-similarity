@@ -1,6 +1,8 @@
 import textwrap
 import pandas as pd
 import matplotlib
+import json
+import hashlib
 
 matplotlib.use("Agg")  # for computations on the cluster
 import matplotlib.pyplot as plt
@@ -10,32 +12,38 @@ from pathlib import Path  # If you use Path objects for directories
 from datetime import datetime  # If you use datetime for timestamps
 
 
-def get_experiment_filename(config, timestamp) -> str:
+def get_experiment_filename(config, timestamp, params_list) -> str:
     """
-    Generates a descriptive filename based on config parameters.
-    Example: "similarity_SBERT_2023.csv"
+    Generates a descriptive but unique filename.
+    Format: {dist}_{data}_{short_hash}_{DD_HHMM}.{ext}
     """
-    # Fallback if 'data_year' isn't set, e.g., for fake data
-    if config.data_choice == "fake":
-        year = timestamp
-    else:
-        year = config.data_year
+    # 1. Build the parameter dict for hashing (Same logic as CacheManager)
+    params = {k: getattr(config, k) for k in params_list}
+    param_str = json.dumps(params, sort_keys=True, default=str)
+    full_hash = hashlib.md5(param_str.encode()).hexdigest()
+    short_hash = full_hash[:8]
 
+    # 3. Construct readable parts
     dist_method = config.dist
+    data_year = config.data_year if config.data_choice != "fake" else "fake"
+    canton = config.district if config.filter_districts else "all"
 
-    return f"{dist_method}_{year}.{config.results_file_type}"
+    filename = f"{dist_method}_{data_year}_{canton}_{short_hash}_{timestamp}.{config.results_file_type}"
+    return filename
 
 
-def save_results(df: pd.DataFrame, config) -> pd.DataFrame:
+def save_results(
+    df: pd.DataFrame, config, important_params_list: list[str]
+) -> pd.DataFrame:
     """
     Sorts similarities, and saves to CSV or parquet.
     Returns the DataFrame for further use if needed.
     """
-    # For quick test runs
+    # 0. For quick test runs
     if config.save_results is False:
         print("No question distance results will be saved.")
         return df
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M")
+    timestamp = datetime.now().strftime("%m%d_%H%M")
 
     # 1. Sort data
     if "Similarity" in df.columns:
@@ -45,15 +53,7 @@ def save_results(df: pd.DataFrame, config) -> pd.DataFrame:
     else:
         print("⚠️WARNING⚠️: No 'Similarity' or 'Distance' column found for sorting.")
 
-    # 2. Visualize data
-    if config.data_choice == "fake":
-        df = df[
-            df["Cat1"] == "ANCHOR"
-        ]  # filter for clarity: only comparison to ANCHOR matters
-
-        _plot_fake_results(df, config, timestamp)
-
-    # 3. Save data
+    # 2. Define data paths
     output_dir = (
         config.FAKE_RESULTS_DIR
         if config.data_choice == "fake"
@@ -61,8 +61,24 @@ def save_results(df: pd.DataFrame, config) -> pd.DataFrame:
     )
     output_dir.mkdir(exist_ok=True)
 
+    # 3. Visualize data
+    if config.data_choice == "fake":
+        df = df[
+            df["Cat1"] == "ANCHOR"
+        ]  # filter for clarity: only comparison to ANCHOR matters
+
+        _plot_fake_results(
+            df,
+            config=config,
+            timestamp=timestamp,
+            params_list=important_params_list,
+            output_dir=output_dir,
+        )
+
     # Generate filename
-    filename = get_experiment_filename(config=config, timestamp=timestamp)
+    filename = get_experiment_filename(
+        config=config, timestamp=timestamp, params_list=important_params_list
+    )
     file_path = output_dir / filename
 
     # Save results
@@ -73,12 +89,12 @@ def save_results(df: pd.DataFrame, config) -> pd.DataFrame:
 
     print(f"\nSuccess! Results saved to:")
     print(f"  -> {file_path}")
-    print(f"  -> Total Pairs: {len(df)}")
-
     return df
 
 
-def _plot_fake_results(df: pd.DataFrame, config, timestamp) -> None:
+def _plot_fake_results(
+    df: pd.DataFrame, config, timestamp, params_list, output_dir
+) -> None:
     # 1. Setup Plot Dimensions
     plt.figure(figsize=(12, 9))
     sns.set_theme(style="whitegrid")
@@ -159,15 +175,9 @@ def _plot_fake_results(df: pd.DataFrame, config, timestamp) -> None:
 
     # 7. Save Plot
     # Uses the same timestamp/name as the CSV for easy matching
-    plot_filename = get_experiment_filename(config, timestamp).replace(
+    plot_filename = get_experiment_filename(config, timestamp, params_list).replace(
         f".{config.results_file_type}", "_visualization.png"
     )
-
-    # copied, bad style TODO fix: clean up fake and cleaned separation
-    output_dir = (
-        config.FAKE_RESULTS_DIR if config.data_choice == "fake" else config.RESULTS_DIR
-    )
-    output_dir.mkdir(exist_ok=True)
 
     plot_path = output_dir / plot_filename
 

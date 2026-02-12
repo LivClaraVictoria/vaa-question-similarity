@@ -7,7 +7,7 @@ from types import SimpleNamespace
 
 from vqs.similarity_metrics import get_calculator, BaseDistanceCalculator
 from vqs.data_loader import load_dataset
-from vqs.results import save_results
+from vqs.distance_results import save_results
 from vqs.clone_robust_weighting import CloneRobustReweighter
 from vqs.clone_robust_analysis import save_reweighting_results
 from vqs.recommendation_engine import RecommendationEngine
@@ -97,7 +97,9 @@ def apply_overrides(config, overrides):
 def main(config):
     # 1. Load data: get questions as list
     print("Loading data...")
-    dataset = load_dataset(config)
+    dataset = load_dataset(
+        config
+    )  # returns OG question dataframe, and possibly voters and candidates if no canton filtering is applied
 
     # 2. Calculate Distance
     print(f"Initializing distance metric: {config.dist}...")
@@ -107,7 +109,11 @@ def main(config):
 
     # 3. Save Results
     print("Handling the results...")
-    sorted_results = save_results(df=results, config=config)  # without ID column
+    sorted_results = save_results(
+        df=results,
+        config=config,
+        important_params_list=calculator.important_params_list,
+    )  # without ID column
 
     # 4. Applying Damien's Method
     if config.data_choice != "fake":

@@ -36,12 +36,11 @@ class BaseDistanceCalculator(ABC):
                     "subset_n",
                     "filter_districts",
                 ]
-                + (additional_params or [])
                 + ["district"]
             )
             if config.filter_districts
             else []
-        )
+        ) + (additional_params or [])
 
         mode_str = "Asymmetric" if is_asymmetric else "Symmetric"
         metric_str = "Euclidean" if use_euclidean else "Cosine"

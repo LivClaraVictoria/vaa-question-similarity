@@ -93,6 +93,6 @@ def load_dataset(config) -> dict:
         if "voters" in data_map:
             data_map["voters"] = data_map["voters"].iloc[: config.subset_n]
 
-    print(data_map["voters"].iloc[:5, :5]) if "voters" in data_map else None
-    print(data_map["candidates"].iloc[:5, :5]) if "candidates" in data_map else None
+    # print(data_map["voters"].iloc[:5, :5]) if "voters" in data_map else None
+    # print(data_map["candidates"].iloc[:5, :5]) if "candidates" in data_map else None
     return data_map
