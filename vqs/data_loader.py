@@ -37,11 +37,13 @@ def load_dataset(config) -> dict:
         )  # type: ignore
 
         if config.load_voters:
+            print(f"Loading voters data with prefix '{v_prefix}'...")
             data_map["voters"] = SVDataFrame(
                 load_parquet_by_prefix(config.CLEANED_DIR, v_prefix),
                 term=int(config.data_year),
             )  # type: ignore
         if config.load_candidates:
+            print(f"Loading candidates data with prefix '{c_prefix}'...")
             data_map["candidates"] = SVDataFrame(
                 load_parquet_by_prefix(config.CLEANED_DIR, c_prefix),
                 term=int(config.data_year),

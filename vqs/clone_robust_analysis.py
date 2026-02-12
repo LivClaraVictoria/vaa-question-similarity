@@ -29,6 +29,11 @@ def save_reweighting_results(
     """
     df.sort_values(by="Weight", ascending=True, inplace=True)
 
+    # For quick test runs
+    if config.save_results is False:
+        print("No reweighting results will be saved.")
+        return df
+
     # Use the specific config path you mentioned
     method_dir = config.QU_WEIGHT_DIR / method_key
     method_dir.mkdir(parents=True, exist_ok=True)

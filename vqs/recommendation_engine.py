@@ -1,6 +1,6 @@
 import pandas as pd
 from dependencies import add_candidate_voting_recommendations
-from cache_management import CacheManager
+from vqs.cache_management import CacheManager
 
 
 class RecommendationEngine:

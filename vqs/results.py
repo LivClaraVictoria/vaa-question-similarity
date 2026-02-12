@@ -31,7 +31,10 @@ def save_results(df: pd.DataFrame, config) -> pd.DataFrame:
     Sorts similarities, and saves to CSV or parquet.
     Returns the DataFrame for further use if needed.
     """
-
+    # For quick test runs
+    if config.save_results is False:
+        print("No results will be saved.")
+        return df
     timestamp = datetime.now().strftime("%Y%m%d_%H%M")
 
     # 1. Sort data

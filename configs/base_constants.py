@@ -58,10 +58,10 @@ RAW_CAND_2019_PATH = DATA_2019_DIR / "smartvote_2019_candidates_NR.csv"
 RAW_VOTERS_2019_PATH = DATA_2019_DIR / "sv_Voter_1xNR_V1_0_ethz.csv"
 
 # cleaned data paths
-VOTERS_19_PREFIX = "df_voters19"
-VOTERS_PREFIX = "df_voters"
-CANDIDATES_19_PREFIX = "df_candidates19"
-CANDIDATES_PREFIX = "df_candidates"
+VOTERS_19_PREFIX = "df_voters19-"
+VOTERS_PREFIX = "df_voters-"
+CANDIDATES_19_PREFIX = "df_candidates19-"
+CANDIDATES_PREFIX = "df_candidates-"
 
 # questions
 QUESTIONS_2023_PATH = CLEANED_DIR / "df_questions.parquet"
@@ -144,10 +144,14 @@ load_voters = False  # false by default, set true for methods where you want to 
 load_candidates = False  # false by default, set true for methods where you want to look into correlation
 results_file_type = "csv"  # "parquet" for using voter dataset
 
+# For debug runs (set False for quick testing without saving)
+save_results = True
+
 # Canton Filtering
 filter_districts = False
 district = "ZH"  # e.g. "ZH", "BE", etc. (only relevant if filter_districts=True)
 
+# Subsetting
 subset_n = None  # for quick testing: set to an integer to subset the data, or None to use full data
 
 # Method Choice for clone robust weighting
