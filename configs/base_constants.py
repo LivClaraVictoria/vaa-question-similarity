@@ -135,6 +135,7 @@ DISTRICT2ID19 = {
 # --------------------------------------------------------------------------------------
 
 # --- GENERAL PARAMETERS ---
+# !!! only bools or strings !!!
 
 # Data source to use
 data_choice = "cleaned"  # Options: "fake", "cleaned", "raw"

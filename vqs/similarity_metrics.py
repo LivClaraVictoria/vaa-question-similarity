@@ -83,7 +83,9 @@ class BaseDistanceCalculator(ABC):
         # If not:
         # 2. Capture IDs and Text as a pair
         print("No cache found. Starting computation...")
-        questions = df["question_EN"].tolist()
+        questions = df.rename(columns=str.lower)[
+            "question_en"
+        ].tolist()  # 2023: question_EN, 2019: question_en
         question_ids = df["ID_question"].tolist()
 
         # Encode

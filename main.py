@@ -76,21 +76,15 @@ def apply_overrides(config, overrides):
             )
 
         # --- Type Inference ---
+        # Only bools or strings in config!
         # 1. Boolean
         if value_str.lower() == "true":
             val = True
         elif value_str.lower() == "false":
             val = False
-        # 2. Integer
+        # 2. String (only bools or strings in config)
         else:
-            # Try to convert to int, then float, finally keep as string
-            try:
-                val = int(value_str)
-            except ValueError:
-                try:
-                    val = float(value_str)
-                except ValueError:
-                    val = value_str  # it's a string
+            val = value_str  # it's a string
 
         # Update the SimpleNamespace config object
         setattr(config, key, val)

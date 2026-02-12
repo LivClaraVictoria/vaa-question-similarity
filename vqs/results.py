@@ -33,7 +33,7 @@ def save_results(df: pd.DataFrame, config) -> pd.DataFrame:
     """
     # For quick test runs
     if config.save_results is False:
-        print("No results will be saved.")
+        print("No question distance results will be saved.")
         return df
     timestamp = datetime.now().strftime("%Y%m%d_%H%M")
 

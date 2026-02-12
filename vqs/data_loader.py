@@ -62,6 +62,8 @@ def load_dataset(config) -> dict:
         and config.data_choice != "fake"
         and ("voters" in data_map or "candidates" in data_map)
     ):
+        print(f"Filtering voters and candidates for district: {config.district}...")
+
         cantonID_map = (
             config.DISTRICT2ID if config.data_year == "2023" else config.DISTRICT2ID19
         )
@@ -91,4 +93,6 @@ def load_dataset(config) -> dict:
         if "voters" in data_map:
             data_map["voters"] = data_map["voters"].iloc[: config.subset_n]
 
+    print(data_map["voters"].iloc[:5, :5]) if "voters" in data_map else None
+    print(data_map["candidates"].iloc[:5, :5]) if "candidates" in data_map else None
     return data_map
