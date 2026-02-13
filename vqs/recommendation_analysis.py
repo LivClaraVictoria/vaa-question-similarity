@@ -53,10 +53,9 @@ class RecommendationAnalyzer:
             "avg_candidate_changes": np.mean(candidate_changes),
             "max_candidate_changes": np.max(candidate_changes),
         }
-        self._print_and_save_stats(stats)
-        self._visualize_changes(df)
+        return stats
 
-    def _calculate_rank_metrics(self, df, base_cols, crw_cols, n):
+    def _calculate_rank_metrics(self, df, base_cols, crw_cols, stats, n):
         # Convert to numpy for speed
         base_matrix = df[base_cols].values
         crw_matrix = df[crw_cols].values
@@ -66,21 +65,29 @@ class RecommendationAnalyzer:
 
         # Percent of positions that stayed the same per voter
         # (Number of True values / Total columns)
-        stability_per_voter = matches.sum(axis=1) / n
+        stable_candidates_per_voter = matches.sum(axis=1)
 
-        # Percent of positions that changed per voter
-        df["pct_rank_change"] = (1.0 - stability_per_voter) * 100
+        # Percentage of positions that changed per voter
+        df["pct_rank_change"] = (n - stable_candidates_per_voter) / n * 100
 
         # Global stat: What % of voters had ANY rank change at all?
         # Note: If a candidate is swapped out, their rank changed.
         # If they just moved from 1 to 2, their rank also changed.
-        any_rank_change_voters = (df["pct_rank_change"] > 0).mean() * 100
-        avg_rank_change = df["pct_rank_change"].mean()
-
-        print(
-            f"Percentage of voters with any rank shuffle: {any_rank_change_voters:.2f}%"
-            f"\nAverage percentage of rank change per voter: {avg_rank_change:.2f}%"
+        stats.update(
+            {
+                "pct_voters_with_rank_change": (df["pct_rank_change"] > 0).mean() * 100,
+                "avg_pct_rank_change": df["pct_rank_change"].mean(),
+                "max_pct_rank_change": df["pct_rank_change"].max(),
+            }
         )
+
+        # print(
+        #     f"Percentage of voters with any rank shuffle: {any_rank_change_voters:.2f}%"
+        #     f"\nAverage percentage of rank change per voter: {avg_rank_change:.2f}%"
+        #     f"\nMax percentage of rank change for any voter: {max_rank_change:.2f}%"
+        # )
+
+        return stats
 
     def analyze(
         self, df_recommendations: pd.DataFrame, df_weights: pd.DataFrame
@@ -107,21 +114,37 @@ class RecommendationAnalyzer:
         print(f"Analyzing {n_recs} recommendation slots...")
 
         # 3. Compute Jaccard Similarity
-        self._calculate_jaccard(
+        stats: dict = self._calculate_jaccard(
             df=df, base_cols=base_match_cols, crw_cols=crw_match_cols, n=n_recs
         )
+
+        # 4. Compute Rank Stability Metrics
+        stats = self._calculate_rank_metrics(
+            df=df,
+            base_cols=base_match_cols,
+            crw_cols=crw_match_cols,
+            stats=stats,
+            n=n_recs,
+        )
+
+        # 5. Print and Save Stats
+        self._print_and_save_stats(stats)
+        self._visualize_changes(df)
 
         return df
 
     def _print_and_save_stats(self, stats):
         summary_line = (
-            f"\n--- Recommendation Change Analysis ---\n"
+            f"\n--- Recommendation Change Analysis Summary ---\n"
             f"Average Jaccard Similarity: {stats['avg_jaccard']:.4f}\n"
             f"Min Jaccard Similarity:     {stats['min_jaccard']:.4f}\n"
             f"Max Jaccard Similarity:     {stats['max_jaccard']:.4f}\n"
             f"Average Candidate Changes:  {stats['avg_candidate_changes']:.2f}\n"
             f"Max Candidate Changes:      {stats['max_candidate_changes']}\n"
             f"Voters with changed top recommendations:   {stats['pct_changed']:.2f}%\n"
+            f"Voters with any rank change:                {stats['pct_voters_with_rank_change']:.2f}%\n"
+            f"Average percentage of rank change per voter: {stats['avg_pct_rank_change']:.2f}%\n"
+            f"Max percentage of rank change for any voter: {stats['max_pct_rank_change']:.2f}%\n"
             f"--------------------------------------\n"
         )
         print(summary_line)

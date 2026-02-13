@@ -1,0 +1,76 @@
+ID_question,Weight,Question
+32283,0.7617230171857475,"Should the federal government spend more or less in the area of ""Agriculture""?"
+32288,0.7632308049729408,"Should the federal government spend more or less in the area of ""Development assistance""?"
+32287,0.763920721674934,"Should the federal government spend more or less in the area of ""National defence""?"
+32286,0.784321684032797,"Should the federal government spend more or less in the area of ""Public security""?"
+32284,0.7885187745238289,"Should the federal government spend more or less in the area of ""Public transport""?"
+32282,0.7915620529797794,"Should the federal government spend more or less in the area of ""Education and research""?"
+32281,0.8200478775768346,"Should the federal government spend more or less in the area of ""Social services""?"
+32285,0.8471386154183864,"Should the federal government spend more or less in the area of ""Road traffic (motorised individual transport)""?"
+32277,0.9557083324757277,"What is your position the following statement: ""It is best for a child, when one parent stays home full-time for childcare."""
+32278,0.9692775220508976,"What is your position the following statement: ""The ongoing digitalization offers significantly more opportunities than risks."""
+32268,0.9752893622650911,Should Switzerland terminate the Schengen agreement with the EU and reintroduce more security checks directly on the border? [BePart question]
+32276,0.9820477510240977,"What is your position the following statement: ""It is necessary for the State to balance out differences in income and wealth through redistribution""."
+32279,0.9848524466436838,"What is your position the following statement: ""Punishing criminals is more important than reintegrating them into society."""
+32262,0.9863947995570463,Are you in favour of lowering the voting age to 16?
+32214,0.9863947995570463,"Do you support an increase in the retirement age (e.g., to 67)?"
+32274,0.9943419993580079,"What is your position the following statement: ""Someone who is not guilty, has nothing to fear from state security measures."""
+32272,0.9951271734448511,Should Switzerland terminate the Bilateral Agreements with the EU and seek a free trade agreement without the free movement of persons?
+32275,0.998248422059843,"What is your position the following statement: ""In the long term, everyone benefits from a free market economy in the long term."""
+32280,1.0148621915500053,"What is your position the following statement: ""Stronger environmental protection is necessary, even if its application limits economic growth."""
+32215,1.0177057521074264,Should the federal government allocate more funding for health insurance premium subsidies?
+32222,1.0177057521074264,"Should insured persons contribute more to health care costs (e.g., increase the minimum deductible)?"
+32273,1.0178957032265248,Should Switzerland return to a strict interpretation of neutrality (renounce economic sanctions to a large extent)? [BePart question]
+32257,1.0202229120403297,"Are you in favour of government measures to make the use of electronic devices more sustainable (e.g., right to repair, extension of warranty period, minimum guaranteed period for software updates)? [BePart question]"
+32256,1.0202229120403297,Would you support a ban on single-use plastic and non-recyclable plastics? [BePart question]
+32221,1.0214580961828612,Are you in favor of the introduction of a tax on foods containing sugar (sugar tax)?
+32251,1.0214580961828612,Would you be in favor of the introduction of increasing electricity tariffs when consumption is higher (progressive electricity tariffs)?
+32216,1.0218809841564964,"For married couples, the pension is currently limited to 150% of the maximum individual AHV pension (capping). Should this limit be eliminated?"
+32237,1.0218809841564964,Should married couples be taxed separately (individual taxation)? [BePart question]
+32249,1.0315632360107527,Should the construction of new nuclear power plants in Switzerland be allowed again?
+32246,1.0315632360107527,Should Switzerland ban the registration of new passenger cars with internal combustion engines starting in 2035?
+32243,1.0318009001091175,"Should housing construction regulations be relaxed (e.g., noise protection, occupancy rates)?"
+32228,1.0318009001091175,"Should the conditions for naturalization be relaxed (e.g., shorter residence period)?"
+32241,1.0318680843277648,"Do you support stricter regulations for the financial sector (e.g., stricter capital requirements for banks, ban on bonuses)?"
+32244,1.0318680843277648,Are you in favor of stricter controls on equal pay for women and men?
+32236,1.0339062326052482,Do you support tax cuts at the federal level over the next four years?
+32240,1.0339062326052482,"Are you in favor of introducing a minimum wage of CHF 4,000 for all full-time employees?"
+32270,1.03417680251995,Should Switzerland strive for a comprehensive free trade agreement (including agriculture) with the USA?
+32229,1.0351401520490298,Should more qualified workers from non-EU/EFTA countries be allowed to work in Switzerland (increase third-country quota)?
+32231,1.0351401520490298,Should foreign nationals who have lived in Switzerland for at least ten years be granted the right to vote and stand for election at the municipal level?
+32252,1.0356755294890132,"Are you in favor of further relaxing the protection regulations for large predators (lynx, wolf, bear)?"
+32254,1.0356755294890132,Are you in favour of stricter animal welfare regulations for livestock (e.g. permanent access to outdoor areas)?
+32239,1.0359551584631175,Should the differences between cantons with high and low financial capacity be further reduced through fiscal equalization?
+32238,1.0359551584631175,Would you support the introduction of a national inheritance tax on all inheritances over one million Swiss francs? [BePart question]
+32235,1.0359551584631175,Do you think it's right for same-sex couples to have the same rights as heterosexual couples in all areas?
+32224,1.0359551584631175,Should the federal government be given the authority to determine the hospital offering (national hospital planning with regard to locations and range of services)?
+32223,1.0359551584631175,Should the Federal Council's ability to restrict private and economic life in the event of a pandemic be more limited?
+32234,1.0359551584631175,"Should a third official gender be introduced alongside ""female"" and ""male""?"
+32232,1.0359551584631175,Should cannabis use be legalized? [BePart question]
+32242,1.0359551584631175,Should private households be free to choose their electricity supplier (complete liberalization of the electricity market)?
+32220,1.0359551584631175,Should compulsory vaccination of children be introduced based on the Swiss vaccination plan?
+32219,1.0359551584631175,Should the federal government provide more financial support for public housing construction? [BePart question]
+32218,1.0359551584631175,Should paid parental leave be increased beyond today's 14 weeks of maternity leave and two weeks of paternity leave? [BePart question]
+32217,1.0359551584631175,"As part of the reform of the BVG (occupational pension plan), pensions are to be reduced (lowering the minimum conversion rate from 6.8% to 6%). Are you in favor of this measure?"
+32230,1.0359551584631175,Do you support efforts to house asylum seekers in centers outside Europe during the asylum procedure?
+32233,1.0359551584631175,Would you be in favour of doctors being allowed to administer direct active euthanasia in Switzerland?
+32271,1.0359551584631175,Should Swiss companies be obliged to ensure that their subsidiaries and suppliers operating abroad comply with social and environmental standards?
+32245,1.0359551584631175,Should busy sections of highways be widened?
+32269,1.0359551584631175,Are you in favor of closer relations with the European Union (EU)?
+32253,1.0359551584631175,Should direct payments only be granted to farmers with proof of ecological performance?
+32255,1.0359551584631175,Should 30% of Switzerland's land area be dedicated to preserving biodiversity? [BePart question]
+32250,1.0359551584631175,Should the state guarantee a comprehensive public service offering also in rural regions?
+32248,1.0359551584631175,Do you think it's fair that environmental and landscape protection rules are being relaxed to allow for the development of renewable energy?
+32247,1.0359551584631175,"To achieve climate targets, should incentives and target agreements be relied on exclusively, rather than bans and restrictions?"
+32259,1.0359551584631175,Should the federal government be given additional powers in the area of digitization of government services in order to be able to impose binding directives and standards on the cantons?
+32260,1.0359551584631175,"Are you in favor of stronger regulation of the major Internet platforms (i.e., transparency rules on algorithms, increased liability for content, combating disinformation)?"
+32261,1.0359551584631175,"A popular initiative aims to reduce television and radio fees (CHF 200 per household, exemption for businesses). Do you support this initiative?"
+32226,1.0359551584631175,Should the federal government raise the requirements for the gymnasiale matura?
+32263,1.0359551584631175,Should it be possible to hold a referendum on federal spending above a certain amount (optional financial referendum)?
+32264,1.0359551584631175,"Are you in favor of expanding the army's target number of soldiers to at least 120,000?"
+32265,1.0359551584631175,Should the Swiss Armed Forces expand their cooperation with NATO?
+32266,1.0359551584631175,"Should the Federal Council be allowed to authorize other states to re-export Swiss weapons in cases of a war of aggression in violation of international law (e.g., the attack on Ukraine)? [BePart question]"
+32267,1.0359551584631175,Should automatic facial recognition be banned in public spaces?
+32225,1.0359551584631175,"According to the Swiss integrated schooling concept, children with learning difficulties or disabilities should be taught in regular classes. Do you approve of this concept?"
+32227,1.0359551584631175,"Should the state be more committed to equal educational opportunities (e.g., through subsidized remedial courses for students from low-income families)?"
+32258,1.0359551584631175,Should the Swiss mobile network be equipped throughout the country with the latest technology (currently 5G standard)?
