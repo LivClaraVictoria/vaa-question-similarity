@@ -57,7 +57,6 @@ class RecChangeAnalyzer:
 
     def analyze(self, df_recommendations, df_weights):
         """Performs analysis and saves with hash-based versioning."""
-        c
         data_hash = self.get_data_hash(df_weights)
         timestamp = time.strftime("%Y%m%d-%H%M")
 

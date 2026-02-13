@@ -136,6 +136,7 @@ def main(config):
         if config.load_voters and config.load_candidates:
             # 6. Calculate old and new recommendations
             print("Calculating recommendations and changes...")
+            c
             rec_engine = RecommendationEngine(
                 config=config, data_map=dataset
             )  # only uses candidates and voters df
