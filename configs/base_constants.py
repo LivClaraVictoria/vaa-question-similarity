@@ -44,8 +44,8 @@ DIST_RESULTS_DIR = RESULTS_DIR / "distance_metric"
 FAKE_RESULTS_DIR = DIST_RESULTS_DIR / "fake_results"
 CLEANED_RESULTS_DIR = DIST_RESULTS_DIR / "cleaned_results"
 QU_WEIGHT_DIR = RESULTS_DIR / "question_weighting_results"
-P1_WEIGHT_DIR = QU_WEIGHT_DIR / "paper_1"
-P2_WEIGHT_DIR = QU_WEIGHT_DIR / "paper_2"
+P1_WEIGHT_DIR = QU_WEIGHT_DIR / "P1"
+P2_WEIGHT_DIR = QU_WEIGHT_DIR / "P2"
 RECOMMENDATION_RESULTS_DIR = RESULTS_DIR / "recommendation_results"
 
 

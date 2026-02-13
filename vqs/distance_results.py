@@ -30,7 +30,8 @@ def get_hash(config, params_list) -> str:
     Generates a short hash based on important parameters from the config.
     This ensures that results are uniquely identified by their key settings.
     """
-    params = {k: getattr(config, k) for k in params_list}
+    sorted_params_list = sorted(params_list)
+    params = {k: getattr(config, k) for k in sorted_params_list}
     param_str = json.dumps(params, sort_keys=True, default=str)
     full_hash = hashlib.md5(param_str.encode()).hexdigest()
     short_hash = full_hash[:8]
@@ -76,10 +77,7 @@ def save_results(
         print(f"    -> {existing_files[0].name}")
         return df  # Exit early
 
-    # If no existing file, proceed to save
-    timestamp = datetime.now().strftime("%m%d_%H%M")
-
-    # 5. Visualize data
+    # 5. Visualize fake data
     if config.data_choice == "fake":
         df = df[
             df["Cat1"] == "ANCHOR"
@@ -94,6 +92,7 @@ def save_results(
         )
 
     # 6. Generate filename
+    timestamp = datetime.now().strftime("%m%d_%H%M")
     filename = get_experiment_filename(config=config, timestamp=timestamp, hash=hash)
     file_path = output_dir / filename
 

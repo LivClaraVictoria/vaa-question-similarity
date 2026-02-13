@@ -17,6 +17,18 @@ class CloneRobustReweighter:
         self.weighting_func = getattr(
             config, "weighting_func", self._class_uniform_weighting_fn
         )
+        self.important_params_list = (
+            [
+                "dist",
+                "data_year",
+                "alpha",
+                "crw_paper_choice",
+            ]
+            + ["E5_instruction"]
+            if config.E5_instruction is not None
+            else []
+        )
+        # Add more if needed for hashing
 
     def _class_uniform_weighting_fn(self, adj: np.ndarray) -> np.ndarray:
         adj_rows = [tuple(row) for row in adj]

@@ -130,7 +130,9 @@ def main(config):
         # 5. Save and Display Reweighted Results
         print("Saving reweighted results...")
         save_reweighting_results(
-            df=reweighted_results, config=config, method_key=config.crw_paper_choice
+            df=reweighted_results,
+            config=config,
+            important_params_list=reweighter.important_params_list,
         )
 
         if config.load_voters and config.load_candidates:

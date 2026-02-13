@@ -1,5 +1,7 @@
 import pandas as pd
 import matplotlib
+import json
+import hashlib
 
 matplotlib.use("Agg")  # for cluster
 import matplotlib.pyplot as plt
@@ -9,36 +11,63 @@ from datetime import datetime
 from pathlib import Path
 
 
-def get_weighting_filename(config, method_key: str) -> str:
+def get_hash(config, params_list) -> str:
     """
-    Generates a descriptive filename with a high-precision timestamp.
+    Generates a short hash based on important parameters from the config.
+    Identical to the version used in distance results.
     """
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    year = getattr(config, "data_year", "fake")
-    dist_method = config.dist
-    alpha = getattr(config, "alpha", "N-A")
+    sorted_params_list = sorted(params_list)
+    params = {k: getattr(config, k) for k in sorted_params_list}
+    param_str = json.dumps(params, sort_keys=True, default=str)
+    full_hash = hashlib.md5(param_str.encode()).hexdigest()
+    return full_hash[:8]
 
-    return f"{method_key}_{dist_method}_a{alpha}_{year}_{timestamp}.{config.results_file_type}"
+
+# TODO: filename format
+def get_filename(config, timestamp, hash) -> str:
+    """
+    Generates a descriptive but unique filename.
+    Format: {dist}_{data}_{canton}_{MMDD_HHMM}_{short_hash}.{ext}
+    """
+    dist_method = config.dist
+    alpha = config.alpha
+    data_year = config.data_year if config.data_choice != "fake" else "fake"
+    paper_choice = config.crw_paper_choice
+
+    filename = f"{data_year}_{dist_method}_a{alpha}_{paper_choice}__{timestamp}_{hash}.{config.results_file_type}"
+    return filename
 
 
 def save_reweighting_results(
-    df: pd.DataFrame, config, method_key: str = "CRW"
+    df: pd.DataFrame, config, important_params_list: list[str]
 ) -> pd.DataFrame:
     """
     Saves question weights and generates a distribution plot.
     """
+    # 1. Sort by weight
     df.sort_values(by="Weight", ascending=True, inplace=True)
 
-    # For quick test runs
+    # 2. For quick test runs
     if config.save_results is False:
         print("No reweighting results will be saved.")
         return df
 
-    # Use the specific config path you mentioned
-    method_dir = config.QU_WEIGHT_DIR / method_key
+    # 3. Define output directory
+    method_dir = config.QU_WEIGHT_DIR / config.crw_paper_choice
     method_dir.mkdir(parents=True, exist_ok=True)
 
-    filename = get_weighting_filename(config, method_key)
+    # 4. Get hash and check for existing file to avoid duplicates
+    hash = get_hash(config=config, params_list=important_params_list)
+    existing_files = list(method_dir.glob(f"*{hash}.*"))
+
+    if existing_files:
+        print(f"--- [Skip Save] Result with hash {hash} already exists: ---")
+        print(f"    -> {existing_files[0].name}")
+        return df
+
+    # 5. If no existing file, save new results
+    timestamp = datetime.now().strftime("%m%d_%H%M")
+    filename = get_filename(config=config, timestamp=timestamp, hash=hash)
     file_path = method_dir / filename
 
     if config.results_file_type == "parquet":
@@ -46,14 +75,14 @@ def save_reweighting_results(
     else:
         df.to_csv(file_path, index=False)
 
-    _plot_weight_distribution(df, config, method_key, file_path)
+    _plot_weight_distribution(df, config, config.crw_paper_choice, file_path)
 
     print(f"\n[WeightManager] Success! Results saved to: {file_path}")
     return df
 
 
 def _plot_weight_distribution(
-    df: pd.DataFrame, config, method_key: str, file_path: Path
+    df: pd.DataFrame, config, p_choice: str, file_path: Path
 ) -> None:
     """
     VAA-optimized plot with greedy margins and right-aligned wrapped text.
@@ -90,7 +119,7 @@ def _plot_weight_distribution(
     plt.subplots_adjust(left=0.40, top=0.92, right=0.95, bottom=0.05)
 
     plt.suptitle(
-        f"{method_key} Weights: {config.dist} (alpha={getattr(config, 'alpha', 'N/A')})",
+        f"{p_choice} Weights: {config.dist} (alpha={getattr(config, 'alpha', 'N/A')})",
         fontsize=16,
     )
     plt.xlabel("Weight (Lower = More Redundant)")
