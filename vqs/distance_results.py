@@ -12,24 +12,29 @@ from pathlib import Path  # If you use Path objects for directories
 from datetime import datetime  # If you use datetime for timestamps
 
 
-def get_experiment_filename(config, timestamp, params_list) -> str:
+def get_experiment_filename(config, timestamp, hash) -> str:
     """
     Generates a descriptive but unique filename.
-    Format: {dist}_{data}_{short_hash}_{DD_HHMM}.{ext}
+    Format: {dist}_{data}_{canton}_{MMDD_HHMM}_{short_hash}.{ext}
     """
-    # 1. Build the parameter dict for hashing (Same logic as CacheManager)
-    params = {k: getattr(config, k) for k in params_list}
-    param_str = json.dumps(params, sort_keys=True, default=str)
-    full_hash = hashlib.md5(param_str.encode()).hexdigest()
-    short_hash = full_hash[:8]
-
-    # 3. Construct readable parts
     dist_method = config.dist
     data_year = config.data_year if config.data_choice != "fake" else "fake"
     canton = config.district if config.filter_districts else "all"
 
-    filename = f"{dist_method}_{data_year}_{canton}_{short_hash}_{timestamp}.{config.results_file_type}"
+    filename = f"{dist_method}_{data_year}_{canton}_{timestamp}_{hash}.{config.results_file_type}"
     return filename
+
+
+def get_hash(config, params_list) -> str:
+    """
+    Generates a short hash based on important parameters from the config.
+    This ensures that results are uniquely identified by their key settings.
+    """
+    params = {k: getattr(config, k) for k in params_list}
+    param_str = json.dumps(params, sort_keys=True, default=str)
+    full_hash = hashlib.md5(param_str.encode()).hexdigest()
+    short_hash = full_hash[:8]
+    return short_hash
 
 
 def save_results(
@@ -43,7 +48,6 @@ def save_results(
     if config.save_results is False:
         print("No question distance results will be saved.")
         return df
-    timestamp = datetime.now().strftime("%m%d_%H%M")
 
     # 1. Sort data
     if "Similarity" in df.columns:
@@ -53,7 +57,10 @@ def save_results(
     else:
         print("⚠️WARNING⚠️: No 'Similarity' or 'Distance' column found for sorting.")
 
-    # 2. Define data paths
+    # 2. Define Hash
+    hash = get_hash(config, important_params_list)
+
+    # 3. Define output directory
     output_dir = (
         config.FAKE_RESULTS_DIR
         if config.data_choice == "fake"
@@ -61,7 +68,18 @@ def save_results(
     )
     output_dir.mkdir(exist_ok=True)
 
-    # 3. Visualize data
+    # 4. Check for existing file to avoid duplicates
+    existing_files = list(output_dir.glob(f"*{hash}.*"))
+
+    if existing_files:
+        print(f"--- [Skip Save] Result with hash {hash} already exists: ---")
+        print(f"    -> {existing_files[0].name}")
+        return df  # Exit early
+
+    # If no existing file, proceed to save
+    timestamp = datetime.now().strftime("%m%d_%H%M")
+
+    # 5. Visualize data
     if config.data_choice == "fake":
         df = df[
             df["Cat1"] == "ANCHOR"
@@ -71,14 +89,12 @@ def save_results(
             df,
             config=config,
             timestamp=timestamp,
-            params_list=important_params_list,
+            hash=hash,
             output_dir=output_dir,
         )
 
-    # Generate filename
-    filename = get_experiment_filename(
-        config=config, timestamp=timestamp, params_list=important_params_list
-    )
+    # 6. Generate filename
+    filename = get_experiment_filename(config=config, timestamp=timestamp, hash=hash)
     file_path = output_dir / filename
 
     # Save results
@@ -92,9 +108,7 @@ def save_results(
     return df
 
 
-def _plot_fake_results(
-    df: pd.DataFrame, config, timestamp, params_list, output_dir
-) -> None:
+def _plot_fake_results(df: pd.DataFrame, config, timestamp, hash, output_dir) -> None:
     # 1. Setup Plot Dimensions
     plt.figure(figsize=(12, 9))
     sns.set_theme(style="whitegrid")
@@ -175,7 +189,7 @@ def _plot_fake_results(
 
     # 7. Save Plot
     # Uses the same timestamp/name as the CSV for easy matching
-    plot_filename = get_experiment_filename(config, timestamp, params_list).replace(
+    plot_filename = get_experiment_filename(config, timestamp, hash).replace(
         f".{config.results_file_type}", "_visualization.png"
     )
 
