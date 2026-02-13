@@ -77,7 +77,10 @@ def save_results(
         print(f"    -> {existing_files[0].name}")
         return df  # Exit early
 
-    # 5. Visualize fake data
+    # 5. Generate global timestamp for filename
+    timestamp = datetime.now().strftime("%m%d_%H%M")
+
+    # 6. Visualize fake data
     if config.data_choice == "fake":
         df = df[
             df["Cat1"] == "ANCHOR"
@@ -91,12 +94,11 @@ def save_results(
             output_dir=output_dir,
         )
 
-    # 6. Generate filename
-    timestamp = datetime.now().strftime("%m%d_%H%M")
+    # 7. Generate filename
     filename = get_experiment_filename(config=config, timestamp=timestamp, hash=hash)
     file_path = output_dir / filename
 
-    # Save results
+    # 8. Save results
     if config.results_file_type == "parquet":
         df.to_parquet(file_path, index=False)
     else:  # default to csv
