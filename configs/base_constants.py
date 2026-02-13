@@ -40,11 +40,13 @@ DATA_2019_DIR = RAW_DIR / "smart vote data"
 
 # experiment results path
 RESULTS_DIR = PROJECT_ROOT / "experiment_results"
-FAKE_RESULTS_DIR = RESULTS_DIR / "fake_results"
-CLEANED_RESULTS_DIR = RESULTS_DIR / "cleaned_results"
+DIST_RESULTS_DIR = RESULTS_DIR / "distance_metric"
+FAKE_RESULTS_DIR = DIST_RESULTS_DIR / "fake_results"
+CLEANED_RESULTS_DIR = DIST_RESULTS_DIR / "cleaned_results"
 QU_WEIGHT_DIR = RESULTS_DIR / "question_weighting_results"
 P1_WEIGHT_DIR = QU_WEIGHT_DIR / "paper_1"
 P2_WEIGHT_DIR = QU_WEIGHT_DIR / "paper_2"
+RECOMMENDATION_RESULTS_DIR = RESULTS_DIR / "recommendation_results"
 
 
 # Specific data files

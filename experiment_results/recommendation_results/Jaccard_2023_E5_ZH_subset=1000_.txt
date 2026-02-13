@@ -1,0 +1,9 @@
+
+--- Recommendation Change Analysis ---
+Average Jaccard Similarity: 0.9172
+Min Jaccard Similarity:     0.7143
+Max Jaccard Similarity:     1.0000
+Average Candidate Changes:  1.58
+Max Candidate Changes:      6
+Voters with changed top recommendations:   88.10%
+--------------------------------------
