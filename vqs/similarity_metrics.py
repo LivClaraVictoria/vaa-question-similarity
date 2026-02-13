@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import Any
 from itertools import combinations
+from networkx import config
 import pandas as pd
 from sentence_transformers import SentenceTransformer  # type: ignore
 from vqs.cache_management import CacheManager
@@ -28,19 +29,22 @@ class BaseDistanceCalculator(ABC):
 
         # Parameters that affect the distance calculation and should be included in the cache hash
         # TODO: include use_euclidean
-        self.important_params_list = (
-            (
-                [
-                    "data_year",
-                    "dist",
-                    "subset_n",
-                    "filter_districts",
-                ]
-                + ["district"]
-            )
-            if config.filter_districts
-            else []
-        ) + (additional_params or [])
+        self.important_params_list = [
+            "data_year",
+            "dist",
+            "subset_n",
+            "filter_districts",
+        ]
+
+        if config.filter_districts:
+            self.important_params_list.append("district")
+
+        if additional_params:
+            self.important_params_list.extend(additional_params)
+
+        print(
+            f"Initialized {model_name} Calculator. Important parameters for caching: {self.important_params_list}"
+        )
 
         mode_str = "Asymmetric" if is_asymmetric else "Symmetric"
         metric_str = "Euclidean" if use_euclidean else "Cosine"

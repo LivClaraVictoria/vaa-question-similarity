@@ -15,16 +15,23 @@ class RecommendationEngine:
         self.df_voters[weight_cols] = 1
 
         # Parameters that affect the recommendationcalculations and should be included in the cache hash
-        self.important_params_list = [
-            "data_year",
-            "dist",
-            "alpha",
-            "crw_paper_choice",
-            "rec_dist_method",
-            "n_recommendations",
-            "subset_n",
-            "filter_districts",
-        ] + (["district"] if config.filter_districts else [])
+        self.important_params_list = (
+            [
+                "data_year",
+                "dist",
+                "alpha",
+                "crw_paper_choice",
+                "rec_dist_method",
+                "n_recommendations",
+                "subset_n",
+                "filter_districts",
+            ]
+            + (["district"] if config.filter_districts else [])
+            + (["E5_instruction"] if config.E5_instruction is not None else [])
+        )
+        print(
+            f"Initialized RecommendationEngine with important parameters: {self.important_params_list}"
+        )
 
     def run_baseline(self):
         """Calculates recommendations using standard 1.0/2.0 weights."""
@@ -88,7 +95,7 @@ class RecommendationEngine:
             "SUCCESS: Baseline and CRW recommendations calculated and combined into a single DataFrame."
         )
 
-        print(recommendation_df.head(5))
+        print(recommendation_df.iloc[:5, :5])
         # 4. Save to Cache & return
         cacher.save(recommendation_df)
         return recommendation_df
