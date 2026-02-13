@@ -10,9 +10,9 @@ class RecommendationEngine:
         self.df_candidates = data_map["candidates"].copy()
         self.df_voters = data_map["voters"].copy()
 
-        # Set all weights to 1 (comment out if you want original weighting)
-        weight_cols = self.df_voters.filter(like="weight_").columns
-        self.df_voters[weight_cols] = 1
+        if not self.config.use_OG_weights:
+            weight_cols = self.df_voters.filter(like="weight_").columns
+            self.df_voters[weight_cols] = 1
 
         # Parameters that affect the recommendationcalculations and should be included in the cache hash
         self.important_params_list = (
@@ -25,6 +25,7 @@ class RecommendationEngine:
                 "n_recommendations",
                 "subset_n",
                 "filter_districts",
+                "use_OG_weights",
             ]
             + (["district"] if config.filter_districts else [])
             + (["E5_instruction"] if config.E5_instruction is not None else [])
@@ -34,7 +35,7 @@ class RecommendationEngine:
         )
 
     def run_baseline(self):
-        """Calculates recommendations using standard 1.0/2.0 weights."""
+        """Calculates recommendations using the original distance weights (no CRW)."""
         print(f"Running Baseline ({self.dist_method})...")
         # possibly need to set progress_bar=False to run on cluster
         return add_candidate_voting_recommendations(

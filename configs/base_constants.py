@@ -69,8 +69,8 @@ QUESTIONS_2019_PATH = CLEANED_DIR / "df_questions19.parquet"
 
 # cache paths
 CACHE_DIR = PROJECT_ROOT / "cache"
-RECOMMENDATION_CACHE_DIR = CACHE_DIR / "recommendations"
 DISTANCE_CACHE_DIR = CACHE_DIR / "distance_calculations"
+RECOMMENDATION_CACHE_DIR = CACHE_DIR / "recommendations"
 
 
 # District to ID mapping (taken from constants.py in Dustin's repo)
@@ -183,6 +183,9 @@ apply_clone_robust_weighting = True  # whether to apply the method at all
 alpha: float = 0.6  # locality parameter, r in [0, alpha]
 
 # --- RECOMMENDATION ENGINE PARAMETERS ---
+# whether to use original weights (1.0 or 2.0) or set all weights to 1.0.
+use_OG_weights = False
+
 n_recommendations: int | None = None
 # how many candidates to recommend per voter. If none, n_recommendation reflects size of list of that canton.
 """

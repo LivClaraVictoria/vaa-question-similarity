@@ -11,7 +11,7 @@ from vqs.distance_results import save_results
 from vqs.clone_robust_weighting import CloneRobustReweighter
 from vqs.clone_robust_analysis import save_reweighting_results
 from vqs.recommendation_engine import RecommendationEngine
-from vqs.rec_change_analysis import RecChangeAnalyzer
+from vqs.recommendation_analysis import RecChangeAnalyzer
 
 
 def load_config(config_path: Path):
@@ -136,7 +136,6 @@ def main(config):
         if config.load_voters and config.load_candidates:
             # 6. Calculate old and new recommendations
             print("Calculating recommendations and changes...")
-            c
             rec_engine = RecommendationEngine(
                 config=config, data_map=dataset
             )  # only uses candidates and voters df
