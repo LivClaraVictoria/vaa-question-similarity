@@ -65,7 +65,7 @@ def load_dataset(config) -> dict:
         print(f"Filtering voters and candidates for district: {config.district}...")
 
         cantonID_map = (
-            config.DISTRICT2ID if config.data_year == "2023" else config.DISTRICT2ID19
+            config.DISTRICT2ID if config.data_year == 2023 else config.DISTRICT2ID19
         )
         target_id = cantonID_map.get(config.district)
 
@@ -78,7 +78,7 @@ def load_dataset(config) -> dict:
             if "voters" in data_map:
                 df = data_map["voters"]
                 voter_district_col = (
-                    "districtID" if config.data_year == "2023" else "ID_district"
+                    "districtID" if config.data_year == 2023 else "ID_district"
                 )
                 data_map["voters"] = df[df[voter_district_col] == target_id].copy()
 

@@ -135,7 +135,6 @@ DISTRICT2ID19 = {
 # --------------------------------------------------------------------------------------
 
 # --- GENERAL PARAMETERS ---
-# !!! only bools or strings !!!
 
 # Data source to use
 data_choice = "cleaned"  # Options: "fake", "cleaned", "raw"
@@ -184,7 +183,9 @@ apply_clone_robust_weighting = True  # whether to apply the method at all
 alpha: float = 0.6  # locality parameter, r in [0, alpha]
 
 # --- RECOMMENDATION ENGINE PARAMETERS ---
-n_recommendations = 10  # how many candidates to recommend per voter
+n_recommendations: int | None = (
+    None  # how many candidates to recommend per voter. If none, n_recommendation reflects size of list of that canton.
+)
 
 """
 (see https://gitlab.ethz.ch/disco-students/fs24/recommender-systems-for-politics or the submodule for more info)

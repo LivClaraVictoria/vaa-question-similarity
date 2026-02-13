@@ -19,7 +19,7 @@ def test_cache_functionality():
     test_cache_dir = project_root / "test_cache_folder"
 
     config = SimpleNamespace(
-        data_year="2023",
+        data_year=2023,
         dist="SBERT",
         alpha=0.6,
         data_choice="cleaned",

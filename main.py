@@ -76,13 +76,12 @@ def apply_overrides(config, overrides):
             )
 
         # --- Type Inference ---
-        # Only bools or strings in config!
         # 1. Boolean
         if value_str.lower() == "true":
             val = True
         elif value_str.lower() == "false":
             val = False
-        # 2. String (only bools or strings in config)
+        # 2. int, float, or string
         else:
             # Try to convert to int, then float, finally keep as string
             try:

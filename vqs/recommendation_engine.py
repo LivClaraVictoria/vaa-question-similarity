@@ -69,7 +69,7 @@ class RecommendationEngine:
 
     def evaluate_pipeline(self, df_weights) -> pd.DataFrame:
         # 1. Initialize Cache
-        prefix = f"recs_{self.config.data_year}_{self.config.dist}_a{self.config.alpha}"
+        prefix = f"recs_{self.config.data_year}_{self.config.dist}_a{self.config.alpha}_subset={self.config.subset_n}"
         prefix += f"_{self.config.district}" if self.config.filter_districts else ""
         cacher = CacheManager(
             config=self.config,
@@ -95,7 +95,6 @@ class RecommendationEngine:
             "SUCCESS: Baseline and CRW recommendations calculated and combined into a single DataFrame."
         )
 
-        print(recommendation_df.iloc[:5, :5])
         # 4. Save to Cache & return
         cacher.save(recommendation_df)
         return recommendation_df
