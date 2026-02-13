@@ -6,9 +6,13 @@ from vqs.cache_management import CacheManager
 class RecommendationEngine:
     def __init__(self, config, data_map):
         self.config = config
-        self.df_voters = data_map["voters"]
-        self.df_candidates = data_map["candidates"]
         self.dist_method = config.rec_dist_method
+        self.df_candidates = data_map["candidates"].copy()
+        self.df_voters = data_map["voters"].copy()
+
+        # Set all weights to 1 (comment out if you want original weighting)
+        weight_cols = self.df_voters.filter(like="weight_").columns
+        self.df_voters[weight_cols] = 1
 
         # Parameters that affect the recommendationcalculations and should be included in the cache hash
         self.important_params_list = [
@@ -57,9 +61,9 @@ class RecommendationEngine:
         )
 
     def evaluate_pipeline(self, df_weights) -> pd.DataFrame:
-        C
         # 1. Initialize Cache
-        prefix = f"recs_{self.config.data_year}_{self.config.rec_dist_method}"
+        prefix = f"recs_{self.config.data_year}_{self.config.dist}_a{self.config.alpha}"
+        prefix += f"_{self.config.district}" if self.config.filter_districts else ""
         cacher = CacheManager(
             config=self.config,
             cache_dir=self.config.RECOMMENDATION_CACHE_DIR,
@@ -84,6 +88,7 @@ class RecommendationEngine:
             "SUCCESS: Baseline and CRW recommendations calculated and combined into a single DataFrame."
         )
 
+        print(recommendation_df.head(5))
         # 4. Save to Cache & return
         cacher.save(recommendation_df)
         return recommendation_df

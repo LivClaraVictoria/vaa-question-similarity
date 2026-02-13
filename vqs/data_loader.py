@@ -20,11 +20,11 @@ def load_parquet_by_prefix(directory, prefix):
 def load_dataset(config) -> dict:
     data_map = {}  # voters, candidates, questions
     if config.data_choice == "cleaned":
-        if config.data_year == "2023":
+        if config.data_year == 2023:
             q_path = config.QUESTIONS_2023_PATH
             v_prefix = config.VOTERS_PREFIX
             c_prefix = config.CANDIDATES_PREFIX
-        elif config.data_year == "2019":
+        elif config.data_year == 2019:
             q_path = config.QUESTIONS_2019_PATH
             v_prefix = config.VOTERS_19_PREFIX
             c_prefix = config.CANDIDATES_19_PREFIX
@@ -89,7 +89,7 @@ def load_dataset(config) -> dict:
 
     # Optional subsetting for quick testing
     if hasattr(config, "subset_n") and config.subset_n is not None:
-        print(f"!!! SANITY CHECK MODE: Subsetting data to {config.subset_n} rows !!!")
+        print(f"!!! Subsetting data to {config.subset_n} rows !!!")
         if "voters" in data_map:
             data_map["voters"] = data_map["voters"].iloc[: config.subset_n]
 

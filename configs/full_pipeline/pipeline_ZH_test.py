@@ -4,7 +4,6 @@ from configs.base_constants import *
 
 load_candidates = True
 load_voters = True
-results_file_type = "parquet"
 
 data_choice = "cleaned"
 dist = "E5"

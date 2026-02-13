@@ -84,7 +84,14 @@ def apply_overrides(config, overrides):
             val = False
         # 2. String (only bools or strings in config)
         else:
-            val = value_str  # it's a string
+            # Try to convert to int, then float, finally keep as string
+            try:
+                val = int(value_str)
+            except ValueError:
+                try:
+                    val = float(value_str)
+                except ValueError:
+                    val = value_str  # it's a string
 
         # Update the SimpleNamespace config object
         setattr(config, key, val)
@@ -130,7 +137,9 @@ def main(config):
         if config.load_voters and config.load_candidates:
             # 6. Calculate old and new recommendations
             print("Calculating recommendations and changes...")
-            rec_engine = RecommendationEngine(config=config, data_map=dataset)
+            rec_engine = RecommendationEngine(
+                config=config, data_map=dataset
+            )  # only uses candidates and voters df
             recommendation_df = rec_engine.evaluate_pipeline(
                 df_weights=reweighted_results
             )
