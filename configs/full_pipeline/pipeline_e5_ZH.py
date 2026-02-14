@@ -9,3 +9,5 @@ data_choice = "cleaned"
 dist = "E5"
 filter_districts = True
 district = "ZH"
+
+rank_all = True

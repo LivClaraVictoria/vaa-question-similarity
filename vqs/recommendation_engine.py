@@ -17,6 +17,11 @@ class RecommendationEngine:
             weight_cols = self.df_voters.filter(like="weight_").columns
             self.df_voters[weight_cols] = 1
 
+        if self.config.n_recommendations == "all":
+            self.n_recs = len(self.df_candidates)
+        else:
+            self.n_recs = self.config.n_recommendations
+
         # Parameters that affect the recommendationcalculations and should be included in the cache hash
         self.important_params_list = (
             [
@@ -45,7 +50,7 @@ class RecommendationEngine:
             df_voters=self.df_voters.copy(),
             df_candidates=self.df_candidates,
             distance_method=self.dist_method,
-            n_recommendations=self.config.n_recommendations,
+            n_recommendations=self.n_recs,  # type: ignore
         )
 
     def run_crw(self, df_weights):
@@ -68,13 +73,14 @@ class RecommendationEngine:
             df_voters=voters_modified,
             df_candidates=self.df_candidates,
             distance_method=self.dist_method,
-            n_recommendations=self.config.n_recommendations,
+            n_recommendations=self.n_recs,  # type: ignore
         )
 
     def evaluate_pipeline(self, df_weights) -> pd.DataFrame:
         # 1. Check for existing results in cache to avoid redundant computation
         prefix = f"recs_{self.config.data_year}_{self.config.dist}_a{self.config.alpha}_subset={self.config.subset_n}"
         prefix += f"_{self.config.district}" if self.config.filter_districts else ""
+        prefix += f"_top{self.n_recs}" if self.n_recs is not None else ""
 
         rm = ResultManager(
             config=self.config,

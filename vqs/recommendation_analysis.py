@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from pathlib import Path
 
+from vqs.result_management import ResultManager
+
 """
 Important Assumption: 
 We assume equal number of recommendations for all voters. Achieved either by setting n_recommendations to a fixed number, or by filtering voters and candidates by a certain canton. 
@@ -12,18 +14,85 @@ Any NaN values will raise an error.
 
 
 class RecommendationAnalyzer:
-    def __init__(self, config):
+    def __init__(self, config, important_params_list):
         self.config = config
         self.method = config.rec_dist_method
-        # Output directory for plots/stats
+        self.important_params_list = important_params_list
         self.output_dir = Path(config.RECOMMENDATION_RESULTS_DIR)
         self.output_dir.mkdir(parents=True, exist_ok=True)
 
-    def _calculate_jaccard(self, df, base_cols, crw_cols, n):
-        print(f"Calculating Jaccard for {len(df)} voters...")
+        print(
+            f"Initialized RecommendationAnalyzer with important parameters: {self.important_params_list}"
+        )
 
-        # 2. Efficient Vectorized calculation (Fast for 500k rows)
-        # We convert to numpy values once and iterate using zip
+    def analyze(
+        self, df_recommendations: pd.DataFrame, df_weights: pd.DataFrame
+    ) -> pd.DataFrame:
+        df = df_recommendations.copy()
+
+        # 0. Check for cached files
+        prefix = self._get_prefix()
+        rm = ResultManager(
+            config=self.config,
+            dir=self.output_dir,
+            params_list=self.important_params_list,
+            prefix=prefix,
+        )
+
+        exists = rm.exists()
+        if exists:
+            print(f"--- [Skip Save] Result with hash {rm.hash} already exists: ---")
+            print(f"    -> {exists.name}")
+            # TODO: print summary stats from text file if exists
+            return df
+
+        # If no existing file, proceed with analysis
+        print("No cached analysis found. Running new analysis...")
+        # 1. Identify match columns
+        # These look like _matchID_1_L2_sv ... _matchID_36_L2_sv
+        base_match_cols = [
+            c
+            for c in df.columns
+            if c.startswith("_matchID_") and c.endswith(f"_{self.method}")
+        ]
+        crw_match_cols = [
+            c
+            for c in df.columns
+            if c.startswith("CRW__matchID_") and c.endswith(f"_{self.method}")
+        ]
+
+        # 2. Safety checks
+        self._safety_checks(df=df, base_cols=base_match_cols, crw_cols=crw_match_cols)
+        n_recs = len(base_match_cols)
+
+        print(f"Analyzing {n_recs} recommendation slots for {len(df)} voters...")
+
+        # 3. Compute Metrics
+        stats = {}
+        df, stats = self._calculate_jaccard(
+            df=df,
+            base_cols=base_match_cols,
+            crw_cols=crw_match_cols,
+            n=n_recs,
+            stats=stats,
+        )
+
+        df, stats = self._calculate_rank_metrics(
+            df=df,
+            base_cols=base_match_cols,
+            crw_cols=crw_match_cols,
+            stats=stats,
+            n=n_recs,
+        )
+
+        # 5. Print and Save Stats
+        self._print_and_save_stats(stats)
+        self._visualize_changes(df)
+
+        return df
+
+    def _calculate_jaccard(self, df, base_cols, crw_cols, n, stats):
+        # convert to numpy values once and iterate using zip
         base_matrix = df[base_cols].values
         crw_matrix = df[crw_cols].values
 
@@ -45,15 +114,17 @@ class RecommendationAnalyzer:
         df["candidate_changes"] = candidate_changes
 
         # 3. Calculate and Save Stats
-        stats = {
-            "avg_jaccard": np.mean(jaccard_scores),
-            "min_jaccard": np.min(jaccard_scores),
-            "max_jaccard": np.max(jaccard_scores),
-            "pct_changed": (np.array(jaccard_scores) < 1.0).sum() / len(df) * 100,
-            "avg_candidate_changes": np.mean(candidate_changes),
-            "max_candidate_changes": np.max(candidate_changes),
-        }
-        return stats
+        stats.update(
+            {
+                "avg_jaccard": np.mean(jaccard_scores),
+                "min_jaccard": np.min(jaccard_scores),
+                "max_jaccard": np.max(jaccard_scores),
+                "pct_changed": (np.array(jaccard_scores) < 1.0).sum() / len(df) * 100,
+                "avg_candidate_changes": np.mean(candidate_changes),
+                "max_candidate_changes": np.max(candidate_changes),
+            }
+        )
+        return df, stats
 
     def _calculate_rank_metrics(self, df, base_cols, crw_cols, stats, n):
         # Convert to numpy for speed
@@ -87,51 +158,7 @@ class RecommendationAnalyzer:
         #     f"\nMax percentage of rank change for any voter: {max_rank_change:.2f}%"
         # )
 
-        return stats
-
-    def analyze(
-        self, df_recommendations: pd.DataFrame, df_weights: pd.DataFrame
-    ) -> pd.DataFrame:
-        df = df_recommendations.copy()
-
-        # 1. Identify match columns
-        # These look like _matchID_1_L2_sv ... _matchID_36_L2_sv
-        base_match_cols = [
-            c
-            for c in df.columns
-            if c.startswith("_matchID_") and c.endswith(f"_{self.method}")
-        ]
-        crw_match_cols = [
-            c
-            for c in df.columns
-            if c.startswith("CRW__matchID_") and c.endswith(f"_{self.method}")
-        ]
-
-        # 2. Safety checks
-        self._safety_checks(df=df, base_cols=base_match_cols, crw_cols=crw_match_cols)
-        n_recs = len(base_match_cols)
-
-        print(f"Analyzing {n_recs} recommendation slots...")
-
-        # 3. Compute Jaccard Similarity
-        stats: dict = self._calculate_jaccard(
-            df=df, base_cols=base_match_cols, crw_cols=crw_match_cols, n=n_recs
-        )
-
-        # 4. Compute Rank Stability Metrics
-        stats = self._calculate_rank_metrics(
-            df=df,
-            base_cols=base_match_cols,
-            crw_cols=crw_match_cols,
-            stats=stats,
-            n=n_recs,
-        )
-
-        # 5. Print and Save Stats
-        self._print_and_save_stats(stats)
-        self._visualize_changes(df)
-
-        return df
+        return df, stats
 
     def _print_and_save_stats(self, stats):
         summary_line = (
@@ -190,3 +217,15 @@ class RecommendationAnalyzer:
             raise ValueError(
                 "⚠️ Critical Error: NaN values detected in recommendation matches."
             )
+
+    def _get_prefix(self):
+        dist = self.config.dist
+        data_year = self.config.data_year
+        district = self.config.district if self.config.filter_districts else "all"
+        alpha = self.config.alpha
+        paper = self.config.crw_paper_choice
+        subset = self.config.subset_n if self.config.subset_n is not None else None
+        prefix = f"analysis_{data_year}_{dist}_a{alpha}_{paper}_canton={district}"
+        if subset is not None:
+            prefix += f"_subset={subset}"
+        return prefix

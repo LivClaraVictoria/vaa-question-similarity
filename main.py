@@ -147,10 +147,14 @@ def main(config):
 
             # 7. Analyze and save recommendation changes
             print("Analyzing recommendation changes...")
-            analyzer = RecommendationAnalyzer(config)
+            analyzer = RecommendationAnalyzer(
+                config=config,
+                important_params_list=rec_engine.important_params_list,
+            )
             # This will check for cache (use crw weights to calculate the hash), calculate if needed, save CSV, and save the plot
             analyzed_df = analyzer.analyze(
-                df_recommendations=recommendation_df, df_weights=reweighted_results
+                df_recommendations=recommendation_df,
+                df_weights=reweighted_results,
             )
 
 
