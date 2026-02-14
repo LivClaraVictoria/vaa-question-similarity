@@ -19,6 +19,7 @@ class RecommendationEngine:
 
         if self.config.n_recommendations == "all":
             self.n_recs = len(self.df_candidates)
+            print(f"Ranking all {self.n_recs} candidates for each voter.")
         else:
             self.n_recs = self.config.n_recommendations
 

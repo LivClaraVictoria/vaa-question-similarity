@@ -10,4 +10,4 @@ dist = "E5"
 filter_districts = True
 district = "ZH"
 
-rank_all = True
+n_recommendations = "all"

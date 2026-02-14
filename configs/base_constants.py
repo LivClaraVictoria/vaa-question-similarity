@@ -188,11 +188,8 @@ alpha: float = 0.6  # locality parameter, r in [0, alpha]
 # whether to use original weights (1.0 or 2.0) or set all weights to 1.0.
 use_OG_weights = False
 
-rank_all: bool = (
-    False  # if True, recommendation_engine will calculate rankings for all available candidates. Note that n_recommendations trumps this if it's set to an integer
-)
-n_recommendations: int | None = None
-# how many candidates to recommend per voter. If none, n_recommendation reflects size of list of that canton.
+n_recommendations: str | int | None = None  # Options: "all", int or None.
+# how many candidates to recommend per voter. If None, n_recommendation reflects size of list of that canton.
 
 # Seats per canton 2019:
 #     "ZH": 35,
