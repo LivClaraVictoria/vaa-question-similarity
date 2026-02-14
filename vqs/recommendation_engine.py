@@ -75,7 +75,7 @@ class RecommendationEngine:
 
         rm = ResultManager(
             config=self.config,
-            dir=self.config.RECOMMENDATION_RESULTS_DIR,
+            dir=self.config.RECOMMENDATION_CACHE_DIR,
             params_list=self.important_params_list,
             prefix=prefix,
         )
