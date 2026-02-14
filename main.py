@@ -1,6 +1,8 @@
+from time import time
 import pandas as pd
 from pathlib import Path
 import sys
+import time
 import argparse
 import importlib.util
 from types import SimpleNamespace
@@ -108,13 +110,13 @@ def main(config):
     )  # returns OG question dataframe, and possibly voters and candidates if no canton filtering is applied
 
     # 2. Calculate Distance
-    print(f"Initializing distance metric: {config.dist}...")
+    print(f"\nInitializing distance metric: {config.dist}...")
     calculator: BaseDistanceCalculator = get_calculator(config)
     print("Calculating distances...")
     results: pd.DataFrame = calculator.calculate_distance(dataset, config)
 
     # 3. Save Results
-    print("Handling the results...")
+    print("\nHandling the results...")
     sorted_results = save_results(
         df=results,
         config=config,
@@ -123,12 +125,12 @@ def main(config):
 
     # 4. Applying Damien's Method
     if config.data_choice != "fake":
-        print("Applying Clone-Robust Weighting...")
+        print("\nApplying Clone-Robust Weighting...")
         reweighter = CloneRobustReweighter(config)
         reweighted_results = reweighter.reweight(results)
 
         # 5. Save and Display Reweighted Results
-        print("Saving reweighted results...")
+        print("\nSaving reweighted results...")
         save_reweighting_results(
             df=reweighted_results,
             config=config,
@@ -137,7 +139,7 @@ def main(config):
 
         if config.load_voters and config.load_candidates:
             # 6. Calculate old and new recommendations
-            print("Calculating recommendations and changes...")
+            print("\nCalculating recommendations and changes...")
             rec_engine = RecommendationEngine(
                 config=config, data_map=dataset
             )  # only uses candidates and voters df
@@ -145,8 +147,12 @@ def main(config):
                 df_weights=reweighted_results
             )
 
+            # Fixes zombie thread issue with terminal output
+            sys.stdout.flush()
+            time.sleep(2)
+
             # 7. Analyze and save recommendation changes
-            print("Analyzing recommendation changes...")
+            print("\nAnalyzing recommendation changes...")
             analyzer = RecommendationAnalyzer(
                 config=config,
                 important_params_list=rec_engine.important_params_list,

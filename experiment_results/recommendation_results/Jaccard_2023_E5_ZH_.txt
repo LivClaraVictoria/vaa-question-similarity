@@ -1,12 +1,12 @@
 
 --- Recommendation Change Analysis Summary 2023 E5 Canton:ZH ---
-Average Jaccard Similarity: 0.9260
-Min Jaccard Similarity:     0.4694
+Average Jaccard Similarity: 1.0000
+Min Jaccard Similarity:     1.0000
 Max Jaccard Similarity:     1.0000
-Average Candidate Changes:  1.42
-Max Candidate Changes:      13
-Voters with different candidates in top recommendations:   82.03%
-Voters with any rank change:                99.87%
-Average percentage of rank change per voter: 66.89%
-Max percentage of rank change for any voter: 100.00%
+Average Candidate Changes:  0.00
+Max Candidate Changes:      0
+Voters with different candidates in top recommendations:   0.00%
+Voters with any rank change:                100.00%
+Average percentage of rank change per voter: 90.13%
+Max percentage of rank change for any voter: 98.83%
 --------------------------------------
