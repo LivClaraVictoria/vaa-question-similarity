@@ -5,6 +5,7 @@ from networkx import config
 import pandas as pd
 from sentence_transformers import SentenceTransformer  # type: ignore
 from vqs.cache_management import CacheManager
+from vqs.result_management import ResultManager
 
 
 # --- 1. Base Class ---
@@ -28,17 +29,13 @@ class BaseDistanceCalculator(ABC):
         self.value_name: str = "Distance" if self.use_euclidean else "Similarity"
 
         # Parameters that affect the distance calculation and should be included in the cache hash
-        # TODO: include use_euclidean
+        # Assumption: all districts have same questionnaire
         self.important_params_list = [
             "data_year",
             "dist",
-            "subset_n",
-            "filter_districts",
         ]
 
-        if config.filter_districts:
-            self.important_params_list.append("district")
-
+        # Handle additional parameters for hashing (e.g. E5 instruction)
         if additional_params:
             self.important_params_list.extend(additional_params)
 
@@ -70,22 +67,22 @@ class BaseDistanceCalculator(ABC):
 
     def _calculate_real_topology(self, df: pd.DataFrame) -> pd.DataFrame:
 
-        # 1. Check if cached results exist
+        # 1. Check for cached files
         prefix = f"dist_{self.config.data_year}_{self.config.dist}"
-        cacher = CacheManager(
+        rm = ResultManager(
             config=self.config,
-            cache_dir=self.config.DISTANCE_CACHE_DIR,
+            dir=self.config.DISTANCE_CACHE_DIR,
             prefix=prefix,
             params_list=self.important_params_list,
         )
 
-        cached_df = cacher.load_if_exists()
+        cached_df = rm.load()
         if cached_df is not None:
             return cached_df
 
-        # If not:
-        # 2. Capture IDs and Text as a pair
-        print("No cache found. Starting computation...")
+        # 2. If no cache, proceed with calculation
+        print("No cache found. Starting distance computation...")
+
         questions = df.rename(columns=str.lower)[
             "question_en"
         ].tolist()  # 2023: question_EN, 2019: question_en
@@ -106,7 +103,7 @@ class BaseDistanceCalculator(ABC):
         )  # TODO: double check asymmetric case
         results = []
 
-        # 2. Extract with IDs
+        # Extract with IDs
         if self.is_asymmetric:
             for i in range(len(questions)):
                 for j in range(len(questions)):
@@ -144,7 +141,7 @@ class BaseDistanceCalculator(ABC):
                     }
                 )
         results_df = pd.DataFrame(results)
-        cacher.save(results_df)
+        rm.save(results_df)
         return results_df
 
     def _calculate_anchor_topology(self, df: pd.DataFrame) -> pd.DataFrame:

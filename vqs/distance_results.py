@@ -11,31 +11,19 @@ import traceback  # For printing detailed error logs
 from pathlib import Path  # If you use Path objects for directories
 from datetime import datetime  # If you use datetime for timestamps
 
+from vqs.result_management import ResultManager
 
-def get_experiment_filename(config, timestamp, hash) -> str:
+
+def get_prefix(config) -> str:
     """
     Generates a descriptive but unique filename.
-    Format: {dist}_{data}_{canton}_{MMDD_HHMM}_{short_hash}.{ext}
+    Final Format: {dist}_{data}_{canton}_{MMDD_HHMM}_{short_hash}.{ext}
     """
     dist_method = config.dist
     data_year = config.data_year if config.data_choice != "fake" else "fake"
-    canton = config.district if config.filter_districts else "all"
 
-    filename = f"{dist_method}_{data_year}_{canton}_{timestamp}_{hash}.{config.results_file_type}"
+    filename = f"{dist_method}_{data_year}"
     return filename
-
-
-def get_hash(config, params_list) -> str:
-    """
-    Generates a short hash based on important parameters from the config.
-    This ensures that results are uniquely identified by their key settings.
-    """
-    sorted_params_list = sorted(params_list)
-    params = {k: getattr(config, k) for k in sorted_params_list}
-    param_str = json.dumps(params, sort_keys=True, default=str)
-    full_hash = hashlib.md5(param_str.encode()).hexdigest()
-    short_hash = full_hash[:8]
-    return short_hash
 
 
 def save_results(
@@ -45,10 +33,27 @@ def save_results(
     Sorts similarities, and saves to CSV or parquet.
     Returns the DataFrame for further use if needed.
     """
-    # 0. For quick test runs
-    if config.save_results is False:
-        print("No question distance results will be saved.")
-        return df
+    # 0. Check for already saved results to avoid duplicates
+    prefix = get_prefix(config)
+    output_dir = (
+        config.FAKE_RESULTS_DIR
+        if config.data_choice == "fake"
+        else config.CLEANED_RESULTS_DIR
+    )
+    output_dir.mkdir(exist_ok=True)
+
+    rm = ResultManager(
+        config=config,
+        dir=output_dir,
+        params_list=important_params_list,
+        prefix=prefix,
+    )
+
+    exists = rm.exists()
+    if exists:
+        print(f"--- [Skip Save] Result with hash {rm.hash} already exists: ---")
+        print(f"    -> {exists.name}")
+        return df  # Exit early
 
     # 1. Sort data
     if "Similarity" in df.columns:
@@ -58,27 +63,8 @@ def save_results(
     else:
         print("⚠️WARNING⚠️: No 'Similarity' or 'Distance' column found for sorting.")
 
-    # 2. Define Hash
-    hash = get_hash(config, important_params_list)
-
-    # 3. Define output directory
-    output_dir = (
-        config.FAKE_RESULTS_DIR
-        if config.data_choice == "fake"
-        else config.CLEANED_RESULTS_DIR
-    )
-    output_dir.mkdir(exist_ok=True)
-
-    # 4. Check for existing file to avoid duplicates
-    existing_files = list(output_dir.glob(f"*{hash}.*"))
-
-    if existing_files:
-        print(f"--- [Skip Save] Result with hash {hash} already exists: ---")
-        print(f"    -> {existing_files[0].name}")
-        return df  # Exit early
-
-    # 5. Generate global timestamp for filename
-    timestamp = datetime.now().strftime("%m%d_%H%M")
+    # 2. Save results using ResultManager
+    file_path = rm.save(df=df, readable=True)
 
     # 6. Visualize fake data
     if config.data_choice == "fake":
@@ -89,27 +75,13 @@ def save_results(
         _plot_fake_results(
             df,
             config=config,
-            timestamp=timestamp,
-            hash=hash,
-            output_dir=output_dir,
+            file_path=file_path,
         )
 
-    # 7. Generate filename
-    filename = get_experiment_filename(config=config, timestamp=timestamp, hash=hash)
-    file_path = output_dir / filename
-
-    # 8. Save results
-    if config.results_file_type == "parquet":
-        df.to_parquet(file_path, index=False)
-    else:  # default to csv
-        df.to_csv(file_path, index=False)
-
-    print(f"\nSuccess! Results saved to:")
-    print(f"  -> {file_path}")
     return df
 
 
-def _plot_fake_results(df: pd.DataFrame, config, timestamp, hash, output_dir) -> None:
+def _plot_fake_results(df: pd.DataFrame, config, file_path) -> None:
     # 1. Setup Plot Dimensions
     plt.figure(figsize=(12, 9))
     sns.set_theme(style="whitegrid")
@@ -189,12 +161,8 @@ def _plot_fake_results(df: pd.DataFrame, config, timestamp, hash, output_dir) ->
     plt.subplots_adjust(top=0.85)
 
     # 7. Save Plot
-    # Uses the same timestamp/name as the CSV for easy matching
-    plot_filename = get_experiment_filename(config, timestamp, hash).replace(
-        f".{config.results_file_type}", "_visualization.png"
-    )
-
-    plot_path = output_dir / plot_filename
+    # Use same base filename but with _visualization suffix for easy matching
+    plot_path = file_path.parent / (file_path.stem + "_visualization.png")
 
     plt.savefig(plot_path, dpi=300)
     plt.close()  # Close the memory buffer to prevent leaks

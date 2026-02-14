@@ -1,6 +1,6 @@
 import pandas as pd
 from dependencies import add_candidate_voting_recommendations
-from vqs.cache_management import CacheManager
+from vqs.result_management import ResultManager
 
 
 class RecommendationEngine:
@@ -69,23 +69,23 @@ class RecommendationEngine:
         )
 
     def evaluate_pipeline(self, df_weights) -> pd.DataFrame:
-        # 1. Initialize Cache
+        # 1. Check for existing results in cache to avoid redundant computation
         prefix = f"recs_{self.config.data_year}_{self.config.dist}_a{self.config.alpha}_subset={self.config.subset_n}"
         prefix += f"_{self.config.district}" if self.config.filter_districts else ""
-        cacher = CacheManager(
+
+        rm = ResultManager(
             config=self.config,
-            cache_dir=self.config.RECOMMENDATION_CACHE_DIR,
-            prefix=prefix,
+            dir=self.config.RECOMMENDATION_RESULTS_DIR,
             params_list=self.important_params_list,
+            prefix=prefix,
         )
 
-        # 2. Check Cache
-        cached_df = cacher.load_if_exists()
+        cached_df = rm.load()
         if cached_df is not None:
             return cached_df
 
-        # 3. Compute if no cache found
-        print("No cache found for recommendations. Computing pipeline...")
+        # 2. If no cache, run the full recommendation pipeline
+        print("No cache found. Starting recommendation computation...")
         baseline_recs_df: pd.DataFrame = self.run_baseline()  # type: ignore
         crw_recs_df: pd.DataFrame = self.run_crw(df_weights)  # type: ignore
 
@@ -97,5 +97,5 @@ class RecommendationEngine:
         )
 
         # 4. Save to Cache & return
-        cacher.save(recommendation_df)
+        rm.save(df=recommendation_df)
         return recommendation_df

@@ -10,6 +10,8 @@ import textwrap
 from datetime import datetime
 from pathlib import Path
 
+from vqs.result_management import ResultManager
+
 
 def get_hash(config, params_list) -> str:
     """
@@ -24,17 +26,17 @@ def get_hash(config, params_list) -> str:
 
 
 # TODO: filename format
-def get_filename(config, timestamp, hash) -> str:
+def get_prefix(config) -> str:
     """
     Generates a descriptive but unique filename.
-    Format: {dist}_{data}_{canton}_{MMDD_HHMM}_{short_hash}.{ext}
+    Final Format: {dist}_{data}_{MMDD_HHMM}_{short_hash}.{ext}
     """
     dist_method = config.dist
     alpha = config.alpha
     data_year = config.data_year if config.data_choice != "fake" else "fake"
     paper_choice = config.crw_paper_choice
 
-    filename = f"{data_year}_{dist_method}_a{alpha}_{paper_choice}__{timestamp}_{hash}.{config.results_file_type}"
+    filename = f"{data_year}_{dist_method}_a{alpha}_{paper_choice}"
     return filename
 
 
@@ -44,40 +46,28 @@ def save_reweighting_results(
     """
     Saves question weights and generates a distribution plot.
     """
+
     # 1. Sort by weight
     df.sort_values(by="Weight", ascending=True, inplace=True)
 
-    # 2. For quick test runs
-    if config.save_results is False:
-        print("No reweighting results will be saved.")
-        return df
-
-    # 3. Define output directory
+    # 2. Check for cached files
     method_dir = config.QU_WEIGHT_DIR / config.crw_paper_choice
     method_dir.mkdir(parents=True, exist_ok=True)
+    prefix = get_prefix(config)
+    rm = ResultManager(config, method_dir, important_params_list, prefix=prefix)
 
-    # 4. Get hash and check for existing file to avoid duplicates
-    hash = get_hash(config=config, params_list=important_params_list)
-    existing_files = list(method_dir.glob(f"*{hash}.*"))
-
-    if existing_files:
-        print(f"--- [Skip Save] Result with hash {hash} already exists: ---")
-        print(f"    -> {existing_files[0].name}")
+    exists = rm.exists()
+    if exists:
+        print(f"--- [Skip Save] Result with hash {rm.hash} already exists: ---")
+        print(f"    -> {exists.name}")
         return df
 
-    # 5. If no existing file, save new results
-    timestamp = datetime.now().strftime("%m%d_%H%M")
-    filename = get_filename(config=config, timestamp=timestamp, hash=hash)
-    file_path = method_dir / filename
+    # 3. If no existing file, save new results
 
-    if config.results_file_type == "parquet":
-        df.to_parquet(file_path, index=False)
-    else:
-        df.to_csv(file_path, index=False)
+    file_path = rm.save(df=df, readable=True)
 
-    _plot_weight_distribution(df, config, config.crw_paper_choice, file_path)
+    _plot_weight_distribution(df, config, config.crw_paper_choice, file_path)  # type: ignore
 
-    print(f"\n[WeightManager] Success! Results saved to: {file_path}")
     return df
 
 
@@ -124,6 +114,6 @@ def _plot_weight_distribution(
     )
     plt.xlabel("Weight (Lower = More Redundant)")
 
-    plot_path = file_path.with_suffix(".png")
+    plot_path = file_path.parent / (file_path.stem + "_plot.png")
     plt.savefig(plot_path, dpi=300)
     plt.close()
