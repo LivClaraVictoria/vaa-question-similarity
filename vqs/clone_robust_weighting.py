@@ -28,6 +28,10 @@ class CloneRobustReweighter:
             if config.E5_instruction is not None
             else []
         )
+
+        print(
+            f"Initialized CloneRobustReweighter with alpha={self.alpha} and important parameters: {self.important_params_list}"
+        )
         # Add more if needed for hashing
 
     def _class_uniform_weighting_fn(self, adj: np.ndarray) -> np.ndarray:

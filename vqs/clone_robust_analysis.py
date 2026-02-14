@@ -66,7 +66,8 @@ def save_reweighting_results(
 
     file_path = rm.save(df=df, readable=True)
 
-    _plot_weight_distribution(df, config, config.crw_paper_choice, file_path)  # type: ignore
+    if file_path is not None:
+        _plot_weight_distribution(df, config, config.crw_paper_choice, file_path)
 
     return df
 
