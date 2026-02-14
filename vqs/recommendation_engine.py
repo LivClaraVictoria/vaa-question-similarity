@@ -11,6 +11,9 @@ class RecommendationEngine:
         self.df_voters = data_map["voters"].copy()
 
         if not self.config.use_OG_weights:
+            print(
+                "Setting all question weights to 1.0 (ignoring original distance weights)..."
+            )
             weight_cols = self.df_voters.filter(like="weight_").columns
             self.df_voters[weight_cols] = 1
 

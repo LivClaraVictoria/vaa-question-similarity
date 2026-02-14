@@ -1,7 +1,6 @@
 from abc import ABC, abstractmethod
 from typing import Any
 from itertools import combinations
-from networkx import config
 import pandas as pd
 from sentence_transformers import SentenceTransformer  # type: ignore
 from vqs.cache_management import CacheManager

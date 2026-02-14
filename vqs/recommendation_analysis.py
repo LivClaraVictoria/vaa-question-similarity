@@ -135,7 +135,7 @@ class RecommendationAnalyzer:
 
     def _print_and_save_stats(self, stats):
         summary_line = (
-            f"\n--- Recommendation Change Analysis Summary {self.config.data_year} {self.config.dist} ---\n"
+            f"\n--- Recommendation Change Analysis Summary {self.config.data_year} {self.config.dist} Canton:{self.config.district if self.config.filter_districts else 'all'} ---\n"
             f"Average Jaccard Similarity: {stats['avg_jaccard']:.4f}\n"
             f"Min Jaccard Similarity:     {stats['min_jaccard']:.4f}\n"
             f"Max Jaccard Similarity:     {stats['max_jaccard']:.4f}\n"
