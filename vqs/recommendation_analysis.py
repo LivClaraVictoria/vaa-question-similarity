@@ -135,13 +135,13 @@ class RecommendationAnalyzer:
 
     def _print_and_save_stats(self, stats):
         summary_line = (
-            f"\n--- Recommendation Change Analysis Summary ---\n"
+            f"\n--- Recommendation Change Analysis Summary {self.config.data_year} {self.config.dist} ---\n"
             f"Average Jaccard Similarity: {stats['avg_jaccard']:.4f}\n"
             f"Min Jaccard Similarity:     {stats['min_jaccard']:.4f}\n"
             f"Max Jaccard Similarity:     {stats['max_jaccard']:.4f}\n"
             f"Average Candidate Changes:  {stats['avg_candidate_changes']:.2f}\n"
             f"Max Candidate Changes:      {stats['max_candidate_changes']}\n"
-            f"Voters with changed top recommendations:   {stats['pct_changed']:.2f}%\n"
+            f"Voters with different candidates in top recommendations:   {stats['pct_changed']:.2f}%\n"
             f"Voters with any rank change:                {stats['pct_voters_with_rank_change']:.2f}%\n"
             f"Average percentage of rank change per voter: {stats['avg_pct_rank_change']:.2f}%\n"
             f"Max percentage of rank change for any voter: {stats['max_pct_rank_change']:.2f}%\n"

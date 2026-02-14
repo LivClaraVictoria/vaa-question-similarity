@@ -1,0 +1,12 @@
+
+--- Recommendation Change Analysis Summary 2019 E5 ---
+Average Jaccard Similarity: 0.9165
+Min Jaccard Similarity:     0.7500
+Max Jaccard Similarity:     1.0000
+Average Candidate Changes:  1.55
+Max Candidate Changes:      5
+Voters with different candidates in top recommendations:   88.90%
+Voters with any rank change:                100.00%
+Average percentage of rank change per voter: 71.43%
+Max percentage of rank change for any voter: 97.14%
+--------------------------------------
