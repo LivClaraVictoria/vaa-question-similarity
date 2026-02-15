@@ -77,6 +77,10 @@ def apply_overrides(config, overrides):
                 f"Warning: New config key '{key}' is being added (was not in config file)."
             )
 
+        # Keep track of overrides for caching purposes
+        safe_value = value_str.replace("/", "_").replace("\\", "_")
+        config.overrides.append(f"{key}~{safe_value}")
+
         # --- Type Inference ---
         # 1. Boolean
         if value_str.lower() == "true":

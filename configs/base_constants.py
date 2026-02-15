@@ -159,6 +159,9 @@ subset_n = None  # for quick testing: set to an integer to subset the data, or N
 # Method Choice for clone robust weighting
 crw_paper_choice = "P2"  # Options: "P1", "P2"
 
+# Keep track of CLI overrides
+overrides: list = []
+
 
 # --- DISTANCE/SIMILARITY PARAMETERS ---
 # Distance/similarity metric to use
