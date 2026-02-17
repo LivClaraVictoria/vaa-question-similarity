@@ -91,18 +91,23 @@ def _generate_stats(df, config, method) -> str:
         crw_cols=crw_match_cols,
         n=n_jaccard,
     )
-    pct_rank_change = _calculate_rank_metrics(
+    rank_stats = _calculate_rank_metrics(
         df=df, base_cols=base_match_cols, crw_cols=crw_match_cols
     )
 
     summary_str = (
-        f"\n--- Sanity Check Summary ---\n"
-        f"Evaluating top {n_jaccard} candidates for Jaccard, full {total_candidates} for Rank Changes.\n"
-        f"Average Jaccard Similarity:    {np.mean(jaccard_scores):.4f}\n"
-        f"Min Jaccard Similarity:        {np.min(jaccard_scores):.4f}\n"
-        f"Average Candidate Changes:     {np.mean(candidate_changes):.2f}\n"
-        f"Voters with rank change:       {(pct_rank_change > 0).mean() * 100:.2f}%\n"
-        f"Average rank change per voter: {pct_rank_change.mean():.2f}%\n"
+        f"\n--- Stats Summary {config.data_year}---\n"
+        f"Scope: Evaluating top {n_jaccard} recommendations for Set Similarity, and all {total_candidates} slots for Rank Stability.\n\n"
+        f"Set Similarity (Top {n_jaccard}):\n"
+        f"  - Average Jaccard Similarity:       {np.mean(jaccard_scores):.4f} (1.0 = identical sets)\n"
+        f"  - Minimum Jaccard Similarity:       {np.min(jaccard_scores):.4f}\n"
+        f"  - Avg. Candidates Swapped In/Out:   {np.mean(candidate_changes):.2f} candidates per voter\n"
+        f"  - Max Candidates Swapped In/Out:    {np.max(candidate_changes)} candidates\n\n"
+        f"Rank Stability (All {total_candidates}):\n"
+        f"  - Voters w/ at least 1 rank change: {rank_stats['voters_with_change']:.2f}%\n"
+        f"  - Avg. candidates changed per voter:{rank_stats['avg_changed_cands']:>6.2f} candidates ({rank_stats['avg_pct_list_changed']:.2f}% of list)\n"
+        f"  - Avg. positions a candidate moved: {rank_stats['avg_shift']:>6.2f} ranks\n"
+        f"  - Max positions a candidate moved:  {rank_stats['max_shift']:>6} ranks\n"
         f"----------------------------\n"
     )
     return summary_str
@@ -165,11 +170,43 @@ def _calculate_rank_metrics(df, base_cols, crw_cols):
     crw_matrix = df[crw_cols].values
     n_total = len(base_cols)
 
+    # 1. Broad list changes (How many candidates shifted at all?)
     matches = base_matrix == crw_matrix
     stable_candidates_per_voter = matches.sum(axis=1)
-    pct_rank_change = (n_total - stable_candidates_per_voter) / n_total * 100
+    changed_candidates_per_voter = n_total - stable_candidates_per_voter
 
-    return pct_rank_change
+    # 2. Specific rank shifts (How far did they move?)
+    total_shifts = 0
+    shift_count = 0
+    max_shift = 0
+
+    for b, c in zip(base_matrix, crw_matrix):
+        # Strip NaNs for safety
+        b_clean = b[~pd.isna(b)]
+        c_clean = c[~pd.isna(c)]
+
+        # Map Candidate ID -> Rank Index in the CRW list
+        c_ranks = {val: idx for idx, val in enumerate(c_clean)}
+
+        # Compare to their Rank Index in the baseline list
+        for idx, val in enumerate(b_clean):
+            if val in c_ranks:
+                shift = abs(idx - c_ranks[val])
+                total_shifts += shift
+                shift_count += 1
+                if shift > max_shift:
+                    max_shift = shift
+
+    avg_shift = (total_shifts / shift_count) if shift_count > 0 else 0
+
+    # Package stats into a dictionary for clean extraction
+    return {
+        "voters_with_change": (changed_candidates_per_voter > 0).mean() * 100,
+        "avg_changed_cands": changed_candidates_per_voter.mean(),
+        "avg_pct_list_changed": (changed_candidates_per_voter / n_total * 100).mean(),
+        "avg_shift": avg_shift,
+        "max_shift": max_shift,
+    }
 
 
 """ 
