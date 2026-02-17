@@ -92,7 +92,7 @@ class RecommendationEngine:
 
         cached_df = rm.load()
         if cached_df is not None:
-            return cached_df
+            return cached_df  # type: ignore
 
         # 2. If no cache, run the full recommendation pipeline
         print("No cache found. Starting recommendation computation...")
@@ -107,5 +107,5 @@ class RecommendationEngine:
         )
 
         # 4. Save to Cache & return
-        rm.save(df=recommendation_df)
+        rm.save(data=recommendation_df)
         return recommendation_df

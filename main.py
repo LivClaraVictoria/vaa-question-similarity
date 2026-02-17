@@ -13,7 +13,7 @@ from vqs.distance_results import save_results
 from vqs.clone_robust_weighting import CloneRobustReweighter
 from vqs.clone_robust_analysis import save_reweighting_results
 from vqs.recommendation_engine import RecommendationEngine
-from vqs.recommendation_analysis import RecommendationAnalyzer
+from vqs.recommendation_saver import save_recommendation_results
 
 
 def load_config(config_path: Path):
@@ -155,16 +155,12 @@ def main(config):
             sys.stdout.flush()
             time.sleep(2)
 
-            # 7. Analyze and save recommendation changes
-            print("\nAnalyzing recommendation changes...")
-            analyzer = RecommendationAnalyzer(
+            # 7. Save Recommendation Changes and print summary stats
+            print("\nSaving recommendation changes...")
+            save_recommendation_results(
+                df=recommendation_df,
                 config=config,
                 important_params_list=rec_engine.important_params_list,
-            )
-            # This will check for cache (use crw weights to calculate the hash), calculate if needed, save CSV, and save the plot
-            analyzed_df = analyzer.analyze(
-                df_recommendations=recommendation_df,
-                df_weights=reweighted_results,
             )
 
 

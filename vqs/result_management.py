@@ -25,6 +25,8 @@ class ResultManager:
 
     def get_path(self, readable=False, extension=None) -> Path:
         ext = extension or self.config.results_file_type
+        if ext.startswith("."):  # skips leading dot if provided
+            ext = ext[1:]
 
         if readable:
             # For experiment_results: readable names + hash
@@ -36,29 +38,59 @@ class ResultManager:
 
         return self.output_dir / name
 
-    def exists(self) -> Path | None:
-        """Checks if a file with this hash already exists in the directory."""
-        matches = list(self.output_dir.glob(f"*{self.hash}.*"))
+    def exists(self, extension=None) -> Path | None:
+        """Checks if a file with this hash and specific extension exists."""
+        ext = extension or getattr(self.config, "results_file_type", "*")
+        if ext.startswith("."):
+            ext = ext[1:]
+
+        matches = list(self.output_dir.glob(f"*{self.hash}.{ext}"))
         return matches[0] if matches else None
 
-    def load(self):
-        path = self.exists()
+    def load(self, extension=None):
+        path = self.exists(extension=extension)
         if not path:
             return None
-        print(f"--- Cache Hit: Loading results from {path.name} ---")
-        return pd.read_parquet(path) if path.suffix == ".parquet" else pd.read_csv(path)
 
-    def save(self, df: pd.DataFrame, readable=False):
+        print(f"--- Cache Hit: Loading results from {path.name} ---")
+        ext = path.suffix.lower()
+
+        if ext == ".parquet":
+            return pd.read_parquet(path)
+        elif ext == ".csv":
+            return pd.read_csv(path)
+        elif ext in [".txt", ".md"]:
+            return path.read_text(encoding="utf-8")
+        elif ext == ".json":
+            with open(path, "r", encoding="utf-8") as f:
+                return json.load(f)
+        else:
+            return path  # For unsupported types, just return the path (ex matplotlib)
+
+    def save(self, data=None, readable=False, extension=None) -> Path | None:
         if getattr(self.config, "save_results", True) is False:
             print("---No results saved.---")
             return None
 
-        path = self.get_path(readable=readable)
-        if self.config.results_file_type == "parquet":
-            df.to_parquet(path, index=False)
-        else:
-            df.to_csv(path, index=False)
+        path = self.get_path(readable=readable, extension=extension)
+        ext = path.suffix.lower()
 
-        print(f"\nSuccess! Results saved to:")
+        if data is not None:
+            if isinstance(data, pd.DataFrame):
+                if ext == ".parquet":
+                    data.to_parquet(path, index=False)
+                else:
+                    data.to_csv(path, index=False)
+            elif ext in [".txt", ".md"] and isinstance(data, str):
+                path.write_text(data, encoding="utf-8")
+            elif ext == ".json":
+                with open(path, "w", encoding="utf-8") as f:
+                    json.dump(data, f, indent=4, default=str)
+            else:
+                print(
+                    f"Warning: ResultManager auto-save not configured for type {type(data)} to {ext}."
+                )
+
+        print(f"\nSuccess! File routed to:")
         print(f"  -> {path}")
         return path

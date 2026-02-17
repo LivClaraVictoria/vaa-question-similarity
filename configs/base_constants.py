@@ -75,6 +75,7 @@ DISTANCE_CACHE_DIR = CACHE_DIR / "distance_calculations"
 RECOMMENDATION_CACHE_DIR = CACHE_DIR / "recommendations"
 
 
+# --- FROM DUSTIN'S BASE CONSTANTS.PY ---
 # District to ID mapping (taken from constants.py in Dustin's repo)
 # Important note on column names in the dataframes: in 2023 dataset, it's "ID_district" for candidates, "districtID" for voters, in 2019 dataset, it's "ID_district" for both
 DISTRICT2ID = {
@@ -134,6 +135,63 @@ DISTRICT2ID19 = {
     "ZG": 26,
 }
 
+SEATS_PER_CANTON = {
+    "ZH": 36,
+    "BE": 24,
+    "LU": 9,
+    "UR": 1,
+    "SZ": 4,
+    "OW": 1,
+    "NW": 1,
+    "GL": 1,
+    "ZG": 3,
+    "FR": 7,
+    "SO": 6,
+    "BS": 4,
+    "BL": 7,
+    "SH": 2,
+    "AR": 1,
+    "AI": 1,
+    "SG": 12,
+    "GR": 5,
+    "AG": 16,
+    "TG": 6,
+    "TI": 8,
+    "VD": 19,
+    "VS": 8,
+    "NE": 4,
+    "GE": 12,
+    "JU": 2,
+}
+
+SEATS_PER_CANTON19 = {
+    "ZH": 35,
+    "BE": 24,
+    "LU": 9,
+    "UR": 1,
+    "SZ": 4,
+    "OW": 1,
+    "NW": 1,
+    "GL": 1,
+    "ZG": 3,
+    "FR": 7,
+    "SO": 6,
+    "BS": 5,
+    "BL": 7,
+    "SH": 2,
+    "AR": 1,
+    "AI": 1,
+    "SG": 12,
+    "GR": 5,
+    "AG": 16,
+    "TG": 6,
+    "TI": 8,
+    "VD": 19,
+    "VS": 8,
+    "NE": 4,
+    "GE": 12,
+    "JU": 2,
+}
 # --------------------------------------------------------------------------------------
 
 # --- GENERAL PARAMETERS ---

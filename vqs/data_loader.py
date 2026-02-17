@@ -53,7 +53,9 @@ def load_dataset(config) -> dict:
         data_map["questions"] = SVDataFrame(df_q)  # type: ignore
 
     else:
-        raise NotImplementedError("Only cleaned and fake data implemented for now.")
+        raise NotImplementedError(
+            "Data type not implemented yet. Only 'cleaned' and 'fake' are supported."
+        )
 
     # Optional Canton Filtering
     if (

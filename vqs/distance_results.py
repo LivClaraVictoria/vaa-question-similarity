@@ -64,7 +64,7 @@ def save_results(
         print("⚠️WARNING⚠️: No 'Similarity' or 'Distance' column found for sorting.")
 
     # 2. Save results using ResultManager
-    file_path = rm.save(df=df, readable=True)
+    file_path = rm.save(data=df, readable=True)
 
     # 6. Visualize fake data
     if config.data_choice == "fake":

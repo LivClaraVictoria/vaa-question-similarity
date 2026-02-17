@@ -13,6 +13,166 @@ Any NaN values will raise an error.
 """
 
 
+def _get_prefix(config) -> str:
+    base_name = Path(config.__file__).stem
+    override_str = ("_" + "_".join(config.overrides)) if config.overrides else ""
+    return f"recs_{base_name}{override_str}"
+
+
+def _print_summary(file_path: Path | None = None, text: str | None = None):
+    if text:
+        print(text)
+    elif file_path:
+        # TODO: find file path but with txt extension, print that
+        txt_path = file_path.with_suffix(".txt")
+        if txt_path.exists():
+            print(txt_path.read_text(encoding="utf-8"))
+        else:
+            print("No summary available.")
+    else:
+        print("No summary available.")
+
+
+def save_recommendation_results(
+    df: pd.DataFrame, config, important_params_list: list[str]
+):
+    """
+    Saves recommendation results and prints a summary analysis of changes.
+    """
+
+    # 1. Check for cached files
+    output_dir = Path(config.RECOMMENDATION_RESULTS_DIR)
+    output_dir.mkdir(parents=True, exist_ok=True)
+    prefix = _get_prefix(config)
+    rm = ResultManager(
+        config=config,
+        dir=output_dir,
+        params_list=important_params_list,
+        prefix=prefix,
+    )
+
+    path = rm.exists()
+    if path:
+        print(f"--- [Skip Save] Result with hash {rm.hash} already exists: ---")
+        print(f"    -> {path.name}")
+        _print_summary(path)
+
+    file_path = rm.save(data=df, readable=True)
+    summary_text = _generate_stats(df=df, config=config, method=config.rec_dist_method)
+
+    if file_path is not None:
+        txt_path = file_path.with_suffix(".txt")
+        txt_path.write_text(summary_text, encoding="utf-8")
+        print(f"  -> {txt_path}")
+
+    _print_summary(text=summary_text)
+
+
+def _generate_stats(df, config, method) -> str:
+    base_match_cols = [
+        c for c in df.columns if c.startswith("_matchID_") and c.endswith(f"_{method}")
+    ]
+    crw_match_cols = [
+        c
+        for c in df.columns
+        if c.startswith("CRW__matchID_") and c.endswith(f"_{method}")
+    ]
+
+    _safety_checks(df=df, base_cols=base_match_cols, crw_cols=crw_match_cols)
+
+    total_candidates = len(base_match_cols)
+    n_jaccard = _get_jaccard_n(
+        df=df, config=config, base_cols=base_match_cols, crw_cols=crw_match_cols
+    )
+    jaccard_scores, candidate_changes = _calculate_jaccard(
+        config=config,
+        df=df,
+        base_cols=base_match_cols,
+        crw_cols=crw_match_cols,
+        n=n_jaccard,
+    )
+    pct_rank_change = _calculate_rank_metrics(
+        df=df, base_cols=base_match_cols, crw_cols=crw_match_cols
+    )
+
+    summary_str = (
+        f"\n--- Sanity Check Summary ---\n"
+        f"Evaluating top {n_jaccard} candidates for Jaccard, full {total_candidates} for Rank Changes.\n"
+        f"Average Jaccard Similarity:    {np.mean(jaccard_scores):.4f}\n"
+        f"Min Jaccard Similarity:        {np.min(jaccard_scores):.4f}\n"
+        f"Average Candidate Changes:     {np.mean(candidate_changes):.2f}\n"
+        f"Voters with rank change:       {(pct_rank_change > 0).mean() * 100:.2f}%\n"
+        f"Average rank change per voter: {pct_rank_change.mean():.2f}%\n"
+        f"----------------------------\n"
+    )
+    return summary_str
+
+
+def _safety_checks(df, base_cols, crw_cols):
+    if len(base_cols) != len(crw_cols):
+        raise ValueError(
+            f"⚠️ Mismatch in number of match columns: {len(base_cols)} baseline vs {len(crw_cols)} CRW. Check column naming conventions."
+        )
+    if len(base_cols) == 0:
+        raise ValueError(
+            "⚠️ No match columns found! Check that your recommendation DataFrame has the expected column naming pattern."
+        )
+    if df[base_cols + crw_cols].isna().any().any():
+        raise ValueError(
+            "⚠️ Critical Error: NaN values detected in recommendation matches."
+        )
+
+
+def _get_jaccard_n(df, config, base_cols, crw_cols):
+    n = 0
+    if config.n_recommendations == "all":
+        if config.filter_districts:
+            n = (
+                config.SEATS_PER_CANTON.get(config.district)
+                if config.data_year == 2023
+                else config.SEATS_PER_CANTON19.get(config.district)
+            )
+        else:
+            n = 30  # Just random number, Jaccard of 5000 candidates is useless anyway
+    elif config.n_recommendations is not None:
+        n = config.n_recommendations
+    else:
+        n = len(base_cols)
+    return n
+
+
+def _calculate_jaccard(config, df, base_cols, crw_cols, n=30):
+
+    base_matrix = df[base_cols].values[:, :n]
+    crw_matrix = df[crw_cols].values[:, :n]
+
+    jaccard_scores = []
+    candidate_changes = []
+    for b, c in zip(base_matrix, crw_matrix):
+        s1 = set(b[~pd.isna(b)])
+        s2 = set(c[~pd.isna(c)])
+        intersection = len(s1 & s2)
+        union = len(s1 | s2)
+
+        jaccard_scores.append(intersection / union if union > 0 else 1.0)
+        candidate_changes.append(n - intersection)
+
+    return jaccard_scores, candidate_changes
+
+
+def _calculate_rank_metrics(df, base_cols, crw_cols):
+    base_matrix = df[base_cols].values
+    crw_matrix = df[crw_cols].values
+    n_total = len(base_cols)
+
+    matches = base_matrix == crw_matrix
+    stable_candidates_per_voter = matches.sum(axis=1)
+    pct_rank_change = (n_total - stable_candidates_per_voter) / n_total * 100
+
+    return pct_rank_change
+
+
+""" 
 class RecommendationAnalyzer:
     def __init__(self, config, important_params_list):
         self.config = config
@@ -20,10 +180,6 @@ class RecommendationAnalyzer:
         self.important_params_list = important_params_list
         self.output_dir = Path(config.RECOMMENDATION_RESULTS_DIR)
         self.output_dir.mkdir(parents=True, exist_ok=True)
-
-        print(
-            f"Initialized RecommendationAnalyzer with important parameters: {self.important_params_list}"
-        )
 
     def analyze(
         self, df_recommendations: pd.DataFrame, df_weights: pd.DataFrame
@@ -229,3 +385,4 @@ class RecommendationAnalyzer:
         if subset is not None:
             prefix += f"_subset={subset}"
         return prefix
+"""
