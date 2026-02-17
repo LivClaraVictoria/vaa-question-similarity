@@ -1,0 +1,1 @@
+Note: Changed all imports to relative imports in order to work as a submodule.
