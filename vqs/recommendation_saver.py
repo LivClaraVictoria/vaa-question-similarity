@@ -23,7 +23,6 @@ def _print_summary(file_path: Path | None = None, text: str | None = None):
     if text:
         print(text)
     elif file_path:
-        # TODO: find file path but with txt extension, print that
         txt_path = file_path.with_suffix(".txt")
         if txt_path.exists():
             print(txt_path.read_text(encoding="utf-8"))
@@ -56,6 +55,7 @@ def save_recommendation_results(
         print(f"--- [Skip Save] Result with hash {rm.hash} already exists: ---")
         print(f"    -> {path.name}")
         _print_summary(path)
+        return
 
     file_path = rm.save(data=df, readable=True)
     summary_text = _generate_stats(df=df, config=config, method=config.rec_dist_method)

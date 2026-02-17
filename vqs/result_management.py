@@ -91,6 +91,6 @@ class ResultManager:
                     f"Warning: ResultManager auto-save not configured for type {type(data)} to {ext}."
                 )
 
-        print(f"\nSuccess! File routed to:")
+        print(f"\nSuccess! File saved to:")
         print(f"  -> {path}")
         return path
