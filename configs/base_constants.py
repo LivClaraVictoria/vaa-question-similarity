@@ -74,6 +74,7 @@ QUESTIONS_2019_PATH = CLEANED_DIR / "df_questions19.parquet"
 CACHE_DIR = PROJECT_ROOT / "cache"
 DISTANCE_CACHE_DIR = CACHE_DIR / "distance_calculations"
 RECOMMENDATION_CACHE_DIR = CACHE_DIR / "recommendations"
+COMPARATOR_CACHE_DIR = CACHE_DIR / "comparisons"
 
 
 # --- FROM DUSTIN'S BASE CONSTANTS.PY ---
