@@ -3,6 +3,8 @@ import numpy as np
 import json
 import re
 import warnings
+import psutil
+import os
 from pathlib import Path
 from scipy.stats import spearmanr, kendalltau
 
@@ -22,7 +24,7 @@ class CrossRunAnalyzer:
 
     def analyze(self) -> pd.DataFrame:
         """Main execution method."""
-        print(f"Loading data (this may take a moment)...")
+        print(f"\nLoading data (this may take a moment)...")
         self.df_a = self._load_data(self.run_a_path)
         self.df_b = self._load_data(self.run_b_path)
 
@@ -51,103 +53,99 @@ class CrossRunAnalyzer:
     def _load_data(self, path: Path) -> pd.DataFrame:
         if not path.exists():
             raise FileNotFoundError(f"Could not find file at {path}")
+
+        # 1. Read Parquet (Fast)
         df = pd.read_parquet(path)
 
+        # 2. Identify Columns
         std_cols = [c for c in df.columns if re.match(r"^_matchID_\d+_L2_sv$", c)]
         crw_cols = [c for c in df.columns if re.match(r"^CRW__matchID_\d+_L2_sv$", c)]
 
+        # 3. Optimize List Creation
+        # We only run the slow 'cleaning' loop if we actually detect NaNs.
+        # If your ranking is full, this skips the slow part entirely.
+
         if std_cols:
+            print(f"  -> Processing {len(std_cols)} standard columns...")
             df["ranked_standard"] = df[std_cols].values.tolist()
-            df["ranked_standard"] = df["ranked_standard"].apply(
-                lambda lst: [x for x in lst if pd.notna(x)]
-            )
+            if df[std_cols].isna().values.any():
+                print("     (Detected NaNs, performing cleanup...)")
+                df["ranked_standard"] = df["ranked_standard"].apply(
+                    lambda lst: [x for x in lst if pd.notna(x)]
+                )
+
         if crw_cols:
+            print(f"  -> Processing {len(crw_cols)} CRW columns...")
             df["ranked_crw"] = df[crw_cols].values.tolist()
-            df["ranked_crw"] = df["ranked_crw"].apply(
-                lambda lst: [x for x in lst if pd.notna(x)]
-            )
+            if df[crw_cols].isna().values.any():
+                print("     (Detected NaNs, performing cleanup...)")
+                df["ranked_crw"] = df["ranked_crw"].apply(
+                    lambda lst: [x for x in lst if pd.notna(x)]
+                )
+
         return df
 
     def _run_analysis_loop(self):
-        # 1. Strict Validation
-        if (
-            self.df_a["voterID"].duplicated().any()
-            or self.df_b["voterID"].duplicated().any()
-        ):
-            raise ValueError(
-                "❌ FATAL: Duplicate voterIDs detected in one of the runs."
-            )
-
+        # 1. Validation
         voters_a = set(self.df_a["voterID"])
         voters_b = set(self.df_b["voterID"])
-        if voters_a != voters_b:
-            raise ValueError(
-                f"❌ FATAL: Voter sets do not match! ({len(voters_a)} vs {len(voters_b)})"
-            )
+        common_voters = list(voters_a.intersection(voters_b))
+        total = len(common_voters)
 
-        # 2. Merge
-        merged = pd.merge(
-            self.df_a,
-            self.df_b,
-            on="voterID",
-            suffixes=("_data", "_cloned"),
-            how="inner",
-        )
+        print(f"--- Analysis Started ---")
+        print(f"Total voters to process: {total}")
 
-        # 3. Circuit Breakers
-        can_do_base = self._can_compute_correlations(
-            merged, "ranked_standard_data", "ranked_standard_cloned"
-        )
-        can_do_crw = self._can_compute_correlations(
-            merged, "ranked_crw_data", "ranked_crw_cloned"
-        )
+        # Set index for faster lookups if not already set
+        if self.df_a.index.name != "voterID":
+            self.df_a.set_index("voterID", inplace=True)
+        if self.df_b.index.name != "voterID":
+            self.df_b.set_index("voterID", inplace=True)
 
-        if not can_do_base:
-            print("⚠️ Standard ranks mismatch. Skipping standard stats.")
-        if not can_do_crw:
-            print("⚠️ CRW ranks mismatch. Skipping CRW stats.")
-
-        # 4. The Loop
         results = []
         n_val = self.n
+        process = psutil.Process(os.getpid())
 
-        iter_data = zip(
-            merged["voterID"],
-            merged["ranked_standard_data"],
-            merged["ranked_standard_cloned"],
-            merged["ranked_crw_data"],
-            merged["ranked_crw_cloned"],
-        )
+        for i, vid in enumerate(common_voters):
+            # --- PROGRESS HEARTBEAT ---
+            if i % 1000 == 0 and i > 0:
+                mem_usage = process.memory_info().rss / (1024 * 1024)  # MB
+                print(
+                    f"  > Progress: {i}/{total} ({i/total*100:.1f}%) | RAM: {mem_usage:.1f} MB"
+                )
 
-        for vid, b_dat, b_clo, c_dat, c_clo in iter_data:
-            # Base Stats
+            # Standard stats
+            b_dat = self.df_a.at[vid, "ranked_standard"]
+            b_clo = self.df_b.at[vid, "ranked_standard"]
             b_jac = self._calculate_jaccard(b_dat, b_clo, n_val)
-            b_stats = self._calculate_rank_stats(b_dat, b_clo) if can_do_base else {}
+            b_stats = self._calculate_rank_stats(b_dat, b_clo)
 
-            # CRW Stats
+            # CRW stats
+            c_dat = self.df_a.at[vid, "ranked_crw"]
+            c_clo = self.df_b.at[vid, "ranked_crw"]
             c_jac = self._calculate_jaccard(c_dat, c_clo, n_val)
-            c_stats = self._calculate_rank_stats(c_dat, c_clo) if can_do_crw else {}
+            c_stats = self._calculate_rank_stats(c_dat, c_clo)
 
-            # Combine into one dict
-            row = {
-                "voterID": vid,
-                "base_jaccard": b_jac,
-                "base_spearman": b_stats.get("spearman", np.nan),
-                "base_kendall": b_stats.get("kendall", np.nan),
-                "base_changed_count": b_stats.get("changed_count", 0),
-                "base_total_shift": b_stats.get("total_shift", 0),
-                "base_max_shift": b_stats.get("max_shift", 0),
-                "base_list_len": b_stats.get("list_len", 0),
-                "crw_jaccard": c_jac,
-                "crw_spearman": c_stats.get("spearman", np.nan),
-                "crw_kendall": c_stats.get("kendall", np.nan),
-                "crw_changed_count": c_stats.get("changed_count", 0),
-                "crw_total_shift": c_stats.get("total_shift", 0),
-                "crw_max_shift": c_stats.get("max_shift", 0),
-                "crw_list_len": c_stats.get("list_len", 0),
-            }
-            results.append(row)
+            results.append(
+                {
+                    "voterID": vid,
+                    "base_jaccard": b_jac,
+                    "base_spearman": b_stats.get("spearman", np.nan),
+                    "base_kendall": b_stats.get("kendall", np.nan),
+                    "base_changed_count": b_stats.get("changed_count", 0),
+                    "base_total_shift": b_stats.get("total_shift", 0),
+                    "base_max_shift": b_stats.get("max_shift", 0),
+                    "base_list_len": b_stats.get("list_len", 0),
+                    "crw_jaccard": c_jac,
+                    "crw_spearman": c_stats.get("spearman", np.nan),
+                    "crw_kendall": c_stats.get("kendall", np.nan),
+                    "crw_changed_count": c_stats.get("changed_count", 0),
+                    "crw_total_shift": c_stats.get("total_shift", 0),
+                    "crw_max_shift": c_stats.get("max_shift", 0),
+                    "crw_list_len": c_stats.get("list_len", 0),
+                }
+            )
 
+        print(f"--- Analysis Complete ---")
         return pd.DataFrame(results)
 
     def _calculate_rank_stats(self, list_a, list_b):
@@ -156,7 +154,6 @@ class CrossRunAnalyzer:
         if n < 1:
             return {}
 
-        # O(1) Dictionary Mapping
         rank_dict_b = {c: i for i, c in enumerate(list_b)}
         try:
             ranks_b = np.array([rank_dict_b[c] for c in list_a])

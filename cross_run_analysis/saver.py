@@ -63,7 +63,7 @@ class CrossRunSaver:
     def _generate_summary(self, df, meta_a, meta_b, n) -> str:
         """
         Generates a summary matching the EXACT format of recommendation_saver.py,
-        then appends cross-run specifics.
+        then appends cross-run specifics with detailed distribution stats.
         """
         # --- CALCULATE AGGREGATES ---
         # 1. Jaccard Stats
@@ -71,47 +71,27 @@ class CrossRunSaver:
         min_jaccard = df["base_jaccard"].min()
 
         # 2. Candidate Swaps (derived from Jaccard)
-        # Jaccard = Intersection / Union.
-        # Swaps (per list) = n - Intersection.
-        # Since J = I / (2n - I) -> I = 2nJ / (1+J). This is approximate if Union varies.
-        # Better: We know size is strictly 'n' for the top-N.
-        # Intersection = n * Jaccard (if n is fixed).
-        # Actually simpler: Swaps = n * (1 - Jaccard_Overlap_Coef)?
-        # Let's rely on the assumption that n is fixed.
-        # candidates_swapped = n - (intersection).
-        # Since we don't have raw intersection, we approximate using Jaccard for identical sized sets:
-        # J = I / (2n - I) => I = (2n * J) / (1 + J)
-        # Swaps = n - I
-        # NOTE: This approximation is only needed if we don't save 'swaps' in the DF.
-        # Ideally, we'd save 'swaps' in the DF too, but let's estimate for now or assume identical sets logic.
-        # Actually, let's use the exact formula from Jaccard for same-sized sets:
-        # Intersection count for row i = (2 * n * J_i) / (1 + J_i)
-        # Swaps = n - Intersection
-        # This is accurate enough for the summary.
-
         jaccard_vals = df["base_jaccard"].values
-        intersections = (2 * n * jaccard_vals) / (1 + jaccard_vals)
-        swaps = n - intersections
+        # Avoid division by zero if jaccard is -1 (unlikely but possible in math)
+        with np.errstate(divide="ignore", invalid="ignore"):
+            intersections = (2 * n * jaccard_vals) / (1 + jaccard_vals)
+            swaps = n - intersections
+            # Handle NaNs from 0/0 or similar edge cases
+            swaps = np.nan_to_num(swaps, nan=0.0)
 
         avg_swaps = np.mean(swaps)
         max_swaps = np.max(swaps) if len(swaps) > 0 else 0
 
         # 3. Rank Stability (Full List)
-        # We use the columns we added to Analyzer
         total_voters = len(df)
         voters_with_change = (df["base_changed_count"] > 0).mean() * 100
         avg_changed_cands = df["base_changed_count"].mean()
 
-        # Avg % of list changed
-        # We need the list length from the first row (assuming all same for summary context)
         list_len = df["base_list_len"].iloc[0] if total_voters > 0 else 0
         avg_pct_list_changed = (
             (avg_changed_cands / list_len * 100) if list_len > 0 else 0
         )
 
-        # Avg positions moved
-        # Saver logic: sum(all_shifts) / count(all_candidates)
-        # Analyzer gives us "base_total_shift" (sum per voter)
         grand_total_shift = df["base_total_shift"].sum()
         total_candidates_across_all_voters = df["base_list_len"].sum()
         avg_shift = (
@@ -121,6 +101,22 @@ class CrossRunSaver:
         )
 
         max_shift = df["base_max_shift"].max() if total_voters > 0 else 0
+
+        # 4. Correlation Distributions (New!)
+        def get_dist_stats(series):
+            return {
+                "mean": series.mean(),
+                "min": series.min(),
+                "max": series.max(),
+                "std": series.std(),
+                "p05": series.quantile(0.05),  # 5th percentile (worst 5%)
+                "high_corr_pct": (series > 0.99).mean() * 100,  # % of "perfect" matches
+            }
+
+        base_s = get_dist_stats(df["base_spearman"])
+        base_k = get_dist_stats(df["base_kendall"])
+        crw_s = get_dist_stats(df["crw_spearman"])
+        crw_k = get_dist_stats(df["crw_kendall"])
 
         # --- FORMATTING ---
         year_str = meta_a.get("data_year", "Unknown")
@@ -140,12 +136,14 @@ class CrossRunSaver:
             f"  - Max positions a candidate moved:  {int(max_shift):>6} ranks\n"
             f"----------------------------\n\n"
             f"--- Additional Correlation Metrics ---\n"
-            f"Standard Recommendations:\n"
-            f"  - Spearman Rho (Rank Order):      {df['base_spearman'].mean():.4f}\n"
-            f"  - Kendall Tau (Pairwise Order):   {df['base_kendall'].mean():.4f}\n"
-            f"CRW Recommendations:\n"
-            f"  - Spearman Rho:                   {df['crw_spearman'].mean():.4f}\n"
-            f"  - Kendall Tau:                    {df['crw_kendall'].mean():.4f}\n"
+            f"1. Standard Recommendations (Spearman Rho):\n"
+            f"   Mean: {base_s['mean']:.4f} | Min: {base_s['min']:.4f} | Max: {base_s['max']:.4f} | StdDev: {base_s['std']:.4f}\n"
+            f"   (worst 5% are below {base_s['p05']:.4f}, {base_s['high_corr_pct']:.1f}% are > 0.99)\n\n"
+            f"2. Standard Recommendations (Kendall Tau):\n"
+            f"   Mean: {base_k['mean']:.4f} | Min: {base_k['min']:.4f} | Max: {base_k['max']:.4f} | StdDev: {base_k['std']:.4f}\n\n"
+            f"3. CRW Recommendations (Spearman Rho):\n"
+            f"   Mean: {crw_s['mean']:.4f} | Min: {crw_s['min']:.4f} | Max: {crw_s['max']:.4f} | StdDev: {crw_s['std']:.4f}\n"
+            f"   (worst 5% are below {crw_s['p05']:.4f}, {crw_s['high_corr_pct']:.1f}% are > 0.99)\n"
         )
         return summary
 

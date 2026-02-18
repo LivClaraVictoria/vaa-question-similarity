@@ -47,6 +47,7 @@ QU_WEIGHT_DIR = RESULTS_DIR / "question_weighting_results"
 P1_WEIGHT_DIR = QU_WEIGHT_DIR / "P1"
 P2_WEIGHT_DIR = QU_WEIGHT_DIR / "P2"
 RECOMMENDATION_RESULTS_DIR = RESULTS_DIR / "recommendation_results"
+COMPARISON_RESULTS_DIR = RESULTS_DIR / "comparator_results"
 
 
 # Specific data files
