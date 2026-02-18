@@ -205,7 +205,7 @@ SEATS_PER_CANTON19 = {
 # Data source to use
 # if cloned: change clean data path to point to the cloned data dir.
 data_choice = "cleaned"  # Options: "fake", "cleaned", "raw", "cloned"
-clone_id = Path(CLEANED_DIR).name  # "to identify different clone configs
+clone_id = "cleaned"  # to differentiate cloning strategies
 
 data_year = 2023  # Options: 2019, 2023
 

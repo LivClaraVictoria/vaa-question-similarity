@@ -107,8 +107,9 @@ def apply_overrides(config, overrides):
 
 
 def main(config):
+
     # 1. Load data: get questions as list
-    print("Loading data...")
+    print("\nLoading data...")
     dataset = load_dataset(
         config
     )  # returns OG question dataframe, and possibly voters and candidates if no canton filtering is applied

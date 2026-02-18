@@ -20,11 +20,11 @@ def load_dataset(config) -> dict:
     data_map = {}  # voters, candidates, questions
     if config.data_choice == "cleaned" or config.data_choice == "cloned":
         if config.data_year == 2023:
-            q_path = config.QUESTIONS_2023_PATH
+            q_path = config.CLEANED_DIR / "df_questions.parquet"
             v_prefix = config.VOTERS_PREFIX
             c_prefix = config.CANDIDATES_PREFIX
         elif config.data_year == 2019:
-            q_path = config.QUESTIONS_2019_PATH
+            q_path = config.CLEANED_DIR / "df_questions19.parquet"
             v_prefix = config.VOTERS_19_PREFIX
             c_prefix = config.CANDIDATES_19_PREFIX
         else:
