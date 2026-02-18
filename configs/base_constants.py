@@ -199,7 +199,10 @@ SEATS_PER_CANTON19 = {
 # --- GENERAL PARAMETERS ---
 
 # Data source to use
-data_choice = "cleaned"  # Options: "fake", "cleaned", "raw"
+# if cloned: change clean data path to point to the cloned data dir.
+data_choice = "cleaned"  # Options: "fake", "cleaned", "raw", "cloned"
+clone_id = Path(CLEANED_DIR).name  # "to identify different clone configs
+
 data_year = 2023  # Options: 2019, 2023
 
 load_voters = False  # false by default, set true for methods where you want to look into correlation

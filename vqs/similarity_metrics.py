@@ -32,6 +32,8 @@ class BaseDistanceCalculator(ABC):
         self.important_params_list = [
             "data_year",
             "dist",
+            "data_choice",
+            "clone_id",
         ]
 
         # Handle additional parameters for hashing (e.g. E5 instruction)
@@ -77,7 +79,7 @@ class BaseDistanceCalculator(ABC):
 
         cached_df = rm.load()
         if cached_df is not None:
-            return cached_df
+            return cached_df  # type: ignore
 
         # 2. If no cache, proceed with calculation
         print("No cache found. Starting distance computation...")

@@ -18,7 +18,7 @@ def load_parquet_by_prefix(directory, prefix):
 
 def load_dataset(config) -> dict:
     data_map = {}  # voters, candidates, questions
-    if config.data_choice == "cleaned":
+    if config.data_choice == "cleaned" or config.data_choice == "cloned":
         if config.data_year == 2023:
             q_path = config.QUESTIONS_2023_PATH
             v_prefix = config.VOTERS_PREFIX

@@ -26,6 +26,8 @@ class RecommendationEngine:
         # Parameters that affect the recommendationcalculations and should be included in the cache hash
         self.important_params_list = (
             [
+                "data_choice",
+                "clone_id",
                 "data_year",
                 "dist",
                 "alpha",

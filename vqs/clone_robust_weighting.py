@@ -23,6 +23,8 @@ class CloneRobustReweighter:
                 "data_year",
                 "alpha",
                 "crw_paper_choice",
+                "data_choice",
+                "clone_id",
             ]
             + ["E5_instruction"]
             if config.E5_instruction is not None
