@@ -44,9 +44,12 @@ RESULTS_DIR = PROJECT_ROOT / "experiment_results"
 DIST_RESULTS_DIR = RESULTS_DIR / "distance_metric"
 FAKE_RESULTS_DIR = DIST_RESULTS_DIR / "fake_results"
 CLEANED_RESULTS_DIR = DIST_RESULTS_DIR / "cleaned_results"
+CLONED_RESULTS_DIR = DIST_RESULTS_DIR / "cloned_results"
+
 QU_WEIGHT_DIR = RESULTS_DIR / "question_weighting_results"
 P1_WEIGHT_DIR = QU_WEIGHT_DIR / "P1"
 P2_WEIGHT_DIR = QU_WEIGHT_DIR / "P2"
+CLONED_QU_WEIGHT_DIR = QU_WEIGHT_DIR / "cloned"
 RECOMMENDATION_RESULTS_DIR = RESULTS_DIR / "recommendation_results"
 COMPARISON_RESULTS_DIR = RESULTS_DIR / "comparator_results"
 
