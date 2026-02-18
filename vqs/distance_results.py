@@ -38,7 +38,11 @@ def save_results(
     output_dir = (
         config.FAKE_RESULTS_DIR
         if config.data_choice == "fake"
-        else config.CLEANED_RESULTS_DIR
+        else (
+            config.CLEANED_RESULTS_DIR
+            if config.data_choice == "cleaned"
+            else config.CLONED_RESULTS_DIR / config.clone_id
+        )
     )
     output_dir.mkdir(exist_ok=True)
 

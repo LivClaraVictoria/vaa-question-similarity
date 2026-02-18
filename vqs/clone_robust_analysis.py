@@ -51,7 +51,11 @@ def save_reweighting_results(
     df.sort_values(by="Weight", ascending=True, inplace=True)
 
     # 2. Check for cached files
-    method_dir = config.QU_WEIGHT_DIR / config.crw_paper_choice
+    method_dir = (
+        config.QU_WEIGHT_DIR / config.crw_paper_choice
+        if config.data_choice != "cloned"
+        else config.QU_WEIGHT_DIR / "cloned" / config.crw_paper_choice / config.clone_id
+    )
     method_dir.mkdir(parents=True, exist_ok=True)
     prefix = get_prefix(config)
     rm = ResultManager(config, method_dir, important_params_list, prefix=prefix)
