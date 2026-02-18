@@ -1,25 +1,90 @@
 import argparse
-import warnings
-import re
 import pandas as pd
 import numpy as np
-from scipy.stats import spearmanr, kendalltau
+import json
+import re
+import warnings
 from pathlib import Path
-
-
-"""
-Important assumption: Assume rec dist = L2_sv. 
-"""
+from scipy.stats import spearmanr, kendalltau
 
 
 class CrossRunAnalyzer:
-    def __init__(self, run_a_path: str, run_b_path: str):
+    def __init__(self, run_a_path: str, run_b_path: str, n_override: int | None = None):
         self.run_a_path = Path(run_a_path)
         self.run_b_path = Path(run_b_path)
+        self.n_override = n_override
 
-        # Load the data immediately upon initialization
+        # 1. Load Metadata
+        self.meta_a = self._load_metadata(self.run_a_path)
+        self.meta_b = self._load_metadata(self.run_b_path)
+
+        # 2. Print Comparison (Purely informational)
+        self._compare_configs()
+
+        # 3. Resolve 'n' (Logic decision)
+        self.n = self._resolve_n()
+
+        # 4. Load Data
+        print(f"Loading data (this may take a moment)...")
         self.df_a = self._load_data(self.run_a_path)
         self.df_b = self._load_data(self.run_b_path)
+
+    def _load_metadata(self, parquet_path: Path) -> dict:
+        """Looks for a .json file with the same name as the parquet file."""
+        json_path = parquet_path.with_suffix(".json")
+        if not json_path.exists():
+            print(f"⚠️ Warning: No metadata found at {json_path}. Defaulting to n=30.")
+            return {"n_jaccard": 30}
+
+        with open(json_path, "r") as f:
+            return json.load(f)
+
+    def _compare_configs(self):
+        """Prints differences between the two run configurations for user awareness."""
+        print("\n--- Configuration Comparison ---")
+
+        all_keys = set(self.meta_a.keys()) | set(self.meta_b.keys())
+        diffs = []
+
+        for k in sorted(all_keys):
+            if k == "config_name":
+                continue
+
+            val_a = self.meta_a.get(k, "N/A")
+            val_b = self.meta_b.get(k, "N/A")
+
+            # Handle list/type mismatch in string comparison
+            if str(val_a) != str(val_b):
+                diffs.append(f"{k}: {val_a} vs {val_b}")
+
+        if diffs:
+            print("Differences detected between runs:")
+            for d in diffs:
+                print(f"  • {d}")
+        else:
+            print("✅ Configurations are identical.")
+
+    def _resolve_n(self) -> int:
+        """Decides which 'n' value to use for Jaccard calculations."""
+        # Priority 1: CLI Override
+        if self.n_override is not None:
+            print(
+                f"⚠️  CLI Override active: Using n={self.n_override} (ignoring metadata)."
+            )
+            return self.n_override
+
+        # Priority 2: Metadata
+        n_a = self.meta_a.get("n_jaccard", 30)
+        n_b = self.meta_b.get("n_jaccard", 30)
+
+        if n_a != n_b:
+            resolved_n = min(n_a, n_b)
+            print(f"⚠️  Mismatch in configured Jaccard 'n' (Run A={n_a}, Run B={n_b}).")
+            print(f"   -> Using smaller n={resolved_n} for fair comparison.")
+            return resolved_n
+
+        print(f"   -> Using n={n_a} (derived from metadata).")
+        return n_a
 
     def _load_data(self, path: Path) -> pd.DataFrame:
         if not path.exists():
@@ -31,6 +96,7 @@ class CrossRunAnalyzer:
         std_cols = [c for c in df.columns if re.match(r"^_matchID_\d+_L2_sv$", c)]
         crw_cols = [c for c in df.columns if re.match(r"^CRW__matchID_\d+_L2_sv$", c)]
 
+        # Collapse columns into lists
         if std_cols:
             df["ranked_standard"] = df[std_cols].values.tolist()
             df["ranked_standard"] = df["ranked_standard"].apply(
@@ -45,22 +111,6 @@ class CrossRunAnalyzer:
 
         return df
 
-    def _can_compute_correlations(
-        self, merged_df: pd.DataFrame, col_a: str, col_b: str
-    ) -> bool:
-        """
-        Sweeps the dataset to ensure ALL voters have the exact same candidate sets
-        in both runs. If even one voter has a mismatch, returns False.
-        """
-        for list_a, list_b in zip(merged_df[col_a], merged_df[col_b]):
-            # Quick length check first (faster than set conversion)
-            if len(list_a) != len(list_b):
-                return False
-            # Strict set check
-            if set(list_a) != set(list_b):
-                return False
-        return True
-
     def calculate_rank_correlations(self, list_a: list, list_b: list, voter_id: str):
         """Computes correlations using O(1) dictionary lookups and fast C-compiled SciPy math."""
         n = len(list_a)
@@ -73,47 +123,59 @@ class CrossRunAnalyzer:
             )
             return np.nan, np.nan
 
-        # THE O(1) FIX: Map candidates to their rank in List B instantly using a dictionary
         rank_dict_b = {candidate: rank for rank, candidate in enumerate(list_b)}
 
         try:
-            # Look up the positions in List B based on List A's exact order
             ranks_b = [rank_dict_b[c] for c in list_a]
         except KeyError:
-            # Failsafe just in case a candidate from A is totally missing in B
             return np.nan, np.nan
 
-        # Since we evaluate based on List A's order, List A's ranks are simply 0, 1, 2, 3...
         ranks_a = np.arange(n)
 
-        # SciPy processes these large arrays instantly in C
         spearman_corr, _ = spearmanr(ranks_a, ranks_b)
         kendall_tau, _ = kendalltau(ranks_a, ranks_b)
 
         return spearman_corr, kendall_tau
 
     def calculate_jaccard_at_n(self, list_a: list, list_b: list, n: int) -> float:
-        """
-        Computes the Jaccard similarity between the top-n items of two ranked lists.
-        """
-        # Isolate the top n candidates
+        """Computes Jaccard similarity for top-n items."""
         top_n_a = set(list_a[:n])
         top_n_b = set(list_b[:n])
 
-        # Edge case: If n=0 or both lists are completely empty
         if not top_n_a and not top_n_b:
+            print(
+                "⚠️ Warning: Both lists are empty. Returning Jaccard similarity of 1.0."
+            )
             return 1.0
 
-        # Calculate intersection and union sizes
         intersection_size = len(top_n_a.intersection(top_n_b))
         union_size = len(top_n_a.union(top_n_b))
 
         return intersection_size / union_size
 
-    def analyze(self, n: int):
+    def _can_compute_correlations(
+        self, merged_df: pd.DataFrame, col_a: str, col_b: str
+    ) -> bool:
+        """Circuit breaker to prevent invalid math on mismatched sets."""
+        for list_a, list_b in zip(merged_df[col_a], merged_df[col_b]):
+            if len(list_a) != len(list_b):
+                return False
+            if set(list_a) != set(list_b):
+                return False
+        return True
+
+    def analyze(self):
         """
         Executes the comparison using high-speed native Python zipping.
         """
+        # --- STRICT DUPLICATE CHECK ---
+        if self.df_a["voterID"].duplicated().any():
+            dupes = self.df_a["voterID"].duplicated().sum()
+            raise ValueError(f"❌ FATAL: Run A has {dupes} duplicate voterIDs!")
+        if self.df_b["voterID"].duplicated().any():
+            dupes = self.df_b["voterID"].duplicated().sum()
+            raise ValueError(f"❌ FATAL: Run B has {dupes} duplicate voterIDs!")
+
         # --- STRICT VOTER CHECK ---
         voters_a = set(self.df_a["voterID"])
         voters_b = set(self.df_b["voterID"])
@@ -122,12 +184,10 @@ class CrossRunAnalyzer:
             missing_in_b = len(voters_a - voters_b)
             missing_in_a = len(voters_b - voters_a)
             raise ValueError(
-                f"❌ FATAL: Voter sets do not match! "
-                f"Run A has {len(voters_a)} voters, Run B has {len(voters_b)}. "
-                f"({missing_in_b} missing in B, {missing_in_a} missing in A)."
+                f"❌ FATAL: Voter sets do not match! ({missing_in_b} missing in B, {missing_in_a} missing in A)."
             )
 
-        # Since we know they match perfectly, an inner merge is safe and fast
+        # Inner merge is safe
         merged = pd.merge(
             self.df_a,
             self.df_b,
@@ -136,7 +196,7 @@ class CrossRunAnalyzer:
             how="inner",
         )
 
-        # --- THE CIRCUIT BREAKERS ---
+        # --- CIRCUIT BREAKERS ---
         can_do_base_corr = self._can_compute_correlations(
             merged, "ranked_standard_data", "ranked_standard_cloned"
         )
@@ -146,29 +206,30 @@ class CrossRunAnalyzer:
 
         if not can_do_base_corr:
             print(
-                "⚠️ Mismatched candidate sets detected in standard runs (likely top-k truncation). Skipping standard rank correlations."
+                "⚠️ Mismatched candidate sets detected in standard runs. Skipping standard rank correlations."
             )
         if not can_do_crw_corr:
             print(
-                "⚠️ Mismatched candidate sets detected in CRW runs (likely top-k truncation). Skipping CRW rank correlations."
+                "⚠️ Mismatched candidate sets detected in CRW runs. Skipping CRW rank correlations."
             )
 
         results = []
 
-        # Convert pandas columns to native Python lists for instant iteration
+        # --- THE SPEED LOOP ---
         voter_ids = merged["voterID"].tolist()
         base_data = merged["ranked_standard_data"].tolist()
         base_cloned = merged["ranked_standard_cloned"].tolist()
         crw_data = merged["ranked_crw_data"].tolist()
         crw_cloned = merged["ranked_crw_cloned"].tolist()
 
-        # zip() runs in C natively, bypassing pandas object creation
+        n_val = self.n
+
         for voterID, b_data, b_cloned, c_data, c_cloned in zip(
             voter_ids, base_data, base_cloned, crw_data, crw_cloned
         ):
 
             # 1. Base comparisons
-            base_jaccard = self.calculate_jaccard_at_n(b_data, b_cloned, n)
+            base_jaccard = self.calculate_jaccard_at_n(b_data, b_cloned, n_val)
             if can_do_base_corr:
                 base_spearman, base_kendall = self.calculate_rank_correlations(
                     b_data, b_cloned, voterID
@@ -177,7 +238,7 @@ class CrossRunAnalyzer:
                 base_spearman, base_kendall = np.nan, np.nan
 
             # 2. CRW comparisons
-            crw_jaccard = self.calculate_jaccard_at_n(c_data, c_cloned, n)
+            crw_jaccard = self.calculate_jaccard_at_n(c_data, c_cloned, n_val)
             if can_do_crw_corr:
                 crw_spearman, crw_kendall = self.calculate_rank_correlations(
                     c_data, c_cloned, voterID
@@ -201,27 +262,26 @@ class CrossRunAnalyzer:
 
 
 if __name__ == "__main__":
-    # CLI format:
-    # python compare_runs.py <path_to_df_a> <path_to_df_b> [-n N_VALUE]
+    """
+    Basic usage (Automatically detects 'n' from metadata):
+    python cross_run_analyzer.py path/to/run_A.parquet path/to/run_B.parquet
 
+    Manual override (Force a specific 'n' for Jaccard similarity):
+    python cross_run_analyzer.py path/to/run_A.parquet path/to/run_B.parquet -n 50
+    """
     parser = argparse.ArgumentParser(description="Compare two VAA recommendation runs.")
-
-    # Positional arguments (required, supports tab-completion)
     parser.add_argument(
-        "run_a", type=str, help="Path to the first parquet file (e.g., standard data)"
+        "run_a", type=str, help="Path to first parquet file (standard data)"
     )
     parser.add_argument(
-        "run_b", type=str, help="Path to the second parquet file (e.g., cloned data)"
+        "run_b", type=str, help="Path to second parquet file (cloned data)"
     )
-
-    # Optional argument
-    # For now, to be calculated later
     parser.add_argument(
         "-n",
         "--n_value",
         type=int,
-        default=30,
-        help="The 'n' value for Jaccard@n. (Defaults to 10 until metadata integration)",
+        default=None,
+        help="Override the Jaccard 'n' value (ignores metadata)",
     )
 
     args = parser.parse_args()
@@ -229,13 +289,11 @@ if __name__ == "__main__":
     print(f"Loading runs:\n  A: {args.run_a}\n  B: {args.run_b}")
 
     try:
-        analyzer = CrossRunAnalyzer(args.run_a, args.run_b)
-        print(f"Running analysis with n={args.n_value}...")
-
-        results_df = analyzer.analyze(n=args.n_value)
+        analyzer = CrossRunAnalyzer(args.run_a, args.run_b, n_override=args.n_value)
+        print("Running analysis...")
+        results_df = analyzer.analyze()
 
         print("\n--- Mean Results Across All Voters ---")
-        # Drop voterID before calculating the mean so pandas doesn't try to average strings
         print(results_df.drop(columns=["voterID"]).mean())
 
     except Exception as e:
