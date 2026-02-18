@@ -35,6 +35,7 @@ else:
 CLEANED_DIR = DATA_DIR / "cleaned"
 RAW_DIR = DATA_DIR / "raw"
 FAKE_DIR = DATA_DIR / "fake"
+CLONED_DIR = DATA_DIR / "cloned"
 DATA_2023_DIR = RAW_DIR / "sv23_ETHZ"
 DATA_2019_DIR = RAW_DIR / "smart vote data"
 
