@@ -1,4 +1,4 @@
-from base_clone_creator import *
+from configs.create_clones.base_clone_creator import *
 
 data_year = 2023
 selector_type = "manual"
