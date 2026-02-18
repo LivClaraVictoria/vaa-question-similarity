@@ -65,20 +65,34 @@ class CrossRunAnalyzer:
 
             b_jac = self._jaccard(std_a, std_b, self.n)
             b_rank = self._rank_stats(std_a, std_b)
+            b_pos = self._position_stats(std_a, std_b)
             c_jac = self._jaccard(crw_a, crw_b, self.n)
             c_rank = self._rank_stats(crw_a, crw_b)
+            c_pos = self._position_stats(crw_a, crw_b)
 
             results.append(
                 {
                     "voterID": vid,
+                    # Set similarity (top-k)
                     "base_jaccard": b_jac,
+                    "base_swaps": self._swaps(b_jac),
+                    # Rank correlation (full list)
                     "base_spearman": b_rank.get("spearman", np.nan),
                     "base_kendall": b_rank.get("kendall", np.nan),
-                    "base_swaps": self._swaps(b_jac),
+                    # Position movement (full list)
+                    "base_any_rank_change": b_pos.get("any_change", np.nan),
+                    "base_n_changed": b_pos.get("n_changed", np.nan),
+                    "base_avg_pos_moved": b_pos.get("avg_pos_moved", np.nan),
+                    "base_max_pos_moved": b_pos.get("max_pos_moved", np.nan),
+                    # CRW equivalents
                     "crw_jaccard": c_jac,
+                    "crw_swaps": self._swaps(c_jac),
                     "crw_spearman": c_rank.get("spearman", np.nan),
                     "crw_kendall": c_rank.get("kendall", np.nan),
-                    "crw_swaps": self._swaps(c_jac),
+                    "crw_any_rank_change": c_pos.get("any_change", np.nan),
+                    "crw_n_changed": c_pos.get("n_changed", np.nan),
+                    "crw_avg_pos_moved": c_pos.get("avg_pos_moved", np.nan),
+                    "crw_max_pos_moved": c_pos.get("max_pos_moved", np.nan),
                 }
             )
 
@@ -91,23 +105,30 @@ class CrossRunAnalyzer:
         # Approximate number of position swaps implied by Jaccard similarity
         return self.n - (2 * self.n * jac) / (1 + jac)
 
-    def _load_data(self, path: Path) -> pd.DataFrame:
-        df = pd.read_parquet(path)
-        if df.index.name != "voterID":
-            df.set_index("voterID", inplace=True)
+    def _position_stats(self, list_a: list, list_b: list) -> dict:
+        """
+        Computes per-voter position movement stats over the full ranked list.
+        For each candidate present in both lists, measures |rank_a - rank_b|.
+        Candidates only in one list are excluded (they have no comparable rank).
+        """
+        rank_a = {c: i for i, c in enumerate(list_a)}
+        rank_b = {c: i for i, c in enumerate(list_b)}
+        common = set(rank_a) & set(rank_b)
 
-        std_cols = [c for c in df.columns if re.match(r"^_matchID_\d+_L2_sv$", c)]
-        crw_cols = [c for c in df.columns if re.match(r"^CRW__matchID_\d+_L2_sv$", c)]
+        if not common:
+            return {}
 
-        df["ranked_standard"] = df[std_cols].values.tolist()
-        df["ranked_crw"] = df[crw_cols].values.tolist()
+        deltas = np.array([abs(rank_a[c] - rank_b[c]) for c in common])
+        n_changed = int(np.sum(deltas > 0))
 
-        # Drop NaNs that can appear at the tail of shorter canton lists
-        for col in ["ranked_standard", "ranked_crw"]:
-            if df[col].apply(lambda x: any(pd.isna(v) for v in x)).any():
-                df[col] = df[col].apply(lambda lst: [x for x in lst if pd.notna(x)])
-
-        return df[["ranked_standard", "ranked_crw"]]
+        return {
+            "any_change": float(
+                n_changed > 0
+            ),  # 1.0 or 0.0, for easy averaging across voters
+            "n_changed": n_changed,
+            "avg_pos_moved": float(deltas.mean()),
+            "max_pos_moved": int(deltas.max()),
+        }
 
     def _rank_stats(self, list_a: list, list_b: list) -> dict:
         common = set(list_a) & set(list_b)
@@ -131,6 +152,24 @@ class CrossRunAnalyzer:
             return 1.0
         return len(s1 & s2) / len(s1 | s2)
 
+    def _load_data(self, path: Path) -> pd.DataFrame:
+        df = pd.read_parquet(path)
+        if df.index.name != "voterID":
+            df.set_index("voterID", inplace=True)
+
+        std_cols = [c for c in df.columns if re.match(r"^_matchID_\d+_L2_sv$", c)]
+        crw_cols = [c for c in df.columns if re.match(r"^CRW__matchID_\d+_L2_sv$", c)]
+
+        df["ranked_standard"] = df[std_cols].values.tolist()
+        df["ranked_crw"] = df[crw_cols].values.tolist()
+
+        # Drop NaNs that can appear at the tail of shorter canton lists
+        for col in ["ranked_standard", "ranked_crw"]:
+            if df[col].apply(lambda x: any(pd.isna(v) for v in x)).any():
+                df[col] = df[col].apply(lambda lst: [x for x in lst if pd.notna(x)])
+
+        return df[["ranked_standard", "ranked_crw"]]
+
     def _load_metadata(self, parquet_path: Path) -> dict:
         json_path = parquet_path.with_suffix(".json")
         if not json_path.exists():
@@ -150,5 +189,11 @@ class CrossRunAnalyzer:
             raise ValueError(
                 "Could not resolve n_jaccard from metadata. "
                 "Use --n_value to override explicitly."
+            )
+
+        if n_a != n_b:
+            print(
+                f"⚠️ Warning: n_jaccard differs between runs (A: {n_a}, B: {n_b}). "
+                f"Using the smaller value for analysis."
             )
         return min(n_a, n_b)

@@ -1,0 +1,37 @@
+=== Cross-Run Comparison Report ===
+A: pipeline_e5_ZH
+B: pipeline_e5_ZH
+Voters compared: 41658
+------------------------------------------------------------
+--- STANDARD ---
+  Set Similarity (Top-36):
+  Avg Jaccard Similarity:                   1.0000
+  Median Jaccard Similarity:                1.0000
+  Min Jaccard Similarity:                   1.0000
+  Perfect matches (Jaccard=1.0):            100.0% of voters
+  Avg candidates swapped in/out:            0.00 candidates per voter
+  Max candidates swapped in/out:            0 candidates
+  Rank Stability (All 36):
+  Spearman Rho:                             1.0000
+  Kendall Tau:                              1.0000
+  Voters w/ at least 1 rank change:         0.00%
+  Avg candidates changed per voter:         0.0 (0.00% of list)
+  Avg positions a candidate moved:          0.00 ranks
+  Max positions a candidate moved:          0 ranks
+------------------------------------------------------------
+--- CRW ---
+  Set Similarity (Top-36):
+  Avg Jaccard Similarity:                   1.0000
+  Median Jaccard Similarity:                1.0000
+  Min Jaccard Similarity:                   1.0000
+  Perfect matches (Jaccard=1.0):            100.0% of voters
+  Avg candidates swapped in/out:            0.00 candidates per voter
+  Max candidates swapped in/out:            0 candidates
+  Rank Stability (All 36):
+  Spearman Rho:                             1.0000
+  Kendall Tau:                              1.0000
+  Voters w/ at least 1 rank change:         0.00%
+  Avg candidates changed per voter:         0.0 (0.00% of list)
+  Avg positions a candidate moved:          0.00 ranks
+  Max positions a candidate moved:          0 ranks
+------------------------------------------------------------
