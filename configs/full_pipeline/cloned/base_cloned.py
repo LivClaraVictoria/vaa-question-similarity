@@ -1,4 +1,4 @@
-from base_constants import *
+from configs.base_constants import *
 
 CLEANED_DIR = CLONED_DIR / "identical_q32214_n10"
 QUESTIONS_2023_PATH = CLEANED_DIR / "df_questions.parquet"

@@ -41,9 +41,7 @@ def save_recommendation_results(
     # 1. Check for cached files
     base_path = Path(config.RECOMMENDATION_RESULTS_DIR)
 
-    output_dir = base_path / config.data_choice / "basic"
-    if config.data_choice == "cloned":
-        output_dir = output_dir / "cloned"
+    output_dir = base_path / config.data_choice
 
     output_dir.mkdir(parents=True, exist_ok=True)
     prefix = _get_prefix(config)

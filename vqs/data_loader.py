@@ -20,17 +20,23 @@ def load_dataset(config) -> dict:
     data_map = {}  # voters, candidates, questions
     if config.data_choice == "cleaned" or config.data_choice == "cloned":
         if config.data_year == 2023:
-            q_path = config.CLEANED_DIR / "df_questions.parquet"
+            q_path = config.QUESTIONS_2023_PATH
             v_prefix = config.VOTERS_PREFIX
             c_prefix = config.CANDIDATES_PREFIX
         elif config.data_year == 2019:
-            q_path = config.CLEANED_DIR / "df_questions19.parquet"
+            q_path = config.QUESTIONS_2019_PATH
             v_prefix = config.VOTERS_19_PREFIX
             c_prefix = config.CANDIDATES_19_PREFIX
         else:
             raise ValueError(f"Unknown data_year: {config.data_year}")
 
         df_q = pd.read_parquet(q_path)
+        # print(f"DEBUG: Loaded questions from: {q_path}")
+        # print(f"DEBUG: Questions shape: {df_q.shape}")
+        # print(
+        #     f"DEBUG: Clone questions present: {len(df_q[df_q['ID_question'] > 9_000_000])}"
+        # )
+
         data_map["questions"] = SVDataFrame(
             df_q, term=int(config.data_year)
         )  # type: ignore
@@ -47,6 +53,14 @@ def load_dataset(config) -> dict:
                 load_parquet_by_prefix(config.CLEANED_DIR, c_prefix),
                 term=int(config.data_year),
             )  # type: ignore
+
+        # print(f"DEBUG: Voters shape: {data_map['voters'].shape}")
+        # print(
+        #     f"DEBUG: Voter answer columns count: {len([c for c in data_map['voters'].columns if c.startswith('answer_')])}"
+        # )
+        # print(
+        #     f"DEBUG: Clone answer cols in voters: {[c for c in data_map['voters'].columns if c.startswith('answer_122')]}"
+        # )
 
     elif config.data_choice == "fake":
         df_q = pd.read_csv(config.FAKE_DATA_FILE)
