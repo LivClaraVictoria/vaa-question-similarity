@@ -1,0 +1,17 @@
+{
+    "config_name": "identical_highcandvar_n10",
+    "overrides": [],
+    "n_jaccard": 36,
+    "district": "ZH",
+    "data_choice": "cloned",
+    "clone_id": "identical_highcandvar_n10",
+    "data_year": 2023,
+    "dist": "E5",
+    "alpha": 0.6,
+    "crw_paper_choice": "P2",
+    "rec_dist_method": "L2_sv",
+    "n_recommendations": "all",
+    "subset_n": null,
+    "filter_districts": true,
+    "use_OG_weights": false
+}

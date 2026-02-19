@@ -6,6 +6,7 @@ from pathlib import Path
 # Fields used to uniquely identify a computation.
 # Must be stable across runs (no timestamps, no file paths).
 _HASH_FIELDS = [
+    "data_choice",
     "dist",
     "data_year",
     "overrides",
@@ -18,6 +19,7 @@ _HASH_FIELDS = [
     "district",
     "E5_instruction",
     "subset_n",
+    "clone_id",
 ]
 
 
