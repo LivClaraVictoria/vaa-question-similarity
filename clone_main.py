@@ -1,10 +1,3 @@
-"""
-Entry point for the clone generation pipeline.
-
-Usage:
-    python clone_main.py --config configs/create_clones/identical_q32214_n10.py
-"""
-
 import argparse
 import importlib.util
 from pathlib import Path
@@ -36,6 +29,12 @@ def load_config(config_path: str):
 
 
 def main():
+    """
+    Entry point for the clone generation pipeline.
+
+    Usage:
+        python clone_main.py --config configs/create_clones/identical_q32214_n10.py (for instance)
+    """
     parser = argparse.ArgumentParser(description="Clone generation pipeline.")
     parser.add_argument("--config", type=str, required=True)
     args = parser.parse_args()

@@ -1,0 +1,25 @@
+{
+  "data_year": 2023,
+  "source_dir": "C:\\Users\\liv\\git\\thesis\\vaa-question-similarity\\data\\cleaned",
+  "generated_at": "2026-02-19T01:26:06.065785",
+  "specs": [
+    {
+      "source_q_id": 32262,
+      "clone_type": "identical",
+      "n_clones": 10,
+      "clone_ids": [
+        12226201,
+        12226202,
+        12226203,
+        12226204,
+        12226205,
+        12226206,
+        12226207,
+        12226208,
+        12226209,
+        12226210
+      ],
+      "flip_answers": false
+    }
+  ]
+}
