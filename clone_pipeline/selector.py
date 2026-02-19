@@ -18,7 +18,9 @@ def build_selector(selector_type: str, params: dict) -> BaseSelector:
         return ManualSelector(**params)
     elif selector_type == "random":
         return RandomSelector(**params)
-    elif selector_type == "high_variance":
+    elif selector_type == "combined_variance":
+        return CombinedVarianceSelector(**params)
+    elif selector_type == "high_candidate_variance":
         return HighCandidateVarianceSelector(**params)
     else:
         raise ValueError(f"Unknown selector type: {selector_type}")
@@ -58,7 +60,7 @@ class HighCandidateVarianceSelector(BaseSelector):
     """
     Selects the n questions where candidates are most spread out.
     These are the questions that most differentiate candidates,
-    and thus have the highest potential impact on recommendations.
+    and thus have a high potential impact on recommendations.
     """
 
     def __init__(self, n: int):
@@ -71,6 +73,26 @@ class HighCandidateVarianceSelector(BaseSelector):
         return [int(col.replace("answer_", "")) for col in top_cols]
 
 
-# Future selectors to add here:
+class CombinedVarianceSelector(BaseSelector):
+    """
+    Selects the n questions with the highest combined variance across candidate and voter answers.
+    """
+
+    def __init__(self, n: int):
+        self.n = n
+
+    def select(self, df_questions, df_candidates, df_voters) -> list[int]:
+        answer_cols_c = [c for c in df_candidates.columns if c.startswith("answer_")]
+        answer_cols_v = [c for c in df_voters.columns if c.startswith("answer_")]
+
+        cand_var = df_candidates[answer_cols_c].var()
+        voter_var = df_voters[answer_cols_v].var()
+
+        combined = (cand_var * voter_var).dropna()
+        top_cols = combined.nlargest(self.n).index.tolist()
+        return [int(col.replace("answer_", "")) for col in top_cols]
+
+
+# Future selectors ideas:
 # class PartyBenefitSelector(BaseSelector): ...
 # class NeutralAnswerFloodSelector(BaseSelector): ...

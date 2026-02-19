@@ -2,7 +2,7 @@ from configs.base_constants import *
 
 data_year = 2023
 
-selector_type = "manual"  # Options: "manual", "random", "high_variance"
+selector_type = "manual"  # Options: "manual", "random", "high_candidate_variance", "combined_variance"
 selector_params = {}
 
 # Default: 1 to 1 identical clones of all selected questions, cloned 10 times each

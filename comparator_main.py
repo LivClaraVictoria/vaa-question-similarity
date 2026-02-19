@@ -6,6 +6,9 @@ from cross_run_analysis.computation_cache import ComputationCache
 
 
 def main():
+    """
+    Format: python comparator_main.py <path_to_run_a_parquet> <path_to_run_b_parquet> [-n N_VALUE]
+    """
     parser = argparse.ArgumentParser(description="Compare two VAA recommendation runs.")
     parser.add_argument(
         "run_a", type=str, help="Path to first run parquet file (base dataset)"
