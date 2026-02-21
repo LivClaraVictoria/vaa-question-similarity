@@ -145,6 +145,9 @@ def main(config):
             important_params_list=reweighter.important_params_list,
         )
 
+        print(
+            f"DEBUG: config.load_voters={config.load_voters}, config.load_candidates={config.load_candidates}"
+        )
         if config.load_voters and config.load_candidates:
             # 6. Calculate old and new recommendations
             print("\nCalculating recommendations and changes...")
