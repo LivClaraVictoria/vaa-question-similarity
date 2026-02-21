@@ -17,14 +17,7 @@ class CloneRobustReweighter:
         self.weighting_func = getattr(
             config, "weighting_func", self._class_uniform_weighting_fn
         )
-        self.important_params_list = [
-            "dist",
-            "data_year",
-            "alpha",
-            "crw_paper_choice",
-            "data_choice",
-            "clone_id",
-        ] + (["E5_instruction"] if config.E5_instruction is not None else [])
+        self.important_params_list = list(config.CRW_HASH_PARAMS)
 
         print(
             f"Initialized CloneRobustReweighter with alpha={self.alpha} and important parameters: {self.important_params_list}"

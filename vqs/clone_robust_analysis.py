@@ -22,7 +22,7 @@ def get_hash(config, params_list) -> str:
     params = {k: getattr(config, k) for k in sorted_params_list}
     param_str = json.dumps(params, sort_keys=True, default=str)
     full_hash = hashlib.md5(param_str.encode()).hexdigest()
-    return full_hash[:8]
+    return full_hash[:12]
 
 
 # TODO: filename format

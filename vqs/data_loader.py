@@ -73,7 +73,7 @@ def load_dataset(config) -> dict:
 
     # Optional Canton Filtering
     if (
-        config.filter_districts
+        config.district != "all"
         and config.data_choice != "fake"
         and ("voters" in data_map or "candidates" in data_map)
     ):

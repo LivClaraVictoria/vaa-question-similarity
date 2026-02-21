@@ -122,8 +122,6 @@ def main(config):
     calculator: BaseDistanceCalculator = get_calculator(config)
     print("Calculating distances...")
     results: pd.DataFrame = calculator.calculate_distance(dataset, config)
-    print(f"DEBUG distances shape: {results.shape}")
-    print(f"DEBUG clone rows in distances: {len(results[results['ID1'] > 9_000_000])}")
 
     # 3. Save Results
     print("\nHandling the results...")

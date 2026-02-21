@@ -21,7 +21,7 @@ class ResultManager:
         param_str = json.dumps(
             params, sort_keys=True, default=str
         )  # sorted for hash consistency
-        return hashlib.md5(param_str.encode()).hexdigest()[:8]
+        return hashlib.md5(param_str.encode()).hexdigest()[:12]
 
     def get_path(self, readable=False, extension=None) -> Path:
         ext = extension or self.config.results_file_type

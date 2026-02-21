@@ -2,25 +2,11 @@ import json
 import hashlib
 import pandas as pd
 from pathlib import Path
+from configs.base_constants import COMPARATOR_HASH_PARAMS
 
 # Fields used to uniquely identify a computation.
 # Must be stable across runs (no timestamps, no file paths).
-_HASH_FIELDS = [
-    "data_choice",
-    "dist",
-    "data_year",
-    "overrides",
-    "alpha",
-    "crw_paper_choice",
-    "rec_dist_method",
-    "n_recommendations",
-    "filter_districts",
-    "use_OG_weights",
-    "district",
-    "E5_instruction",
-    "subset_n",
-    "clone_id",
-]
+_HASH_FIELDS = COMPARATOR_HASH_PARAMS
 
 
 def _stable_fields(meta: dict) -> dict:
@@ -38,8 +24,7 @@ def _get_hash(meta_a: dict, meta_b: dict, n: int) -> str:
         "n_jaccard": n,
     }
     s = json.dumps(payload, sort_keys=True, default=str)
-    print(f"DEBUG hash payload: {s}")
-    return hashlib.md5(s.encode()).hexdigest()[:8]
+    return hashlib.md5(s.encode()).hexdigest()[:12]
 
 
 class ComputationCache:

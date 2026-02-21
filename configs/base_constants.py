@@ -217,8 +217,7 @@ results_file_type = "parquet"  # "csv" to read file in vscode (but slower)
 save_results = True
 
 # Canton Filtering
-filter_districts = False
-district = "ZH"  # e.g. "ZH", "BE", etc. (only relevant if filter_districts=True)
+district = "all"  # "all" = no filtering; canton code (e.g. "ZH") = filter to that canton
 
 # Subsetting
 subset_n = None  # for quick testing: set to an integer to subset the data, or None to use full data
@@ -340,3 +339,11 @@ rec_dist_method = "L2_sv"  # which distance method to use for recommendations
 
 # --- RECOMMENDATION ANALYSIS PARAMETERS ---
 p_rbo = 0.9  # RBO parameter: how steeply to discount lower ranks (0.9 means top 10 items get ~86% of the weight)
+
+# --- HASH PARAMETERS FOR CACHING ---
+# Layered constants: each stage extends the previous.
+# E5_instruction is included from distance stage — None hashes as null, non-None as its value.
+DISTANCE_HASH_PARAMS = ["data_year", "dist", "data_choice", "clone_id", "E5_instruction"]
+CRW_HASH_PARAMS = DISTANCE_HASH_PARAMS + ["alpha", "crw_paper_choice"]
+REC_HASH_PARAMS = CRW_HASH_PARAMS + ["rec_dist_method", "n_recommendations", "subset_n", "use_OG_weights", "district"]
+COMPARATOR_HASH_PARAMS = REC_HASH_PARAMS

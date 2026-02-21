@@ -23,24 +23,8 @@ class RecommendationEngine:
         else:
             self.n_recs = self.config.n_recommendations
 
-        # Parameters that affect the recommendationcalculations and should be included in the cache hash
-        self.important_params_list = (
-            [
-                "data_choice",
-                "clone_id",
-                "data_year",
-                "dist",
-                "alpha",
-                "crw_paper_choice",
-                "rec_dist_method",
-                "n_recommendations",
-                "subset_n",
-                "filter_districts",
-                "use_OG_weights",
-            ]
-            + (["district"] if config.filter_districts else [])
-            + (["E5_instruction"] if config.E5_instruction is not None else [])
-        )
+        # Parameters that affect the recommendation calculations and should be included in the cache hash
+        self.important_params_list = list(config.REC_HASH_PARAMS)
         print(
             f"Initialized RecommendationEngine with important parameters: {self.important_params_list}"
         )
@@ -82,7 +66,7 @@ class RecommendationEngine:
     def evaluate_pipeline(self, df_weights) -> pd.DataFrame:
         # 1. Check for existing results in cache to avoid redundant computation
         prefix = f"recs_{self.config.data_year}_{self.config.dist}_a{self.config.alpha}_subset={self.config.subset_n}"
-        prefix += f"_{self.config.district}" if self.config.filter_districts else ""
+        prefix += f"_{self.config.district}" if self.config.district != "all" else ""
         prefix += f"_top{self.n_recs}" if self.n_recs is not None else ""
 
         rm = ResultManager(

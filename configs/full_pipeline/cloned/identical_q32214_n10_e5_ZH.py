@@ -6,7 +6,6 @@ clone_id = "identical_q32214_n10"
 # results_file_type = "csv"
 
 dist = "E5"
-filter_districts = True
 district = "ZH"
 
 n_recommendations = "all"

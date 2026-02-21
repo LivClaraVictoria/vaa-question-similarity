@@ -114,7 +114,6 @@ def _save_metadata(
         "config_name": Path(config.__file__).stem,
         "overrides": config.overrides,  # Kept for historical context (CLI commands)
         "n_jaccard": int(n_jaccard),
-        "district": config.district if config.filter_districts else "all",
     }
 
     # 2. Dynamically add everything deemed "important" by the main pipeline (ensures Analyzer matches engine hash logic)
@@ -205,7 +204,7 @@ def _safety_checks(df, base_cols, crw_cols):
 def _get_jaccard_n(df, config, base_cols, crw_cols):
     n = 0
     if config.n_recommendations == "all":
-        if config.filter_districts:
+        if config.district != "all":
             n = (
                 config.SEATS_PER_CANTON.get(config.district)
                 if config.data_year == 2023

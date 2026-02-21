@@ -7,7 +7,6 @@ load_voters = True
 
 data_choice = "cleaned"
 dist = "E5"
-filter_districts = True
 district = "ZH"
 
 save_results = False

@@ -15,9 +15,6 @@ class BaseDistanceCalculator(ABC):
         instruction: str | None = None,
         is_asymmetric: bool = False,
         use_euclidean: bool = True,
-        additional_params: (
-            list[str] | None
-        ) = None,  # cannot use [] as default value because it's mutable
     ):
         self.config = config
         self.model = SentenceTransformer(model_name)
@@ -28,16 +25,7 @@ class BaseDistanceCalculator(ABC):
 
         # Parameters that affect the distance calculation and should be included in the cache hash
         # Assumption: all districts have same questionnaire
-        self.important_params_list = [
-            "data_year",
-            "dist",
-            "data_choice",
-            "clone_id",
-        ]
-
-        # Handle additional parameters for hashing (e.g. E5 instruction)
-        if additional_params:
-            self.important_params_list.extend(additional_params)
+        self.important_params_list = list(config.DISTANCE_HASH_PARAMS)
 
         print(
             f"Initialized {model_name} Calculator. Important parameters for caching: {self.important_params_list}"
@@ -218,7 +206,6 @@ class E5InstructCalculator(BaseDistanceCalculator):
             config,
             model_name=model_name,
             instruction=instruction,
-            additional_params=["E5_instruction"],
             **kwargs,
         )
 
