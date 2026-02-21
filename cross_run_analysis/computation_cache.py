@@ -38,6 +38,7 @@ def _get_hash(meta_a: dict, meta_b: dict, n: int) -> str:
         "n_jaccard": n,
     }
     s = json.dumps(payload, sort_keys=True, default=str)
+    print(f"DEBUG hash payload: {s}")
     return hashlib.md5(s.encode()).hexdigest()[:8]
 
 

@@ -117,7 +117,7 @@ class CrossRunSaver:
 
     def _generate_summary(self, meta_a, meta_b, n, total, bs, br, cs, cr) -> str:
         sep = "-" * 60
-        ll = br["list_len"] or "?"
+        ll = br["list_len"] or "?"  # wrong, TODO: find real list length
 
         def set_block(s, r, label):
             return [
@@ -136,7 +136,7 @@ class CrossRunSaver:
                 _row(
                     "Max candidates swapped in/out:", f"{int(s['sw_max'])} candidates"
                 ),
-                f"  Rank Stability (All {ll}):",
+                f"  Rank Stability (All):",
                 _row("Spearman Rho:", f"{r['spearman']:.4f}"),
                 _row("Kendall Tau:", f"{r['kendall']:.4f}"),
                 _row(

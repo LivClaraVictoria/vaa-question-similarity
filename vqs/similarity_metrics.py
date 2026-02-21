@@ -3,7 +3,6 @@ from typing import Any
 from itertools import combinations
 import pandas as pd
 from sentence_transformers import SentenceTransformer  # type: ignore
-from vqs.cache_management import CacheManager
 from vqs.result_management import ResultManager
 
 

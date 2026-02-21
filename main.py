@@ -108,6 +108,9 @@ def apply_overrides(config, overrides):
 
 def main(config):
 
+    print(f"DEBUG config.clone_id: {config.clone_id}")
+    print(f"DEBUG config.CLEANED_DIR: {config.CLEANED_DIR}")
+
     # 1. Load data: get questions as list
     print("\nLoading data...")
     dataset = load_dataset(
