@@ -71,7 +71,7 @@ python -u clone_main.py --config configs/create_clones/identical_combinedvar_n10
 
 
 # Send more noteworthy information to the output log
-echo "Finished at: $(date)"
+echo "Finished at: $(date)" 
 
 # End the script with exit code 0
 exit 0
