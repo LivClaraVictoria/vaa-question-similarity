@@ -39,7 +39,9 @@ from vqs.recommendation_engine import RecommendationEngine
 from vqs.result_management import ResultManager
 from vqs.similarity_metrics import get_calculator
 
-DEFAULT_ALPHAS = [round(0.1 * i, 1) for i in range(1, 16)]  # 0.1 to 1.5
+alphas_low = [round(0.1 * i, 1) for i in range(16)]  # 0.0 to 1.5
+alphas_high = [round(1.5 + (0.3 * i), 1) for i in range(1, 6)]  # 1.8 to 3.0
+DEFAULT_ALPHAS = alphas_low + alphas_high
 DEFAULT_ALPHA_REFERENCE = 0.6
 
 
@@ -62,7 +64,7 @@ def _parse_args():
         "--alphas",
         type=str,
         default=None,
-        help="Comma-separated alpha values (default: 0.1 to 1.5 in 0.1 steps)",
+        help="Comma-separated alpha values (default: 0.0 to 3.0 in 0.1 steps)",
     )
     parser.add_argument(
         "-n",
