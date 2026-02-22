@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find:*)",
+      "Read(//usr/itetnas04/data-scratch-01/liweiss/data/vaa-question-similarity/**)"
+    ]
+  }
+}

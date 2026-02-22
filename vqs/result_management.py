@@ -56,7 +56,11 @@ class ResultManager:
         ext = path.suffix.lower()
 
         if ext == ".parquet":
-            return pd.read_parquet(path)
+            try:
+                return pd.read_parquet(path)
+            except Exception as e:
+                print(f"Warning: Corrupt cache file {path.name}, treating as cache miss. ({e})")
+                return None
         elif ext == ".csv":
             return pd.read_csv(path)
         elif ext in [".txt", ".md"]:

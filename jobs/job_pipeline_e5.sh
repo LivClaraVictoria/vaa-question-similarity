@@ -9,14 +9,17 @@
 
 # --- MEMORY (RAM) ---
 # 20G is a safe default. If your job crashes with "OOM" or "Killed", increase this (e.g., 40G).
-#SBATCH --mem=20G
+#SBATCH --mem=32G
 
 # Always keep this at 1 for standard training scripts.
 #SBATCH --nodes=1
 
+# Time Limit
+#SBATCH --time=04:00:00
+
 # Standard rule: 4 CPUs per 1 GPU.
-#SBATCH --cpus-per-task=4
-#SBATCH --gres=gpu:1
+#SBATCH --cpus-per-task=8
+#SBATCH --gres=gpu:0
 #SBATCH --exclude=tikgpu10,tikgpu[06-09]
 #CommentSBATCH --nodelist=tikgpu01 # Specify that it should run on this particular node
 #CommentSBATCH --account=tik-internal
@@ -34,15 +37,15 @@ mkdir -p ${DIRECTORY}/jobs
 # Exit on errors
 set -o errexit
 
-# Set a directory for temporary files unique to the job with automatic removal at job termination
-TMPDIR=$(mktemp -d)
-if [[ ! -d ${TMPDIR} ]]; then
-echo 'Failed to create temp directory' >&2
-exit 1
-fi
-trap "exit 1" HUP INT TERM
-trap 'rm -rf "${TMPDIR}"' EXIT
-export TMPDIR
+# Create a temp directory inside NET_SCRATCH, not local /tmp
+export TMPDIR="${DIRECTORY}/jobs/tmp_${SLURM_JOB_ID}"
+mkdir -p "${TMPDIR}"
+
+# Cleanup function (deletes the folder when job finishes)
+cleanup() {
+    rm -rf "${TMPDIR}"
+}
+trap cleanup EXIT
 
 # Change the current directory to the location where you want to store temporary files, exit if changing didn't succeed.
 # Adapt this to your personal preference
@@ -62,7 +65,7 @@ echo "Conda activated"
 cd ${DIRECTORY}
 
 # Execute your code
-python test.py
+python -m main --config configs/full_pipeline/pipeline_e5.py
 
 # Send more noteworthy information to the output log
 echo "Finished at: $(date)"
