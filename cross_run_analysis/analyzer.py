@@ -154,12 +154,18 @@ class CrossRunAnalyzer:
 
     def _load_data(self, path: Path) -> pd.DataFrame:
         df = pd.read_parquet(path)
+        return self._extract_rankings(df)
+
+    @staticmethod
+    def _extract_rankings(df: pd.DataFrame) -> pd.DataFrame:
+        """Extract ranked lists from a recommendation DataFrame (works in-memory or from parquet)."""
         if df.index.name != "voterID":
-            df.set_index("voterID", inplace=True)
+            df = df.set_index("voterID")
 
         std_cols = [c for c in df.columns if re.match(r"^_matchID_\d+_L2_sv$", c)]
         crw_cols = [c for c in df.columns if re.match(r"^CRW__matchID_\d+_L2_sv$", c)]
 
+        df = df.copy()
         df["ranked_standard"] = df[std_cols].values.tolist()
         df["ranked_crw"] = df[crw_cols].values.tolist()
 
@@ -169,6 +175,27 @@ class CrossRunAnalyzer:
                 df[col] = df[col].apply(lambda lst: [x for x in lst if pd.notna(x)])
 
         return df[["ranked_standard", "ranked_crw"]]
+
+    @classmethod
+    def from_n(cls, n: int) -> "CrossRunAnalyzer":
+        """Lightweight constructor for programmatic use (no file paths or metadata needed)."""
+        instance = object.__new__(cls)
+        instance.n = n
+        instance.n_override = n
+        instance.run_a_path = None
+        instance.run_b_path = None
+        instance.meta_a = None
+        instance.meta_b = None
+        return instance
+
+    def analyze_from_dfs(
+        self, rec_df_a: pd.DataFrame, rec_df_b: pd.DataFrame
+    ) -> pd.DataFrame:
+        """Analyze two in-memory recommendation DataFrames. Reuses all metric computation."""
+        df_a = self._extract_rankings(rec_df_a)
+        df_b = self._extract_rankings(rec_df_b)
+        merged = df_a.join(df_b, lsuffix="_a", rsuffix="_b", how="inner")
+        return self._run_analysis_loop(merged)
 
     def _load_metadata(self, parquet_path: Path) -> dict:
         json_path = parquet_path.with_suffix(".json")

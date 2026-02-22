@@ -52,6 +52,7 @@ P2_WEIGHT_DIR = QU_WEIGHT_DIR / "P2"
 CLONED_QU_WEIGHT_DIR = QU_WEIGHT_DIR / "cloned"
 RECOMMENDATION_RESULTS_DIR = RESULTS_DIR / "recommendation_results"
 COMPARISON_RESULTS_DIR = RESULTS_DIR / "comparator_results"
+ALPHA_SWEEP_RESULTS_DIR = RESULTS_DIR / "alpha_sweep_results"
 
 
 # Specific data files
