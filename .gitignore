@@ -12,3 +12,4 @@ experiment_results/recommendation_results/**/*.parquet
 experiment_results/recommendation_results/**/*.csv
 experiment_results/comparator_results/**/*.parquet
 experiment_results/comparator_results/**/*.csv
+jobs/out/*

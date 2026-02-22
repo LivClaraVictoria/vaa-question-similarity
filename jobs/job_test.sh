@@ -4,8 +4,8 @@
 # --- LOGGING PATHS ---
 # %j is automatically replaced by the specific Job ID number.
 # CRITICAL: The directory '.../jobs' MUST exist before running, or the job will fail silently.
-#SBATCH --output=/itet-stor/liweiss/net_scratch/vaa-question-similarity/jobs/%j.out # where to store the output (%j is the JOBID), subdirectory "log" must exist
-#SBATCH --error=/itet-stor/liweiss/net_scratch/vaa-question-similarity/jobs/%j.err # where to store error messages
+#SBATCH --output=/itet-stor/liweiss/net_scratch/vaa-question-similarity/jobs/out/%j.out
+#SBATCH --error=/itet-stor/liweiss/net_scratch/vaa-question-similarity/jobs/out/%j.err
 
 # --- MEMORY (RAM) ---
 # 20G is a safe default. If your job crashes with "OOM" or "Killed", increase this (e.g., 40G).
@@ -35,7 +35,7 @@ mkdir -p ${DIRECTORY}/jobs
 set -o errexit
 
 # Set a directory for temporary files unique to the job with automatic removal at job termination
-TMPDIR=$(mktemp -d)
+TMPDIR=$(mktemp -d -p /tmp)
 if [[ ! -d ${TMPDIR} ]]; then
 echo 'Failed to create temp directory' >&2
 exit 1

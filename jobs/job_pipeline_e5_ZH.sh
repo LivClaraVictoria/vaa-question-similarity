@@ -4,8 +4,8 @@
 # --- LOGGING PATHS ---
 # %j is automatically replaced by the specific Job ID number.
 # CRITICAL: The directory '.../jobs' MUST exist before running, or the job will fail silently.
-#SBATCH --output=/itet-stor/liweiss/net_scratch/vaa-question-similarity/jobs/%j.out # where to store the output (%j is the JOBID), subdirectory "log" must exist
-#SBATCH --error=/itet-stor/liweiss/net_scratch/vaa-question-similarity/jobs/%j.err # where to store error messages
+#SBATCH --output=/itet-stor/liweiss/net_scratch/vaa-question-similarity/jobs/out/%j.out
+#SBATCH --error=/itet-stor/liweiss/net_scratch/vaa-question-similarity/jobs/out/%j.err
 
 # --- MEMORY (RAM) ---
 # 20G is a safe default. If your job crashes with "OOM" or "Killed", increase this (e.g., 40G).
@@ -37,15 +37,15 @@ mkdir -p ${DIRECTORY}/jobs
 # Exit on errors
 set -o errexit
 
-# Create a temp directory inside NET_SCRATCH, not local /tmp
-export TMPDIR="${DIRECTORY}/jobs/tmp_${SLURM_JOB_ID}"
-mkdir -p "${TMPDIR}"
-
-# Cleanup function (deletes the folder when job finishes)
-cleanup() {
-    rm -rf "${TMPDIR}"
-}
-trap cleanup EXIT
+# Set a directory for temporary files unique to the job with automatic removal at job termination
+TMPDIR=$(mktemp -d -p /tmp)
+if [[ ! -d ${TMPDIR} ]]; then
+    echo 'Failed to create temp directory' >&2
+    exit 1
+fi
+trap "exit 1" HUP INT TERM
+trap 'rm -rf "${TMPDIR}"' EXIT
+export TMPDIR
 
 # Change the current directory to the location where you want to store temporary files, exit if changing didn't succeed.
 # Adapt this to your personal preference
@@ -65,7 +65,7 @@ echo "Conda activated"
 cd ${DIRECTORY}
 
 # Execute your code
-python -m main --config configs/full_pipeline/pipeline_e5.py
+python -u -m main --config configs/full_pipeline/base_data/pipeline_e5_ZH.py
 
 # Send more noteworthy information to the output log
 echo "Finished at: $(date)"
