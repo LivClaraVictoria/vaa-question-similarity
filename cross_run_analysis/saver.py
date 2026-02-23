@@ -16,11 +16,15 @@ def _row(label: str, value: str) -> str:
 class CrossRunSaver:
     """
     Saves human-readable results for a cross-run comparison.
-    Produces:
-      - compare_<A>_vs_<B>_<timestamp>_<hash>.txt     — formatted summary report
-      - compare_<A>_vs_<B>_<timestamp>_<hash>.parquet — raw per-voter results
-      - compare_<A>_vs_<B>_<timestamp>_<hash>.csv     — flat summary stats for downstream analysis
-    Deduplication: if a .txt with the same hash already exists, saving is skipped.
+    Each comparison is written into its own subfolder under output_dir:
+      compare_<A>_vs_<B>/
+        compare_<A>_vs_<B>_<timestamp>_<hash>.txt          — formatted summary report
+        compare_<A>_vs_<B>_<timestamp>_<hash>.parquet       — raw per-voter results
+        compare_<A>_vs_<B>_<timestamp>_<hash>_summary.csv   — flat summary stats
+        compare_<A>_vs_<B>_<timestamp>_<hash>_distributions.png
+        compare_<A>_vs_<B>_<timestamp>_<hash>_metrics.png
+        compare_<A>_vs_<B>_<timestamp>_<hash>_improvement.png
+    Deduplication: if a .txt with the same hash already exists in the subfolder, saving is skipped.
     """
 
     def __init__(self, output_dir: Path):
@@ -37,8 +41,12 @@ class CrossRunSaver:
         h = _get_hash(meta_a, meta_b, n_used)
         prefix = self._get_prefix(meta_a, meta_b)
 
+        # Each comparison gets its own subfolder
+        subfolder = self.output_dir / prefix
+        subfolder.mkdir(parents=True, exist_ok=True)
+
         # Deduplication check
-        existing = list(self.output_dir.glob(f"*{h}*.txt"))
+        existing = list(subfolder.glob(f"*{h}*.txt"))
         if existing:
             print(
                 f"[SKIP SAVE] Results with hash {h} already exist: {existing[0].name}"
@@ -48,9 +56,9 @@ class CrossRunSaver:
         timestamp = datetime.now().strftime("%m%d_%H%M")
         base = f"{prefix}_{timestamp}_{h}"
 
-        txt_path = self.output_dir / f"{base}.txt"
-        parquet_path = self.output_dir / f"{base}.parquet"
-        csv_path = self.output_dir / f"{base}_summary.csv"
+        txt_path = subfolder / f"{base}.txt"
+        parquet_path = subfolder / f"{base}.parquet"
+        csv_path = subfolder / f"{base}_summary.csv"
 
         bs, br, cs, cr = self._compute_stats(df, meta_a, n_used)
 
@@ -63,12 +71,12 @@ class CrossRunSaver:
 
         self._save_summary_csv(csv_path, meta_a, meta_b, n_used, bs, br, cs, cr)
 
-        print(f"\n[Results Saved]")
+        print(f"\n[Results Saved] -> {subfolder.name}/")
         print(f"  -> Report:  {txt_path.name}")
         print(f"  -> Data:    {parquet_path.name}")
         print(f"  -> Summary: {csv_path.name}")
 
-        plotter = CrossRunPlotter(self.output_dir)
+        plotter = CrossRunPlotter(subfolder)
         plotter.save_plots(df, base, meta_a, meta_b)
 
         print(f"\n{summary}")

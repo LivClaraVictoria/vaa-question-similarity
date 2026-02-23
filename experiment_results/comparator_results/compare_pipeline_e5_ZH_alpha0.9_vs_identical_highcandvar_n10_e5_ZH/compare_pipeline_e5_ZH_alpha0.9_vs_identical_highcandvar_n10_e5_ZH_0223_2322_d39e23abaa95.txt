@@ -1,0 +1,37 @@
+=== Cross-Run Comparison Report ===
+A: pipeline_e5_ZH_alpha0.9
+B: identical_highcandvar_n10_e5_ZH
+Voters compared: 41658
+------------------------------------------------------------
+--- STANDARD ---
+  Set Similarity (Top-36):
+  Avg Jaccard Similarity:                   0.7306
+  Median Jaccard Similarity:                0.8000
+  Min Jaccard Similarity:                   0.0141
+  Perfect matches (Jaccard=1.0):            37.9% of voters
+  Avg candidates swapped in/out:            6.98 candidates per voter
+  Max candidates swapped in/out:            35 candidates
+  Rank Stability (All):
+  Spearman Rho:                             0.9150
+  Kendall Tau:                              0.8537
+  Voters w/ at least 1 rank change:         64.25%
+  Avg candidates changed per voter:         640.5 (1779.25% of list)
+  Avg positions a candidate moved:          67.17 ranks
+  Max positions a candidate moved:          625 ranks
+------------------------------------------------------------
+--- CRW ---
+  Set Similarity (Top-36):
+  Avg Jaccard Similarity:                   0.7991
+  Median Jaccard Similarity:                0.8000
+  Min Jaccard Similarity:                   0.2632
+  Perfect matches (Jaccard=1.0):            1.2% of voters
+  Avg candidates swapped in/out:            4.13 candidates per voter
+  Max candidates swapped in/out:            21 candidates
+  Rank Stability (All):
+  Spearman Rho:                             0.9935
+  Kendall Tau:                              0.9449
+  Voters w/ at least 1 rank change:         100.00%
+  Avg candidates changed per voter:         990.3 (2750.79% of list)
+  Avg positions a candidate moved:          21.40 ranks
+  Max positions a candidate moved:          421 ranks
+------------------------------------------------------------
