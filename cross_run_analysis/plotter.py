@@ -5,6 +5,8 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 from pathlib import Path
+from scipy.stats import gaussian_kde
+
 
 _COLOR_BASE = "#9E9E9E"
 _COLOR_CRW = "#2196F3"
@@ -85,7 +87,6 @@ class CrossRunPlotter:
         xlabel: str,
         xlim,
     ) -> None:
-        from scipy.stats import gaussian_kde
 
         def _plot_kde(vals, color, label, linestyle):
             vals = vals.dropna()
