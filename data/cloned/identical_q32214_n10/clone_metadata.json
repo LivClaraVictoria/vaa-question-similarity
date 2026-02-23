@@ -1,23 +1,23 @@
 {
   "data_year": 2023,
-  "source_dir": "C:\\Users\\liv\\git\\thesis\\vaa-question-similarity\\data\\cleaned",
-  "generated_at": "2026-02-21T17:00:32.500548",
+  "source_dir": "/usr/itetnas04/data-scratch-01/liweiss/data/vaa-question-similarity/data/cleaned",
+  "generated_at": "2026-02-23T01:25:01.316479",
   "specs": [
     {
       "source_q_id": 32214,
       "clone_type": "identical",
       "n_clones": 10,
       "clone_ids": [
-        12221401,
-        12221402,
-        12221403,
-        12221404,
-        12221405,
-        12221406,
-        12221407,
-        12221408,
-        12221409,
-        12221410
+        41214001,
+        41214002,
+        41214003,
+        41214004,
+        41214005,
+        41214006,
+        41214007,
+        41214008,
+        41214009,
+        41214010
       ],
       "flip_answers": false
     }

@@ -17,6 +17,7 @@ from clone_pipeline.loader import load_clean_data
 from clone_pipeline.selector import build_selector
 from clone_pipeline.spec import CloneSpec
 from clone_pipeline.applicator import apply_specs
+from clone_pipeline.paraphrase_generator import ensure_paraphrases
 from clone_pipeline.writer import write_cloned_dataset
 from clone_pipeline.loader import _find_parquet
 
@@ -76,9 +77,20 @@ def main():
         for spec_def in config.clone_specs_config
     ]
 
+    # 3.5 Generate paraphrases if any spec needs them
+    needs_paraphrases = any(
+        spec.clone_type != "identical" for spec in specs
+    )
+    paraphrases = None
+    if needs_paraphrases:
+        paraphrase_dir = DATA_DIR / "paraphrases"
+        paraphrases = ensure_paraphrases(
+            specs, dataframes["questions"], config.data_year, paraphrase_dir
+        )
+
     # 4. Apply
     modified_dfs = apply_specs(
-        specs, dataframes
+        specs, dataframes, paraphrases=paraphrases
     )  # returns candidates, voters, questions
 
     # 5. Derive output folder name from config name
