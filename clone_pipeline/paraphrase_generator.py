@@ -41,9 +41,11 @@ def _build_prompt(
             "form (e.g. question to statement or vice versa)."
         ),
         "negation": (
-            "Negate the original question so that someone who agrees with the "
-            "original would disagree with your version, and vice versa. "
-            "The negation should feel natural, not just inserting 'not'."
+            "Negate the original question using the simplest possible change. "
+            "Preferably just insert 'not' or swap a key word for its antonym "
+            "(e.g. 'increase' becomes 'decrease', 'strengthen' becomes 'weaken'). "
+            "Keep everything else identical to the original. "
+            "Someone who agrees with the original should disagree with your version."
         ),
         "negation_easy": (
             "First, create an easy paraphrase of the original (similar wording, "
