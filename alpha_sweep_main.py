@@ -2,14 +2,26 @@
 Alpha sweep: evaluates CRW robustness by running the CRW+recommendation pipeline
 across a range of alpha values for two configs and comparing recommendations.
 
+Supports three modes:
+    - sweep (default): Run all alphas sequentially in one process.
+    - worker:  Compute a single alpha (by --task-id index). For SLURM job arrays.
+    - collect: Read per-alpha worker CSVs from --sweep-dir, aggregate, and plot.
+
 Usage:
+    # Sequential (original behavior):
     python -m alpha_sweep_main \\
         --config_a configs/full_pipeline/base_data/pipeline_e5_ZH.py \\
-        --config_b configs/full_pipeline/cloned/identical_highcandvar_n10_e5_ZH.py \\
-        [--alphas 0.1,0.2,...,1.5] \\
-        [--n 36]
+        --config_b configs/full_pipeline/cloned/identical_highcandvar_n10_e5_ZH.py
 
-Outputs (saved to experiment_results/comparator_results/):
+    # Worker (one alpha, for SLURM array):
+    python -m alpha_sweep_main --mode worker --task-id 3 \\
+        --config_a ... --config_b ... --sweep-dir /path/to/sweep_dir
+
+    # Collect (aggregate workers + plot):
+    python -m alpha_sweep_main --mode collect \\
+        --config_a ... --config_b ... --sweep-dir /path/to/sweep_dir
+
+Outputs (saved to experiment_results/alpha_sweep_results/):
     - alpha_sweep_<a>_vs_<b>_<timestamp>_<hash>.csv          — sweep data
     - alpha_sweep_<a>_vs_<b>_<timestamp>_<hash>_metrics.png  — CRW vs STANDARD metrics
     - alpha_sweep_<a>_vs_<b>_<timestamp>_<hash>_jaccard_dist.png — Jaccard distribution
@@ -44,6 +56,8 @@ alphas_high = [round(1.5 + (0.3 * i), 1) for i in range(1, 6)]  # 1.8 to 3.0
 DEFAULT_ALPHAS = [0.01] + alphas_low + alphas_high
 DEFAULT_ALPHA_REFERENCE = 0.6
 
+ANALYSIS_CACHE_DIR = default_config.CACHE_DIR / "alpha_sweep_analysis"
+
 
 # ---------------------------------------------------------------------------
 # CLI
@@ -72,6 +86,25 @@ def _parse_args():
         type=int,
         default=None,
         help="Override top-k for Jaccard (default: derived from config)",
+    )
+    parser.add_argument(
+        "--mode",
+        type=str,
+        choices=["sweep", "worker", "collect"],
+        default="sweep",
+        help="Execution mode: sweep (sequential), worker (single alpha), collect (aggregate + plot)",
+    )
+    parser.add_argument(
+        "--task-id",
+        type=int,
+        default=None,
+        help="Alpha index for worker mode (typically SLURM_ARRAY_TASK_ID)",
+    )
+    parser.add_argument(
+        "--sweep-dir",
+        type=str,
+        default=None,
+        help="Directory for per-alpha worker CSVs (worker writes here, collect reads from here)",
     )
     return parser.parse_args()
 
@@ -127,6 +160,61 @@ def _get_sweep_hash(config_a, config_b, alphas: list[float], n: int) -> str:
     }
     s = json.dumps(payload, sort_keys=True, default=str)
     return hashlib.md5(s.encode()).hexdigest()[:12]
+
+
+def _get_analysis_cache_hash(config_a, config_b, alpha: float, n: int) -> str:
+    """Deterministic hash for a single cross-run analysis at a given alpha."""
+    payload = {
+        "config_a": Path(config_a.__file__).stem,
+        "config_b": Path(config_b.__file__).stem,
+        "alpha": alpha,
+        "n_jaccard": n,
+        "data_year_a": config_a.data_year,
+        "dist_a": config_a.dist,
+        "data_choice_a": config_a.data_choice,
+        "clone_id_a": config_a.clone_id,
+        "data_year_b": config_b.data_year,
+        "dist_b": config_b.dist,
+        "data_choice_b": config_b.data_choice,
+        "clone_id_b": config_b.clone_id,
+        "crw_paper_choice": config_a.crw_paper_choice,
+        "rec_dist_method": config_a.rec_dist_method,
+        "district": config_a.district,
+        "subset_n": config_a.subset_n,
+    }
+    s = json.dumps(payload, sort_keys=True, default=str)
+    return hashlib.md5(s.encode()).hexdigest()[:12]
+
+
+# ---------------------------------------------------------------------------
+# Cross-run analysis caching
+# ---------------------------------------------------------------------------
+
+
+def _get_or_compute_analysis(
+    analyzer: CrossRunAnalyzer,
+    rec_df_a: pd.DataFrame,
+    rec_df_b: pd.DataFrame,
+    config_a,
+    config_b,
+    alpha: float,
+    n: int,
+) -> pd.DataFrame:
+    """Run cross-run analysis with file-based caching."""
+    cache_dir = ANALYSIS_CACHE_DIR
+    cache_dir.mkdir(parents=True, exist_ok=True)
+
+    h = _get_analysis_cache_hash(config_a, config_b, alpha, n)
+    cache_path = cache_dir / f"analysis_a{alpha}_{h}.parquet"
+
+    if cache_path.exists():
+        print(f"  [CACHE HIT] Cross-run analysis: {cache_path.name}")
+        return pd.read_parquet(cache_path)
+
+    results = analyzer.analyze_from_dfs(rec_df_a, rec_df_b)
+    results.to_parquet(cache_path, index=False)
+    print(f"  [CACHE SAVE] Cross-run analysis: {cache_path.name}")
+    return results
 
 
 # ---------------------------------------------------------------------------
@@ -305,6 +393,224 @@ def _save_outputs(
 
 
 # ---------------------------------------------------------------------------
+# Shared setup: load data, distances, baselines
+# ---------------------------------------------------------------------------
+
+
+def _setup_pipeline(config_a, config_b):
+    """Load datasets, compute distances, build rec engines + baselines. Returns all shared state."""
+    print("\n--- Loading datasets ---")
+    dataset_a = load_dataset(config_a)
+    dataset_b = load_dataset(config_b)
+
+    print("\n--- Computing / loading distances ---")
+    calculator_a = get_calculator(config_a)
+    dist_df_a = calculator_a.calculate_distance(dataset_a, config_a)
+
+    calculator_b = get_calculator(config_b)
+    dist_df_b = calculator_b.calculate_distance(dataset_b, config_b)
+
+    print("\n--- Computing baseline recommendations (alpha-independent) ---")
+    rec_engine_a = RecommendationEngine(config=config_a, data_map=dataset_a)
+    baseline_a = rec_engine_a.run_baseline()
+
+    rec_engine_b = RecommendationEngine(config=config_b, data_map=dataset_b)
+    baseline_b = rec_engine_b.run_baseline()
+
+    return {
+        "dataset_a": dataset_a, "dataset_b": dataset_b,
+        "dist_df_a": dist_df_a, "dist_df_b": dist_df_b,
+        "rec_engine_a": rec_engine_a, "rec_engine_b": rec_engine_b,
+        "baseline_a": baseline_a, "baseline_b": baseline_b,
+    }
+
+
+# ---------------------------------------------------------------------------
+# Per-alpha computation (shared by sweep and worker modes)
+# ---------------------------------------------------------------------------
+
+
+def _compute_alpha(
+    alpha: float,
+    config_a,
+    config_b,
+    pipeline: dict,
+    analyzer: CrossRunAnalyzer,
+    n: int,
+) -> tuple[dict, dict | None]:
+    """
+    Compute metrics for a single alpha value. Returns (row_dict, std_metrics_or_None).
+    std_metrics is returned on the first call for baseline (alpha-invariant) metrics.
+    """
+    config_a.alpha = alpha
+    config_b.alpha = alpha
+
+    rec_df_a = _get_or_compute_recs(
+        config_a, pipeline["rec_engine_a"], pipeline["dist_df_a"], pipeline["baseline_a"]
+    )
+    rec_df_b = _get_or_compute_recs(
+        config_b, pipeline["rec_engine_b"], pipeline["dist_df_b"], pipeline["baseline_b"]
+    )
+
+    sys.stdout.flush()
+
+    results = _get_or_compute_analysis(
+        analyzer, rec_df_a, rec_df_b, config_a, config_b, alpha, n
+    )
+
+    crw_jac = results["crw_jaccard"]
+    row = {
+        "alpha": alpha,
+        "crw_jaccard_mean": crw_jac.mean(),
+        "crw_jaccard_median": crw_jac.median(),
+        "crw_jaccard_p10": crw_jac.quantile(0.1),
+        "crw_spearman_mean": results["crw_spearman"].mean(),
+        "crw_kendall_mean": results["crw_kendall"].mean(),
+    }
+
+    std_metrics = {
+        "base_jaccard_mean": results["base_jaccard"].mean(),
+        "base_spearman_mean": results["base_spearman"].mean(),
+        "base_kendall_mean": results["base_kendall"].mean(),
+    }
+
+    return row, std_metrics
+
+
+# ---------------------------------------------------------------------------
+# Mode: sweep (original sequential behavior)
+# ---------------------------------------------------------------------------
+
+
+def _run_sweep(args, config_a, config_b, alphas: list[float], n: int):
+    pipeline = _setup_pipeline(config_a, config_b)
+    analyzer = CrossRunAnalyzer.from_n(n)
+
+    sweep_rows = []
+    std_metrics: dict | None = None
+
+    for i, alpha in enumerate(alphas):
+        print(f"\n--- Alpha {alpha:.2f}  ({i + 1}/{len(alphas)}) ---")
+
+        row, base_metrics = _compute_alpha(alpha, config_a, config_b, pipeline, analyzer, n)
+        sweep_rows.append(row)
+
+        if std_metrics is None:
+            std_metrics = base_metrics
+            print(
+                f"  STANDARD (no CRW): Jaccard={std_metrics['base_jaccard_mean']:.4f}, "
+                f"Spearman={std_metrics['base_spearman_mean']:.4f}, "
+                f"Kendall={std_metrics['base_kendall_mean']:.4f}"
+            )
+
+        print(
+            f"  CRW: Jaccard={row['crw_jaccard_mean']:.4f} "
+            f"(med={row['crw_jaccard_median']:.4f}, p10={row['crw_jaccard_p10']:.4f}), "
+            f"Spearman={row['crw_spearman_mean']:.4f}, "
+            f"Kendall={row['crw_kendall_mean']:.4f}"
+        )
+
+    sweep_df = pd.DataFrame(sweep_rows)
+
+    output_dir = default_config.ALPHA_SWEEP_RESULTS_DIR
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    print("\n--- Saving outputs ---")
+    _save_outputs(sweep_df, std_metrics, config_a, config_b, alphas, n, output_dir)
+    print("\n=== Alpha Sweep Complete ===")
+
+
+# ---------------------------------------------------------------------------
+# Mode: worker (single alpha for SLURM job array)
+# ---------------------------------------------------------------------------
+
+
+def _run_worker(args, config_a, config_b, alphas: list[float], n: int):
+    task_id = args.task_id
+    if task_id is None:
+        print("ERROR: --task-id is required in worker mode", file=sys.stderr)
+        sys.exit(1)
+    if task_id < 0 or task_id >= len(alphas):
+        print(
+            f"ERROR: --task-id {task_id} out of range [0, {len(alphas) - 1}]",
+            file=sys.stderr,
+        )
+        sys.exit(1)
+
+    sweep_dir = Path(args.sweep_dir) if args.sweep_dir else default_config.ALPHA_SWEEP_RESULTS_DIR / "workers"
+    sweep_dir.mkdir(parents=True, exist_ok=True)
+
+    alpha = alphas[task_id]
+    print(f"\n=== Worker: alpha={alpha:.2f} (task {task_id}/{len(alphas) - 1}) ===")
+
+    pipeline = _setup_pipeline(config_a, config_b)
+    analyzer = CrossRunAnalyzer.from_n(n)
+
+    row, std_metrics = _compute_alpha(alpha, config_a, config_b, pipeline, analyzer, n)
+
+    # Save per-alpha CSV (includes both CRW and baseline metrics)
+    worker_row = {**row, **std_metrics}
+    worker_df = pd.DataFrame([worker_row])
+    out_path = sweep_dir / f"alpha_worker_{task_id:03d}_a{alpha}.csv"
+    worker_df.to_csv(out_path, index=False)
+
+    print(f"\n  -> Worker CSV: {out_path}")
+    print(
+        f"  CRW: Jaccard={row['crw_jaccard_mean']:.4f}, "
+        f"Spearman={row['crw_spearman_mean']:.4f}, "
+        f"Kendall={row['crw_kendall_mean']:.4f}"
+    )
+    print(f"\n=== Worker Complete ===")
+
+
+# ---------------------------------------------------------------------------
+# Mode: collect (aggregate worker CSVs + plot)
+# ---------------------------------------------------------------------------
+
+
+def _run_collect(args, config_a, config_b, alphas: list[float], n: int):
+    sweep_dir = Path(args.sweep_dir) if args.sweep_dir else default_config.ALPHA_SWEEP_RESULTS_DIR / "workers"
+
+    worker_files = sorted(sweep_dir.glob("alpha_worker_*.csv"))
+    if not worker_files:
+        print(f"ERROR: No worker CSVs found in {sweep_dir}", file=sys.stderr)
+        sys.exit(1)
+
+    print(f"\n=== Collect: reading {len(worker_files)} worker CSVs from {sweep_dir} ===")
+
+    dfs = [pd.read_csv(f) for f in worker_files]
+    combined = pd.concat(dfs, ignore_index=True).sort_values("alpha").reset_index(drop=True)
+
+    # Extract sweep metrics (CRW columns only)
+    sweep_cols = ["alpha", "crw_jaccard_mean", "crw_jaccard_median", "crw_jaccard_p10",
+                  "crw_spearman_mean", "crw_kendall_mean"]
+    sweep_df = combined[sweep_cols]
+
+    # Baseline metrics are alpha-invariant; take from first row
+    std_metrics = {
+        "base_jaccard_mean": combined["base_jaccard_mean"].iloc[0],
+        "base_spearman_mean": combined["base_spearman_mean"].iloc[0],
+        "base_kendall_mean": combined["base_kendall_mean"].iloc[0],
+    }
+
+    print(f"  Alphas collected: {sorted(sweep_df['alpha'].tolist())}")
+    print(
+        f"  STANDARD (no CRW): Jaccard={std_metrics['base_jaccard_mean']:.4f}, "
+        f"Spearman={std_metrics['base_spearman_mean']:.4f}, "
+        f"Kendall={std_metrics['base_kendall_mean']:.4f}"
+    )
+
+    output_dir = default_config.ALPHA_SWEEP_RESULTS_DIR
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    collected_alphas = sorted(sweep_df["alpha"].tolist())
+
+    print("\n--- Saving outputs ---")
+    _save_outputs(sweep_df, std_metrics, config_a, config_b, collected_alphas, n, output_dir)
+    print("\n=== Collect Complete ===")
+
+
+# ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
 
@@ -327,109 +633,18 @@ def main():
 
     name_a = _get_clean_name(config_a)
     name_b = _get_clean_name(config_b)
-    print(f"\n=== Alpha Sweep ===")
+    print(f"\n=== Alpha Sweep ({args.mode} mode) ===")
     print(f"  Config A : {name_a}")
     print(f"  Config B : {name_b}")
     print(f"  Alphas   : {alphas}")
     print(f"  Top-k (n): {n}")
 
-    # ------------------------------------------------------------------
-    # Step 1: Load datasets (once per config)
-    # ------------------------------------------------------------------
-    print("\n--- Loading datasets ---")
-    dataset_a = load_dataset(config_a)
-    dataset_b = load_dataset(config_b)
-
-    # ------------------------------------------------------------------
-    # Step 2: Compute distances (once per config; alpha not in dist hash)
-    # ------------------------------------------------------------------
-    print("\n--- Computing / loading distances ---")
-    calculator_a = get_calculator(config_a)
-    dist_df_a = calculator_a.calculate_distance(dataset_a, config_a)
-
-    calculator_b = get_calculator(config_b)
-    dist_df_b = calculator_b.calculate_distance(dataset_b, config_b)
-
-    # ------------------------------------------------------------------
-    # Step 3: Create recommendation engines and run baselines (once)
-    # ------------------------------------------------------------------
-    print("\n--- Computing baseline recommendations (alpha-independent) ---")
-    rec_engine_a = RecommendationEngine(config=config_a, data_map=dataset_a)
-    baseline_a = rec_engine_a.run_baseline()
-
-    rec_engine_b = RecommendationEngine(config=config_b, data_map=dataset_b)
-    baseline_b = rec_engine_b.run_baseline()
-
-    # ------------------------------------------------------------------
-    # Step 4: Create analyzer (reused across all alpha values)
-    # ------------------------------------------------------------------
-    analyzer = CrossRunAnalyzer.from_n(n)
-
-    # ------------------------------------------------------------------
-    # Step 5: Alpha sweep
-    # ------------------------------------------------------------------
-    sweep_rows = []
-    std_metrics: dict | None = None
-
-    for i, alpha in enumerate(alphas):
-        print(f"\n--- Alpha {alpha:.2f}  ({i + 1}/{len(alphas)}) ---")
-
-        # Override alpha on both configs (ResultManager reads this at construction)
-        config_a.alpha = alpha
-        config_b.alpha = alpha
-
-        rec_df_a = _get_or_compute_recs(config_a, rec_engine_a, dist_df_a, baseline_a)
-        rec_df_b = _get_or_compute_recs(config_b, rec_engine_b, dist_df_b, baseline_b)
-
-        sys.stdout.flush()
-
-        results = analyzer.analyze_from_dfs(rec_df_a, rec_df_b)
-
-        crw_jac = results["crw_jaccard"]
-        sweep_rows.append(
-            {
-                "alpha": alpha,
-                "crw_jaccard_mean": crw_jac.mean(),
-                "crw_jaccard_median": crw_jac.median(),
-                "crw_jaccard_p10": crw_jac.quantile(0.1),
-                "crw_spearman_mean": results["crw_spearman"].mean(),
-                "crw_kendall_mean": results["crw_kendall"].mean(),
-            }
-        )
-
-        # Capture STANDARD metrics from the first alpha (they're alpha-invariant)
-        if std_metrics is None:
-            std_metrics = {
-                "base_jaccard_mean": results["base_jaccard"].mean(),
-                "base_spearman_mean": results["base_spearman"].mean(),
-                "base_kendall_mean": results["base_kendall"].mean(),
-            }
-            print(
-                f"  STANDARD (no CRW): Jaccard={std_metrics['base_jaccard_mean']:.4f}, "
-                f"Spearman={std_metrics['base_spearman_mean']:.4f}, "
-                f"Kendall={std_metrics['base_kendall_mean']:.4f}"
-            )
-
-        row = sweep_rows[-1]
-        print(
-            f"  CRW: Jaccard={row['crw_jaccard_mean']:.4f} "
-            f"(med={row['crw_jaccard_median']:.4f}, p10={row['crw_jaccard_p10']:.4f}), "
-            f"Spearman={row['crw_spearman_mean']:.4f}, "
-            f"Kendall={row['crw_kendall_mean']:.4f}"
-        )
-
-    sweep_df = pd.DataFrame(sweep_rows)
-
-    # ------------------------------------------------------------------
-    # Step 6: Save plots + CSV
-    # ------------------------------------------------------------------
-    output_dir = default_config.ALPHA_SWEEP_RESULTS_DIR
-    output_dir.mkdir(parents=True, exist_ok=True)
-
-    print("\n--- Saving outputs ---")
-    _save_outputs(sweep_df, std_metrics, config_a, config_b, alphas, n, output_dir)
-
-    print("\n=== Alpha Sweep Complete ===")
+    if args.mode == "sweep":
+        _run_sweep(args, config_a, config_b, alphas, n)
+    elif args.mode == "worker":
+        _run_worker(args, config_a, config_b, alphas, n)
+    elif args.mode == "collect":
+        _run_collect(args, config_a, config_b, alphas, n)
 
 
 if __name__ == "__main__":

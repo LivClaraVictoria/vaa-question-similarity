@@ -8,16 +8,13 @@
 #SBATCH --error=/itet-stor/liweiss/net_scratch/vaa-question-similarity/jobs/out/%j.err
 
 # --- MEMORY (RAM) ---
-#SBATCH --mem=32G
+#SBATCH --mem=8G
 
-# Always keep this at 1 for standard training scripts.
 #SBATCH --nodes=1
 
-# Time Limit
-#SBATCH --time=04:00:00
+#SBATCH --time=00:30:00
 
-# Standard rule: 4 CPUs per 1 GPU.
-#SBATCH --cpus-per-task=8
+#SBATCH --cpus-per-task=2
 #SBATCH --gres=gpu:0
 #SBATCH --exclude=tikgpu10,tikgpu[06-09]
 #CommentSBATCH --nodelist=tikgpu01 # Specify that it should run on this particular node

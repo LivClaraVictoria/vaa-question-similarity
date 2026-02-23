@@ -15,7 +15,7 @@
 #SBATCH --nodes=1
 
 # Time Limit
-#SBATCH --time=04:00:00
+#SBATCH --time=02:00:00
 
 # Standard rule: 4 CPUs per 1 GPU.
 #SBATCH --cpus-per-task=8
