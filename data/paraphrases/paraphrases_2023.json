@@ -12,6 +12,54 @@
       "Is the introduction of a third official gender, in addition to 'female' and 'male,' something you endorse?",
       "Do you think there should be an official establishment of a third gender, apart from 'female' and 'male'?",
       "Should a third gender be formally recognized alongside 'female' and 'male'?"
+    ],
+    "negation_hard": [
+      "Do you believe there should be no recognition of a third gender in addition to 'female' and 'male'?",
+      "Is it your opinion that the classification system should exclude a third gender option beyond 'male' and 'female'?",
+      "Do you think the current binary gender system should remain without adding a third category?",
+      "Should the existing gender categories 'male' and 'female' continue to be the only officially acknowledged options?",
+      "Is it your stance that a third gender should not be officially recognized along with 'male' and 'female'?",
+      "Is it your view that the acknowledgment of genders should remain limited to just 'male' and 'female', without introducing a third option?",
+      "Do you hold the opinion that a third gender classification should remain unacknowledged by not being added to 'male' and 'female'?",
+      "Do you support maintaining the status quo by not incorporating any gender categories other than 'male' and 'female'?",
+      "Do you disagree with the idea of keeping only 'male' and 'female' as the recognized gender categories, without adding another one?",
+      "Are you of the belief that a third gender should not be formally added to the recognized categories of 'male' and 'female'?"
+    ],
+    "negation_easy": [
+      "Should we avoid adding a third official gender in addition to \"female\" and \"male\"?",
+      "Should a third official gender not be established besides \"female\" and \"male\"?",
+      "Is it better not to create a third official gender option apart from \"female\" and \"male\"?",
+      "Should we prevent the establishment of a third official gender alongside \"female\" and \"male\"?",
+      "Should we oppose the provision of a third official gender in addition to \"female\" and \"male\"?",
+      "Should we stop the incorporation of a third official gender next to \"female\" and \"male\"?",
+      "Should we reject the introduction of a third official gender along with \"female\" and \"male\"?",
+      "Should we not endorse the addition of a third official gender besides \"female\" and \"male\"?",
+      "Should we decline the inclusion of a third official gender alongside \"female\" and \"male\"?",
+      "Should we not accept the creation of a third official gender in addition to \"female\" and \"male\"?"
+    ],
+    "hard_paraphrase": [
+      "Is there a need to establish an additional recognized gender category apart from 'male' and 'female'?",
+      "Should a new official gender classification be added to the existing categories of 'male' and 'female'?",
+      "Would it be appropriate to formally recognize a gender identity that is neither 'female' nor 'male'?",
+      "Is it necessary to create an officially acknowledged gender option in addition to 'female' and 'male'?",
+      "Ought there to be an officially sanctioned gender option besides 'male' and 'female'?",
+      "Should an additional gender identity be formally included as an alternative to 'male' and 'female'?",
+      "Is there a case for officially adding a third gender identity to the categories of 'male' and 'female'?",
+      "Would it be advisable to introduce a distinct gender designation, separate from 'male' and 'female'?",
+      "Is it time to incorporate a third gender option into the current official categories of 'female' and 'male'?",
+      "Should there be a legal recognition of a gender classification other than 'male' and 'female'?"
+    ],
+    "negation": [
+      "Should a third official gender not be introduced alongside \"female\" and \"male\"?",
+      "Should a third official gender be removed instead of being introduced alongside \"female\" and \"male\"?",
+      "Should a third official gender be rejected instead of introduced alongside \"female\" and \"male\"?",
+      "Should a third official gender be excluded rather than introduced alongside \"female\" and \"male\"?",
+      "Should a third official gender be denied introduction alongside \"female\" and \"male\"?",
+      "Should a third official gender be opposed rather than introduced alongside \"female\" and \"male\"?",
+      "Should a third official gender be prohibited instead of introduced alongside \"female\" and \"male\"?",
+      "Should a third official gender be prevented from being introduced alongside \"female\" and \"male\"?",
+      "Should a third official gender be avoided instead of introduced alongside \"female\" and \"male\"?",
+      "Should a third official gender be dismissed instead of introduced alongside \"female\" and \"male\"?"
     ]
   }
 }

@@ -3,6 +3,7 @@ from pathlib import Path
 from datetime import datetime
 
 from cross_run_analysis.computation_cache import _stable_fields, _get_hash
+from cross_run_analysis.plotter import CrossRunPlotter
 
 # Width of the label column for aligned formatting
 _LABEL_W = 42
@@ -66,6 +67,10 @@ class CrossRunSaver:
         print(f"  -> Report:  {txt_path.name}")
         print(f"  -> Data:    {parquet_path.name}")
         print(f"  -> Summary: {csv_path.name}")
+
+        plotter = CrossRunPlotter(self.output_dir)
+        plotter.save_plots(df, base, meta_a, meta_b)
+
         print(f"\n{summary}")
 
     # ------------------------------------------------------------------

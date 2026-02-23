@@ -38,7 +38,7 @@ echo "Config: ${PIPELINE_CONFIG}"
 conda activate ${CONDA_ENVIRONMENT}
 cd ${DIRECTORY}
 
-python -u -m main --config "${PIPELINE_CONFIG}"
+python -u -m main --config "${PIPELINE_CONFIG}" ${PIPELINE_OVERRIDES:-}
 
 echo "Finished at: $(date)"
 exit 0
