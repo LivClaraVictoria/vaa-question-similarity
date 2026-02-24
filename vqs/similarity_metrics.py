@@ -114,10 +114,16 @@ class BaseDistanceCalculator(ABC):
         else:
             # combinations(..., 2) only does unique pairs (triangle of the matrix)
             for i, j in combinations(range(len(questions)), 2):
-                score = float(similarities[i][j])
-                final_value = (
-                    self._cosine_to_euclidean(score) if self.use_euclidean else score
-                )
+                # Identical text always gets distance 0, regardless of floating-point
+                # rounding in the embedding model (identical strings can produce
+                # embeddings that differ by ~1e-7, yielding distances of ~5e-4).
+                if questions[i] == questions[j]:
+                    final_value = 0.0
+                else:
+                    score = float(similarities[i][j])
+                    final_value = (
+                        self._cosine_to_euclidean(score) if self.use_euclidean else score
+                    )
                 results.append(
                     {
                         "Qu1": questions[i],

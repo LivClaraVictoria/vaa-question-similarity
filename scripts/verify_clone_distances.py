@@ -171,10 +171,12 @@ def verify_clone_distances(clone_id: str) -> None:
     clone_pairs = df[df["pair_type"].isin(["clone-source", "clone-clone (same source)"])]
     if len(clone_pairs) > 0:
         max_clone_dist = clone_pairs["Distance"].max()
-        if max_clone_dist < 1e-5:
-            print(f"\n  PASS: All clone distances < 1e-5 (max={max_clone_dist:.2e})")
+        if max_clone_dist == 0.0:
+            print(f"\n  PASS: All clone distances are exactly 0.0")
         elif max_clone_dist < 1e-3:
-            print(f"\n  WARN: Clone distances small but > 1e-5 (max={max_clone_dist:.2e})")
+            print(f"\n  WARN: Clone distances non-zero — floating-point rounding in embedding "
+                  f"model (max={max_clone_dist:.2e}). Fix: add identical-text short-circuit "
+                  f"in similarity_metrics.py.")
         else:
             print(f"\n  FAIL: Clone distances too large (max={max_clone_dist:.2e})")
     else:
