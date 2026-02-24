@@ -1,0 +1,2 @@
+alpha,crw_jaccard_mean,crw_jaccard_median,crw_jaccard_p10,crw_spearman_mean,crw_kendall_mean,base_jaccard_mean,base_spearman_mean,base_kendall_mean
+2.7,0.6182711371530083,0.6363636363636364,0.38461538461538464,0.9308177419284412,0.8255573193529026,0.5403940664453853,0.8486151316171331,0.7291240428220639
