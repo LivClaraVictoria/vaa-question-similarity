@@ -17,7 +17,7 @@ class CrossRunPlotter:
     """
     Generates publication-ready plots for a cross-run comparison.
     Produces three PNG files per comparison run:
-      - {base}_distributions.png  — 2x2 KDE grid: Jaccard, Spearman, Kendall, avg pos moved
+      - {base}_distributions.png  — 2x2 grid: Jaccard PMF + ECDF, Spearman KDE, Kendall KDE
       - {base}_metrics.png        — grouped bar chart of Jaccard, Spearman, Kendall
       - {base}_improvement.png    — 2x2 KDE grid of per-voter CRW improvement over baseline
     """
@@ -36,11 +36,15 @@ class CrossRunPlotter:
         name_a = self._clean_name(meta_a)
         name_b = self._clean_name(meta_b)
 
+        n_a = meta_a.get("n_jaccard")
+        n_b = meta_b.get("n_jaccard")
+        n_jaccard = min(v for v in [n_a, n_b] if v is not None) if (n_a or n_b) else None
+
         dist_path = self.output_dir / f"{base}_distributions.png"
         metrics_path = self.output_dir / f"{base}_metrics.png"
         improvement_path = self.output_dir / f"{base}_improvement.png"
 
-        self._plot_distributions(df, dist_path, name_a, name_b)
+        self._plot_distributions(df, dist_path, name_a, name_b, n_jaccard)
         self._plot_metrics(df, metrics_path, name_a, name_b)
         self._plot_improvement(df, improvement_path, name_a, name_b)
 
@@ -50,51 +54,109 @@ class CrossRunPlotter:
         return [dist_path, metrics_path, improvement_path]
 
     # ------------------------------------------------------------------
-    # Plot 1: KDE distributions (2x2 grid)
+    # Plot 1: distributions (2x2 mosaic)
     # ------------------------------------------------------------------
 
     def _plot_distributions(
-        self, df: pd.DataFrame, path: Path, name_a: str, name_b: str
+        self, df: pd.DataFrame, path: Path, name_a: str, name_b: str, n_jaccard: int | None
     ) -> None:
-        fig, axes = plt.subplots(2, 2, figsize=(14, 10))
+        # Jaccard row: PMF (left) + ECDF (right). Spearman + Kendall KDEs below.
+        # avg_pos_moved is omitted here — it appears in the improvement plot.
+        mosaic = [["jac_pmf", "jac_ecdf"], ["spearman", "kendall"]]
+        fig, axes = plt.subplot_mosaic(mosaic, figsize=(14, 10))
         fig.suptitle(f"{name_a}  vs  {name_b}", fontsize=11, y=1.01)
 
-        self._kde_panel(
-            ax=axes[0, 0],
-            base_vals=df["base_jaccard"],
-            crw_vals=df["crw_jaccard"],
-            title="Jaccard Similarity (Top-k)",
-            xlabel="Jaccard Similarity",
-            xlim=(0.0, 1.0),
-        )
-        self._kde_panel(
-            ax=axes[0, 1],
-            base_vals=df["base_spearman"],
-            crw_vals=df["crw_spearman"],
-            title="Spearman ρ",
-            xlabel="Spearman Correlation",
-            xlim=(-1.0, 1.0),
-        )
-        self._kde_panel(
-            ax=axes[1, 0],
-            base_vals=df["base_kendall"],
-            crw_vals=df["crw_kendall"],
-            title="Kendall τ",
-            xlabel="Kendall Correlation",
-            xlim=(-1.0, 1.0),
-        )
-        self._kde_panel(
-            ax=axes[1, 1],
-            base_vals=df["base_avg_pos_moved"],
-            crw_vals=df["crw_avg_pos_moved"],
-            title="Avg. Candidate Rank Positions Moved",
-            xlabel="Avg. Positions Moved",
-            xlim=None,
-        )
+        if n_jaccard is not None:
+            self._jaccard_pmf_panel(axes["jac_pmf"], df["base_jaccard"], df["crw_jaccard"], n_jaccard)
+            self._jaccard_ecdf_panel(axes["jac_ecdf"], df["base_jaccard"], df["crw_jaccard"], n_jaccard)
+        else:
+            # Fallback for old result files that lack n_jaccard in metadata
+            self._kde_panel(axes["jac_pmf"], df["base_jaccard"], df["crw_jaccard"],
+                            "Jaccard Similarity (Top-k)", "Jaccard Similarity", (0.0, 1.0))
+            axes["jac_ecdf"].set_visible(False)
+
+        self._kde_panel(axes["spearman"], df["base_spearman"], df["crw_spearman"],
+                        "Spearman ρ", "Spearman Correlation", (-1.0, 1.0))
+        self._kde_panel(axes["kendall"], df["base_kendall"], df["crw_kendall"],
+                        "Kendall τ", "Kendall Correlation", (-1.0, 1.0))
 
         fig.tight_layout()
         fig.savefig(path, dpi=300, bbox_inches="tight")
         plt.close(fig)
+
+    def _jaccard_pmf_panel(
+        self,
+        ax: plt.Axes,
+        base_vals: pd.Series,
+        crw_vals: pd.Series,
+        n: int,
+    ) -> None:
+        """Discrete PMF bar chart. Each bar corresponds to one possible Jaccard value."""
+        # All possible Jaccard values for top-k = n: m / (2n - m), m = 0..n
+        possible = np.array([m / (2 * n - m) for m in range(n + 1)])
+
+        # Bin edges: midpoints between consecutive Jaccard values, extended at both ends
+        gaps = np.diff(possible)
+        edges = np.empty(len(possible) + 1)
+        edges[0] = possible[0] - gaps[0] / 2
+        edges[1:-1] = (possible[:-1] + possible[1:]) / 2
+        edges[-1] = possible[-1] + gaps[-1] / 2
+
+        base_arr = base_vals.dropna().values
+        crw_arr = crw_vals.dropna().values
+
+        base_counts, _ = np.histogram(base_arr, bins=edges)
+        crw_counts, _ = np.histogram(crw_arr, bins=edges)
+
+        base_freq = base_counts / base_counts.sum()
+        crw_freq = crw_counts / crw_counts.sum()
+
+        # Bar widths match each discrete cell (variable — honest about the uneven spacing)
+        widths = np.diff(edges) * 0.85
+
+        ax.bar(possible, base_freq, width=widths, color=_COLOR_BASE, alpha=0.6,
+               label="Baseline", edgecolor=_COLOR_BASE, linewidth=0.3)
+        ax.bar(possible, crw_freq, width=widths, color=_COLOR_CRW, alpha=0.6,
+               label="CRW", edgecolor=_COLOR_CRW, linewidth=0.3)
+
+        ax.axvline(base_vals.mean(), color=_COLOR_BASE, linestyle=":", linewidth=1.5, alpha=0.8)
+        ax.axvline(crw_vals.mean(), color=_COLOR_CRW, linestyle=":", linewidth=1.5, alpha=0.8)
+
+        ax.set_title(f"Jaccard Similarity — PMF (Top-{n})", fontsize=11)
+        ax.set_xlabel("Jaccard Similarity")
+        ax.set_ylabel("Proportion of Voters")
+        ax.set_xlim(0.0, 1.0)
+        ax.legend(frameon=True)
+
+    def _jaccard_ecdf_panel(
+        self,
+        ax: plt.Axes,
+        base_vals: pd.Series,
+        crw_vals: pd.Series,
+        n: int,
+    ) -> None:
+        """ECDF of Jaccard similarity. No smoothing; exact cumulative fractions."""
+        for vals, color, label, ls in [
+            (base_vals, _COLOR_BASE, "Baseline", "--"),
+            (crw_vals, _COLOR_CRW, "CRW", "-"),
+        ]:
+            arr = np.sort(vals.dropna().values)
+            total = len(arr)
+            y = np.arange(1, total + 1) / total
+            # Prepend (0, 0) so the step function starts at the left edge
+            x_plot = np.concatenate([[0.0], arr])
+            y_plot = np.concatenate([[0.0], y])
+            ax.step(x_plot, y_plot, where="post", color=color, linestyle=ls,
+                    linewidth=2, label=label)
+            ax.axvline(vals.mean(), color=color, linestyle=":", linewidth=1.5, alpha=0.8)
+
+        ax.axhline(1.0, color="black", linestyle="--", linewidth=0.8, alpha=0.4)
+        ax.set_title(f"Jaccard Similarity — ECDF (Top-{n})", fontsize=11)
+        ax.set_xlabel("Jaccard Similarity")
+        ax.set_ylabel("Fraction of Voters ≤ x")
+        ax.set_xlim(0.0, 1.0)
+        ax.set_ylim(0.0, 1.05)
+        ax.legend(frameon=True)
 
     def _kde_panel(
         self,

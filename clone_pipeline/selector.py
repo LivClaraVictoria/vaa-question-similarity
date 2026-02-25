@@ -22,6 +22,8 @@ def build_selector(selector_type: str, params: dict) -> BaseSelector:
         return CombinedVarianceSelector(**params)
     elif selector_type == "high_candidate_variance":
         return HighCandidateVarianceSelector(**params)
+    elif selector_type == "high_voter_variance":
+        return HighVoterVarianceSelector(**params)
     else:
         raise ValueError(f"Unknown selector type: {selector_type}")
 
@@ -90,6 +92,23 @@ class CombinedVarianceSelector(BaseSelector):
 
         combined = (cand_var * voter_var).dropna()
         top_cols = combined.nlargest(self.n).index.tolist()
+        return [int(col.replace("answer_", "")) for col in top_cols]
+
+
+class HighVoterVarianceSelector(BaseSelector):
+    """
+    Selects the n questions with the highest voter answer variance.
+    These are the questions voters disagree on most, giving them high
+    potential impact on recommendations.
+    """
+
+    def __init__(self, n: int):
+        self.n = n
+
+    def select(self, df_questions, df_candidates, df_voters) -> list[int]:
+        answer_cols = [c for c in df_voters.columns if c.startswith("answer_")]
+        variances = df_voters[answer_cols].var()
+        top_cols = variances.nlargest(self.n).index.tolist()
         return [int(col.replace("answer_", "")) for col in top_cols]
 
 

@@ -256,10 +256,13 @@ def _compute_question_impact(q_id: int, config, pipeline: dict, n: int) -> dict:
     ].iloc[0]
     nan = pipeline["nan_info"][q_id]
     var = pipeline["var_info"][q_id]
+    # 1-based position when questions are ordered by ID (reflects survey order)
+    question_order = pipeline["question_ids"].index(q_id) + 1
 
     return {
         "question_id": q_id,
         "question_text": q_text,
+        "question_order": question_order,
         "jaccard_mean": per_voter["jaccard"].mean(),
         "jaccard_median": per_voter["jaccard"].median(),
         "jaccard_p10": per_voter["jaccard"].quantile(0.1),
@@ -522,9 +525,9 @@ def _plot_correlation_analysis(df: pd.DataFrame, output_dir: Path, base: str):
         ("combined_var", "Combined Variance", axes[0, 0]),
         ("voter_var", "Voter Variance", axes[0, 1]),
         ("candidate_var", "Candidate Variance", axes[0, 2]),
-        ("voter_nan_pct", "Voter NaN %", axes[1, 0]),
-        ("candidate_nan_pct", "Candidate NaN %", axes[1, 1]),
-        ("voter_avg_abs_corr", "Voter Avg |Correlation|", axes[1, 2]),
+        ("voter_nan_pct", "Voter NaN %\n(fraction who skipped this question)", axes[1, 0]),
+        ("question_order", "Question Position in Survey\n(1 = first question)", axes[1, 1]),
+        ("voter_avg_abs_corr", "Question Redundancy\n(mean |Pearson r| of voter answers vs all other questions)", axes[1, 2]),
     ]
 
     for col, label, ax in scatter_configs:
@@ -559,7 +562,11 @@ def _plot_correlation_analysis(df: pd.DataFrame, output_dir: Path, base: str):
                     xytext=(5, 5), textcoords="offset points",
                 )
 
-    fig.suptitle(f"Predictors of Clone Impact ({N_CLONES} identical clones)", fontsize=13)
+    fig.suptitle(
+        f"Predictors of Clone Impact ({N_CLONES} identical clones)\n"
+        f"Y-axis: impact = 1 − mean Jaccard (higher = more disruption to recommendations)",
+        fontsize=12,
+    )
     fig.tight_layout()
 
     path = output_dir / f"{base}_correlation_analysis.png"
