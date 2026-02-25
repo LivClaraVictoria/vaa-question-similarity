@@ -52,16 +52,29 @@ def _apply_to_answers(
     if spec.flip_answers:
         src_values = 100 - src_values
 
+    new_answer_cols = [f"answer_{clone_id}" for clone_id in spec.clone_ids]
     for clone_id in spec.clone_ids:
         df[f"answer_{clone_id}"] = src_values
 
+    new_weight_cols = []
     if include_weights:
         src_weight_col = f"weight_{spec.source_q_id}"
         if src_weight_col in df.columns:
             for clone_id in spec.clone_ids:
-                df[f"weight_{clone_id}"] = df[src_weight_col]
+                col = f"weight_{clone_id}"
+                df[col] = df[src_weight_col]
+                new_weight_cols.append(col)
         else:
             print(f"⚠️  No weight col for question {spec.source_q_id}, skipping.")
+
+    # SVDataFrame stores answer_cols/weight_cols as _metadata. When pandas propagates
+    # _metadata via __finalize__ (during .copy()), it copies the stale pre-clone list,
+    # so newly added clone columns are excluded from .answers() / .weights().
+    # Fix: explicitly update the metadata lists to include the clone columns.
+    if hasattr(df, "answer_cols") and df.answer_cols is not None:
+        df.answer_cols = df.answer_cols + new_answer_cols
+    if new_weight_cols and hasattr(df, "weight_cols") and df.weight_cols is not None:
+        df.weight_cols = df.weight_cols + new_weight_cols
 
     return df
 
