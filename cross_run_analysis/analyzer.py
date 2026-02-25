@@ -162,8 +162,8 @@ class CrossRunAnalyzer:
         if df.index.name != "voterID":
             df = df.set_index("voterID")
 
-        std_cols = [c for c in df.columns if re.match(r"^_matchID_\d+_L2_sv$", c)]
-        crw_cols = [c for c in df.columns if re.match(r"^CRW__matchID_\d+_L2_sv$", c)]
+        std_cols = [c for c in df.columns if re.match(r"^_matchID_\d+_\w+$", c)]
+        crw_cols = [c for c in df.columns if re.match(r"^CRW__matchID_\d+_\w+$", c)]
 
         df = df.copy()
         df["ranked_standard"] = df[std_cols].values.tolist()

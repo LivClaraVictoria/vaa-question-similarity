@@ -53,6 +53,7 @@ CLONED_QU_WEIGHT_DIR = QU_WEIGHT_DIR / "cloned"
 RECOMMENDATION_RESULTS_DIR = RESULTS_DIR / "recommendation_results"
 COMPARISON_RESULTS_DIR = RESULTS_DIR / "comparator_results"
 ALPHA_SWEEP_RESULTS_DIR = RESULTS_DIR / "alpha_sweep_results"
+THRESHOLD_SWEEP_RESULTS_DIR = RESULTS_DIR / "threshold_alpha_sweep_results"
 
 
 # Specific data files
@@ -336,7 +337,7 @@ Options for rec_dist_method:
 "DM_HYBRID",
 "DM_DIRECTIONAL"
 """
-rec_dist_method = "L2_sv"  # which distance method to use for recommendations
+rec_dist_method = "L2"  # which distance method to use for recommendations
 
 # --- RECOMMENDATION ANALYSIS PARAMETERS ---
 p_rbo = 0.9  # RBO parameter: how steeply to discount lower ranks (0.9 means top 10 items get ~86% of the weight)

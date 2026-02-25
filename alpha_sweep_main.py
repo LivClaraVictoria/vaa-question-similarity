@@ -149,15 +149,10 @@ def _get_sweep_hash(config_a, config_b, alphas: list[float], n: int) -> str:
         "config_b": Path(config_b.__file__).stem,
         "alphas": sorted(alphas),
         "n_jaccard": n,
-        "data_year_a": config_a.data_year,
-        "dist_a": config_a.dist,
-        "data_choice_a": config_a.data_choice,
-        "clone_id_a": config_a.clone_id,
-        "data_year_b": config_b.data_year,
-        "dist_b": config_b.dist,
-        "data_choice_b": config_b.data_choice,
-        "clone_id_b": config_b.clone_id,
     }
+    for param in default_config.COMPARATOR_HASH_PARAMS:
+        payload[f"a_{param}"] = getattr(config_a, param, None)
+        payload[f"b_{param}"] = getattr(config_b, param, None)
     s = json.dumps(payload, sort_keys=True, default=str)
     return hashlib.md5(s.encode()).hexdigest()[:12]
 
@@ -169,19 +164,10 @@ def _get_analysis_cache_hash(config_a, config_b, alpha: float, n: int) -> str:
         "config_b": Path(config_b.__file__).stem,
         "alpha": alpha,
         "n_jaccard": n,
-        "data_year_a": config_a.data_year,
-        "dist_a": config_a.dist,
-        "data_choice_a": config_a.data_choice,
-        "clone_id_a": config_a.clone_id,
-        "data_year_b": config_b.data_year,
-        "dist_b": config_b.dist,
-        "data_choice_b": config_b.data_choice,
-        "clone_id_b": config_b.clone_id,
-        "crw_paper_choice": config_a.crw_paper_choice,
-        "rec_dist_method": config_a.rec_dist_method,
-        "district": config_a.district,
-        "subset_n": config_a.subset_n,
     }
+    for param in default_config.COMPARATOR_HASH_PARAMS:
+        payload[f"a_{param}"] = getattr(config_a, param, None)
+        payload[f"b_{param}"] = getattr(config_b, param, None)
     s = json.dumps(payload, sort_keys=True, default=str)
     return hashlib.md5(s.encode()).hexdigest()[:12]
 
