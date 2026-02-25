@@ -1,6 +1,6 @@
 === Cross-Run Comparison Report ===
 A: pipeline_e5_ZH_alpha0.9
-B: hard_paraphrase_highvotervar_2q_n5_e5_ZH
+B: negation_easy_highvotervar_2q_n5_e5_ZH
 Voters compared: 41658
 ------------------------------------------------------------
 --- STANDARD ---
@@ -15,23 +15,23 @@ Voters compared: 41658
   Spearman Rho:                             0.9007
   Kendall Tau:                              0.7972
   Voters w/ at least 1 rank change:         99.56%
-  Avg candidates changed per voter:         982.3 (2728.50% of list)
+  Avg candidates changed per voter:         982.3
   Avg positions a candidate moved:          83.55 ranks
   Max positions a candidate moved:          891 ranks
 ------------------------------------------------------------
 --- CRW ---
   Set Similarity (Top-36):
-  Avg Jaccard Similarity:                   0.6182
-  Median Jaccard Similarity:                0.6000
-  Min Jaccard Similarity:                   0.0588
-  Perfect matches (Jaccard=1.0):            0.4% of voters
-  Avg candidates swapped in/out:            9.02 candidates per voter
-  Max candidates swapped in/out:            32 candidates
+  Avg Jaccard Similarity:                   0.7083
+  Median Jaccard Similarity:                0.7143
+  Min Jaccard Similarity:                   0.1803
+  Perfect matches (Jaccard=1.0):            0.6% of voters
+  Avg candidates swapped in/out:            6.40 candidates per voter
+  Max candidates swapped in/out:            25 candidates
   Rank Stability (All):
-  Spearman Rho:                             0.9559
-  Kendall Tau:                              0.8600
+  Spearman Rho:                             0.9809
+  Kendall Tau:                              0.9079
   Voters w/ at least 1 rank change:         100.00%
-  Avg candidates changed per voter:         1005.9 (2794.28% of list)
-  Avg positions a candidate moved:          54.60 ranks
-  Max positions a candidate moved:          682 ranks
+  Avg candidates changed per voter:         999.8
+  Avg positions a candidate moved:          35.49 ranks
+  Max positions a candidate moved:          569 ranks
 ------------------------------------------------------------
