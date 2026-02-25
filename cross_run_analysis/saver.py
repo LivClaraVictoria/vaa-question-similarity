@@ -87,7 +87,6 @@ class CrossRunSaver:
 
     def _compute_stats(self, df: pd.DataFrame, meta_a: dict, n: int):
         total = len(df)
-        list_len = meta_a.get("n_jaccard", None)
 
         def set_stats(prefix):
             jac = df[f"{prefix}_jaccard"]
@@ -103,16 +102,11 @@ class CrossRunSaver:
 
         def rank_stats(prefix):
             n_changed = df[f"{prefix}_n_changed"]
-            pct_changed = (
-                (n_changed.mean() / list_len * 100) if list_len else float("nan")
-            )
             return {
-                "list_len": list_len,
                 "spearman": df[f"{prefix}_spearman"].mean(),
                 "kendall": df[f"{prefix}_kendall"].mean(),
                 "pct_any_change": df[f"{prefix}_any_rank_change"].mean() * 100,
                 "avg_n_changed": n_changed.mean(),
-                "pct_changed": pct_changed,
                 "avg_pos_moved": df[f"{prefix}_avg_pos_moved"].mean(),
                 "max_pos_moved": df[f"{prefix}_max_pos_moved"].max(),
             }
@@ -130,7 +124,6 @@ class CrossRunSaver:
 
     def _generate_summary(self, meta_a, meta_b, n, total, bs, br, cs, cr) -> str:
         sep = "-" * 60
-        ll = br["list_len"] or "?"  # wrong, TODO: find real list length
 
         def set_block(s, r, label):
             return [
@@ -157,7 +150,7 @@ class CrossRunSaver:
                 ),
                 _row(
                     "Avg candidates changed per voter:",
-                    f"{r['avg_n_changed']:.1f} ({r['pct_changed']:.2f}% of list)",
+                    f"{r['avg_n_changed']:.1f}",
                 ),
                 _row(
                     "Avg positions a candidate moved:",
@@ -205,7 +198,6 @@ class CrossRunSaver:
             "base_kendall": br["kendall"],
             "base_pct_any_change": br["pct_any_change"],
             "base_avg_n_changed": br["avg_n_changed"],
-            "base_pct_changed": br["pct_changed"],
             "base_avg_pos_moved": br["avg_pos_moved"],
             "base_max_pos_moved": br["max_pos_moved"],
             # CRW set similarity
@@ -220,7 +212,6 @@ class CrossRunSaver:
             "crw_kendall": cr["kendall"],
             "crw_pct_any_change": cr["pct_any_change"],
             "crw_avg_n_changed": cr["avg_n_changed"],
-            "crw_pct_changed": cr["pct_changed"],
             "crw_avg_pos_moved": cr["avg_pos_moved"],
             "crw_max_pos_moved": cr["max_pos_moved"],
         }

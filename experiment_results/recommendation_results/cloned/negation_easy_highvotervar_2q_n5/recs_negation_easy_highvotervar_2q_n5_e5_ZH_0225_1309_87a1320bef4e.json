@@ -1,0 +1,17 @@
+{
+    "config_name": "negation_easy_highvotervar_2q_n5_e5_ZH",
+    "overrides": [],
+    "n_jaccard": 36,
+    "data_year": 2023,
+    "dist": "E5",
+    "data_choice": "cloned",
+    "clone_id": "negation_easy_highvotervar_2q_n5",
+    "E5_instruction": null,
+    "alpha": 0.6,
+    "crw_paper_choice": "P2",
+    "rec_dist_method": "L2_sv",
+    "n_recommendations": "all",
+    "subset_n": null,
+    "use_OG_weights": false,
+    "district": "ZH"
+}

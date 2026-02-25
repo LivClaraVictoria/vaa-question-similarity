@@ -17,7 +17,7 @@ class CrossRunPlotter:
     """
     Generates publication-ready plots for a cross-run comparison.
     Produces three PNG files per comparison run:
-      - {base}_distributions.png  — 2x2 grid: Jaccard PMF + ECDF, Spearman KDE, Kendall KDE
+      - {base}_distributions.png  — 2x2 grid: Jaccard PMF, Avg Positions Moved KDE, Spearman KDE, Kendall KDE
       - {base}_metrics.png        — grouped bar chart of Jaccard, Spearman, Kendall
       - {base}_improvement.png    — 2x2 KDE grid of per-voter CRW improvement over baseline
     """
@@ -60,20 +60,21 @@ class CrossRunPlotter:
     def _plot_distributions(
         self, df: pd.DataFrame, path: Path, name_a: str, name_b: str, n_jaccard: int | None
     ) -> None:
-        # Jaccard row: PMF (left) + ECDF (right). Spearman + Kendall KDEs below.
-        # avg_pos_moved is omitted here — it appears in the improvement plot.
-        mosaic = [["jac_pmf", "jac_ecdf"], ["spearman", "kendall"]]
+        # Top row: Jaccard PMF (left) + Avg Positions Moved KDE (right).
+        # Bottom row: Spearman + Kendall KDEs.
+        mosaic = [["jac_pmf", "pos_moved"], ["spearman", "kendall"]]
         fig, axes = plt.subplot_mosaic(mosaic, figsize=(14, 10))
         fig.suptitle(f"{name_a}  vs  {name_b}", fontsize=11, y=1.01)
 
         if n_jaccard is not None:
             self._jaccard_pmf_panel(axes["jac_pmf"], df["base_jaccard"], df["crw_jaccard"], n_jaccard)
-            self._jaccard_ecdf_panel(axes["jac_ecdf"], df["base_jaccard"], df["crw_jaccard"], n_jaccard)
         else:
             # Fallback for old result files that lack n_jaccard in metadata
             self._kde_panel(axes["jac_pmf"], df["base_jaccard"], df["crw_jaccard"],
                             "Jaccard Similarity (Top-k)", "Jaccard Similarity", (0.0, 1.0))
-            axes["jac_ecdf"].set_visible(False)
+
+        self._kde_panel(axes["pos_moved"], df["base_avg_pos_moved"], df["crw_avg_pos_moved"],
+                        "Avg. Candidate Rank Displacement", "Avg. Positions Moved", xlim=None)
 
         self._kde_panel(axes["spearman"], df["base_spearman"], df["crw_spearman"],
                         "Spearman ρ", "Spearman Correlation", (-1.0, 1.0))
@@ -126,36 +127,6 @@ class CrossRunPlotter:
         ax.set_xlabel("Jaccard Similarity")
         ax.set_ylabel("Proportion of Voters")
         ax.set_xlim(0.0, 1.0)
-        ax.legend(frameon=True)
-
-    def _jaccard_ecdf_panel(
-        self,
-        ax: plt.Axes,
-        base_vals: pd.Series,
-        crw_vals: pd.Series,
-        n: int,
-    ) -> None:
-        """ECDF of Jaccard similarity. No smoothing; exact cumulative fractions."""
-        for vals, color, label, ls in [
-            (base_vals, _COLOR_BASE, "Baseline", "--"),
-            (crw_vals, _COLOR_CRW, "CRW", "-"),
-        ]:
-            arr = np.sort(vals.dropna().values)
-            total = len(arr)
-            y = np.arange(1, total + 1) / total
-            # Prepend (0, 0) so the step function starts at the left edge
-            x_plot = np.concatenate([[0.0], arr])
-            y_plot = np.concatenate([[0.0], y])
-            ax.step(x_plot, y_plot, where="post", color=color, linestyle=ls,
-                    linewidth=2, label=label)
-            ax.axvline(vals.mean(), color=color, linestyle=":", linewidth=1.5, alpha=0.8)
-
-        ax.axhline(1.0, color="black", linestyle="--", linewidth=0.8, alpha=0.4)
-        ax.set_title(f"Jaccard Similarity — ECDF (Top-{n})", fontsize=11)
-        ax.set_xlabel("Jaccard Similarity")
-        ax.set_ylabel("Fraction of Voters ≤ x")
-        ax.set_xlim(0.0, 1.0)
-        ax.set_ylim(0.0, 1.05)
         ax.legend(frameon=True)
 
     def _kde_panel(
@@ -304,6 +275,18 @@ class CrossRunPlotter:
         ax.set_xlabel("Delta (CRW − Baseline)")
         ax.set_ylabel("Density")
         ax.legend(frameon=True)
+
+        # Annotate % improved / hurt / unchanged
+        n_total = len(vals)
+        pct_improved = (vals > 0).sum() / n_total * 100
+        pct_hurt = (vals < 0).sum() / n_total * 100
+        pct_unchanged = (vals == 0).sum() / n_total * 100
+        annotation = (f"{pct_improved:.0f}% improved | {pct_hurt:.0f}% hurt | "
+                      f"{pct_unchanged:.0f}% unchanged")
+        ax.text(0.5, 0.95, annotation, transform=ax.transAxes, ha="center", va="top",
+                fontsize=9,
+                bbox=dict(boxstyle="round,pad=0.3", facecolor="white", alpha=0.8,
+                          edgecolor="gray"))
 
     # ------------------------------------------------------------------
     # Helpers

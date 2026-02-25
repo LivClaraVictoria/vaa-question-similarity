@@ -42,6 +42,8 @@ def save_recommendation_results(
     base_path = Path(config.RECOMMENDATION_RESULTS_DIR)
 
     output_dir = base_path / config.data_choice
+    if config.data_choice == "cloned" and hasattr(config, "clone_id"):
+        output_dir = output_dir / config.clone_id
 
     output_dir.mkdir(parents=True, exist_ok=True)
     prefix = _get_prefix(config)
