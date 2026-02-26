@@ -58,6 +58,7 @@ THRESHOLD_SWEEP_RESULTS_DIR = RESULTS_DIR / "threshold_alpha_sweep_results"
 
 # Specific data files
 FAKE_DATA_FILE = FAKE_DIR / "fake_questions.csv"
+BENCHMARK_ANCHORS_FILE = FAKE_DIR / "benchmark_anchors.json"
 TIMESTAMP_FILE = DATA_2023_DIR / "sv23 Voters-NR_time_recDATE.csv"
 
 # raw data file paths
@@ -241,14 +242,30 @@ Options for dist:
 - "SBERT": Sentence-BERT embeddings with cosine similarity
 - "SBERT_EUCLIDEAN": Sentence-BERT embeddings with Euclidean distance (on normalized embeddings): equivalent to sqrt(2 - 2*cosine_similarity)
 - "E5": E5 model embeddings with euclidean distance on normalized embeddings
-- "E5-asymmetric": E5 model retrieval-style (query/passage) with eucdlidean distance on normalized embeddings
-- "E5-instruct": E5 model (symmetric: query/query) with instructions, euclidean distance on normalized embeddings
-- "E5-asymmetric-instruct": E5 model retrieval-style with instructions, euclidean distance on normalized embeddings
+- "E5-ASYMMETRIC": E5 model retrieval-style (query/passage) with euclidean distance on normalized embeddings
+- "E5-INSTRUCT": E5 model (symmetric: query/query) with instructions, euclidean distance on normalized embeddings
+- "E5-ASYMMETRIC-INSTRUCT": E5 model retrieval-style with instructions, euclidean distance on normalized embeddings
+- "JINA-V3": Jina v3 with task-specific LoRA adapters (set embedding_task, e.g. "separation")
+- "BGE-M3": BGE-M3 multilingual retrieval model, euclidean distance
+- "GTE": GTE multilingual base, euclidean distance
+- "NOMIC-V2": Nomic Embed v2 MoE with task prefix (set embedding_task, e.g. "clustering")
+- "QWEN3": Qwen3-Embedding with custom instructions (set embedding_instruction)
 """
 dist = "SBERT"
-E5_instruction: str | None = (
-    None  # "Retrieve political questions that deal with the same topic."  # "Retrieve semantically similar political questions."
-)
+
+# Unified instruction/task config (used by instruction-tuned and task-aware models)
+embedding_instruction: str | None = None  # Free-form text for instruction-tuned models (E5-instruct, Qwen3)
+embedding_task: str | None = None  # Task/mode selector for task-aware models (Jina: "separation", Nomic: "clustering")
+
+# Model name defaults (overridable per config)
+sbert_model_name = "all-MiniLM-L6-v2"
+e5_model_name = "intfloat/multilingual-e5-large"
+e5_instruct_model_name = "intfloat/multilingual-e5-large-instruct"
+jina_model_name = "jinaai/jina-embeddings-v3"
+bge_model_name = "BAAI/bge-m3"
+gte_model_name = "Alibaba-NLP/gte-multilingual-base"
+nomic_model_name = "nomic-ai/nomic-embed-text-v2-moe"
+qwen3_model_name = "Qwen/Qwen3-Embedding-0.6B"
 
 
 # --- CLONE-ROBUST WEIGHTING PARAMETERS ---
@@ -344,8 +361,8 @@ p_rbo = 0.9  # RBO parameter: how steeply to discount lower ranks (0.9 means top
 
 # --- HASH PARAMETERS FOR CACHING ---
 # Layered constants: each stage extends the previous.
-# E5_instruction is included from distance stage — None hashes as null, non-None as its value.
-DISTANCE_HASH_PARAMS = ["data_year", "dist", "data_choice", "clone_id", "E5_instruction"]
+# embedding_instruction/embedding_task included from distance stage — None hashes as null, non-None as its value.
+DISTANCE_HASH_PARAMS = ["data_year", "dist", "data_choice", "clone_id", "embedding_instruction", "embedding_task"]
 CRW_HASH_PARAMS = DISTANCE_HASH_PARAMS + ["alpha", "crw_paper_choice"]
 REC_HASH_PARAMS = CRW_HASH_PARAMS + ["rec_dist_method", "n_recommendations", "subset_n", "use_OG_weights", "district"]
 COMPARATOR_HASH_PARAMS = REC_HASH_PARAMS

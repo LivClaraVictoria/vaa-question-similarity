@@ -19,7 +19,7 @@ from clone_pipeline.spec import CLONE_ID_BASE, CLONE_TYPE_OFFSETS
 
 
 # --- Config for hash computation ---
-DISTANCE_HASH_PARAMS = ["data_year", "dist", "data_choice", "clone_id", "E5_instruction"]
+DISTANCE_HASH_PARAMS = ["data_year", "dist", "data_choice", "clone_id", "embedding_instruction", "embedding_task"]
 CACHE_DIR = Path("cache/distance_calculations")
 EXPERIMENT_DIR = Path("experiment_results/distance_metric/cloned_results")
 
@@ -30,7 +30,8 @@ def compute_distance_hash(clone_id: str) -> str:
         "dist": "E5",
         "data_choice": "cloned",
         "clone_id": clone_id,
-        "E5_instruction": None,
+        "embedding_instruction": None,
+        "embedding_task": None,
     }
     param_str = json.dumps(params, sort_keys=True, default=str)
     return hashlib.md5(param_str.encode()).hexdigest()[:12]

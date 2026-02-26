@@ -1,0 +1,458 @@
+{
+  "metadata": {
+    "seed": 42,
+    "n_anchors": 14,
+    "source": "data/cleaned/df_questions19.parquet",
+    "selected_at": "2026-02-26T00:26:04.117668"
+  },
+  "anchors": [
+    {
+      "anchor_id": 1,
+      "source_id": 3392,
+      "question_en": "Should cannabis use be legalized?",
+      "question_de": "Soll der Konsum von Cannabis legalisiert werden?",
+      "variants": {
+        "Negation": [
+          "Should cannabis use not be legalized?"
+        ],
+        "Easy Paraphrase": [
+          "Is the legalization of cannabis use a good idea?"
+        ],
+        "Easy Paraphrase Negation": [
+          "Is it a bad idea to legalize cannabis use?"
+        ],
+        "Hard Paraphrase": [
+          "Is it appropriate to allow the consumption of marijuana according to the law?",
+          "Ought the law to permit individuals to use marijuana freely?"
+        ],
+        "Hard Paraphrase Negation": [
+          "The law should not permit individuals to consume marijuana."
+        ],
+        "Syntax Trap": [
+          "Should income taxes be reduced?",
+          "Should public transportation fares be increased?"
+        ],
+        "Keyword Trap": [
+          "Is cannabis a widely used plant in gardening?",
+          "Is the use of legal documents important in business transactions?"
+        ]
+      }
+    },
+    {
+      "anchor_id": 2,
+      "source_id": 3468,
+      "question_en": "Should Switzerland start membership negotiations with the EU?",
+      "question_de": "Soll die Schweiz Verhandlungen über den Beitritt zur EU aufnehmen?",
+      "variants": {
+        "Negation": [
+          "Should Switzerland not start membership negotiations with the EU?"
+        ],
+        "Easy Paraphrase": [
+          "Is it time for Switzerland to begin talks about joining the European Union?"
+        ],
+        "Easy Paraphrase Negation": [
+          "Is it time for Switzerland to refrain from beginning talks about joining the European Union?"
+        ],
+        "Hard Paraphrase": [
+          "Is it appropriate for Switzerland to commence discussions to become a part of the European Union?",
+          "Should Switzerland engage in discussions to potentially unify with the European Union?"
+        ],
+        "Hard Paraphrase Negation": [
+          "It is not advisable for Switzerland to engage in discussions to potentially unify with the European Union."
+        ],
+        "Syntax Trap": [
+          "Should Switzerland implement a new national healthcare policy?",
+          "Should Switzerland adopt new educational standards for primary schools?"
+        ],
+        "Keyword Trap": [
+          "Should negotiations start for Switzerland's participation in international sports events?",
+          "Is Switzerland ready to begin membership discussions for a global technology consortium?"
+        ]
+      }
+    },
+    {
+      "anchor_id": 3,
+      "source_id": 3415,
+      "question_en": "Should the conversion rate of the occupational pension fund be reduced in order to adjust for increases in life expectancy?",
+      "question_de": "Sollen die Renten der Pensionskasse durch eine Senkung des Umwandlungssatzes gekürzt und an die gestiegene Lebenserwartung angepasst werden?",
+      "variants": {
+        "Negation": [
+          "Should the conversion rate of the occupational pension fund not be reduced in order to adjust for increases in life expectancy?"
+        ],
+        "Easy Paraphrase": [
+          "Is it advisable to decrease the conversion rate of occupational pension funds to accommodate longer life expectancy?"
+        ],
+        "Easy Paraphrase Negation": [
+          "Is it advisable to keep the conversion rate of occupational pension funds unchanged despite longer life expectancy?"
+        ],
+        "Hard Paraphrase": [
+          "Is it necessary to lower the pension conversion factor to reflect the rise in average lifespan?",
+          "Should adjustments be made to the retirement fund rate to account for people living longer on average?"
+        ],
+        "Hard Paraphrase Negation": [
+          "Maintaining the current pension conversion rate should continue, even as people live longer."
+        ],
+        "Syntax Trap": [
+          "Should the carbon emission targets for industrial sectors be increased to combat climate change?",
+          "Should the funding for public education be enhanced to improve literacy rates?"
+        ],
+        "Keyword Trap": [
+          "Should the conversion rate for reward points in airline programs be reduced to adjust for increased travel demand?",
+          "Should the conversion rate of foreign currency exchanges be adjusted in response to market fluctuations?"
+        ]
+      }
+    },
+    {
+      "anchor_id": 4,
+      "source_id": 3440,
+      "question_en": "Should private households be free to choose their electricity supplier (complete liberalisation of the electricity market)?",
+      "question_de": "Sollen Privathaushalte ihren Stromanbieter frei wählen können (vollständige Liberalisierung des Strommarktes)?",
+      "variants": {
+        "Negation": [
+          "Should private households not be free to choose their electricity supplier (complete liberalisation of the electricity market)?"
+        ],
+        "Easy Paraphrase": [
+          "Ought individual households have the liberty to select their own electricity provider, allowing full liberalisation of the electricity market?"
+        ],
+        "Easy Paraphrase Negation": [
+          "Should individual households not have the freedom to select their own electricity provider, thus preventing full liberalisation of the electricity market?"
+        ],
+        "Hard Paraphrase": [
+          "Is it necessary for households to have the autonomy to pick their own energy provider, leading to a fully deregulated power market?",
+          "Do families require the ability to independently choose who supplies their power, resulting in an entirely open electricity sector?"
+        ],
+        "Hard Paraphrase Negation": [
+          "Households must be restricted from independently choosing their energy provider to prevent the energy market from becoming completely deregulated."
+        ],
+        "Syntax Trap": [
+          "Should public schools be free to choose their own curriculum (complete decentralisation of educational policy)?",
+          "Should private companies be free to set their own environmental standards (complete deregulation of environmental policies)?"
+        ],
+        "Keyword Trap": [
+          "Should private households be free to choose their internet provider for faster service?",
+          "Should private households be able to select their water supplier for better quality?"
+        ]
+      }
+    },
+    {
+      "anchor_id": 5,
+      "source_id": 3466,
+      "question_en": "What is your position the following statement: \"The ongoing digitalization offers significantly more opportunities than risks.\"",
+      "question_de": "Wie beurteilen Sie die folgende Aussage: \"Die fortschreitende Digitalisierung bietet deutlich mehr Chancen als Risiken.\"",
+      "variants": {
+        "Negation": [
+          "What is your position on the following statement: \"The ongoing digitalization does not offer significantly more opportunities than risks.\""
+        ],
+        "Easy Paraphrase": [
+          "How do you feel about the statement that digitalization currently presents many more opportunities than it does risks?"
+        ],
+        "Easy Paraphrase Negation": [
+          "How do you feel about the statement that digitalization currently presents many more risks than it does opportunities?"
+        ],
+        "Hard Paraphrase": [
+          "Do you agree that the transition to digital technologies provides far greater advantages compared to the potential downsides?",
+          "Would you say that the benefits of moving towards a digital age outweigh the associated challenges?"
+        ],
+        "Hard Paraphrase Negation": [
+          "Do you believe that the transition to digital technologies results in more disadvantages than benefits?"
+        ],
+        "Syntax Trap": [
+          "What is your position on the following statement: \"The reduction in military spending poses significantly more threats than benefits.\"",
+          "What is your position on the following statement: \"Introducing universal healthcare offers significantly more costs than savings.\""
+        ],
+        "Keyword Trap": [
+          "What is your position on the following statement: \"The ongoing digitalization in art offers significantly more inspiration than limitations.\"",
+          "What is your position on the following statement: \"The ongoing digitalization of culinary techniques offers significantly more creativity than constraints.\""
+        ]
+      }
+    },
+    {
+      "anchor_id": 6,
+      "source_id": 3433,
+      "question_en": "Should the rules for reproductive medicine be further relaxed?",
+      "question_de": "Sollen die Regeln der Fortpflanzungsmedizin weiter gelockert werden?",
+      "variants": {
+        "Negation": [
+          "Should the rules for reproductive medicine not be further relaxed?"
+        ],
+        "Easy Paraphrase": [
+          "Is it necessary to loosen the regulations governing reproductive medicine?"
+        ],
+        "Easy Paraphrase Negation": [
+          "Is it necessary to tighten the regulations governing reproductive medicine?"
+        ],
+        "Hard Paraphrase": [
+          "Is there a need to make the guidelines for assisted reproductive techniques more lenient?",
+          "Should the constraints on technologies for human reproduction be eased?"
+        ],
+        "Hard Paraphrase Negation": [
+          "It is essential to maintain or even tighten the current restrictions on medical procedures related to reproduction."
+        ],
+        "Syntax Trap": [
+          "Should the standards for educational curricula be further revised?",
+          "Should the policies regarding renewable energy be further developed?"
+        ],
+        "Keyword Trap": [
+          "Should the rules for laboratory methods be further relaxed in scientific research?",
+          "Should the regulations for food production be further relaxed to enhance culinary diversity?"
+        ]
+      }
+    },
+    {
+      "anchor_id": 7,
+      "source_id": 3417,
+      "question_en": "Should the federal government provide more support for the construction of non-profit housing? ",
+      "question_de": "Soll der Bund den gemeinnützigen Wohnungsbau verstärkt fördern?",
+      "variants": {
+        "Negation": [
+          "Should the federal government not provide more support for the construction of non-profit housing?"
+        ],
+        "Easy Paraphrase": [
+          "Is it necessary for the national government to increase its support for building housing that is not for profit?"
+        ],
+        "Easy Paraphrase Negation": [
+          "Is it unnecessary for the national government to increase its support for building housing that is not for profit?"
+        ],
+        "Hard Paraphrase": [
+          "Is there a need for the central authorities to enhance their financial assistance for developing housing projects with no profit motive?",
+          "Ought the national administration to boost aid for initiatives aimed at creating housing that lacks a profit-driven focus?"
+        ],
+        "Hard Paraphrase Negation": [
+          "The central authorities should refrain from enhancing financial aid for developing projects intended for housing without a profit goal."
+        ],
+        "Syntax Trap": [
+          "Should the federal government provide more support for the development of renewable energy sources?",
+          "Should the federal government provide more support for the improvement of public transportation systems?"
+        ],
+        "Keyword Trap": [
+          "Should private organizations receive more support for the construction of new office buildings?",
+          "Should the federal government provide more support for the construction of sports facilities?"
+        ]
+      }
+    },
+    {
+      "anchor_id": 8,
+      "source_id": 3474,
+      "question_en": "Should the federal government spend more or less in the area of \"Public security\"?",
+      "question_de": "Soll der Bund im Bereich \"Öffentliche Sicherheit\" mehr oder weniger ausgeben?",
+      "variants": {
+        "Negation": [
+          "Should the federal government spend less or more in the area of \"Public security\"?"
+        ],
+        "Easy Paraphrase": [
+          "Should the federal government increase or decrease its spending on public security?"
+        ],
+        "Easy Paraphrase Negation": [
+          "Should the federal government decrease or increase its spending on public security?"
+        ],
+        "Hard Paraphrase": [
+          "Is it advisable for the national authorities to allocate additional resources towards ensuring public safety?",
+          "Should national funding be adjusted to provide more emphasis on the protection of citizens?"
+        ],
+        "Hard Paraphrase Negation": [
+          "The national authorities ought to reduce the allocation of resources towards ensuring public safety."
+        ],
+        "Syntax Trap": [
+          "Should the federal government spend more or less in the area of \"Environmental protection\"?",
+          "Should the federal government spend more or less in the area of \"Education reform\"?"
+        ],
+        "Keyword Trap": [
+          "Should the government spend more on public holidays?",
+          "Should more public funds be allocated to organizing community events?"
+        ]
+      }
+    },
+    {
+      "anchor_id": 9,
+      "source_id": 3469,
+      "question_en": "Should Switzerland strive for a free trade agreement with the USA?",
+      "question_de": "Soll der Bundesrat ein Freihandelsabkommen mit den USA anstreben?",
+      "variants": {
+        "Negation": [
+          "Should Switzerland not strive for a free trade agreement with the USA?"
+        ],
+        "Easy Paraphrase": [
+          "Is it advisable for Switzerland to pursue a free trade deal with the United States?"
+        ],
+        "Easy Paraphrase Negation": [
+          "Is it advisable for Switzerland not to pursue a free trade deal with the United States?"
+        ],
+        "Hard Paraphrase": [
+          "Would it be beneficial for Switzerland to establish a commercial treaty with the United States?",
+          "Should Switzerland work towards forming a bilateral trade pact with America?"
+        ],
+        "Hard Paraphrase Negation": [
+          "It would not be in Switzerland's interest to establish a commercial treaty with the United States."
+        ],
+        "Syntax Trap": [
+          "Should Switzerland invest more resources in expanding its public transportation network?",
+          "Should Switzerland implement stricter regulations on digital privacy?"
+        ],
+        "Keyword Trap": [
+          "Should Switzerland strive to maintain its position in international sporting events with the USA?",
+          "Should Switzerland form a cultural exchange program with the USA?"
+        ]
+      }
+    },
+    {
+      "anchor_id": 10,
+      "source_id": 3439,
+      "question_en": "Are you in favour of restricting competition between the cantons with regard to corporate tax rates?",
+      "question_de": "Befürworten Sie eine Beschränkung des Wettbewerbs zwischen den Kantonen bei der Unternehmenssteuer?",
+      "variants": {
+        "Negation": [
+          "Are you in favour of not restricting competition between the cantons with regard to corporate tax rates?"
+        ],
+        "Easy Paraphrase": [
+          "Do you support limiting the competition between cantons in terms of their corporate tax rates?"
+        ],
+        "Easy Paraphrase Negation": [
+          "Do you oppose limiting the competition between cantons in terms of their corporate tax rates?"
+        ],
+        "Hard Paraphrase": [
+          "Do you agree with the idea that cantons should not undercut each other by offering lower corporate taxes?",
+          "Should there be a ban on the practice of cantons engaging in a race to the bottom with corporate tax incentives?"
+        ],
+        "Hard Paraphrase Negation": [
+          "Cantons should have the freedom to engage in competitive tax rate setting without restrictions."
+        ],
+        "Syntax Trap": [
+          "Are you in favour of enforcing stricter regulations on the import of non-native animal species?",
+          "Are you in favour of increasing government funding for renewable energy research and development?"
+        ],
+        "Keyword Trap": [
+          "Are you in favour of restricting access to competitive sports events between different cantons?",
+          "Are you in favour of imposing limits on the number of corporate events a canton can host?"
+        ]
+      }
+    },
+    {
+      "anchor_id": 11,
+      "source_id": 3447,
+      "question_en": "Should online brokerage services (e.g. \"Airbnb\" accommodations, \"Uber\" taxi services) be regulated more strongly?",
+      "question_de": "Sollen Online-Vermittlungsdienste (z.B. \"Airbnb\"-Unterkünfte, \"Uber\"-Taxidienste) stärker reguliert werden?",
+      "variants": {
+        "Negation": [
+          "Should online brokerage services (e.g. \"Airbnb\" accommodations, \"Uber\" taxi services) not be regulated more strongly?"
+        ],
+        "Easy Paraphrase": [
+          "Is there a need for stricter regulation of online platforms such as Airbnb and Uber?"
+        ],
+        "Easy Paraphrase Negation": [
+          "Is there no need for stricter regulation of online platforms such as Airbnb and Uber?"
+        ],
+        "Hard Paraphrase": [
+          "Do digital service platforms like those for lodging and ride-sharing require tighter governmental oversight?",
+          "Ought platforms providing digital accommodations and transport services face increased regulatory control?"
+        ],
+        "Hard Paraphrase Negation": [
+          "Digital services for accommodation and transportation do not require any additional regulatory measures."
+        ],
+        "Syntax Trap": [
+          "Should agricultural subsidies (e.g. \"corn\" production, \"dairy\" farming) be reduced significantly?",
+          "Should educational curriculums (e.g. \"mathematics\" courses, \"science\" labs) be updated frequently?"
+        ],
+        "Keyword Trap": [
+          "Should Airbnb and Uber collaborate on a new online marketing strategy?",
+          "Is there a more efficient way for Uber and Airbnb to expand their customer base?"
+        ]
+      }
+    },
+    {
+      "anchor_id": 12,
+      "source_id": 3454,
+      "question_en": "Should the current moratorium on genetically modified plants and animals in Swiss agriculture be extended beyond 2021?",
+      "question_de": "Soll das geltende Moratorium für gentechnisch veränderte Pflanzen und Tiere in der Schweizer Landwirtschaft über das Jahr 2021 hinaus verlängert werden?",
+      "variants": {
+        "Negation": [
+          "Should the current moratorium on genetically modified plants and animals in Swiss agriculture not be extended beyond 2021?"
+        ],
+        "Easy Paraphrase": [
+          "Ought the existing ban on genetically modified plants and animals in Swiss farming be continued past 2021?"
+        ],
+        "Easy Paraphrase Negation": [
+          "Ought the existing ban on genetically modified plants and animals in Swiss farming not be continued past 2021?"
+        ],
+        "Hard Paraphrase": [
+          "Is it advisable to prolong the prohibition against genetically engineered flora and fauna in Switzerland's agricultural sector beyond the year 2021?",
+          "Should Switzerland maintain its restriction on the cultivation of genetically altered crops and livestock after 2021?"
+        ],
+        "Hard Paraphrase Negation": [
+          "Is it advisable to lift the prohibition against genetically engineered flora and fauna in Switzerland's agricultural sector after 2021?"
+        ],
+        "Syntax Trap": [
+          "Should the current restrictions on foreign investments in Swiss real estate be extended beyond 2021?",
+          "Should the existing limits on digital surveillance in Switzerland be extended beyond 2021?"
+        ],
+        "Keyword Trap": [
+          "Should the current moratorium on genetically modified foods in international markets be extended beyond 2021?",
+          "Should the current moratorium on genetically engineered animals in medical research be extended beyond 2021?"
+        ]
+      }
+    },
+    {
+      "anchor_id": 13,
+      "source_id": 3423,
+      "question_en": "Should the government increase its efforts to support equal education opportunities (e.g. through vouchers for private tutoring for students from low-income families)?",
+      "question_de": "Soll sich der Staat stärker für gleiche Bildungschancen einsetzen (z.B. mit Nachhilfe-Gutscheinen für Schüler/-innen aus Familien mit geringem Einkommen)?",
+      "variants": {
+        "Negation": [
+          "Should the government not increase its efforts to support equal education opportunities (e.g. through vouchers for private tutoring for students from low-income families)?"
+        ],
+        "Easy Paraphrase": [
+          "Is it important for the government to enhance its initiatives in promoting equal access to educational opportunities, such as providing vouchers for private tutoring to students from families with lower incomes?"
+        ],
+        "Easy Paraphrase Negation": [
+          "Isn't it unnecessary for the government to enhance its initiatives in promoting equal access to educational opportunities, such as providing vouchers for private tutoring to students from families with lower incomes?"
+        ],
+        "Hard Paraphrase": [
+          "Ought the state to amplify its role in ensuring all students have the same educational chances, possibly by offering financial aid for private lessons to those from financially disadvantaged backgrounds?",
+          "Should public authorities boost their efforts to level the playing field in education, perhaps by granting subsidies for additional academic support to pupils from economically challenged households?"
+        ],
+        "Hard Paraphrase Negation": [
+          "The state should refrain from amplifying its role in ensuring equal educational opportunities, such as through financial aid for private lessons for students from financially disadvantaged backgrounds."
+        ],
+        "Syntax Trap": [
+          "Should the government increase its efforts to support renewable energy sources (e.g. through subsidies for solar panel installations in rural areas)?",
+          "Should the government increase its efforts to improve public transportation infrastructure (e.g. through funding for new railway lines in underserved regions)?"
+        ],
+        "Keyword Trap": [
+          "Should the government increase its efforts to support equal employment opportunities (e.g. through internships for individuals from diverse backgrounds)?",
+          "Should the government increase its efforts to support equal healthcare access (e.g. through subsidies for medical treatments for low-income families)?"
+        ]
+      }
+    },
+    {
+      "anchor_id": 14,
+      "source_id": 3414,
+      "question_en": "An initiative calls for the introduction of paid paternity leave for four weeks. Do you support this proposal?",
+      "question_de": "Eine Initiative fordert einen bezahlten Vaterschaftsurlaub von vier Wochen. Befürworten Sie dieses Anliegen?",
+      "variants": {
+        "Negation": [
+          "An initiative calls for the introduction of unpaid paternity leave for four weeks. Do you support this proposal?"
+        ],
+        "Easy Paraphrase": [
+          "Do you agree with the initiative proposing a four-week period of paid leave for new fathers?"
+        ],
+        "Easy Paraphrase Negation": [
+          "Do you oppose the initiative proposing a four-week period of paid leave for new fathers?"
+        ],
+        "Hard Paraphrase": [
+          "Should a proposal be enacted to allow fathers to receive salary compensation for a month after the birth of a child?",
+          "Is it advisable for a policy to be introduced granting one month of compensated time off for fathers following the arrival of a newborn?"
+        ],
+        "Hard Paraphrase Negation": [
+          "Introducing a policy that grants fathers a month of paid leave after a child is born is not something that deserves support."
+        ],
+        "Syntax Trap": [
+          "An initiative calls for the introduction of a new carbon tax to combat climate change. Do you support this proposal?",
+          "An initiative calls for the introduction of stricter regulations on data privacy. Do you support this proposal?"
+        ],
+        "Keyword Trap": [
+          "An initiative calls for the introduction of a four-week training program for new employees. Do you support this proposal?",
+          "An initiative calls for the introduction of paid parking for four weeks during the holiday season. Do you support this proposal?"
+        ]
+      }
+    }
+  ]
+}

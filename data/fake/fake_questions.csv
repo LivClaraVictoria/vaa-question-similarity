@@ -1,12 +1,155 @@
-id,category,question_EN
-1,ANCHOR,Should we raise taxes?
-2,Negation,Should we not raise taxes?
-3,Easy Paraphrase,Do you agree that taxes should be increased?
-4,Easy Paraphrase Negation,Do you agree that taxes should not be increased?
-5,Hard Paraphrase,The government must collect more revenue from citizens to fund services.
-6,Hard Paraphrase Negation,The government must not collect more revenue from citizens to fund services.
-7,Hard Paraphrase,Do you agree that money should be collected from people to support the functioning of the state?
-8,Syntax Trap,Should we raise animals in our backyards?
-9,Syntax Trap,Should we raise the minimum wage?
-10,Keyword Trap,We should implement a tax on plastic bags to reduce waste.
-11,Keyword Trap,I hate filing my taxes every year.
+id,anchor_id,category,question_EN
+1,1,ANCHOR,Should cannabis use be legalized?
+2,1,Negation,Should cannabis use not be legalized?
+3,1,Easy Paraphrase,Is the legalization of cannabis use a good idea?
+4,1,Easy Paraphrase Negation,Is it a bad idea to legalize cannabis use?
+5,1,Hard Paraphrase,Is it appropriate to allow the consumption of marijuana according to the law?
+6,1,Hard Paraphrase,Ought the law to permit individuals to use marijuana freely?
+7,1,Hard Paraphrase Negation,The law should not permit individuals to consume marijuana.
+8,1,Syntax Trap,Should income taxes be reduced?
+9,1,Syntax Trap,Should public transportation fares be increased?
+10,1,Keyword Trap,Is cannabis a widely used plant in gardening?
+11,1,Keyword Trap,Is the use of legal documents important in business transactions?
+12,2,ANCHOR,Should Switzerland start membership negotiations with the EU?
+13,2,Negation,Should Switzerland not start membership negotiations with the EU?
+14,2,Easy Paraphrase,Is it time for Switzerland to begin talks about joining the European Union?
+15,2,Easy Paraphrase Negation,Is it time for Switzerland to refrain from beginning talks about joining the European Union?
+16,2,Hard Paraphrase,Is it appropriate for Switzerland to commence discussions to become a part of the European Union?
+17,2,Hard Paraphrase,Should Switzerland engage in discussions to potentially unify with the European Union?
+18,2,Hard Paraphrase Negation,It is not advisable for Switzerland to engage in discussions to potentially unify with the European Union.
+19,2,Syntax Trap,Should Switzerland implement a new national healthcare policy?
+20,2,Syntax Trap,Should Switzerland adopt new educational standards for primary schools?
+21,2,Keyword Trap,Should negotiations start for Switzerland's participation in international sports events?
+22,2,Keyword Trap,Is Switzerland ready to begin membership discussions for a global technology consortium?
+23,3,ANCHOR,Should the conversion rate of the occupational pension fund be reduced in order to adjust for increases in life expectancy?
+24,3,Negation,Should the conversion rate of the occupational pension fund not be reduced in order to adjust for increases in life expectancy?
+25,3,Easy Paraphrase,Is it advisable to decrease the conversion rate of occupational pension funds to accommodate longer life expectancy?
+26,3,Easy Paraphrase Negation,Is it advisable to keep the conversion rate of occupational pension funds unchanged despite longer life expectancy?
+27,3,Hard Paraphrase,Is it necessary to lower the pension conversion factor to reflect the rise in average lifespan?
+28,3,Hard Paraphrase,Should adjustments be made to the retirement fund rate to account for people living longer on average?
+29,3,Hard Paraphrase Negation,"Maintaining the current pension conversion rate should continue, even as people live longer."
+30,3,Syntax Trap,Should the carbon emission targets for industrial sectors be increased to combat climate change?
+31,3,Syntax Trap,Should the funding for public education be enhanced to improve literacy rates?
+32,3,Keyword Trap,Should the conversion rate for reward points in airline programs be reduced to adjust for increased travel demand?
+33,3,Keyword Trap,Should the conversion rate of foreign currency exchanges be adjusted in response to market fluctuations?
+34,4,ANCHOR,Should private households be free to choose their electricity supplier (complete liberalisation of the electricity market)?
+35,4,Negation,Should private households not be free to choose their electricity supplier (complete liberalisation of the electricity market)?
+36,4,Easy Paraphrase,"Ought individual households have the liberty to select their own electricity provider, allowing full liberalisation of the electricity market?"
+37,4,Easy Paraphrase Negation,"Should individual households not have the freedom to select their own electricity provider, thus preventing full liberalisation of the electricity market?"
+38,4,Hard Paraphrase,"Is it necessary for households to have the autonomy to pick their own energy provider, leading to a fully deregulated power market?"
+39,4,Hard Paraphrase,"Do families require the ability to independently choose who supplies their power, resulting in an entirely open electricity sector?"
+40,4,Hard Paraphrase Negation,Households must be restricted from independently choosing their energy provider to prevent the energy market from becoming completely deregulated.
+41,4,Syntax Trap,Should public schools be free to choose their own curriculum (complete decentralisation of educational policy)?
+42,4,Syntax Trap,Should private companies be free to set their own environmental standards (complete deregulation of environmental policies)?
+43,4,Keyword Trap,Should private households be free to choose their internet provider for faster service?
+44,4,Keyword Trap,Should private households be able to select their water supplier for better quality?
+45,5,ANCHOR,"What is your position the following statement: ""The ongoing digitalization offers significantly more opportunities than risks."""
+46,5,Negation,"What is your position on the following statement: ""The ongoing digitalization does not offer significantly more opportunities than risks."""
+47,5,Easy Paraphrase,How do you feel about the statement that digitalization currently presents many more opportunities than it does risks?
+48,5,Easy Paraphrase Negation,How do you feel about the statement that digitalization currently presents many more risks than it does opportunities?
+49,5,Hard Paraphrase,Do you agree that the transition to digital technologies provides far greater advantages compared to the potential downsides?
+50,5,Hard Paraphrase,Would you say that the benefits of moving towards a digital age outweigh the associated challenges?
+51,5,Hard Paraphrase Negation,Do you believe that the transition to digital technologies results in more disadvantages than benefits?
+52,5,Syntax Trap,"What is your position on the following statement: ""The reduction in military spending poses significantly more threats than benefits."""
+53,5,Syntax Trap,"What is your position on the following statement: ""Introducing universal healthcare offers significantly more costs than savings."""
+54,5,Keyword Trap,"What is your position on the following statement: ""The ongoing digitalization in art offers significantly more inspiration than limitations."""
+55,5,Keyword Trap,"What is your position on the following statement: ""The ongoing digitalization of culinary techniques offers significantly more creativity than constraints."""
+56,6,ANCHOR,Should the rules for reproductive medicine be further relaxed?
+57,6,Negation,Should the rules for reproductive medicine not be further relaxed?
+58,6,Easy Paraphrase,Is it necessary to loosen the regulations governing reproductive medicine?
+59,6,Easy Paraphrase Negation,Is it necessary to tighten the regulations governing reproductive medicine?
+60,6,Hard Paraphrase,Is there a need to make the guidelines for assisted reproductive techniques more lenient?
+61,6,Hard Paraphrase,Should the constraints on technologies for human reproduction be eased?
+62,6,Hard Paraphrase Negation,It is essential to maintain or even tighten the current restrictions on medical procedures related to reproduction.
+63,6,Syntax Trap,Should the standards for educational curricula be further revised?
+64,6,Syntax Trap,Should the policies regarding renewable energy be further developed?
+65,6,Keyword Trap,Should the rules for laboratory methods be further relaxed in scientific research?
+66,6,Keyword Trap,Should the regulations for food production be further relaxed to enhance culinary diversity?
+67,7,ANCHOR,Should the federal government provide more support for the construction of non-profit housing? 
+68,7,Negation,Should the federal government not provide more support for the construction of non-profit housing?
+69,7,Easy Paraphrase,Is it necessary for the national government to increase its support for building housing that is not for profit?
+70,7,Easy Paraphrase Negation,Is it unnecessary for the national government to increase its support for building housing that is not for profit?
+71,7,Hard Paraphrase,Is there a need for the central authorities to enhance their financial assistance for developing housing projects with no profit motive?
+72,7,Hard Paraphrase,Ought the national administration to boost aid for initiatives aimed at creating housing that lacks a profit-driven focus?
+73,7,Hard Paraphrase Negation,The central authorities should refrain from enhancing financial aid for developing projects intended for housing without a profit goal.
+74,7,Syntax Trap,Should the federal government provide more support for the development of renewable energy sources?
+75,7,Syntax Trap,Should the federal government provide more support for the improvement of public transportation systems?
+76,7,Keyword Trap,Should private organizations receive more support for the construction of new office buildings?
+77,7,Keyword Trap,Should the federal government provide more support for the construction of sports facilities?
+78,8,ANCHOR,"Should the federal government spend more or less in the area of ""Public security""?"
+79,8,Negation,"Should the federal government spend less or more in the area of ""Public security""?"
+80,8,Easy Paraphrase,Should the federal government increase or decrease its spending on public security?
+81,8,Easy Paraphrase Negation,Should the federal government decrease or increase its spending on public security?
+82,8,Hard Paraphrase,Is it advisable for the national authorities to allocate additional resources towards ensuring public safety?
+83,8,Hard Paraphrase,Should national funding be adjusted to provide more emphasis on the protection of citizens?
+84,8,Hard Paraphrase Negation,The national authorities ought to reduce the allocation of resources towards ensuring public safety.
+85,8,Syntax Trap,"Should the federal government spend more or less in the area of ""Environmental protection""?"
+86,8,Syntax Trap,"Should the federal government spend more or less in the area of ""Education reform""?"
+87,8,Keyword Trap,Should the government spend more on public holidays?
+88,8,Keyword Trap,Should more public funds be allocated to organizing community events?
+89,9,ANCHOR,Should Switzerland strive for a free trade agreement with the USA?
+90,9,Negation,Should Switzerland not strive for a free trade agreement with the USA?
+91,9,Easy Paraphrase,Is it advisable for Switzerland to pursue a free trade deal with the United States?
+92,9,Easy Paraphrase Negation,Is it advisable for Switzerland not to pursue a free trade deal with the United States?
+93,9,Hard Paraphrase,Would it be beneficial for Switzerland to establish a commercial treaty with the United States?
+94,9,Hard Paraphrase,Should Switzerland work towards forming a bilateral trade pact with America?
+95,9,Hard Paraphrase Negation,It would not be in Switzerland's interest to establish a commercial treaty with the United States.
+96,9,Syntax Trap,Should Switzerland invest more resources in expanding its public transportation network?
+97,9,Syntax Trap,Should Switzerland implement stricter regulations on digital privacy?
+98,9,Keyword Trap,Should Switzerland strive to maintain its position in international sporting events with the USA?
+99,9,Keyword Trap,Should Switzerland form a cultural exchange program with the USA?
+100,10,ANCHOR,Are you in favour of restricting competition between the cantons with regard to corporate tax rates?
+101,10,Negation,Are you in favour of not restricting competition between the cantons with regard to corporate tax rates?
+102,10,Easy Paraphrase,Do you support limiting the competition between cantons in terms of their corporate tax rates?
+103,10,Easy Paraphrase Negation,Do you oppose limiting the competition between cantons in terms of their corporate tax rates?
+104,10,Hard Paraphrase,Do you agree with the idea that cantons should not undercut each other by offering lower corporate taxes?
+105,10,Hard Paraphrase,Should there be a ban on the practice of cantons engaging in a race to the bottom with corporate tax incentives?
+106,10,Hard Paraphrase Negation,Cantons should have the freedom to engage in competitive tax rate setting without restrictions.
+107,10,Syntax Trap,Are you in favour of enforcing stricter regulations on the import of non-native animal species?
+108,10,Syntax Trap,Are you in favour of increasing government funding for renewable energy research and development?
+109,10,Keyword Trap,Are you in favour of restricting access to competitive sports events between different cantons?
+110,10,Keyword Trap,Are you in favour of imposing limits on the number of corporate events a canton can host?
+111,11,ANCHOR,"Should online brokerage services (e.g. ""Airbnb"" accommodations, ""Uber"" taxi services) be regulated more strongly?"
+112,11,Negation,"Should online brokerage services (e.g. ""Airbnb"" accommodations, ""Uber"" taxi services) not be regulated more strongly?"
+113,11,Easy Paraphrase,Is there a need for stricter regulation of online platforms such as Airbnb and Uber?
+114,11,Easy Paraphrase Negation,Is there no need for stricter regulation of online platforms such as Airbnb and Uber?
+115,11,Hard Paraphrase,Do digital service platforms like those for lodging and ride-sharing require tighter governmental oversight?
+116,11,Hard Paraphrase,Ought platforms providing digital accommodations and transport services face increased regulatory control?
+117,11,Hard Paraphrase Negation,Digital services for accommodation and transportation do not require any additional regulatory measures.
+118,11,Syntax Trap,"Should agricultural subsidies (e.g. ""corn"" production, ""dairy"" farming) be reduced significantly?"
+119,11,Syntax Trap,"Should educational curriculums (e.g. ""mathematics"" courses, ""science"" labs) be updated frequently?"
+120,11,Keyword Trap,Should Airbnb and Uber collaborate on a new online marketing strategy?
+121,11,Keyword Trap,Is there a more efficient way for Uber and Airbnb to expand their customer base?
+122,12,ANCHOR,Should the current moratorium on genetically modified plants and animals in Swiss agriculture be extended beyond 2021?
+123,12,Negation,Should the current moratorium on genetically modified plants and animals in Swiss agriculture not be extended beyond 2021?
+124,12,Easy Paraphrase,Ought the existing ban on genetically modified plants and animals in Swiss farming be continued past 2021?
+125,12,Easy Paraphrase Negation,Ought the existing ban on genetically modified plants and animals in Swiss farming not be continued past 2021?
+126,12,Hard Paraphrase,Is it advisable to prolong the prohibition against genetically engineered flora and fauna in Switzerland's agricultural sector beyond the year 2021?
+127,12,Hard Paraphrase,Should Switzerland maintain its restriction on the cultivation of genetically altered crops and livestock after 2021?
+128,12,Hard Paraphrase Negation,Is it advisable to lift the prohibition against genetically engineered flora and fauna in Switzerland's agricultural sector after 2021?
+129,12,Syntax Trap,Should the current restrictions on foreign investments in Swiss real estate be extended beyond 2021?
+130,12,Syntax Trap,Should the existing limits on digital surveillance in Switzerland be extended beyond 2021?
+131,12,Keyword Trap,Should the current moratorium on genetically modified foods in international markets be extended beyond 2021?
+132,12,Keyword Trap,Should the current moratorium on genetically engineered animals in medical research be extended beyond 2021?
+133,13,ANCHOR,Should the government increase its efforts to support equal education opportunities (e.g. through vouchers for private tutoring for students from low-income families)?
+134,13,Negation,Should the government not increase its efforts to support equal education opportunities (e.g. through vouchers for private tutoring for students from low-income families)?
+135,13,Easy Paraphrase,"Is it important for the government to enhance its initiatives in promoting equal access to educational opportunities, such as providing vouchers for private tutoring to students from families with lower incomes?"
+136,13,Easy Paraphrase Negation,"Isn't it unnecessary for the government to enhance its initiatives in promoting equal access to educational opportunities, such as providing vouchers for private tutoring to students from families with lower incomes?"
+137,13,Hard Paraphrase,"Ought the state to amplify its role in ensuring all students have the same educational chances, possibly by offering financial aid for private lessons to those from financially disadvantaged backgrounds?"
+138,13,Hard Paraphrase,"Should public authorities boost their efforts to level the playing field in education, perhaps by granting subsidies for additional academic support to pupils from economically challenged households?"
+139,13,Hard Paraphrase Negation,"The state should refrain from amplifying its role in ensuring equal educational opportunities, such as through financial aid for private lessons for students from financially disadvantaged backgrounds."
+140,13,Syntax Trap,Should the government increase its efforts to support renewable energy sources (e.g. through subsidies for solar panel installations in rural areas)?
+141,13,Syntax Trap,Should the government increase its efforts to improve public transportation infrastructure (e.g. through funding for new railway lines in underserved regions)?
+142,13,Keyword Trap,Should the government increase its efforts to support equal employment opportunities (e.g. through internships for individuals from diverse backgrounds)?
+143,13,Keyword Trap,Should the government increase its efforts to support equal healthcare access (e.g. through subsidies for medical treatments for low-income families)?
+144,14,ANCHOR,An initiative calls for the introduction of paid paternity leave for four weeks. Do you support this proposal?
+145,14,Negation,An initiative calls for the introduction of unpaid paternity leave for four weeks. Do you support this proposal?
+146,14,Easy Paraphrase,Do you agree with the initiative proposing a four-week period of paid leave for new fathers?
+147,14,Easy Paraphrase Negation,Do you oppose the initiative proposing a four-week period of paid leave for new fathers?
+148,14,Hard Paraphrase,Should a proposal be enacted to allow fathers to receive salary compensation for a month after the birth of a child?
+149,14,Hard Paraphrase,Is it advisable for a policy to be introduced granting one month of compensated time off for fathers following the arrival of a newborn?
+150,14,Hard Paraphrase Negation,Introducing a policy that grants fathers a month of paid leave after a child is born is not something that deserves support.
+151,14,Syntax Trap,An initiative calls for the introduction of a new carbon tax to combat climate change. Do you support this proposal?
+152,14,Syntax Trap,An initiative calls for the introduction of stricter regulations on data privacy. Do you support this proposal?
+153,14,Keyword Trap,An initiative calls for the introduction of a four-week training program for new employees. Do you support this proposal?
+154,14,Keyword Trap,An initiative calls for the introduction of paid parking for four weeks during the holiday season. Do you support this proposal?

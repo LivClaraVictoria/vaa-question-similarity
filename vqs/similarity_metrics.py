@@ -15,9 +15,12 @@ class BaseDistanceCalculator(ABC):
         instruction: str | None = None,
         is_asymmetric: bool = False,
         use_euclidean: bool = True,
+        trust_remote_code: bool = False,
     ):
         self.config = config
-        self.model = SentenceTransformer(model_name)
+        self.model = SentenceTransformer(
+            model_name, trust_remote_code=trust_remote_code
+        )
         self.instruction = instruction
         self.is_asymmetric = is_asymmetric
         self.use_euclidean = use_euclidean
@@ -40,6 +43,10 @@ class BaseDistanceCalculator(ABC):
     def format_input(self, text: str, role: str) -> str:
         """role: 'query' or 'passage'"""
         pass
+
+    def _get_encode_kwargs(self, role: str) -> dict:
+        """Override in subclasses to pass extra kwargs to model.encode()."""
+        return {}
 
     def _cosine_to_euclidean(self, cosine_score: float) -> float:
         # max(0, ...) to avoid small negative values due to floating point errors
@@ -78,11 +85,19 @@ class BaseDistanceCalculator(ABC):
 
         # Encode
         fmt_queries = [self.format_input(q, role="query") for q in questions]
-        emb_queries = self.model.encode(fmt_queries, normalize_embeddings=True)
+        emb_queries = self.model.encode(
+            fmt_queries,
+            normalize_embeddings=True,
+            **self._get_encode_kwargs("query"),
+        )
 
         if self.is_asymmetric:
             fmt_targets = [self.format_input(q, role="passage") for q in questions]
-            emb_targets = self.model.encode(fmt_targets, normalize_embeddings=True)
+            emb_targets = self.model.encode(
+                fmt_targets,
+                normalize_embeddings=True,
+                **self._get_encode_kwargs("passage"),
+            )
         else:
             emb_targets = emb_queries
 
@@ -139,13 +154,52 @@ class BaseDistanceCalculator(ABC):
         return results_df
 
     def _calculate_anchor_topology(self, df: pd.DataFrame) -> pd.DataFrame:
+        # Support multi-anchor datasets via anchor_id column
+        if "anchor_id" in df.columns:
+            return self._calculate_multi_anchor_topology(df)
+
+        # Backward compat: single-anchor dataset (no anchor_id column)
         anchor_row = df[df["category"] == "ANCHOR"]
         passage_rows = df[df["category"] != "ANCHOR"]
 
         if anchor_row.empty:
             raise ValueError("Fake dataset selected, but no 'ANCHOR' category found.")
 
-        anchor_text = anchor_row.iloc[0]["question_EN"]
+        return self._compute_anchor_distances(
+            anchor_text=anchor_row.iloc[0]["question_EN"],
+            passage_rows=passage_rows,
+        )
+
+    def _calculate_multi_anchor_topology(self, df: pd.DataFrame) -> pd.DataFrame:
+        all_results = []
+
+        for anchor_id in sorted(df["anchor_id"].unique()):
+            group = df[df["anchor_id"] == anchor_id]
+            anchor_rows = group[group["category"] == "ANCHOR"]
+            passage_rows = group[group["category"] != "ANCHOR"]
+
+            if anchor_rows.empty:
+                print(f"Warning: anchor_id={anchor_id} has no ANCHOR row, skipping.")
+                continue
+
+            result = self._compute_anchor_distances(
+                anchor_text=anchor_rows.iloc[0]["question_EN"],
+                passage_rows=passage_rows,
+                anchor_id=anchor_id,
+            )
+            all_results.append(result)
+
+        if not all_results:
+            raise ValueError("No valid anchor groups found in fake dataset.")
+
+        return pd.concat(all_results, ignore_index=True)
+
+    def _compute_anchor_distances(
+        self,
+        anchor_text: str,
+        passage_rows: pd.DataFrame,
+        anchor_id: int | None = None,
+    ) -> pd.DataFrame:
         passage_texts = passage_rows["question_EN"].tolist()
         passage_cats = passage_rows["category"].tolist()
 
@@ -153,8 +207,16 @@ class BaseDistanceCalculator(ABC):
         target_role = "passage" if self.is_asymmetric else "query"
         fmt_targets = [self.format_input(p, role=target_role) for p in passage_texts]
 
-        emb_anchor = self.model.encode(fmt_anchor, normalize_embeddings=True)
-        emb_targets = self.model.encode(fmt_targets, normalize_embeddings=True)
+        emb_anchor = self.model.encode(
+            fmt_anchor,
+            normalize_embeddings=True,
+            **self._get_encode_kwargs("query"),
+        )
+        emb_targets = self.model.encode(
+            fmt_targets,
+            normalize_embeddings=True,
+            **self._get_encode_kwargs(target_role),
+        )
 
         similarities = self.model.similarity(emb_anchor, emb_targets)
 
@@ -164,16 +226,17 @@ class BaseDistanceCalculator(ABC):
             final_value = (
                 self._cosine_to_euclidean(score) if self.use_euclidean else score
             )
-            results.append(
-                {
-                    "Qu1": anchor_text,
-                    "Qu2": text,
-                    "Cat1": "ANCHOR",
-                    "Cat2": passage_cats[i],
-                    self.value_name: final_value,
-                    "Type": f"Fake-{'Asymmetric' if self.is_asymmetric else 'Symmetric'}",
-                }
-            )
+            row = {
+                "Qu1": anchor_text,
+                "Qu2": text,
+                "Cat1": "ANCHOR",
+                "Cat2": passage_cats[i],
+                self.value_name: final_value,
+                "Type": f"Fake-{'Asymmetric' if self.is_asymmetric else 'Symmetric'}",
+            }
+            if anchor_id is not None:
+                row["anchor_id"] = anchor_id
+            results.append(row)
 
         return pd.DataFrame(results)
 
@@ -207,7 +270,7 @@ class E5InstructCalculator(BaseDistanceCalculator):
         model_name = getattr(
             config, "e5_instruct_model_name", "intfloat/multilingual-e5-large-instruct"
         )
-        instruction = getattr(config, "E5_instruction", "")
+        instruction = getattr(config, "embedding_instruction", "")
         super().__init__(
             config,
             model_name=model_name,
@@ -219,6 +282,74 @@ class E5InstructCalculator(BaseDistanceCalculator):
         if role == "query":
             return f"Instruction: {self.instruction}\nQuery: {text}"
         return text
+
+
+class JinaV3Calculator(BaseDistanceCalculator):
+    def __init__(self, config: Any, **kwargs):
+        model_name = getattr(config, "jina_model_name", "jinaai/jina-embeddings-v3")
+        self.task = getattr(config, "embedding_task", "separation")
+        super().__init__(
+            config, model_name=model_name, trust_remote_code=True, **kwargs
+        )
+
+    def format_input(self, text: str, role: str) -> str:
+        return text
+
+    def _get_encode_kwargs(self, role: str) -> dict:
+        return {"task": self.task}
+
+
+class BGEM3Calculator(BaseDistanceCalculator):
+    def __init__(self, config: Any, **kwargs):
+        model_name = getattr(config, "bge_model_name", "BAAI/bge-m3")
+        super().__init__(config, model_name=model_name, **kwargs)
+
+    def format_input(self, text: str, role: str) -> str:
+        return text
+
+
+class GTECalculator(BaseDistanceCalculator):
+    def __init__(self, config: Any, **kwargs):
+        model_name = getattr(
+            config, "gte_model_name", "Alibaba-NLP/gte-multilingual-base"
+        )
+        super().__init__(
+            config, model_name=model_name, trust_remote_code=True, **kwargs
+        )
+
+    def format_input(self, text: str, role: str) -> str:
+        return text
+
+
+class NomicCalculator(BaseDistanceCalculator):
+    def __init__(self, config: Any, **kwargs):
+        model_name = getattr(
+            config, "nomic_model_name", "nomic-ai/nomic-embed-text-v2-moe"
+        )
+        self.prefix = getattr(config, "embedding_task", "clustering")
+        super().__init__(
+            config, model_name=model_name, trust_remote_code=True, **kwargs
+        )
+
+    def format_input(self, text: str, role: str) -> str:
+        return f"{self.prefix}: {text}"
+
+
+class Qwen3Calculator(BaseDistanceCalculator):
+    def __init__(self, config: Any, **kwargs):
+        model_name = getattr(
+            config, "qwen3_model_name", "Qwen/Qwen3-Embedding-0.6B"
+        )
+        self.prompt = getattr(config, "embedding_instruction", None)
+        super().__init__(config, model_name=model_name, **kwargs)
+
+    def format_input(self, text: str, role: str) -> str:
+        return text
+
+    def _get_encode_kwargs(self, role: str) -> dict:
+        if self.prompt:
+            return {"prompt": self.prompt}
+        return {}
 
 
 # --- 3. The Registry (Configuration) ---
@@ -234,6 +365,11 @@ METRIC_REGISTRY = {
         "class": E5InstructCalculator,
         "kwargs": {"is_asymmetric": True},
     },
+    "JINA-V3": {"class": JinaV3Calculator, "kwargs": {}},
+    "BGE-M3": {"class": BGEM3Calculator, "kwargs": {}},
+    "GTE": {"class": GTECalculator, "kwargs": {}},
+    "NOMIC-V2": {"class": NomicCalculator, "kwargs": {}},
+    "QWEN3": {"class": Qwen3Calculator, "kwargs": {}},
 }
 
 

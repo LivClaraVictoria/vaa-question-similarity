@@ -36,6 +36,10 @@ echo "Config: ${PIPELINE_CONFIG}"
 
 [[ -f /itet-stor/${ETH_USERNAME}/net_scratch/conda/bin/conda ]] && eval "$(/itet-stor/${ETH_USERNAME}/net_scratch/conda/bin/conda shell.bash hook)"
 conda activate ${CONDA_ENVIRONMENT}
+
+# Redirect HuggingFace cache to data-scratch to avoid itet-stor quota issues
+export HF_HOME=/usr/itetnas04/data-scratch-01/${ETH_USERNAME}/data/.cache/huggingface
+
 cd ${DIRECTORY}
 
 python -u -m main --config "${PIPELINE_CONFIG}" ${PIPELINE_OVERRIDES:-}

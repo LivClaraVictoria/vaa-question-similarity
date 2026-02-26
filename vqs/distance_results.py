@@ -76,16 +76,30 @@ def save_results(
             df["Cat1"] == "ANCHOR"
         ]  # filter for clarity: only comparison to ANCHOR matters
 
-        _plot_fake_results(
-            df,
-            config=config,
-            file_path=file_path,
-        )
+        if "anchor_id" in df.columns:
+            # Multi-anchor: one plot per anchor
+            for anchor_id in sorted(df["anchor_id"].unique()):
+                anchor_df = df[df["anchor_id"] == anchor_id]
+                suffix = f"_anchor{anchor_id}"
+                _plot_fake_results(
+                    anchor_df,
+                    config=config,
+                    file_path=file_path,
+                    plot_suffix=suffix,
+                )
+        else:
+            _plot_fake_results(
+                df,
+                config=config,
+                file_path=file_path,
+            )
 
     return df
 
 
-def _plot_fake_results(df: pd.DataFrame, config, file_path) -> None:
+def _plot_fake_results(
+    df: pd.DataFrame, config, file_path, plot_suffix: str = ""
+) -> None:
     # 1. Setup Plot Dimensions
     plt.figure(figsize=(12, 9))
     sns.set_theme(style="whitegrid")
@@ -145,10 +159,10 @@ def _plot_fake_results(df: pd.DataFrame, config, file_path) -> None:
     plt.xlabel(metric_col)
     plt.ylabel("Comparison Question")
 
-    if "instruct" in config.dist.lower():
+    if "instruct" in config.dist.lower() or getattr(config, "embedding_instruction", None):
         # Safely get instruction (defaults to string if missing)
         instruction_text = getattr(
-            config, "E5_instruction", "Instruction not found in config"
+            config, "embedding_instruction", "Instruction not found in config"
         )
 
         # Wrap text so it doesn't run off the plot (e.g., width 80 chars)
@@ -166,7 +180,7 @@ def _plot_fake_results(df: pd.DataFrame, config, file_path) -> None:
 
     # 7. Save Plot
     # Use same base filename but with _visualization suffix for easy matching
-    plot_path = file_path.parent / (file_path.stem + "_visualization.png")
+    plot_path = file_path.parent / (file_path.stem + f"{plot_suffix}_visualization.png")
 
     plt.savefig(plot_path, dpi=300)
     plt.close()  # Close the memory buffer to prevent leaks
