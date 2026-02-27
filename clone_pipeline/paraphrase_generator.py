@@ -25,6 +25,7 @@ def _build_prompt(
     question_text: str,
     clone_type: str,
     existing_paraphrases: list[str],
+    easy_paraphrases: list[str] | None = None,
 ) -> str:
     """Build the prompt for generating a single paraphrase of the given type."""
 
@@ -35,10 +36,16 @@ def _build_prompt(
             "exactly the same. Some words may overlap with the original."
         ),
         "hard_paraphrase": (
-            "Rephrase the question using completely different words and sentence "
-            "structure. The meaning must be identical, but no significant content "
-            "words should be shared with the original. You may change the grammatical "
-            "form (e.g. question to statement or vice versa)."
+            "Rephrase the question using COMPLETELY DIFFERENT words and sentence "
+            "structure. The meaning must be identical, but you MUST NOT share any "
+            "significant content words with the original. Use synonyms, different "
+            "grammatical forms, or circumlocutions. You may change the grammatical "
+            "form (e.g. question to statement or vice versa).\n\n"
+            "For example: if the original says 'taxes', use 'fiscal levies' or "
+            "'government revenue'. If it says 'legalized', use 'permitted by law' "
+            "or 'decriminalized'. If it says 'retirement age', use 'the point at "
+            "which workers leave the workforce' or 'the threshold for ending "
+            "one's professional career'."
         ),
         "negation": (
             "Negate the original question using the simplest possible change. "
@@ -54,10 +61,14 @@ def _build_prompt(
             "Return only the final negated paraphrase."
         ),
         "negation_hard": (
-            "First, create a hard paraphrase of the original (completely different "
-            "words and structure). Then negate that paraphrase so that someone who "
-            "agrees with the original would disagree with your version. "
-            "Return only the final negated paraphrase."
+            "First, create a hard paraphrase of the original — using COMPLETELY "
+            "DIFFERENT vocabulary and sentence structure, with NO significant "
+            "content words from the original. Then negate that hard paraphrase "
+            "so that someone who agrees with the original would disagree with "
+            "your version. Return only the final negated paraphrase.\n\n"
+            "For example: if the original says 'taxes', the hard paraphrase "
+            "should use 'fiscal levies' or 'government revenue' instead. "
+            "Then negate that rephrased version."
         ),
     }
 
@@ -65,19 +76,44 @@ def _build_prompt(
 
     existing_block = ""
     if existing_paraphrases:
-        items = "\n".join(f"  - \"{p}\"" for p in existing_paraphrases)
+        items = "\n".join(f'  - "{p}"' for p in existing_paraphrases)
         existing_block = (
             f"\n\nThe following paraphrases of this type have already been generated. "
             f"You MUST produce a DIFFERENT one:\n{items}"
+        )
+
+    # For hard types, add easy paraphrases as negative exemplars + strict rules
+    hard_rules_block = ""
+    if clone_type in ("hard_paraphrase", "negation_hard"):
+        easy_ref = ""
+        if easy_paraphrases:
+            easy_items = "\n".join(f'  - "{p}"' for p in easy_paraphrases[:3])
+            easy_ref = (
+                f"\n\nFor reference, these are EASY paraphrases (similar wording). "
+                f"Your hard paraphrase must be MUCH more different than these:\n"
+                f"{easy_items}"
+            )
+
+        hard_rules_block = (
+            f"{easy_ref}\n\n"
+            f"IMPORTANT RULES:\n"
+            f"- You MUST NOT reuse any significant content words from the original question.\n"
+            f"- Nouns, verbs, and adjectives that carry the topic meaning must ALL be replaced "
+            f"with synonyms or circumlocutions.\n"
+            f"- If you find yourself writing a word that appears in the original, STOP and "
+            f"find an alternative.\n"
+            f"- The result should look like it was written by someone who never saw the original, "
+            f"describing the same concept from scratch."
         )
 
     return (
         f"You are helping generate test data for a Swiss political questionnaire.\n\n"
         f"Original question:\n\"{question_text}\"\n\n"
         f"Task: {instruction}"
-        f"{existing_block}\n\n"
+        f"{existing_block}"
+        f"{hard_rules_block}\n\n"
         f"Return a JSON object with a single key \"paraphrase\" containing your result.\n"
-        f"Example: {{\"paraphrase\": \"Your paraphrase here.\"}}"
+        f'Example: {{"paraphrase": "Your paraphrase here."}}'
     )
 
 
@@ -176,7 +212,12 @@ def ensure_paraphrases(
         existing = cache[q_id_str][clone_type]
 
         for i in range(n_to_generate):
-            prompt = _build_prompt(q_text, clone_type, existing)
+            # For hard types, pass easy paraphrases as negative exemplars
+            easy_refs = None
+            if clone_type in ("hard_paraphrase", "negation_hard"):
+                easy_refs = cache.get(q_id_str, {}).get("easy_paraphrase", [])
+
+            prompt = _build_prompt(q_text, clone_type, existing, easy_paraphrases=easy_refs)
             response = client.chat.completions.create(
                 model=MODEL,
                 messages=[{"role": "user", "content": prompt}],

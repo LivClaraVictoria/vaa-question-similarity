@@ -277,18 +277,24 @@ def _save_outputs(
     name_b = _get_clean_name(config_b)
     h = _get_sweep_hash(config_a, config_b, alphas, n)
     timestamp = datetime.now().strftime("%m%d_%H%M")
+
+    # Per-experiment subfolder (matches CrossRunSaver pattern)
+    subfolder_name = f"alpha_sweep_{name_a}_vs_{name_b}"
+    subfolder = output_dir / subfolder_name
+    subfolder.mkdir(parents=True, exist_ok=True)
+
     base = f"alpha_sweep_{name_a}_vs_{name_b}_{timestamp}_{h}"
 
     # Deduplication check
-    existing = list(output_dir.glob(f"*{h}*_metrics.png"))
+    existing = list(subfolder.glob(f"*{h}*_metrics.png"))
     if existing:
         print(f"[SKIP SAVE] Alpha sweep with hash {h} already exists: {existing[0].name}")
         return
 
     # --- CSV ---
-    csv_path = output_dir / f"{base}.csv"
+    csv_path = subfolder / f"{base}.csv"
     sweep_df.to_csv(csv_path, index=False)
-    print(f"  -> CSV:     {csv_path.name}")
+    print(f"  -> CSV:     {subfolder_name}/{csv_path.name}")
 
     sns.set_theme(style="whitegrid")
     colors = {"jaccard": "#2196F3", "spearman": "#4CAF50", "kendall": "#FF9800"}
@@ -336,10 +342,10 @@ def _save_outputs(
     ax.set_title(f"CRW Metrics vs Alpha\n{name_a}  vs  {name_b}")
     ax.legend(loc="best", fontsize=9)
     fig.tight_layout()
-    metrics_path = output_dir / f"{base}_metrics.png"
+    metrics_path = subfolder / f"{base}_metrics.png"
     fig.savefig(metrics_path, dpi=300)
     plt.close(fig)
-    print(f"  -> Metrics: {metrics_path.name}")
+    print(f"  -> Metrics: {subfolder_name}/{metrics_path.name}")
 
     # --- Graph 2: Jaccard Distribution ---
     fig, ax = plt.subplots(figsize=(10, 6))
@@ -372,10 +378,10 @@ def _save_outputs(
     ax.set_title(f"CRW Jaccard Distribution vs Alpha\n{name_a}  vs  {name_b}")
     ax.legend(loc="best", fontsize=9)
     fig.tight_layout()
-    jaccard_path = output_dir / f"{base}_jaccard_dist.png"
+    jaccard_path = subfolder / f"{base}_jaccard_dist.png"
     fig.savefig(jaccard_path, dpi=300)
     plt.close(fig)
-    print(f"  -> Jaccard: {jaccard_path.name}")
+    print(f"  -> Jaccard: {subfolder_name}/{jaccard_path.name}")
 
 
 # ---------------------------------------------------------------------------
@@ -523,7 +529,13 @@ def _run_worker(args, config_a, config_b, alphas: list[float], n: int):
         )
         sys.exit(1)
 
-    sweep_dir = Path(args.sweep_dir) if args.sweep_dir else default_config.ALPHA_SWEEP_RESULTS_DIR / "workers"
+    if args.sweep_dir:
+        sweep_dir = Path(args.sweep_dir)
+    else:
+        name_a = _get_clean_name(config_a)
+        name_b = _get_clean_name(config_b)
+        subfolder_name = f"alpha_sweep_{name_a}_vs_{name_b}"
+        sweep_dir = default_config.ALPHA_SWEEP_RESULTS_DIR / subfolder_name / "workers"
     sweep_dir.mkdir(parents=True, exist_ok=True)
 
     alpha = alphas[task_id]
@@ -555,7 +567,13 @@ def _run_worker(args, config_a, config_b, alphas: list[float], n: int):
 
 
 def _run_collect(args, config_a, config_b, alphas: list[float], n: int):
-    sweep_dir = Path(args.sweep_dir) if args.sweep_dir else default_config.ALPHA_SWEEP_RESULTS_DIR / "workers"
+    if args.sweep_dir:
+        sweep_dir = Path(args.sweep_dir)
+    else:
+        name_a = _get_clean_name(config_a)
+        name_b = _get_clean_name(config_b)
+        subfolder_name = f"alpha_sweep_{name_a}_vs_{name_b}"
+        sweep_dir = default_config.ALPHA_SWEEP_RESULTS_DIR / subfolder_name / "workers"
 
     worker_files = sorted(sweep_dir.glob("alpha_worker_*.csv"))
     if not worker_files:

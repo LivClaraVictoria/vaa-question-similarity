@@ -17,7 +17,8 @@ echo ""
 for CLONE in "${CLONE_TYPES[@]}"; do
     TIMESTAMP=$(date +%Y%m%d_%H%M%S)
     export CONFIG_B="configs/full_pipeline/cloned/${CLONE}_e5_ZH.py"
-    export SWEEP_DIR="${RESULTS_BASE}/workers_${CLONE}_e5_${TIMESTAMP}"
+    SUBFOLDER="alpha_sweep_pipeline_e5_ZH_vs_${CLONE}_e5_ZH"
+    export SWEEP_DIR="${RESULTS_BASE}/${SUBFOLDER}/workers_${TIMESTAMP}"
     mkdir -p "${SWEEP_DIR}"
 
     SWEEP_JOB=$(sbatch --parsable --export=ALL --array=0-20 --job-name="asw_${CLONE}_e5" "${SCRIPT_DIR}/job_alpha_sweep_worker.sh")

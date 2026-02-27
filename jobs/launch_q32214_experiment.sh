@@ -64,7 +64,8 @@ for i in "${!MODELS[@]}"; do
     for CLONE in "${CLONE_TYPES[@]}"; do
         TIMESTAMP=$(date +%Y%m%d_%H%M%S)
         export CONFIG_B="configs/full_pipeline/cloned/${CLONE}_${MODEL}_ZH.py"
-        export SWEEP_DIR="${RESULTS_BASE}/workers_${CLONE}_${MODEL}_${TIMESTAMP}"
+        SUBFOLDER="alpha_sweep_pipeline_${MODEL}_ZH_vs_${CLONE}_${MODEL}_ZH"
+        export SWEEP_DIR="${RESULTS_BASE}/${SUBFOLDER}/workers_${TIMESTAMP}"
         mkdir -p "${SWEEP_DIR}"
 
         SWEEP_JOB=$(sbatch --parsable --export=ALL --dependency=afterok:${LAST_CLONE} \

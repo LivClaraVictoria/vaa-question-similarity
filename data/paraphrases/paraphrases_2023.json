@@ -13,18 +13,6 @@
       "Do you think there should be an official establishment of a third gender, apart from 'female' and 'male'?",
       "Should a third gender be formally recognized alongside 'female' and 'male'?"
     ],
-    "negation_hard": [
-      "Do you believe there should be no recognition of a third gender in addition to 'female' and 'male'?",
-      "Is it your opinion that the classification system should exclude a third gender option beyond 'male' and 'female'?",
-      "Do you think the current binary gender system should remain without adding a third category?",
-      "Should the existing gender categories 'male' and 'female' continue to be the only officially acknowledged options?",
-      "Is it your stance that a third gender should not be officially recognized along with 'male' and 'female'?",
-      "Is it your view that the acknowledgment of genders should remain limited to just 'male' and 'female', without introducing a third option?",
-      "Do you hold the opinion that a third gender classification should remain unacknowledged by not being added to 'male' and 'female'?",
-      "Do you support maintaining the status quo by not incorporating any gender categories other than 'male' and 'female'?",
-      "Do you disagree with the idea of keeping only 'male' and 'female' as the recognized gender categories, without adding another one?",
-      "Are you of the belief that a third gender should not be formally added to the recognized categories of 'male' and 'female'?"
-    ],
     "negation_easy": [
       "Should we avoid adding a third official gender in addition to \"female\" and \"male\"?",
       "Should a third official gender not be established besides \"female\" and \"male\"?",
@@ -36,18 +24,6 @@
       "Should we not endorse the addition of a third official gender besides \"female\" and \"male\"?",
       "Should we decline the inclusion of a third official gender alongside \"female\" and \"male\"?",
       "Should we not accept the creation of a third official gender in addition to \"female\" and \"male\"?"
-    ],
-    "hard_paraphrase": [
-      "Is there a need to establish an additional recognized gender category apart from 'male' and 'female'?",
-      "Should a new official gender classification be added to the existing categories of 'male' and 'female'?",
-      "Would it be appropriate to formally recognize a gender identity that is neither 'female' nor 'male'?",
-      "Is it necessary to create an officially acknowledged gender option in addition to 'female' and 'male'?",
-      "Ought there to be an officially sanctioned gender option besides 'male' and 'female'?",
-      "Should an additional gender identity be formally included as an alternative to 'male' and 'female'?",
-      "Is there a case for officially adding a third gender identity to the categories of 'male' and 'female'?",
-      "Would it be advisable to introduce a distinct gender designation, separate from 'male' and 'female'?",
-      "Is it time to incorporate a third gender option into the current official categories of 'female' and 'male'?",
-      "Should there be a legal recognition of a gender classification other than 'male' and 'female'?"
     ],
     "negation": [
       "Should a third official gender not be introduced alongside \"female\" and \"male\"?",
@@ -71,13 +47,6 @@
       "Do you agree with the proposal of a popular initiative to decrease the radio and television fees to CHF 200 per household, while exempting businesses from this charge?",
       "Would you support the popular initiative aiming to lower radio and television fees to CHF 200 per household, with businesses not required to pay?"
     ],
-    "hard_paraphrase": [
-      "Would you agree with the proposal to lower the cost of media licenses to 200 Swiss francs for each household, while excluding companies from this charge?",
-      "Do you favor the plan to cut the broadcasting levy to 200 francs per family, excluding businesses from this fee?",
-      "Are you in favor of the initiative to reduce the television and radio payment to 200 CHF per family, with a waiver for enterprises?",
-      "Do you endorse the idea to decrease the broadcasting fees to 200 francs per household, with businesses being exempted from this obligation?",
-      "Do you back the proposal to set the media fees at 200 CHF per home, with businesses not required to pay this amount?"
-    ],
     "negation": [
       "A popular initiative aims to not reduce television and radio fees (CHF 200 per household, exemption for businesses). Do you support this initiative?",
       "A popular initiative aims to increase television and radio fees (CHF 200 per household, exemption for businesses). Do you support this initiative?",
@@ -91,13 +60,6 @@
       "Do you disagree with the plan to lower the TV and radio fees to CHF 200 per household, excluding businesses from paying?",
       "Would you reject the initiative to bring down TV and radio fees to CHF 200 per household, while exempting businesses?",
       "Would you be opposed to the initiative that aims to bring TV and radio fees down to CHF 200 per household, with businesses exempted?"
-    ],
-    "negation_hard": [
-      "Do you oppose the proposal to maintain the current television and radio fees at CHF 200 per household and to include businesses in the payment requirement?",
-      "Are you against the plan to lower the radio and television fees to CHF 200 per household while continuing the exemption for businesses?",
-      "Are you in favor of keeping the household charge for radio and television at CHF 200 and requiring businesses to contribute as well?",
-      "Do you disagree with the suggestion to keep the current television and radio fees unchanged at CHF 200 per household and introduce fees for businesses?",
-      "Are you against the idea of not adjusting the radio and TV fees from CHF 200 per family and also not imposing any fees on businesses?"
     ]
   },
   "32214": {
@@ -113,18 +75,6 @@
       "Are you supportive of changing the retirement age to a higher number, such as 67?",
       "Do you favor an adjustment to raise the retirement age, perhaps to 67 years old?",
       "Do you back an extension of the retirement age, possibly reaching 67?"
-    ],
-    "hard_paraphrase": [
-      "Are you in favor of raising the age of retirement, such as setting it at 67?",
-      "Would you agree to extending the retirement age to a higher limit, like 67?",
-      "Do you agree with the proposal to increase the retirement threshold to 67 years?",
-      "Is elevating the eligible age for retirement, potentially to 67, something you would endorse?",
-      "How do you feel about the idea of pushing the retirement age up to 67 years?",
-      "What is your stance on the possibility of having the retirement age raised, for instance, to 67?",
-      "Would you support changing the retirement age to a higher number, like 67?",
-      "What is your opinion on adjusting the retirement age to be increased, such as to 67 years old?",
-      "Would you be in agreement with the notion of lifting the retirement age, possibly to 67 years?",
-      "Do you back the idea of upping the retirement age limit, perhaps to 67 years?"
     ],
     "negation": [
       "Do you support a decrease in the retirement age (e.g., to 67)?",
@@ -150,17 +100,19 @@
       "Are you in favor of reducing the retirement age from 67?",
       "Do you favor lowering the retirement age to less than 67?"
     ],
+    "hard_paraphrase": [
+      "Are you in favor of extending the age limit for concluding one's career to, say, 67 years?",
+      "Do you find the idea of raising the age at which individuals can start receiving their pensions, perhaps to 67, agreeable?",
+      "Would you support delaying the commencement of pension eligibility, such as shifting it to 67 years of age?",
+      "Would you be supportive of modifying the age requirement for when individuals cease employment, perhaps setting it at 67?",
+      "Do you approve of setting the age for concluding one's working life at a later point, such as 67 years?"
+    ],
     "negation_hard": [
-      "Are you against maintaining the current retirement age instead of raising it to 67?",
-      "Do you agree with keeping the retirement age unchanged and not increasing it to 67?",
-      "Do you oppose the idea of raising the retirement age to 67 and prefer it to remain the same?",
-      "Would you favor leaving the retirement age as is rather than supporting its increase to 67?",
-      "Is it your belief that the retirement age should stay at its current level rather than being elevated to 67?",
-      "Should the retirement age be preserved at its present level rather than being extended to 67?",
-      "Do you reject the notion of elevating the retirement age to 67 and believe it should remain unchanged?",
-      "Is it your stance that the retirement age should not be raised to 67 and should be kept as it is?",
-      "Do you support keeping the retirement age at its current level rather than extending it to 67?",
-      "Do you think the retirement age should not be elevated to 67 and should instead be maintained at its current level?"
+      "Would you oppose keeping the current age limit for receiving pension benefits, such as not raising it to 67?",
+      "Do you disagree with maintaining the existing eligibility threshold for state benefits, preventing an adjustment to 67 years?",
+      "Are you against reducing the existing timeframe for accessing older adult financial entitlements, such as shortening it to exclude 67 years?",
+      "Do you disapprove of maintaining the existing age requirement for accessing social security payouts, therefore, avoiding any change to include age 67?",
+      "Are you in favor of freezing the age limit for claiming elder benefits, thus preventing it from being raised to include individuals aged 67?"
     ]
   }
 }

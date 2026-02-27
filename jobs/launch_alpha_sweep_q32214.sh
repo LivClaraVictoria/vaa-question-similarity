@@ -6,7 +6,8 @@
 set -o errexit
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-SWEEP_DIR="/itet-stor/liweiss/net_scratch/vaa-question-similarity/experiment_results/alpha_sweep_results/workers_q32214_$(date +%Y%m%d_%H%M%S)"
+SUBFOLDER="alpha_sweep_pipeline_e5_ZH_vs_identical_q32214_n10_e5_ZH"
+SWEEP_DIR="/itet-stor/liweiss/net_scratch/vaa-question-similarity/experiment_results/alpha_sweep_results/${SUBFOLDER}/workers_$(date +%Y%m%d_%H%M%S)"
 mkdir -p "${SWEEP_DIR}"
 
 export CONFIG_A="configs/full_pipeline/base_data/pipeline_e5_ZH.py"
