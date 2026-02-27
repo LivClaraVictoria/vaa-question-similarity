@@ -1,0 +1,25 @@
+{
+  "data_year": 2023,
+  "source_dir": "/usr/itetnas04/data-scratch-01/liweiss/data/vaa-question-similarity/data/cleaned",
+  "generated_at": "2026-02-26T22:03:03.536397",
+  "specs": [
+    {
+      "source_q_id": 32214,
+      "clone_type": "easy_paraphrase",
+      "n_clones": 10,
+      "clone_ids": [
+        41214101,
+        41214102,
+        41214103,
+        41214104,
+        41214105,
+        41214106,
+        41214107,
+        41214108,
+        41214109,
+        41214110
+      ],
+      "flip_answers": false
+    }
+  ]
+}

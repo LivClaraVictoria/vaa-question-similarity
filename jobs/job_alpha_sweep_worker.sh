@@ -2,7 +2,7 @@
 #SBATCH --mail-type=NONE
 #SBATCH --output=/itet-stor/liweiss/net_scratch/vaa-question-similarity/jobs/out/%A_%a.out
 #SBATCH --error=/itet-stor/liweiss/net_scratch/vaa-question-similarity/jobs/out/%A_%a.err
-#SBATCH --mem=16G
+#SBATCH --mem=32G
 #SBATCH --nodes=1
 #SBATCH --time=01:30:00
 #SBATCH --cpus-per-task=4
@@ -37,6 +37,10 @@ echo "SLURM_JOB_ID: ${SLURM_JOB_ID}, SLURM_ARRAY_TASK_ID: ${SLURM_ARRAY_TASK_ID}
 
 [[ -f /itet-stor/${ETH_USERNAME}/net_scratch/conda/bin/conda ]] && eval "$(/itet-stor/${ETH_USERNAME}/net_scratch/conda/bin/conda shell.bash hook)"
 conda activate ${CONDA_ENVIRONMENT}
+
+# Redirect HuggingFace cache to data-scratch to avoid itet-stor quota issues
+export HF_HOME=/usr/itetnas04/data-scratch-01/${ETH_USERNAME}/data/.cache/huggingface
+
 cd ${DIRECTORY}
 
 python -u -m alpha_sweep_main \

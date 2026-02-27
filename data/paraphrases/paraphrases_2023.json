@@ -99,5 +99,68 @@
       "Do you disagree with the suggestion to keep the current television and radio fees unchanged at CHF 200 per household and introduce fees for businesses?",
       "Are you against the idea of not adjusting the radio and TV fees from CHF 200 per family and also not imposing any fees on businesses?"
     ]
+  },
+  "32214": {
+    "original": "Do you support an increase in the retirement age (e.g., to 67)?",
+    "easy_paraphrase": [
+      "Are you in favor of raising the retirement age, such as to 67 years?",
+      "Do you agree with increasing the age of retirement, for instance, to 67?",
+      "Would you endorse elevating the retirement age, potentially to 67?",
+      "Would you support setting the retirement age higher, like 67?",
+      "Do you approve of a higher retirement age, say, moving it to 67?",
+      "Are you supportive of a rise in the retirement age, possibly to 67?",
+      "Would you be supportive of adjusting the retirement age upwards, for example, to 67?",
+      "Are you supportive of changing the retirement age to a higher number, such as 67?",
+      "Do you favor an adjustment to raise the retirement age, perhaps to 67 years old?",
+      "Do you back an extension of the retirement age, possibly reaching 67?"
+    ],
+    "hard_paraphrase": [
+      "Are you in favor of raising the age of retirement, such as setting it at 67?",
+      "Would you agree to extending the retirement age to a higher limit, like 67?",
+      "Do you agree with the proposal to increase the retirement threshold to 67 years?",
+      "Is elevating the eligible age for retirement, potentially to 67, something you would endorse?",
+      "How do you feel about the idea of pushing the retirement age up to 67 years?",
+      "What is your stance on the possibility of having the retirement age raised, for instance, to 67?",
+      "Would you support changing the retirement age to a higher number, like 67?",
+      "What is your opinion on adjusting the retirement age to be increased, such as to 67 years old?",
+      "Would you be in agreement with the notion of lifting the retirement age, possibly to 67 years?",
+      "Do you back the idea of upping the retirement age limit, perhaps to 67 years?"
+    ],
+    "negation": [
+      "Do you support a decrease in the retirement age (e.g., to 67)?",
+      "Do you not support an increase in the retirement age (e.g., to 67)?",
+      "Do you oppose an increase in the retirement age (e.g., to 67)?",
+      "Do you support a reduction in the retirement age (e.g., to 67)?",
+      "Do you support maintaining the current retirement age instead of increasing it (e.g., to 67)?",
+      "Do you support lowering the retirement age (e.g., to 67)?",
+      "Do you support a decline in the retirement age (e.g., to 67)?",
+      "Do you support not increasing the retirement age (e.g., to 67)?",
+      "Do you support keeping the retirement age the same instead of increasing it (e.g., to 67)?",
+      "Do you support a decrease rather than an increase in the retirement age (e.g., to 67)?"
+    ],
+    "negation_easy": [
+      "Are you against raising the retirement age to 67?",
+      "Are you in favor of keeping the retirement age below 67?",
+      "Would you oppose maintaining the retirement age at 67 or higher?",
+      "Do you disagree with extending the retirement age beyond 66?",
+      "Do you oppose increasing the retirement age to 67 or more?",
+      "Do you support keeping the retirement age under 67?",
+      "Do you disagree with raising the retirement age to 67 or higher?",
+      "Do you favor reducing the retirement age below 67?",
+      "Are you in favor of reducing the retirement age from 67?",
+      "Do you favor lowering the retirement age to less than 67?"
+    ],
+    "negation_hard": [
+      "Are you against maintaining the current retirement age instead of raising it to 67?",
+      "Do you agree with keeping the retirement age unchanged and not increasing it to 67?",
+      "Do you oppose the idea of raising the retirement age to 67 and prefer it to remain the same?",
+      "Would you favor leaving the retirement age as is rather than supporting its increase to 67?",
+      "Is it your belief that the retirement age should stay at its current level rather than being elevated to 67?",
+      "Should the retirement age be preserved at its present level rather than being extended to 67?",
+      "Do you reject the notion of elevating the retirement age to 67 and believe it should remain unchanged?",
+      "Is it your stance that the retirement age should not be raised to 67 and should be kept as it is?",
+      "Do you support keeping the retirement age at its current level rather than extending it to 67?",
+      "Do you think the retirement age should not be elevated to 67 and should instead be maintained at its current level?"
+    ]
   }
 }
