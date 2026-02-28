@@ -1,0 +1,161 @@
+Experiment 1 Analysis: Alpha Sweep Compilation
+(Generation 2: top5impact_n4, 3 clone conditions x 10 models)
+Generated: 2026-02-28 14:05
+
+================================================================================
+1. Data Overview
+================================================================================
+  Models: 10
+  Clone conditions: 3 (Easy Paraphrase, Negation + Easy Paraphrase, Mixed)
+  Alpha values: 21
+  Baseline (no CRW):
+    Jaccard:  0.4412
+    Spearman: 0.8975
+    Kendall:  0.7664
+
+================================================================================
+2. Per-Clone Condition Results
+================================================================================
+
+Clone: Easy Paraphrase
+----------------------
+  Top 3 models (by composite rank):
+    1. E5-Instruct             Jaccard=0.6228  Spearman=0.9621  Kendall=0.8666  optimal_alpha=0.3  95%-interval=[0.3, 0.4]
+    2. Jina v3                 Jaccard=0.6029  Spearman=0.9581  Kendall=0.8580  optimal_alpha=0.6  95%-interval=[0.5, 0.7]
+    3. Qwen3                   Jaccard=0.6074  Spearman=0.9562  Kendall=0.8566  optimal_alpha=0.6  95%-interval=[0.5, 0.8]
+
+  Full ranking:
+    Model                       Jac      Spe      Ken   rJ   rS   rK   comp  opt_a    95% interval
+    E5-Instruct              0.6228   0.9621   0.8666    1    1    1    1.0    0.3      [0.3, 0.4]
+    Jina v3                  0.6029   0.9581   0.8580    3    2    2    2.3    0.6      [0.5, 0.7]
+    Qwen3                    0.6074   0.9562   0.8566    2    3    3    2.7    0.6      [0.5, 0.8]
+    GTE                      0.5948   0.9558   0.8541    4    4    4    4.0    0.8      [0.7, 0.9]
+    BGE-M3                   0.5876   0.9526   0.8485    5    5    5    5.0    0.9      [0.8, 1.2]
+    SBERT                    0.5829   0.9525   0.8483    6    6    6    6.0    1.1      [0.9, 1.5]
+    E5                       0.5555   0.9460   0.8352    8    7    7    7.3    0.5      [0.4, 0.7]
+    Nomic v2                 0.5592   0.9447   0.8347    7    8    8    7.7    1.0      [0.9, 1.4]
+    E5-Asym                  0.5367   0.9390   0.8250    9    9    9    9.0    0.6      [0.5, 0.9]
+    E5-Asym-Instruct         0.4840   0.9163   0.7913   10   10   10   10.0    0.6      [0.6, 1.5]
+
+Clone: Negation + Easy Paraphrase
+---------------------------------
+  Top 3 models (by composite rank):
+    1. E5-Instruct             Jaccard=0.6589  Spearman=0.9731  Kendall=0.8876  optimal_alpha=0.3  95%-interval=[0.3, 0.4]
+    2. Jina v3                 Jaccard=0.6566  Spearman=0.9731  Kendall=0.8873  optimal_alpha=0.6  95%-interval=[0.5, 0.7]
+    3. Qwen3                   Jaccard=0.6485  Spearman=0.9716  Kendall=0.8840  optimal_alpha=0.7  95%-interval=[0.6, 0.8]
+
+  Full ranking:
+    Model                       Jac      Spe      Ken   rJ   rS   rK   comp  opt_a    95% interval
+    E5-Instruct              0.6589   0.9731   0.8876    1    2    1    1.3    0.3      [0.3, 0.4]
+    Jina v3                  0.6566   0.9731   0.8873    2    1    2    1.7    0.6      [0.5, 0.7]
+    Qwen3                    0.6485   0.9716   0.8840    3    3    3    3.0    0.7      [0.6, 0.8]
+    SBERT                    0.6153   0.9625   0.8671    4    4    4    4.0    1.1      [0.9, 1.3]
+    GTE                      0.6037   0.9596   0.8603    5    5    5    5.0    0.8      [0.7, 1.0]
+    BGE-M3                   0.5905   0.9560   0.8533    6    6    6    6.0    0.9      [0.8, 1.1]
+    Nomic v2                 0.5901   0.9557   0.8530    7    7    7    7.0    1.1      [0.9, 1.3]
+    E5                       0.5579   0.9462   0.8354    8    8    8    8.0    0.5      [0.5, 0.7]
+    E5-Asym                  0.5243   0.9350   0.8183    9    9    9    9.0    0.6      [0.5, 0.9]
+    E5-Asym-Instruct         0.4876   0.9191   0.7943   10   10   10   10.0    0.7      [0.6, 1.4]
+
+Clone: Mixed
+------------
+  Top 3 models (by composite rank):
+    1. Jina v3                 Jaccard=0.6247  Spearman=0.9639  Kendall=0.8697  optimal_alpha=0.6  95%-interval=[0.5, 0.7]
+    2. E5-Instruct             Jaccard=0.6123  Spearman=0.9601  Kendall=0.8630  optimal_alpha=0.3  95%-interval=[0.3, 0.4]
+    3. Qwen3                   Jaccard=0.6090  Spearman=0.9579  Kendall=0.8595  optimal_alpha=0.6  95%-interval=[0.6, 0.8]
+
+  Full ranking:
+    Model                       Jac      Spe      Ken   rJ   rS   rK   comp  opt_a    95% interval
+    Jina v3                  0.6247   0.9639   0.8697    1    1    1    1.0    0.6      [0.5, 0.7]
+    E5-Instruct              0.6123   0.9601   0.8630    2    2    2    2.0    0.3      [0.3, 0.4]
+    Qwen3                    0.6090   0.9579   0.8595    3    3    3    3.0    0.6      [0.6, 0.8]
+    SBERT                    0.5900   0.9544   0.8525    4    4    4    4.0    1.1      [0.9, 1.3]
+    GTE                      0.5635   0.9466   0.8382    5    5    5    5.0    0.8      [0.7, 1.1]
+    Nomic v2                 0.5558   0.9442   0.8335    7    6    6    6.3    1.1      [0.9, 1.3]
+    BGE-M3                   0.5594   0.9429   0.8323    6    7    7    6.7    0.9      [0.8, 1.2]
+    E5                       0.5283   0.9333   0.8167    8    8    8    8.0    0.5      [0.4, 0.8]
+    E5-Asym                  0.5127   0.9270   0.8075    9    9    9    9.0    0.6      [0.5, 1.0]
+    E5-Asym-Instruct         0.4873   0.9182   0.7938   10   10   10   10.0    0.6      [0.6, 1.4]
+
+================================================================================
+3. Aggregated Model Ranking
+================================================================================
+  (Average composite rank across all 3 clone conditions)
+
+    Rank  Model                   Avg Jaccard  Avg Spearman  Avg Kendall  Avg Comp Rank
+       1  E5-Instruct                  0.6313        0.9651       0.8724            1.4
+       2  Jina v3                      0.6281        0.9651       0.8717            1.7
+       3  Qwen3                        0.6216        0.9619       0.8667            2.9
+       4  GTE                          0.5873        0.9540       0.8509            4.7
+       5  SBERT                        0.5961        0.9565       0.8560            4.7
+       6  BGE-M3                       0.5791        0.9505       0.8447            5.9
+       7  Nomic v2                     0.5684        0.9482       0.8404            7.0
+       8  E5                           0.5472        0.9418       0.8291            7.8
+       9  E5-Asym                      0.5246        0.9337       0.8169            9.0
+      10  E5-Asym-Instruct             0.4863        0.9179       0.7931           10.0
+
+================================================================================
+4. Peaked vs Stable Model Analysis
+================================================================================
+
+  Classification based on mean alpha_95_interval width across clones:
+    Peaked  (width < 0.3): Sharp distance structure, detects clones
+                           at a specific threshold.
+    Moderate (0.3-0.8):    Good discrimination with some tolerance.
+    Broad   (width >= 0.8): Mushy distance structure, CRW acts
+                            uniformly across thresholds.
+
+  PEAKED (width < 0.3) — 3 models:
+    E5-Instruct             width=0.1  avg_max_jaccard=0.6313
+    Jina v3                 width=0.2  avg_max_jaccard=0.6281
+    Qwen3                   width=0.2  avg_max_jaccard=0.6216
+
+  MODERATE (0.3 <= width < 0.8) — 6 models:
+    GTE                     width=0.3  avg_max_jaccard=0.5873
+    SBERT                   width=0.5  avg_max_jaccard=0.5961
+    BGE-M3                  width=0.4  avg_max_jaccard=0.5791
+    Nomic v2                width=0.4  avg_max_jaccard=0.5684
+    E5                      width=0.3  avg_max_jaccard=0.5472
+    E5-Asym                 width=0.4  avg_max_jaccard=0.5246
+
+  BROAD (width >= 0.8) — 1 models:
+    E5-Asym-Instruct        width=0.8  avg_max_jaccard=0.4863
+
+  Interpretation:
+  - Peaked models have clear distance structure: clones cluster at
+    a specific distance, and CRW finds them sharply. The peak IS the
+    signal — the model found the clones at a specific threshold.
+  - Broad models with low max Jaccard have mushy distance structure:
+    distances between clones and non-clones are similar, so CRW acts
+    uniformly across all thresholds without strong correction.
+  - Broad models with HIGH max Jaccard are robust: they correct well
+    across a wide alpha range, making alpha choice less critical.
+
+================================================================================
+5. Fake Benchmark Correlation
+================================================================================
+
+  Do models that score high on topic similarity (ordering accuracy)
+  in the fake benchmark also achieve better CRW correction?
+
+  Spearman correlation (ordering_accuracy vs avg_max_jaccard):
+    rho = 0.648, p = 0.0425
+  Spearman correlation (ordering_accuracy vs avg_composite_rank):
+    rho = -0.644, p = 0.0443
+    (negative rho expected: higher accuracy -> lower/better rank)
+
+  Model                   Ordering Acc  Avg Jaccard  Comp Rank
+  Jina v3                         99.7%       0.6281        1.7
+  E5-Instruct                     99.4%       0.6313        1.4
+  Qwen3                           98.5%       0.6216        2.9
+  E5-Asym-Instruct                94.0%       0.4863       10.0
+  Nomic v2                        93.2%       0.5684        7.0
+  SBERT                           92.3%       0.5961        4.7
+  GTE                             90.2%       0.5873        4.7
+  BGE-M3                          88.1%       0.5791        5.9
+  E5-Asym                         85.1%       0.5246        9.0
+  E5                              80.4%       0.5472        7.8
+
+================================================================================
+End of report
+================================================================================

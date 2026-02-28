@@ -7,7 +7,7 @@
 #SBATCH --time=01:30:00
 #SBATCH --cpus-per-task=4
 #SBATCH --gres=gpu:0
-#SBATCH --exclude=tikgpu10,tikgpu[06-09]
+#SBATCH --exclude=tikgpu10,tikgpu[06-09],arton[10-11]
 
 # Alpha sweep worker — processes a single alpha value.
 # Launched as a SLURM job array by launch_alpha_sweep.sh.

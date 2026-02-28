@@ -1,0 +1,162 @@
+====================================================================================================
+SMARTVOTE 2023 — CATEGORY ANALYSIS
+====================================================================================================
+Total questions: 75
+Total categories: 14
+Questions in mini questionnaire: 30
+Questions in full-only: 45
+Impact data source: question_impact_pipeline_e5_ZH_0225_0218.csv
+
+Category                                 N Mini Full | Mean Imp Max Imp Sum Imp Std Imp Mean Jac
+------------------------------------------------------------------------------------------------
+Federal budget                           8    0    8 |   0.1758  0.1999  1.4063  0.0182   0.8242
+Energy & transport                       7    3    4 |   0.3139  0.4113  2.1971  0.0752   0.6861
+Values                                   7    0    7 |   0.2125  0.2905  1.4876  0.0391   0.7875
+Democracy, Media & Digitalization        6    2    4 |   0.2905  0.4130  1.7430  0.0722   0.7095
+Nature conservation                      6    3    3 |   0.2898  0.4337  1.7387  0.1200   0.7102
+Welfare state & family                   6    3    3 |   0.3178  0.4596  1.9070  0.0971   0.6822
+Economy & labour                         5    3    2 |   0.3206  0.3707  1.6029  0.0379   0.6794
+Foreign trade & foreign policy           5    3    2 |   0.2517  0.4293  1.2585  0.1106   0.7483
+Health                                   5    2    3 |   0.3494  0.4445  1.7471  0.0714   0.6506
+Security & military                      5    3    2 |   0.3121  0.4429  1.5605  0.0972   0.6879
+Finances & taxes                         4    2    2 |   0.3280  0.4316  1.3121  0.1009   0.6720
+Immigration & integration                4    3    1 |   0.3504  0.3974  1.4015  0.0515   0.6496
+Society & ethics                         4    2    2 |   0.3062  0.4133  1.2247  0.1165   0.6938
+Education                                3    1    2 |   0.3034  0.3120  0.9101  0.0109   0.6966
+
+Legend:
+  N = total questions in category
+  Mini = questions also in the mini (rapide) questionnaire
+  Full = questions only in the full questionnaire
+  Mean/Max/Sum/Std Imp = impact (1 - Jaccard) when question is cloned 10x identical
+  Mean Jac = mean Jaccard similarity when question is cloned 10x
+
+====================================================================================================
+PER-QUESTION DETAIL (categories with 5+ questions)
+====================================================================================================
+
+--- Federal budget (8 questions, 0 mini, 8 full-only) ---
+  Category totals: mean_impact=0.1758, sum_impact=1.4063, std=0.0182
+
+  Q32281  [full]  impact=0.1689  jaccard=0.8311  Should the federal government spend more or less in the area of "Socia
+  Q32282  [full]  impact=0.1705  jaccard=0.8295  Should the federal government spend more or less in the area of "Educa
+  Q32283  [full]  impact=0.1891  jaccard=0.8109  Should the federal government spend more or less in the area of "Agric
+  Q32284  [full]  impact=0.1785  jaccard=0.8215  Should the federal government spend more or less in the area of "Publi
+  Q32285  [full]  impact=0.1833  jaccard=0.8167  Should the federal government spend more or less in the area of "Road 
+  Q32286  [full]  impact=0.1382  jaccard=0.8618  Should the federal government spend more or less in the area of "Publi
+  Q32287  [full]  impact=0.1999  jaccard=0.8001  Should the federal government spend more or less in the area of "Natio
+  Q32288  [full]  impact=0.1778  jaccard=0.8222  Should the federal government spend more or less in the area of "Devel
+
+--- Energy & transport (7 questions, 3 mini, 4 full-only) ---
+  Category totals: mean_impact=0.3139, sum_impact=2.1971, std=0.0752
+
+  Q32245  [MINI]  impact=0.4113  jaccard=0.5887  Should busy sections of highways be widened?
+  Q32246  [MINI]  impact=0.3822  jaccard=0.6178  Should Switzerland ban the registration of new passenger cars with int
+  Q32247  [full]  impact=0.2689  jaccard=0.7311  To achieve climate targets, should incentives and target agreements be
+  Q32248  [full]  impact=0.2712  jaccard=0.7288  Do you think it's fair that environmental and landscape protection rul
+  Q32249  [MINI]  impact=0.3717  jaccard=0.6283  Should the construction of new nuclear power plants in Switzerland be 
+  Q32250  [full]  impact=0.2050  jaccard=0.7950  Should the state guarantee a comprehensive public service offering als
+  Q32251  [full]  impact=0.2868  jaccard=0.7132  Would you be in favor of the introduction of increasing electricity ta
+
+--- Values (7 questions, 0 mini, 7 full-only) ---
+  Category totals: mean_impact=0.2125, sum_impact=1.4876, std=0.0391
+
+  Q32274  [full]  impact=0.2905  jaccard=0.7095  What is your position the following statement: "Someone who is not gui
+  Q32275  [full]  impact=0.2135  jaccard=0.7865  What is your position the following statement: "In the long term, ever
+  Q32276  [full]  impact=0.1900  jaccard=0.8100  What is your position the following statement: "It is necessary for th
+  Q32277  [full]  impact=0.2202  jaccard=0.7798  What is your position the following statement: "It is best for a child
+  Q32278  [full]  impact=0.2089  jaccard=0.7911  What is your position the following statement: "The ongoing digitaliza
+  Q32279  [full]  impact=0.2006  jaccard=0.7994  What is your position the following statement: "Punishing criminals is
+  Q32280  [full]  impact=0.1638  jaccard=0.8362  What is your position the following statement: "Stronger environmental
+
+--- Democracy, Media & Digitalization (6 questions, 2 mini, 4 full-only) ---
+  Category totals: mean_impact=0.2905, sum_impact=1.7430, std=0.0722
+
+  Q32258  [full]  impact=0.2396  jaccard=0.7604  Should the Swiss mobile network be equipped throughout the country wit
+  Q32259  [full]  impact=0.2059  jaccard=0.7941  Should the federal government be given additional powers in the area o
+  Q32260  [MINI]  impact=0.3199  jaccard=0.6801  Are you in favor of stronger regulation of the major Internet platform
+  Q32261  [MINI]  impact=0.4130  jaccard=0.5870  A popular initiative aims to reduce television and radio fees (CHF 200
+  Q32262  [full]  impact=0.2694  jaccard=0.7306  Are you in favour of lowering the voting age to 16?
+  Q32263  [full]  impact=0.2952  jaccard=0.7048  Should it be possible to hold a referendum on federal spending above a
+
+--- Nature conservation (6 questions, 3 mini, 3 full-only) ---
+  Category totals: mean_impact=0.2898, sum_impact=1.7387, std=0.1200
+
+  Q32252  [MINI]  impact=0.4337  jaccard=0.5663  Are you in favor of further relaxing the protection regulations for la
+  Q32253  [MINI]  impact=0.3839  jaccard=0.6161  Should direct payments only be granted to farmers with proof of ecolog
+  Q32254  [full]  impact=0.2008  jaccard=0.7992  Are you in favour of stricter animal welfare regulations for livestock
+  Q32255  [full]  impact=0.1880  jaccard=0.8120  Should 30% of Switzerland's land area be dedicated to preserving biodi
+  Q32256  [MINI]  impact=0.3734  jaccard=0.6266  Would you support a ban on single-use plastic and non-recyclable plast
+  Q32257  [full]  impact=0.1589  jaccard=0.8411  Are you in favour of government measures to make the use of electronic
+
+--- Welfare state & family (6 questions, 3 mini, 3 full-only) ---
+  Category totals: mean_impact=0.3178, sum_impact=1.9070, std=0.0971
+
+  Q32214  [MINI]  impact=0.4596  jaccard=0.5404  Do you support an increase in the retirement age (e.g., to 67)?
+  Q32215  [MINI]  impact=0.3874  jaccard=0.6126  Should the federal government allocate more funding for health insuran
+  Q32216  [full]  impact=0.2510  jaccard=0.7490  For married couples, the pension is currently limited to 150% of the m
+  Q32217  [full]  impact=0.2623  jaccard=0.7377  As part of the reform of the BVG (occupational pension plan), pensions
+  Q32218  [full]  impact=0.2001  jaccard=0.7999  Should paid parental leave be increased beyond today's 14 weeks of mat
+  Q32219  [MINI]  impact=0.3466  jaccard=0.6534  Should the federal government provide more financial support for publi
+
+--- Economy & labour (5 questions, 3 mini, 2 full-only) ---
+  Category totals: mean_impact=0.3206, sum_impact=1.6029, std=0.0379
+
+  Q32240  [MINI]  impact=0.3707  jaccard=0.6293  Are you in favor of introducing a minimum wage of CHF 4,000 for all fu
+  Q32241  [MINI]  impact=0.2946  jaccard=0.7054  Do you support stricter regulations for the financial sector (e.g., st
+  Q32242  [full]  impact=0.2857  jaccard=0.7143  Should private households be free to choose their electricity supplier
+  Q32243  [full]  impact=0.3006  jaccard=0.6994  Should housing construction regulations be relaxed (e.g., noise protec
+  Q32244  [MINI]  impact=0.3512  jaccard=0.6488  Are you in favor of stricter controls on equal pay for women and men?
+
+--- Foreign trade & foreign policy (5 questions, 3 mini, 2 full-only) ---
+  Category totals: mean_impact=0.2517, sum_impact=1.2585, std=0.1106
+
+  Q32269  [full]  impact=0.2136  jaccard=0.7864  Are you in favor of closer relations with the European Union (EU)?
+  Q32270  [MINI]  impact=0.4293  jaccard=0.5707  Should Switzerland strive for a comprehensive free trade agreement (in
+  Q32271  [full]  impact=0.1411  jaccard=0.8589  Should Swiss companies be obliged to ensure that their subsidiaries an
+  Q32272  [MINI]  impact=0.1970  jaccard=0.8030  Should Switzerland terminate the Bilateral Agreements with the EU and 
+  Q32273  [MINI]  impact=0.2775  jaccard=0.7225  Should Switzerland return to a strict interpretation of neutrality (re
+
+--- Health (5 questions, 2 mini, 3 full-only) ---
+  Category totals: mean_impact=0.3494, sum_impact=1.7471, std=0.0714
+
+  Q32220  [full]  impact=0.3229  jaccard=0.6771  Should compulsory vaccination of children be introduced based on the S
+  Q32221  [full]  impact=0.2978  jaccard=0.7022  Are you in favor of the introduction of a tax on foods containing suga
+  Q32222  [MINI]  impact=0.4445  jaccard=0.5555  Should insured persons contribute more to health care costs (e.g., inc
+  Q32223  [MINI]  impact=0.4035  jaccard=0.5965  Should the Federal Council's ability to restrict private and economic 
+  Q32224  [full]  impact=0.2784  jaccard=0.7216  Should the federal government be given the authority to determine the 
+
+--- Security & military (5 questions, 3 mini, 2 full-only) ---
+  Category totals: mean_impact=0.3121, sum_impact=1.5605, std=0.0972
+
+  Q32264  [MINI]  impact=0.3802  jaccard=0.6198  Are you in favor of expanding the army's target number of soldiers to 
+  Q32265  [full]  impact=0.2678  jaccard=0.7322  Should the Swiss Armed Forces expand their cooperation with NATO?
+  Q32266  [full]  impact=0.2674  jaccard=0.7326  Should the Federal Council be allowed to authorize other states to re-
+  Q32267  [MINI]  impact=0.4429  jaccard=0.5571  Should automatic facial recognition be banned in public spaces?
+  Q32268  [MINI]  impact=0.2022  jaccard=0.7978  Should Switzerland terminate the Schengen agreement with the EU and re
+
+====================================================================================================
+SMALLER CATEGORIES (< 5 questions)
+====================================================================================================
+  Finances & taxes: 4 questions (2 mini) — Q32236, Q32237, Q32238, Q32239
+  Immigration & integration: 4 questions (3 mini) — Q32228, Q32229, Q32230, Q32231
+  Society & ethics: 4 questions (2 mini) — Q32232, Q32233, Q32234, Q32235
+  Education: 3 questions (1 mini) — Q32225, Q32226, Q32227
+
+====================================================================================================
+NOTES FOR EXPERIMENT 2 TOPIC SELECTION
+====================================================================================================
+
+Categories suitable for progressive removal (5+ questions):
+  Federal budget                         8 questions (7 removal steps)  [all full-only, none in mini]
+  Energy & transport                     7 questions (6 removal steps)  [3 mini, 4 full-only]
+  Values                                 7 questions (6 removal steps)  [all full-only, none in mini]
+  Democracy, Media & Digitalization      6 questions (5 removal steps)  [2 mini, 4 full-only]
+  Nature conservation                    6 questions (5 removal steps)  [3 mini, 3 full-only]
+  Welfare state & family                 6 questions (5 removal steps)  [3 mini, 3 full-only]
+  Economy & labour                       5 questions (4 removal steps)  [3 mini, 2 full-only]
+  Foreign trade & foreign policy         5 questions (4 removal steps)  [3 mini, 2 full-only]
+  Health                                 5 questions (4 removal steps)  [2 mini, 3 full-only]
+  Security & military                    5 questions (4 removal steps)  [3 mini, 2 full-only]
+
+====================================================================================================
