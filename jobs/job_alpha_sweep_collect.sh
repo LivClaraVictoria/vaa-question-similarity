@@ -12,6 +12,7 @@
 # Alpha sweep collect — aggregates per-alpha worker CSVs and generates plots.
 # Launched with --dependency by launch_alpha_sweep.sh.
 # Expects: SWEEP_DIR, CONFIG_A, CONFIG_B (via --export).
+# Optional: OUTPUT_DIR — if set, passes --output-dir to alpha_sweep_main.py.
 
 ETH_USERNAME=liweiss
 PROJECT_NAME="vaa-question-similarity"
@@ -39,11 +40,15 @@ echo "SLURM_JOB_ID: ${SLURM_JOB_ID}"
 conda activate ${CONDA_ENVIRONMENT}
 cd ${DIRECTORY}
 
+OUTPUT_DIR_FLAG=""
+[[ -n "${OUTPUT_DIR}" ]] && OUTPUT_DIR_FLAG="--output-dir ${OUTPUT_DIR}"
+
 python -u -m alpha_sweep_main \
     --mode collect \
     --config_a "${CONFIG_A}" \
     --config_b "${CONFIG_B}" \
-    --sweep-dir "${SWEEP_DIR}"
+    --sweep-dir "${SWEEP_DIR}" \
+    ${OUTPUT_DIR_FLAG}
 
 echo "Finished at: $(date)"
 exit 0

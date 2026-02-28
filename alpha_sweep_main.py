@@ -106,6 +106,12 @@ def _parse_args():
         default=None,
         help="Directory for per-alpha worker CSVs (worker writes here, collect reads from here)",
     )
+    parser.add_argument(
+        "--output-dir",
+        type=str,
+        default=None,
+        help="Override output directory for results (default: ALPHA_SWEEP_RESULTS_DIR)",
+    )
     return parser.parse_args()
 
 
@@ -504,7 +510,7 @@ def _run_sweep(args, config_a, config_b, alphas: list[float], n: int):
 
     sweep_df = pd.DataFrame(sweep_rows)
 
-    output_dir = default_config.ALPHA_SWEEP_RESULTS_DIR
+    output_dir = Path(args.output_dir) if args.output_dir else default_config.ALPHA_SWEEP_RESULTS_DIR
     output_dir.mkdir(parents=True, exist_ok=True)
 
     print("\n--- Saving outputs ---")
@@ -532,10 +538,11 @@ def _run_worker(args, config_a, config_b, alphas: list[float], n: int):
     if args.sweep_dir:
         sweep_dir = Path(args.sweep_dir)
     else:
+        base_dir = Path(args.output_dir) if args.output_dir else default_config.ALPHA_SWEEP_RESULTS_DIR
         name_a = _get_clean_name(config_a)
         name_b = _get_clean_name(config_b)
         subfolder_name = f"alpha_sweep_{name_a}_vs_{name_b}"
-        sweep_dir = default_config.ALPHA_SWEEP_RESULTS_DIR / subfolder_name / "workers"
+        sweep_dir = base_dir / subfolder_name / "workers"
     sweep_dir.mkdir(parents=True, exist_ok=True)
 
     alpha = alphas[task_id]
@@ -570,10 +577,11 @@ def _run_collect(args, config_a, config_b, alphas: list[float], n: int):
     if args.sweep_dir:
         sweep_dir = Path(args.sweep_dir)
     else:
+        base_dir = Path(args.output_dir) if args.output_dir else default_config.ALPHA_SWEEP_RESULTS_DIR
         name_a = _get_clean_name(config_a)
         name_b = _get_clean_name(config_b)
         subfolder_name = f"alpha_sweep_{name_a}_vs_{name_b}"
-        sweep_dir = default_config.ALPHA_SWEEP_RESULTS_DIR / subfolder_name / "workers"
+        sweep_dir = base_dir / subfolder_name / "workers"
 
     worker_files = sorted(sweep_dir.glob("alpha_worker_*.csv"))
     if not worker_files:
@@ -604,7 +612,7 @@ def _run_collect(args, config_a, config_b, alphas: list[float], n: int):
         f"Kendall={std_metrics['base_kendall_mean']:.4f}"
     )
 
-    output_dir = default_config.ALPHA_SWEEP_RESULTS_DIR
+    output_dir = Path(args.output_dir) if args.output_dir else default_config.ALPHA_SWEEP_RESULTS_DIR
     output_dir.mkdir(parents=True, exist_ok=True)
 
     collected_alphas = sorted(sweep_df["alpha"].tolist())

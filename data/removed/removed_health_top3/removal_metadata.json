@@ -1,0 +1,18 @@
+{
+  "data_year": 2023,
+  "source_dir": "/usr/itetnas04/data-scratch-01/liweiss/data/vaa-question-similarity/data/cleaned",
+  "category": "Health",
+  "removed_question_ids": [
+    32222,
+    32223,
+    32220
+  ],
+  "retained_question_ids": [
+    32221,
+    32224
+  ],
+  "n_removed": 3,
+  "n_retained": 2,
+  "n_total_original": 5,
+  "generated_at": "2026-02-28T18:50:46.472259"
+}

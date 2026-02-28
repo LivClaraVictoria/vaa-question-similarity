@@ -36,6 +36,7 @@ CLEANED_DIR = DATA_DIR / "cleaned"
 RAW_DIR = DATA_DIR / "raw"
 FAKE_DIR = DATA_DIR / "fake"
 CLONED_DIR = DATA_DIR / "cloned"
+REMOVED_DIR = DATA_DIR / "removed"
 DATA_2023_DIR = RAW_DIR / "sv23_ETHZ"
 DATA_2019_DIR = RAW_DIR / "smart vote data"
 
@@ -53,6 +54,7 @@ CLONED_QU_WEIGHT_DIR = QU_WEIGHT_DIR / "cloned"
 RECOMMENDATION_RESULTS_DIR = RESULTS_DIR / "recommendation_results"
 COMPARISON_RESULTS_DIR = RESULTS_DIR / "comparator_results"
 ALPHA_SWEEP_RESULTS_DIR = RESULTS_DIR / "alpha_sweep_results"
+QUESTION_REMOVAL_RESULTS_DIR = RESULTS_DIR / "question_removal_results"
 THRESHOLD_SWEEP_RESULTS_DIR = RESULTS_DIR / "threshold_alpha_sweep_results"
 
 

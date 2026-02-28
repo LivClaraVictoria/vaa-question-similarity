@@ -1,18 +1,18 @@
 #!/bin/bash
+#SBATCH --job-name=removal_sweep
 #SBATCH --mail-type=NONE
-#SBATCH --output=/itet-stor/liweiss/net_scratch/vaa-question-similarity/jobs/out/%A_%a.out
-#SBATCH --error=/itet-stor/liweiss/net_scratch/vaa-question-similarity/jobs/out/%A_%a.err
+#SBATCH --output=/itet-stor/liweiss/net_scratch/vaa-question-similarity/jobs/out/%j.out
+#SBATCH --error=/itet-stor/liweiss/net_scratch/vaa-question-similarity/jobs/out/%j.err
 #SBATCH --mem=32G
 #SBATCH --nodes=1
-#SBATCH --time=01:30:00
+#SBATCH --time=06:00:00
 #SBATCH --cpus-per-task=4
 #SBATCH --gres=gpu:0
 #SBATCH --exclude=tikgpu10,tikgpu[06-09],arton[10-11]
 
-# Alpha sweep worker — processes a single alpha value.
-# Launched as a SLURM job array by launch_alpha_sweep.sh.
-# Expects: SLURM_ARRAY_TASK_ID, SWEEP_DIR, CONFIG_A, CONFIG_B (via --export).
-# Optional: OUTPUT_DIR — if set, passes --output-dir to alpha_sweep_main.py.
+# Experiment 2 test: alpha sweep with question removal.
+# Compares full dataset vs reduced dataset (Health category, 3 of 5 questions removed).
+# Uses existing alpha_sweep_main.py with --output-dir to separate results from Exp 1.
 
 ETH_USERNAME=liweiss
 PROJECT_NAME="vaa-question-similarity"
@@ -34,7 +34,7 @@ cd "${TMPDIR}" || exit 1
 
 echo "Running on node: $(hostname)"
 echo "Starting on: $(date)"
-echo "SLURM_JOB_ID: ${SLURM_JOB_ID}, SLURM_ARRAY_TASK_ID: ${SLURM_ARRAY_TASK_ID}"
+echo "SLURM_JOB_ID: ${SLURM_JOB_ID}"
 
 [[ -f /itet-stor/${ETH_USERNAME}/net_scratch/conda/bin/conda ]] && eval "$(/itet-stor/${ETH_USERNAME}/net_scratch/conda/bin/conda shell.bash hook)"
 conda activate ${CONDA_ENVIRONMENT}
@@ -44,16 +44,10 @@ export HF_HOME=/usr/itetnas04/data-scratch-01/${ETH_USERNAME}/data/.cache/huggin
 
 cd ${DIRECTORY}
 
-OUTPUT_DIR_FLAG=""
-[[ -n "${OUTPUT_DIR}" ]] && OUTPUT_DIR_FLAG="--output-dir ${OUTPUT_DIR}"
-
 python -u -m alpha_sweep_main \
-    --mode worker \
-    --task-id "${SLURM_ARRAY_TASK_ID}" \
-    --config_a "${CONFIG_A}" \
-    --config_b "${CONFIG_B}" \
-    --sweep-dir "${SWEEP_DIR}" \
-    ${OUTPUT_DIR_FLAG}
+    --config_a configs/full_pipeline/base_data/pipeline_e5_instruct_ZH.py \
+    --config_b configs/full_pipeline/removed/removed_health_3of5_e5_instruct_ZH.py \
+    --output-dir experiment_results/question_removal_results
 
 echo "Finished at: $(date)"
 exit 0
