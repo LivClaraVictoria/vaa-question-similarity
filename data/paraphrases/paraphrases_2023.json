@@ -114,5 +114,35 @@
       "Do you disapprove of maintaining the existing age requirement for accessing social security payouts, therefore, avoiding any change to include age 67?",
       "Are you in favor of freezing the age limit for claiming elder benefits, thus preventing it from being raised to include individuals aged 67?"
     ]
+  },
+  "32228": {
+    "original": "Should the conditions for naturalization be relaxed (e.g., shorter residence period)?",
+    "easy_paraphrase": [
+      "Do you think that the requirements for obtaining Swiss citizenship should be eased, such as by reducing the necessary length of residency?",
+      "Should the criteria for becoming a naturalized citizen in Switzerland be made less strict, for instance by shortening the required residency duration?",
+      "Do you believe the qualifications for Swiss naturalization should be loosened, perhaps by lowering the residency duration needed?",
+      "Should the process for acquiring Swiss citizenship be simplified, potentially by decreasing the length of time residency is required?"
+    ],
+    "negation_easy": [
+      "Should the conditions for naturalization remain stringent, such as maintaining the current residence period?",
+      "Should the rules for naturalization become stricter, such as requiring a longer residence period?",
+      "Should the requirements for naturalization be made more difficult, including extending the time needed for residency?",
+      "Should the criteria for obtaining naturalization be tightened by keeping the existing duration of residency or extending it?"
+    ]
+  },
+  "32222": {
+    "original": "Should insured persons contribute more to health care costs (e.g., increase the minimum deductible)?",
+    "easy_paraphrase": [
+      "Do you think that individuals with insurance should pay a larger share of healthcare expenses, such as by raising the basic deductible?",
+      "Should people with health insurance be required to pay more towards medical expenses, for instance by increasing the standard deductible?",
+      "Is it your opinion that insured individuals ought to bear a greater portion of healthcare costs, perhaps by elevating the minimum deductible?",
+      "Do you support insured members taking on higher healthcare expenses, for example, through a higher minimum deductible?"
+    ],
+    "negation_easy": [
+      "Should insured persons contribute less to health care costs, like by reducing the minimum deductible?",
+      "Should insured individuals pay less towards their healthcare expenses, for instance by lowering the minimum deductible?",
+      "Should insured persons contribute less by having a lower minimum deductible for health care costs?",
+      "Should insured individuals pay less by not raising the minimum deductible for healthcare costs?"
+    ]
   }
 }

@@ -1,0 +1,67 @@
+{
+  "data_year": 2023,
+  "source_dir": "/usr/itetnas04/data-scratch-01/liweiss/data/vaa-question-similarity/data/cleaned",
+  "generated_at": "2026-02-28T02:23:28.417742",
+  "specs": [
+    {
+      "source_q_id": 32214,
+      "clone_type": "easy_paraphrase",
+      "n_clones": 4,
+      "clone_ids": [
+        41214101,
+        41214102,
+        41214103,
+        41214104
+      ],
+      "flip_answers": false
+    },
+    {
+      "source_q_id": 32261,
+      "clone_type": "easy_paraphrase",
+      "n_clones": 4,
+      "clone_ids": [
+        41261101,
+        41261102,
+        41261103,
+        41261104
+      ],
+      "flip_answers": false
+    },
+    {
+      "source_q_id": 32228,
+      "clone_type": "easy_paraphrase",
+      "n_clones": 4,
+      "clone_ids": [
+        41228101,
+        41228102,
+        41228103,
+        41228104
+      ],
+      "flip_answers": false
+    },
+    {
+      "source_q_id": 32234,
+      "clone_type": "easy_paraphrase",
+      "n_clones": 4,
+      "clone_ids": [
+        41234101,
+        41234102,
+        41234103,
+        41234104
+      ],
+      "flip_answers": false
+    },
+    {
+      "source_q_id": 32222,
+      "clone_type": "easy_paraphrase",
+      "n_clones": 4,
+      "clone_ids": [
+        41222101,
+        41222102,
+        41222103,
+        41222104
+      ],
+      "flip_answers": false
+    }
+  ]
+}
