@@ -1,0 +1,187 @@
+{
+  "data_year": 2023,
+  "source_dir": "/usr/itetnas04/data-scratch-01/liweiss/data/vaa-question-similarity/data/cleaned",
+  "generated_at": "2026-02-28T20:26:03.883374",
+  "specs": [
+    {
+      "source_q_id": 32214,
+      "clone_type": "easy_paraphrase",
+      "n_clones": 1,
+      "clone_ids": [
+        41214101
+      ],
+      "flip_answers": false
+    },
+    {
+      "source_q_id": 32214,
+      "clone_type": "hard_paraphrase",
+      "n_clones": 1,
+      "clone_ids": [
+        41214201
+      ],
+      "flip_answers": false
+    },
+    {
+      "source_q_id": 32214,
+      "clone_type": "negation_easy",
+      "n_clones": 1,
+      "clone_ids": [
+        41214401
+      ],
+      "flip_answers": true
+    },
+    {
+      "source_q_id": 32214,
+      "clone_type": "negation_hard",
+      "n_clones": 1,
+      "clone_ids": [
+        41214501
+      ],
+      "flip_answers": true
+    },
+    {
+      "source_q_id": 32261,
+      "clone_type": "easy_paraphrase",
+      "n_clones": 1,
+      "clone_ids": [
+        41261101
+      ],
+      "flip_answers": false
+    },
+    {
+      "source_q_id": 32261,
+      "clone_type": "hard_paraphrase",
+      "n_clones": 1,
+      "clone_ids": [
+        41261201
+      ],
+      "flip_answers": false
+    },
+    {
+      "source_q_id": 32261,
+      "clone_type": "negation_easy",
+      "n_clones": 1,
+      "clone_ids": [
+        41261401
+      ],
+      "flip_answers": true
+    },
+    {
+      "source_q_id": 32261,
+      "clone_type": "negation_hard",
+      "n_clones": 1,
+      "clone_ids": [
+        41261501
+      ],
+      "flip_answers": true
+    },
+    {
+      "source_q_id": 32228,
+      "clone_type": "easy_paraphrase",
+      "n_clones": 1,
+      "clone_ids": [
+        41228101
+      ],
+      "flip_answers": false
+    },
+    {
+      "source_q_id": 32228,
+      "clone_type": "hard_paraphrase",
+      "n_clones": 1,
+      "clone_ids": [
+        41228201
+      ],
+      "flip_answers": false
+    },
+    {
+      "source_q_id": 32228,
+      "clone_type": "negation_easy",
+      "n_clones": 1,
+      "clone_ids": [
+        41228401
+      ],
+      "flip_answers": true
+    },
+    {
+      "source_q_id": 32228,
+      "clone_type": "negation_hard",
+      "n_clones": 1,
+      "clone_ids": [
+        41228501
+      ],
+      "flip_answers": true
+    },
+    {
+      "source_q_id": 32234,
+      "clone_type": "easy_paraphrase",
+      "n_clones": 1,
+      "clone_ids": [
+        41234101
+      ],
+      "flip_answers": false
+    },
+    {
+      "source_q_id": 32234,
+      "clone_type": "hard_paraphrase",
+      "n_clones": 1,
+      "clone_ids": [
+        41234201
+      ],
+      "flip_answers": false
+    },
+    {
+      "source_q_id": 32234,
+      "clone_type": "negation_easy",
+      "n_clones": 1,
+      "clone_ids": [
+        41234401
+      ],
+      "flip_answers": true
+    },
+    {
+      "source_q_id": 32234,
+      "clone_type": "negation_hard",
+      "n_clones": 1,
+      "clone_ids": [
+        41234501
+      ],
+      "flip_answers": true
+    },
+    {
+      "source_q_id": 32222,
+      "clone_type": "easy_paraphrase",
+      "n_clones": 1,
+      "clone_ids": [
+        41222101
+      ],
+      "flip_answers": false
+    },
+    {
+      "source_q_id": 32222,
+      "clone_type": "hard_paraphrase",
+      "n_clones": 1,
+      "clone_ids": [
+        41222201
+      ],
+      "flip_answers": false
+    },
+    {
+      "source_q_id": 32222,
+      "clone_type": "negation_easy",
+      "n_clones": 1,
+      "clone_ids": [
+        41222401
+      ],
+      "flip_answers": true
+    },
+    {
+      "source_q_id": 32222,
+      "clone_type": "negation_hard",
+      "n_clones": 1,
+      "clone_ids": [
+        41222501
+      ],
+      "flip_answers": true
+    }
+  ]
+}

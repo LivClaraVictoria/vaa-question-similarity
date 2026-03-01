@@ -36,6 +36,18 @@
       "Should a third official gender be prevented from being introduced alongside \"female\" and \"male\"?",
       "Should a third official gender be avoided instead of introduced alongside \"female\" and \"male\"?",
       "Should a third official gender be dismissed instead of introduced alongside \"female\" and \"male\"?"
+    ],
+    "hard_paraphrase": [
+      "Do you believe that an additional gender category should be formally acknowledged beyond the traditional 'male' and 'female' classifications?",
+      "Do you think that a new gender designation should be officially recognized in addition to the existing 'male' and 'female' labels?",
+      "Would you be in favor of recognizing an additional gender identity beyond the current binary system of 'male' and 'female'?",
+      "Is there a need to officially establish a new sex category apart from the conventional 'man' and 'woman' definitions?"
+    ],
+    "negation_hard": [
+      "Do you oppose the acknowledgment of only two traditional categories for identity classification?",
+      "Do you agree with maintaining the binary framework for legal gender identification without additional options?",
+      "Do you disagree with maintaining a dual system of gender identification without recognizing another category?",
+      "Would you be against the incorporation of an additional classification in the societal identity framework?"
     ]
   },
   "32261": {
@@ -60,6 +72,18 @@
       "Do you disagree with the plan to lower the TV and radio fees to CHF 200 per household, excluding businesses from paying?",
       "Would you reject the initiative to bring down TV and radio fees to CHF 200 per household, while exempting businesses?",
       "Would you be opposed to the initiative that aims to bring TV and radio fees down to CHF 200 per household, with businesses exempted?"
+    ],
+    "hard_paraphrase": [
+      "A grassroots proposal seeks to lower the compulsory charges for receiving broadcast services to CHF 200 per residence, while allowing companies to avoid these costs. Do you agree with this proposal?",
+      "There is a citizen-driven campaign proposing to cut down the mandatory contributions for accessing media broadcasts to a sum of CHF 200 per dwelling, while offering a waiver for corporate entities. Do you endorse this campaign?",
+      "Do you support the initiative that aims to decrease the financial obligation for audiovisual service access to CHF 200 per household, with an exemption granted to companies?",
+      "Do you agree with the measure that proposes to bring down the obligatory payments for accessing television and radio services to CHF 200 per family unit, while exempting commercial enterprises from this fee?"
+    ],
+    "negation_hard": [
+      "Are you opposed to the proposal for maintaining the current financial contributions required from residents for audio-visual broadcasting services, with companies having no such obligation?",
+      "Do you disagree with the measure that keeps the current rates for households' contributions to public broadcasting services while excluding firms from these charges?",
+      "Would you oppose the decision to increase the mandatory payment for public media access for private citizens, while still requiring companies to contribute?",
+      "Do you stand against the concept of increasing the obligatory financial responsibility for private individuals to fund national broadcasting services, while excluding commercial entities from this burden entirely?"
     ]
   },
   "32214": {
@@ -128,6 +152,18 @@
       "Should the rules for naturalization become stricter, such as requiring a longer residence period?",
       "Should the requirements for naturalization be made more difficult, including extending the time needed for residency?",
       "Should the criteria for obtaining naturalization be tightened by keeping the existing duration of residency or extending it?"
+    ],
+    "hard_paraphrase": [
+      "Would it be beneficial to simplify the process for foreigners to gain Swiss citizenship, such as by reducing the minimum time of living in the country?",
+      "Is it advisable to make it easier for individuals to become Swiss nationals by, for example, decreasing the time required to live in the country?",
+      "Could the eligibility factors for acquiring Swiss nationality be made more lenient, such as by shortening the duration of residence required?",
+      "Should the pathway to obtaining Swiss citizenship be made less stringent, such as by reducing the mandatory period of residency?"
+    ],
+    "negation_hard": [
+      "Should the prerequisites for granting Swiss citizenship become more stringent, such as by extending the necessary duration of stay?",
+      "Do you oppose increasing the difficulty of acquiring Swiss nationality by requiring a longer period of residence?",
+      "Do you support maintaining or increasing the challenges involved in becoming a Swiss citizen, such as by prolonging the period one must live in the country?",
+      "Do you reject the idea of making it tougher for individuals to become citizens of Switzerland, for instance by demanding a longer period of living in the country?"
     ]
   },
   "32222": {
@@ -143,6 +179,18 @@
       "Should insured individuals pay less towards their healthcare expenses, for instance by lowering the minimum deductible?",
       "Should insured persons contribute less by having a lower minimum deductible for health care costs?",
       "Should insured individuals pay less by not raising the minimum deductible for healthcare costs?"
+    ],
+    "hard_paraphrase": [
+      "Is there a need for individuals with medical coverage to assume a larger financial responsibility for their treatment expenses, such as by elevating the baseline out-of-pocket amount?",
+      "Should individuals covered by insurance take on a greater financial role in the expenses related to medical services, such as by raising the lowest threshold of personal contribution?",
+      "Should those with medical coverage be asked to increase their share of healthcare expenses, such as by lifting the basic level of out-of-pocket payments?",
+      "Should people who benefit from insurance be required to increase their financial contributions towards medical service fees, such as by raising the lowest mandatory self-payment?"
+    ],
+    "negation_hard": [
+      "Should individuals with medical coverage reduce their financial responsibility for treatment expenses, such as by retaining the current level of out-of-pocket requirements?",
+      "Should people with insurance decrease their share of medical service payments, such as by maintaining the current minimum cost-sharing standards?",
+      "Should people with medical coverage lessen their contribution to treatment costs, such as by keeping current thresholds for personal expense responsibility?",
+      "Should policyholders be required to decrease their input toward medical expenses, such as by maintaining the existing starting point for payments?"
     ]
   }
 }

@@ -1,0 +1,31 @@
+ID_question,Weight,Question,_category,rapide
+32214,1.0235066169772613,"Do you support an increase in the retirement age (e.g., to 67)?",Welfare state & family,1
+32215,0.8342525307128099,Should the federal government allocate more funding for health insurance premium subsidies?,Welfare state & family,1
+32219,0.9830955709525679,Should the federal government provide more financial support for public housing construction? [BePart question],Welfare state & family,1
+32222,0.8342525307128099,"Should insured persons contribute more to health care costs (e.g., increase the minimum deductible)?",Health,1
+32223,1.0235066169772613,Should the Federal Council's ability to restrict private and economic life in the event of a pandemic be more limited?,Health,1
+32227,1.0235066169772613,"Should the state be more committed to equal educational opportunities (e.g., through subsidized remedial courses for students from low-income families)?",Education,1
+32228,1.0235066169772613,"Should the conditions for naturalization be relaxed (e.g., shorter residence period)?",Immigration & integration,1
+32230,1.0235066169772613,Do you support efforts to house asylum seekers in centers outside Europe during the asylum procedure?,Immigration & integration,1
+32231,1.0235066169772613,Should foreign nationals who have lived in Switzerland for at least ten years be granted the right to vote and stand for election at the municipal level?,Immigration & integration,1
+32232,1.0235066169772613,Should cannabis use be legalized? [BePart question],Society & ethics,1
+32234,1.0235066169772613,"Should a third official gender be introduced alongside ""female"" and ""male""?",Society & ethics,1
+32236,1.0218169167617683,Do you support tax cuts at the federal level over the next four years?,Finances & taxes,1
+32238,1.0235066169772613,Would you support the introduction of a national inheritance tax on all inheritances over one million Swiss francs? [BePart question],Finances & taxes,1
+32240,1.0235066169772613,"Are you in favor of introducing a minimum wage of CHF 4,000 for all full-time employees?",Economy & labour,1
+32241,1.0235066169772613,"Do you support stricter regulations for the financial sector (e.g., stricter capital requirements for banks, ban on bonuses)?",Economy & labour,1
+32244,1.0235066169772613,Are you in favor of stricter controls on equal pay for women and men?,Economy & labour,1
+32245,1.0235066169772613,Should busy sections of highways be widened?,Energy & transport,1
+32246,1.0235066169772613,Should Switzerland ban the registration of new passenger cars with internal combustion engines starting in 2035?,Energy & transport,1
+32249,1.0235066169772613,Should the construction of new nuclear power plants in Switzerland be allowed again?,Energy & transport,1
+32252,1.0235066169772613,"Are you in favor of further relaxing the protection regulations for large predators (lynx, wolf, bear)?",Nature conservation,1
+32253,1.0235066169772613,Should direct payments only be granted to farmers with proof of ecological performance?,Nature conservation,1
+32256,1.0235066169772613,Would you support a ban on single-use plastic and non-recyclable plastics? [BePart question],Nature conservation,1
+32260,1.0235066169772613,"Are you in favor of stronger regulation of the major Internet platforms (i.e., transparency rules on algorithms, increased liability for content, combating disinformation)?","Democracy, Media & Digitalization",1
+32261,1.0235066169772613,"A popular initiative aims to reduce television and radio fees (CHF 200 per household, exemption for businesses). Do you support this initiative?","Democracy, Media & Digitalization",1
+32264,1.0235066169772613,"Are you in favor of expanding the army's target number of soldiers to at least 120,000?",Security & military,1
+32267,1.0235066169772613,Should automatic facial recognition be banned in public spaces?,Security & military,1
+32268,1.0235066169772613,Should Switzerland terminate the Schengen agreement with the EU and reintroduce more security checks directly on the border? [BePart question],Security & military,1
+32270,1.0068266206061345,Should Switzerland strive for a comprehensive free trade agreement (including agriculture) with the USA?,Foreign trade & foreign policy,1
+32272,1.0068266206061345,Should Switzerland terminate the Bilateral Agreements with the EU and seek a free trade agreement without the free movement of persons?,Foreign trade & foreign policy,1
+32273,1.0235066169772613,Should Switzerland return to a strict interpretation of neutrality (renounce economic sanctions to a large extent)? [BePart question],Foreign trade & foreign policy,1

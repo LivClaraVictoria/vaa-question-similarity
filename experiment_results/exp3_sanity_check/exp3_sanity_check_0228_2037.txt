@@ -1,0 +1,143 @@
+======================================================================
+RESULTS: Mini vs Full (E5-INSTRUCT, alpha=0.3, ZH, top-36)
+  Comparison: CRW(full 75q) vs CRW(mini 30q)
+  Reference:  Baseline(full 75q) vs CRW(mini 30q)
+======================================================================
+
+  Metric                                         Base-Full   CRW-Full      Delta
+  ---------------------------------------------------------------------------
+  Jaccard mean (vs CRW-mini):                       0.5056     0.5303    +0.0247
+  Jaccard median (vs CRW-mini):                     0.3585     0.3585    +0.0000
+  Jaccard p10 (vs CRW-mini):                        0.1803     0.1803    +0.0000
+  Spearman mean (vs CRW-mini):                      0.9362     0.9373    +0.0011
+
+  % voters where CRW-full closer to CRW-mini (Jaccard): 42.4%
+  % voters where baseline-full closer:                    9.4%
+  % voters unchanged:                                     48.2%
+
+======================================================================
+CRW WEIGHTS BY TOPIC CATEGORY — FULL 75q (E5-INSTRUCT, alpha=0.3)
+======================================================================
+
+  Category                                 N Mini  Mean W    Std   Min W   Max W
+  ------------------------------------------------------------------------------
+  Welfare state & family                   6    3  0.9324  0.068  0.8343  1.0235
+  Federal budget                           8    0  0.9744  0.058  0.8835  1.0235
+  Economy & labour                         5    3  0.9805  0.076  0.8487  1.0235
+  Health                                   5    2  0.9857  0.085  0.8343  1.0235
+  Energy & transport                       7    3  0.9888  0.067  0.8487  1.0235
+  Values                                   7    0  1.0035  0.034  0.9518  1.0235
+  Foreign trade & foreign policy           5    3  1.0168  0.009  1.0068  1.0235
+  Finances & taxes                         4    2  1.0231  0.001  1.0218  1.0235
+  Democracy, Media & Digitalization        6    2  1.0232  0.001  1.0218  1.0235
+  Education                                3    1  1.0235  0.000  1.0235  1.0235
+  Immigration & integration                4    3  1.0235  0.000  1.0235  1.0235
+  Nature conservation                      6    3  1.0235  0.000  1.0235  1.0235
+  Security & military                      5    3  1.0235  0.000  1.0235  1.0235
+  Society & ethics                         4    2  1.0235  0.000  1.0235  1.0235
+
+  Overall: mean=1.0000, std=0.0504, min=0.8343, max=1.0235
+
+======================================================================
+CRW WEIGHTS BY TOPIC CATEGORY — MINI 30q (E5-INSTRUCT, alpha=0.3)
+======================================================================
+
+  Category                                 N  Mean W    Std   Min W   Max W
+  ------------------------------------------------------------------------
+  Health                                   2  0.9289  0.134  0.8343  1.0235
+  Welfare state & family                   3  0.9470  0.100  0.8343  1.0235
+  Foreign trade & foreign policy           3  1.0124  0.010  1.0068  1.0235
+  Finances & taxes                         2  1.0227  0.001  1.0218  1.0235
+  Democracy, Media & Digitalization        2  1.0235  0.000  1.0235  1.0235
+  Economy & labour                         3  1.0235  0.000  1.0235  1.0235
+  Education                                1  1.0235    nan  1.0235  1.0235
+  Energy & transport                       3  1.0235  0.000  1.0235  1.0235
+  Immigration & integration                3  1.0235  0.000  1.0235  1.0235
+  Nature conservation                      3  1.0235  0.000  1.0235  1.0235
+  Security & military                      3  1.0235  0.000  1.0235  1.0235
+  Society & ethics                         2  1.0235  0.000  1.0235  1.0235
+
+  Overall: mean=1.0000, std=0.0504, min=0.8343, max=1.0235
+
+  --- Per-question CRW weights, full 75q (sorted by weight) ---
+    Q32215  w=0.8343  [MINI]  Welfare state & family              Should the federal government allocate more funding for
+    Q32222  w=0.8343  [MINI]  Health                              Should insured persons contribute more to health care c
+    Q32251  w=0.8487  [full]  Energy & transport                  Would you be in favor of the introduction of increasing
+    Q32242  w=0.8487  [full]  Economy & labour                    Should private households be free to choose their elect
+    Q32285  w=0.8835  [full]  Federal budget                      Should the federal government spend more or less in the
+    Q32284  w=0.8835  [full]  Federal budget                      Should the federal government spend more or less in the
+    Q32216  w=0.9009  [full]  Welfare state & family              For married couples, the pension is currently limited t
+    Q32217  w=0.9009  [full]  Welfare state & family              As part of the reform of the BVG (occupational pension 
+    Q32218  w=0.9518  [full]  Welfare state & family              Should paid parental leave be increased beyond today's 
+    Q32277  w=0.9518  [full]  Values                              What is your position the following statement: "It is b
+    Q32280  w=0.9555  [full]  Values                              What is your position the following statement: "Stronge
+    Q32248  w=0.9555  [full]  Energy & transport                  Do you think it's fair that environmental and landscape
+    Q32286  w=0.9809  [full]  Federal budget                      Should the federal government spend more or less in the
+    Q32287  w=0.9809  [full]  Federal budget                      Should the federal government spend more or less in the
+    Q32219  w=0.9831  [MINI]  Welfare state & family              Should the federal government provide more financial su
+    Q32243  w=0.9831  [full]  Economy & labour                    Should housing construction regulations be relaxed (e.g
+    Q32272  w=1.0068  [MINI]  Foreign trade & foreign policy      Should Switzerland terminate the Bilateral Agreements w
+    Q32270  w=1.0068  [MINI]  Foreign trade & foreign policy      Should Switzerland strive for a comprehensive free trad
+    Q32281  w=1.0098  [full]  Federal budget                      Should the federal government spend more or less in the
+    Q32288  w=1.0098  [full]  Federal budget                      Should the federal government spend more or less in the
+    Q32236  w=1.0218  [MINI]  Finances & taxes                    Do you support tax cuts at the federal level over the n
+    Q32263  w=1.0218  [full]  Democracy, Media & Digitalization   Should it be possible to hold a referendum on federal s
+    Q32234  w=1.0235  [MINI]  Society & ethics                    Should a third official gender be introduced alongside 
+    Q32264  w=1.0235  [MINI]  Security & military                 Are you in favor of expanding the army's target number 
+    Q32265  w=1.0235  [full]  Security & military                 Should the Swiss Armed Forces expand their cooperation 
+    Q32266  w=1.0235  [full]  Security & military                 Should the Federal Council be allowed to authorize othe
+    Q32267  w=1.0235  [MINI]  Security & military                 Should automatic facial recognition be banned in public
+    Q32268  w=1.0235  [MINI]  Security & military                 Should Switzerland terminate the Schengen agreement wit
+    Q32269  w=1.0235  [full]  Foreign trade & foreign policy      Are you in favor of closer relations with the European 
+    Q32228  w=1.0235  [MINI]  Immigration & integration           Should the conditions for naturalization be relaxed (e.
+    Q32271  w=1.0235  [full]  Foreign trade & foreign policy      Should Swiss companies be obliged to ensure that their 
+    Q32227  w=1.0235  [MINI]  Education                           Should the state be more committed to equal educational
+    Q32273  w=1.0235  [MINI]  Foreign trade & foreign policy      Should Switzerland return to a strict interpretation of
+    Q32274  w=1.0235  [full]  Values                              What is your position the following statement: "Someone
+    Q32275  w=1.0235  [full]  Values                              What is your position the following statement: "In the 
+    Q32226  w=1.0235  [full]  Education                           Should the federal government raise the requirements fo
+    Q32278  w=1.0235  [full]  Values                              What is your position the following statement: "The ong
+    Q32279  w=1.0235  [full]  Values                              What is your position the following statement: "Punishi
+    Q32225  w=1.0235  [full]  Education                           According to the Swiss integrated schooling concept, ch
+    Q32224  w=1.0235  [full]  Health                              Should the federal government be given the authority to
+    Q32282  w=1.0235  [full]  Federal budget                      Should the federal government spend more or less in the
+    Q32283  w=1.0235  [full]  Federal budget                      Should the federal government spend more or less in the
+    Q32223  w=1.0235  [MINI]  Health                              Should the Federal Council's ability to restrict privat
+    Q32221  w=1.0235  [full]  Health                              Are you in favor of the introduction of a tax on foods 
+    Q32220  w=1.0235  [full]  Health                              Should compulsory vaccination of children be introduced
+    Q32276  w=1.0235  [full]  Values                              What is your position the following statement: "It is n
+    Q32262  w=1.0235  [full]  Democracy, Media & Digitalization   Are you in favour of lowering the voting age to 16?
+    Q32261  w=1.0235  [MINI]  Democracy, Media & Digitalization   A popular initiative aims to reduce television and radi
+    Q32260  w=1.0235  [MINI]  Democracy, Media & Digitalization   Are you in favor of stronger regulation of the major In
+    Q32235  w=1.0235  [full]  Society & ethics                    Do you think it's right for same-sex couples to have th
+    Q32237  w=1.0235  [full]  Finances & taxes                    Should married couples be taxed separately (individual 
+    Q32238  w=1.0235  [MINI]  Finances & taxes                    Would you support the introduction of a national inheri
+    Q32239  w=1.0235  [full]  Finances & taxes                    Should the differences between cantons with high and lo
+    Q32240  w=1.0235  [MINI]  Economy & labour                    Are you in favor of introducing a minimum wage of CHF 4
+    Q32241  w=1.0235  [MINI]  Economy & labour                    Do you support stricter regulations for the financial s
+    Q32232  w=1.0235  [MINI]  Society & ethics                    Should cannabis use be legalized? [BePart question]
+    Q32231  w=1.0235  [MINI]  Immigration & integration           Should foreign nationals who have lived in Switzerland 
+    Q32244  w=1.0235  [MINI]  Economy & labour                    Are you in favor of stricter controls on equal pay for 
+    Q32245  w=1.0235  [MINI]  Energy & transport                  Should busy sections of highways be widened?
+    Q32246  w=1.0235  [MINI]  Energy & transport                  Should Switzerland ban the registration of new passenge
+    Q32233  w=1.0235  [full]  Society & ethics                    Would you be in favour of doctors being allowed to admi
+    Q32247  w=1.0235  [full]  Energy & transport                  To achieve climate targets, should incentives and targe
+    Q32249  w=1.0235  [MINI]  Energy & transport                  Should the construction of new nuclear power plants in 
+    Q32250  w=1.0235  [full]  Energy & transport                  Should the state guarantee a comprehensive public servi
+    Q32229  w=1.0235  [full]  Immigration & integration           Should more qualified workers from non-EU/EFTA countrie
+    Q32252  w=1.0235  [MINI]  Nature conservation                 Are you in favor of further relaxing the protection reg
+    Q32253  w=1.0235  [MINI]  Nature conservation                 Should direct payments only be granted to farmers with 
+    Q32254  w=1.0235  [full]  Nature conservation                 Are you in favour of stricter animal welfare regulation
+    Q32255  w=1.0235  [full]  Nature conservation                 Should 30% of Switzerland's land area be dedicated to p
+    Q32256  w=1.0235  [MINI]  Nature conservation                 Would you support a ban on single-use plastic and non-r
+    Q32257  w=1.0235  [full]  Nature conservation                 Are you in favour of government measures to make the us
+    Q32258  w=1.0235  [full]  Democracy, Media & Digitalization   Should the Swiss mobile network be equipped throughout 
+    Q32259  w=1.0235  [full]  Democracy, Media & Digitalization   Should the federal government be given additional power
+    Q32230  w=1.0235  [MINI]  Immigration & integration           Do you support efforts to house asylum seekers in cente
+    Q32214  w=1.0235  [MINI]  Welfare state & family              Do you support an increase in the retirement age (e.g.,
+
+======================================================================
+VERDICT
+======================================================================
+  Signal detected: CRW-full is closer to CRW-mini (delta=+0.0247).
+  Worth running the full Experiment 3 sweep.
