@@ -1,0 +1,20 @@
+{
+    "config_name": "easy_paraphrase_top5impact_n4_jina_v3_ZH",
+    "overrides": [
+        "alpha~0.8"
+    ],
+    "n_jaccard": 36,
+    "data_year": 2023,
+    "dist": "JINA-V3",
+    "data_choice": "cloned",
+    "clone_id": "easy_paraphrase_top5impact_n4",
+    "embedding_instruction": null,
+    "embedding_task": "separation",
+    "alpha": 0.8,
+    "crw_paper_choice": "P2",
+    "rec_dist_method": "L2",
+    "n_recommendations": "all",
+    "subset_n": null,
+    "use_OG_weights": false,
+    "district": "ZH"
+}

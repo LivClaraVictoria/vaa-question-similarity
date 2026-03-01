@@ -1,0 +1,30 @@
+metric,value,context
+baseline_jaccard,0.4412,No CRW (distorted by clones)
+baseline_spearman,0.8975,No CRW (distorted)
+baseline_kendall,0.7664,No CRW (distorted)
+best_model,E5-Instruct,Rank 1 across all 6 clone types
+best_model_jaccard,0.5801,E5-Instruct avg peak Jaccard across 6 clones
+best_improvement_abs,0.1389,Absolute Jaccard improvement (E5-Instruct)
+best_improvement_pct,31.5%,Relative Jaccard improvement (E5-Instruct)
+worst_model,E5-Asym-Instruct,Rank 10 (last)
+worst_model_jaccard,0.4833,E5-Asym-Instruct avg peak Jaccard
+model_spread,0.0968,Jaccard difference between best and worst model
+best_easy_paraphrase,E5-Instruct,Best model for Easy Paraphrase
+best_easy_paraphrase_jaccard,0.6228,Peak Jaccard for Easy Paraphrase (E5-Instruct)
+best_hard_paraphrase,E5-Instruct,Best model for Hard Paraphrase
+best_hard_paraphrase_jaccard,0.5406,Peak Jaccard for Hard Paraphrase (E5-Instruct)
+best_negation_easy,E5-Instruct,Best model for Negation + Easy Para.
+best_negation_easy_jaccard,0.6589,Peak Jaccard for Negation + Easy Para. (E5-Instruct)
+best_negation_hard,E5-Instruct,Best model for Negation + Hard Para.
+best_negation_hard_jaccard,0.5070,Peak Jaccard for Negation + Hard Para. (E5-Instruct)
+best_mixed,Jina v3,Best model for Mixed (Easy)
+best_mixed_jaccard,0.6247,Peak Jaccard for Mixed (Easy) (Jina v3)
+best_perfect_mix,Qwen3,Best model for Perfect Mix
+best_perfect_mix_jaccard,0.5549,Peak Jaccard for Perfect Mix (Qwen3)
+benchmark_spearman_rho,0.648,Ordering accuracy vs avg CRW Jaccard
+benchmark_p_value,0.0425,p-value of benchmark correlation
+n_models,10,Embedding models tested
+n_clone_types,6,Clone conditions
+n_alphas,21,Alpha values swept
+n_questions_cloned,5,Worst-case questions (top impact)
+n_clones_per_question,4,Clones per question per condition

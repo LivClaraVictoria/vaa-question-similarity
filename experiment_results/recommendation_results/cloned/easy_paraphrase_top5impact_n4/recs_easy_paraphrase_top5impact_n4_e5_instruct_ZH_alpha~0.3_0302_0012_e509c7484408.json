@@ -1,0 +1,20 @@
+{
+    "config_name": "easy_paraphrase_top5impact_n4_e5_instruct_ZH",
+    "overrides": [
+        "alpha~0.3"
+    ],
+    "n_jaccard": 36,
+    "data_year": 2023,
+    "dist": "E5-INSTRUCT",
+    "data_choice": "cloned",
+    "clone_id": "easy_paraphrase_top5impact_n4",
+    "embedding_instruction": "Identify the political topic discussed in the following question, regardless of the stance or position taken.",
+    "embedding_task": null,
+    "alpha": 0.3,
+    "crw_paper_choice": "P2",
+    "rec_dist_method": "L2",
+    "n_recommendations": "all",
+    "subset_n": null,
+    "use_OG_weights": false,
+    "district": "ZH"
+}
