@@ -395,31 +395,42 @@ def _save_outputs(
 # ---------------------------------------------------------------------------
 
 
-def _setup_pipeline(config_a, config_b):
-    """Load datasets, compute distances, build rec engines + baselines. Returns all shared state."""
-    print("\n--- Loading datasets ---")
-    dataset_a = load_dataset(config_a)
-    dataset_b = load_dataset(config_b)
+def _setup_side(config, dataset=None, dist_df=None):
+    """Set up one side of the alpha sweep comparison.
 
-    print("\n--- Computing / loading distances ---")
-    calculator_a = get_calculator(config_a)
-    dist_df_a = calculator_a.calculate_distance(dataset_a, config_a)
+    Optionally accepts pre-loaded dataset and/or distance DataFrame
+    for in-memory cloning workflows (e.g. question_alpha_sweep_main).
+    """
+    if dataset is None:
+        dataset = load_dataset(config)
 
-    calculator_b = get_calculator(config_b)
-    dist_df_b = calculator_b.calculate_distance(dataset_b, config_b)
+    if dist_df is None:
+        calculator = get_calculator(config)
+        dist_df = calculator.calculate_distance(dataset, config)
 
-    print("\n--- Computing baseline recommendations (alpha-independent) ---")
-    rec_engine_a = RecommendationEngine(config=config_a, data_map=dataset_a)
-    baseline_a = rec_engine_a.run_baseline()
-
-    rec_engine_b = RecommendationEngine(config=config_b, data_map=dataset_b)
-    baseline_b = rec_engine_b.run_baseline()
+    rec_engine = RecommendationEngine(config=config, data_map=dataset)
+    baseline = rec_engine.run_baseline()
 
     return {
-        "dataset_a": dataset_a, "dataset_b": dataset_b,
-        "dist_df_a": dist_df_a, "dist_df_b": dist_df_b,
-        "rec_engine_a": rec_engine_a, "rec_engine_b": rec_engine_b,
-        "baseline_a": baseline_a, "baseline_b": baseline_b,
+        "dataset": dataset,
+        "dist_df": dist_df,
+        "rec_engine": rec_engine,
+        "baseline": baseline,
+    }
+
+
+def _setup_pipeline(config_a, config_b):
+    """Load datasets, compute distances, build rec engines + baselines. Returns all shared state."""
+    print("\n--- Setting up config A ---")
+    side_a = _setup_side(config_a)
+
+    print("\n--- Setting up config B ---")
+    side_b = _setup_side(config_b)
+
+    return {
+        "dist_df_a": side_a["dist_df"], "dist_df_b": side_b["dist_df"],
+        "rec_engine_a": side_a["rec_engine"], "rec_engine_b": side_b["rec_engine"],
+        "baseline_a": side_a["baseline"], "baseline_b": side_b["baseline"],
     }
 
 

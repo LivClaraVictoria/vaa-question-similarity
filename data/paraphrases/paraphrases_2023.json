@@ -145,7 +145,8 @@
       "Do you think that the requirements for obtaining Swiss citizenship should be eased, such as by reducing the necessary length of residency?",
       "Should the criteria for becoming a naturalized citizen in Switzerland be made less strict, for instance by shortening the required residency duration?",
       "Do you believe the qualifications for Swiss naturalization should be loosened, perhaps by lowering the residency duration needed?",
-      "Should the process for acquiring Swiss citizenship be simplified, potentially by decreasing the length of time residency is required?"
+      "Should the process for acquiring Swiss citizenship be simplified, potentially by decreasing the length of time residency is required?",
+      "Do you support making the naturalization process easier in Switzerland, such as by reducing the required residency period?"
     ],
     "negation_easy": [
       "Should the conditions for naturalization remain stringent, such as maintaining the current residence period?",
@@ -172,7 +173,8 @@
       "Do you think that individuals with insurance should pay a larger share of healthcare expenses, such as by raising the basic deductible?",
       "Should people with health insurance be required to pay more towards medical expenses, for instance by increasing the standard deductible?",
       "Is it your opinion that insured individuals ought to bear a greater portion of healthcare costs, perhaps by elevating the minimum deductible?",
-      "Do you support insured members taking on higher healthcare expenses, for example, through a higher minimum deductible?"
+      "Do you support insured members taking on higher healthcare expenses, for example, through a higher minimum deductible?",
+      "Should individuals covered by insurance assume a larger responsibility for health care expenses, such as by upping the minimum deductible?"
     ],
     "negation_easy": [
       "Should insured persons contribute less to health care costs, like by reducing the minimum deductible?",
@@ -196,7 +198,11 @@
   "32245": {
     "original": "Should busy sections of highways be widened?",
     "easy_paraphrase": [
-      "Is it necessary to expand congested highway sections?"
+      "Is it necessary to expand congested highway sections?",
+      "Should congested areas of highways be expanded?",
+      "Is there a need to widen highways in areas with heavy traffic?",
+      "Should highways be widened in sections where congestion is high?",
+      "Should sections of highways with heavy traffic be enlarged?"
     ],
     "hard_paraphrase": [
       "Is there a need to increase the breadth of heavily trafficked motorway segments?"
@@ -211,7 +217,11 @@
   "32262": {
     "original": "Are you in favour of lowering the voting age to 16?",
     "easy_paraphrase": [
-      "Do you support reducing the voting age to 16?"
+      "Do you support reducing the voting age to 16?",
+      "Would you agree to decrease the voting age to 16?",
+      "Are you supportive of changing the voting age to 16?",
+      "Do you favor adjusting the voting age to 16?",
+      "Would you be in favor of setting the voting age at 16?"
     ],
     "hard_paraphrase": [
       "Do you agree with allowing individuals aged 16 to participate in elections?"
@@ -226,7 +236,11 @@
   "32236": {
     "original": "Do you support tax cuts at the federal level over the next four years?",
     "easy_paraphrase": [
-      "Are you in favor of reducing federal taxes during the next four years?"
+      "Are you in favor of reducing federal taxes during the next four years?",
+      "Would you endorse a decrease in federal taxes in the coming four years?",
+      "Do you advocate for lowering taxes at the federal level over the next four years?",
+      "Do you approve of cutting federal taxes in the forthcoming four years?",
+      "Do you back the idea of federal tax reductions within the next four years?"
     ],
     "hard_paraphrase": [
       "Are you in favor of reducing the national financial obligations over the upcoming four-year period?"
@@ -241,7 +255,11 @@
   "32239": {
     "original": "Should the differences between cantons with high and low financial capacity be further reduced through fiscal equalization?",
     "easy_paraphrase": [
-      "Should fiscal equalization be used to further diminish the financial capacity disparities between wealthier and less wealthy cantons?"
+      "Should fiscal equalization be used to further diminish the financial capacity disparities between wealthier and less wealthy cantons?",
+      "Should fiscal equalization further address the financial capacity gaps between cantons with higher and lower resources?",
+      "Should the financial capacity variations between cantons with strong and weak economies be further minimized through fiscal equalization?",
+      "Should fiscal equalization be employed to reduce the financial capacity differences between cantons with more and less economic strength?",
+      "Should the fiscal equalization mechanism be used to further narrow the financial capacity gaps between cantons with differing economic strengths?"
     ],
     "hard_paraphrase": [
       "Is it advisable to use financial redistribution mechanisms to decrease the economic disparities between regions with varying monetary strength?"
@@ -251,6 +269,666 @@
     ],
     "negation_hard": [
       "Should we increase the fiscal disparities between regions with varying economic strengths through the redistribution of financial resources?"
+    ]
+  },
+  "32215": {
+    "original": "Should the federal government allocate more funding for health insurance premium subsidies?",
+    "easy_paraphrase": [
+      "Do you think the federal government should increase funding for subsidies on health insurance premiums?",
+      "Do you believe the federal government ought to provide additional funds for subsidies to help with health insurance premiums?",
+      "Should more federal funds be dedicated to subsidies for health insurance premiums?",
+      "Should the federal government increase its financial support for subsidies related to health insurance premiums?",
+      "Do you support the federal government boosting its budget for health insurance premium subsidies?"
+    ]
+  },
+  "32216": {
+    "original": "For married couples, the pension is currently limited to 150% of the maximum individual AHV pension (capping). Should this limit be eliminated?",
+    "easy_paraphrase": [
+      "Should the cap that restricts married couples' pensions to 150% of the maximum individual AHV pension be removed?",
+      "Do you think the restriction that confines married couples' pensions to 150% of the maximum individual AHV pension should be abolished?",
+      "Is it your opinion that the 150% cap on the combined AHV pension for married couples should be done away with?",
+      "Should the limit that sets married couples' AHV pensions to 150% of the maximum individual pension be lifted?",
+      "Should we eliminate the restriction that caps married couples' pensions at 150% of the maximum individual AHV pension?"
+    ]
+  },
+  "32217": {
+    "original": "As part of the reform of the BVG (occupational pension plan), pensions are to be reduced (lowering the minimum conversion rate from 6.8% to 6%). Are you in favor of this measure?",
+    "easy_paraphrase": [
+      "Do you support the proposal to decrease pensions as part of the BVG reform by reducing the minimum conversion rate from 6.8% to 6%?",
+      "Are you in favor of the measure within the BVG reform to lower pensions by decreasing the minimum conversion rate from 6.8% to 6%?",
+      "Would you agree with the plan to cut pensions by adjusting the BVG minimum conversion rate from 6.8% to 6% as part of the reform?",
+      "Do you agree with the initiative to reduce pensions in the BVG reform by changing the minimum conversion rate from 6.8% to 6%?",
+      "Are you supportive of the measure in the BVG reform to decrease the minimum conversion rate from 6.8% to 6%, leading to reduced pensions?"
+    ]
+  },
+  "32218": {
+    "original": "Should paid parental leave be increased beyond today's 14 weeks of maternity leave and two weeks of paternity leave? [BePart question]",
+    "easy_paraphrase": [
+      "Do you think the current parental leave should be extended beyond the existing 14 weeks for maternity and two weeks for paternity leave?",
+      "Is there a need to increase the current 14-week maternity leave and 2-week paternity leave for parents?",
+      "Should there be an extension to the current 14-week maternity and 2-week paternity leave provided to parents?",
+      "Do you believe parental leave should be extended beyond the current 14 weeks for maternity leave and 2 weeks for paternity leave?",
+      "Should the existing parental leave policy, which includes 14 weeks for maternity and two weeks for paternity, be extended?"
+    ]
+  },
+  "32219": {
+    "original": "Should the federal government provide more financial support for public housing construction? [BePart question]",
+    "easy_paraphrase": [
+      "Do you think the federal government should increase financial assistance for building public housing?",
+      "Do you agree that the federal government ought to boost funding for the construction of public housing?",
+      "Should the federal authorities enhance monetary aid for the development of public housing projects?",
+      "Do you believe the federal government should provide greater financial backing for public housing developments?",
+      "Should the federal government allocate more funds to support the construction of public housing?"
+    ]
+  },
+  "32220": {
+    "original": "Should compulsory vaccination of children be introduced based on the Swiss vaccination plan?",
+    "easy_paraphrase": [
+      "Ought the mandatory vaccination of children be implemented according to the Swiss vaccination schedule?",
+      "Should the Swiss vaccination program enforce the vaccination of children as a requirement?",
+      "Is the implementation of obligatory child vaccination according to the Swiss vaccination plan necessary?",
+      "Should children be required to receive vaccinations as outlined by the Swiss vaccination plan?",
+      "Should the Swiss vaccination schedule introduce mandatory vaccines for children?"
+    ]
+  },
+  "32221": {
+    "original": "Are you in favor of the introduction of a tax on foods containing sugar (sugar tax)?",
+    "easy_paraphrase": [
+      "Do you support the implementation of a tax on foods with sugar content (sugar tax)?",
+      "Do you agree with introducing a tax on foods that contain sugar (sugar tax)?",
+      "Are you supportive of enacting a tax on foods that include sugar (sugar tax)?",
+      "Would you be in favor of establishing a tax on foods that have sugar (sugar tax)?",
+      "Do you back the idea of imposing a tax on foods that have sugar (sugar tax)?"
+    ]
+  },
+  "32223": {
+    "original": "Should the Federal Council's ability to restrict private and economic life in the event of a pandemic be more limited?",
+    "easy_paraphrase": [
+      "Should there be greater limitations on the Federal Council's power to impose restrictions on private and economic life during a pandemic?",
+      "Should the Federal Council face more constraints on its authority to limit private and economic activities in the case of a pandemic?",
+      "Should the powers of the Federal Council to limit private and economic activities in a pandemic situation be more restricted?",
+      "Should the Federal Council's authority to impose restrictions on private and economic life in a pandemic be curtailed more than it is now?",
+      "Should the Federal Council have less power to impose restrictions on private and economic life during a pandemic?"
+    ]
+  },
+  "32224": {
+    "original": "Should the federal government be given the authority to determine the hospital offering (national hospital planning with regard to locations and range of services)?",
+    "easy_paraphrase": [
+      "Do you agree that the federal government should have the power to decide on hospital offerings, including locations and services, as part of a national hospital plan?",
+      "Should the authority to plan hospitals nationwide, including their locations and service offerings, be granted to the federal government?",
+      "Is it appropriate for the federal government to have the authority to oversee hospital planning on a national level, including decisions on locations and the services provided?",
+      "Do you think the federal government should be authorized to manage hospital planning across the country, deciding on both the locations and range of services offered?",
+      "Should the federal government be empowered to orchestrate nationwide hospital planning, encompassing the selection of locations and the determination of service offerings?"
+    ]
+  },
+  "32225": {
+    "original": "According to the Swiss integrated schooling concept, children with learning difficulties or disabilities should be taught in regular classes. Do you approve of this concept?",
+    "easy_paraphrase": [
+      "Do you support the idea of the Swiss integrated schooling approach, where children with disabilities or learning challenges are educated in standard classrooms?",
+      "Are you in favor of the Swiss integrated schooling model, which involves teaching children who have learning difficulties or disabilities within regular classroom settings?",
+      "Do you agree with the Swiss integrated schooling policy that involves instructing children with disabilities or learning difficulties in regular classroom environments?",
+      "How do you feel about the Swiss integrated schooling strategy that includes educating children with disabilities or learning challenges in conventional classroom settings?",
+      "Do you agree with the Swiss approach to integrated schooling, which proposes that children facing learning disabilities or difficulties be instructed in regular classroom contexts?"
+    ]
+  },
+  "32226": {
+    "original": "Should the federal government raise the requirements for the gymnasiale matura?",
+    "easy_paraphrase": [
+      "Is it necessary for the federal government to increase the standards for the gymnasiale matura?",
+      "Should the federal government enhance the criteria for obtaining the gymnasiale matura?",
+      "Should the federal authorities elevate the requirements for the gymnasiale matura?",
+      "Is it advisable for the federal government to raise the qualifications needed for the gymnasiale matura?",
+      "Ought the federal government to heighten the standards for the gymnasiale matura?"
+    ]
+  },
+  "32227": {
+    "original": "Should the state be more committed to equal educational opportunities (e.g., through subsidized remedial courses for students from low-income families)?",
+    "easy_paraphrase": [
+      "Do you believe the government should enhance its efforts to provide equal educational opportunities, such as by offering subsidized tutoring for students from low-income backgrounds?",
+      "Should the government increase its commitment to ensuring equal education opportunities, for instance, by providing subsidized remedial programs for students from economically disadvantaged families?",
+      "Do you think the state should take stronger actions to guarantee equal educational opportunities, like subsidizing extra courses for students from families with low income?",
+      "Should the state place a greater emphasis on achieving equal education opportunities, such as by subsidizing additional classes for students from low-income households?",
+      "Do you think the government should strengthen its role in ensuring equal educational opportunities, for example, by funding remedial classes for students from financially disadvantaged families?"
+    ]
+  },
+  "32229": {
+    "original": "Should more qualified workers from non-EU/EFTA countries be allowed to work in Switzerland (increase third-country quota)?",
+    "easy_paraphrase": [
+      "Should Switzerland permit a higher number of skilled workers from non-EU/EFTA countries to be employed by increasing the quota for third countries?",
+      "Is it advisable for Switzerland to raise the limit for skilled employees from non-EU/EFTA nations, allowing them to work by expanding the third-country quota?",
+      "Should the quota for third-country nationals be expanded to allow more skilled workers from outside the EU/EFTA to gain employment in Switzerland?",
+      "Ought Switzerland to expand the third-country quota to enable more skilled professionals from non-EU/EFTA regions to obtain jobs?",
+      "Should the third-country quota be increased in Switzerland to admit a greater number of qualified professionals from outside the EU/EFTA?"
+    ]
+  },
+  "32230": {
+    "original": "Do you support efforts to house asylum seekers in centers outside Europe during the asylum procedure?",
+    "easy_paraphrase": [
+      "Are you in favor of initiatives to accommodate asylum seekers in facilities located outside of Europe while their asylum applications are being processed?",
+      "Do you agree with proposals to place asylum seekers in centers beyond Europe during the processing of their asylum claims?",
+      "Would you endorse plans to house asylum seekers in locations outside of Europe throughout the processing of their asylum requests?",
+      "Do you approve of the idea to accommodate asylum seekers in centers situated outside Europe while their asylum procedures are underway?",
+      "Are you supportive of measures to temporarily place asylum seekers in centers beyond the borders of Europe while their asylum claims are processed?"
+    ]
+  },
+  "32231": {
+    "original": "Should foreign nationals who have lived in Switzerland for at least ten years be granted the right to vote and stand for election at the municipal level?",
+    "easy_paraphrase": [
+      "Do you believe that foreign nationals who have resided in Switzerland for a minimum of ten years should be allowed to vote and run for office in municipal elections?",
+      "Should foreign nationals, after residing in Switzerland for at least ten years, be permitted to participate in voting and standing for election at the local government level?",
+      "Is it appropriate to grant voting rights and the ability to run for municipal office to foreign nationals who have lived in Switzerland for a decade or more?",
+      "Should individuals from other countries who have spent a decade or longer in Switzerland be given the right to vote and compete in municipal elections?",
+      "Should foreign nationals who have been residents of Switzerland for ten years or more be given the right to vote and seek election in local government elections?"
+    ]
+  },
+  "32232": {
+    "original": "Should cannabis use be legalized? [BePart question]",
+    "easy_paraphrase": [
+      "Do you support the legalization of cannabis use?",
+      "Are you in favor of legalizing the use of cannabis?",
+      "Should the use of cannabis be made legal?",
+      "Is the legalization of cannabis consumption something you support?",
+      "Do you believe cannabis consumption should be legalized?"
+    ]
+  },
+  "32233": {
+    "original": "Would you be in favour of doctors being allowed to administer direct active euthanasia in Switzerland?",
+    "easy_paraphrase": [
+      "Do you support permitting doctors in Switzerland to carry out direct active euthanasia?",
+      "Are you in favor of allowing physicians in Switzerland to perform direct active euthanasia?",
+      "Would you support the authorization for doctors in Switzerland to conduct direct active euthanasia?",
+      "Do you agree with granting doctors in Switzerland the right to administer direct active euthanasia?",
+      "Do you back the idea of enabling medical professionals in Switzerland to execute direct active euthanasia?"
+    ]
+  },
+  "32235": {
+    "original": "Do you think it's right for same-sex couples to have the same rights as heterosexual couples in all areas?",
+    "easy_paraphrase": [
+      "In your opinion, should same-sex couples be granted equal rights to heterosexual couples across all aspects?",
+      "Do you believe that same-sex couples deserve to have equal rights as heterosexual couples in every area?",
+      "Do you feel that same-sex couples should have rights equal to those of heterosexual couples in every aspect?",
+      "Should same-sex couples be afforded the same rights as heterosexual couples in all respects, in your view?",
+      "Do you support granting same-sex couples the same rights as heterosexual couples in every domain?"
+    ]
+  },
+  "32237": {
+    "original": "Should married couples be taxed separately (individual taxation)? [BePart question]",
+    "easy_paraphrase": [
+      "Is it preferable for married partners to be taxed individually rather than jointly?",
+      "Should taxation be applied individually to each spouse instead of jointly?",
+      "Should each spouse in a marriage be taxed on an individual basis instead of as a couple?",
+      "Should taxation of married couples be carried out separately for each individual?",
+      "Is it advisable for spouses to be taxed separately instead of together as a couple?"
+    ]
+  },
+  "32238": {
+    "original": "Would you support the introduction of a national inheritance tax on all inheritances over one million Swiss francs? [BePart question]",
+    "easy_paraphrase": [
+      "Do you favor implementing a nationwide inheritance tax on estates exceeding one million Swiss francs?",
+      "Are you in favor of establishing a federal inheritance tax for all inheritances that surpass one million Swiss francs?",
+      "Would you be in favor of a national inheritance tax for inheritances over one million Swiss francs?",
+      "Would you approve of introducing a national tax on inheritances that are greater than one million Swiss francs?",
+      "Do you support the idea of creating a nationwide inheritance tax for estates over one million Swiss francs?"
+    ]
+  },
+  "32240": {
+    "original": "Are you in favor of introducing a minimum wage of CHF 4,000 for all full-time employees?",
+    "easy_paraphrase": [
+      "Do you support the implementation of a minimum wage set at CHF 4,000 for every full-time worker?",
+      "Would you back the establishment of a CHF 4,000 minimum wage for all individuals employed full-time?",
+      "Are you in support of setting a CHF 4,000 minimum wage for each person working full-time?",
+      "Do you agree with instituting a minimum wage of CHF 4,000 for all full-time employees?",
+      "Would you be in favor of setting a CHF 4,000 minimum wage for everyone employed full-time?"
+    ]
+  },
+  "32241": {
+    "original": "Do you support stricter regulations for the financial sector (e.g., stricter capital requirements for banks, ban on bonuses)?",
+    "easy_paraphrase": [
+      "Are you in favor of implementing tougher rules for the financial industry, such as higher capital requirements for banks or prohibiting bonuses?",
+      "Do you advocate for more stringent regulations in the financial sector, like increasing capital requirements for banks or eliminating bonuses?",
+      "Would you be supportive of enforcing more rigorous regulations on the financial sector, for instance by raising capital requirements for banks, or by banning bonuses?",
+      "Do you endorse the idea of imposing stricter controls on the financial sector, including measures like enhanced capital requirements for banks and restrictions on bonuses?",
+      "Would you support the introduction of tighter regulations in the financial industry, such as stricter capital requirements for banks and a ban on bonuses?"
+    ]
+  },
+  "32242": {
+    "original": "Should private households be free to choose their electricity supplier (complete liberalization of the electricity market)?",
+    "easy_paraphrase": [
+      "Do you support allowing private households the freedom to select their own electricity provider, leading to full liberalization of the electricity market?",
+      "Should private households have the autonomy to pick their electricity supplier, resulting in the complete liberalization of the market?",
+      "Is it your opinion that private households should have the freedom to choose their electricity provider, thereby fully liberalizing the electricity market?",
+      "Do you believe that private households ought to have the liberty to choose their electricity supplier, thus achieving total liberalization of the electricity market?",
+      "Should private households be granted the ability to select their electricity provider, thereby enabling full liberalization of the electricity market?"
+    ]
+  },
+  "32243": {
+    "original": "Should housing construction regulations be relaxed (e.g., noise protection, occupancy rates)?",
+    "easy_paraphrase": [
+      "Do you support easing regulations on housing construction, such as those related to noise barriers and occupancy limits?",
+      "Are you in favor of loosening the rules governing housing construction, including aspects like soundproofing and occupancy densities?",
+      "Would you agree with reducing restrictions on building homes, for example, those pertaining to noise control and the number of occupants allowed?",
+      "Is it your opinion that the rules for constructing residential buildings should be less stringent, particularly concerning noise mitigation and occupancy standards?",
+      "Do you think that the regulations for housing development should be relaxed, particularly those involving noise levels and occupancy rates?"
+    ]
+  },
+  "32244": {
+    "original": "Are you in favor of stricter controls on equal pay for women and men?",
+    "easy_paraphrase": [
+      "Do you support implementing more rigorous measures to ensure equal pay between men and women?",
+      "Do you agree with enforcing stricter regulations to guarantee equal pay for men and women?",
+      "Are you in support of tighter controls to ensure that men and women receive equal pay?",
+      "Would you back stronger enforcement to achieve equal pay for both women and men?",
+      "Do you favor more stringent measures to ensure women and men are paid equally?"
+    ]
+  },
+  "32246": {
+    "original": "Should Switzerland ban the registration of new passenger cars with internal combustion engines starting in 2035?",
+    "easy_paraphrase": [
+      "Do you support prohibiting the registration of new passenger vehicles with internal combustion engines in Switzerland beginning in 2035?",
+      "Are you in favor of Switzerland disallowing the registration of new passenger cars powered by internal combustion engines starting from 2035?",
+      "Should Switzerland implement a ban on the registration of new passenger cars that use internal combustion engines starting in 2035?",
+      "Do you agree with Switzerland forbidding the registration of new passenger vehicles that operate on internal combustion engines from the year 2035?",
+      "Should Switzerland prohibit the registration of new passenger vehicles equipped with internal combustion engines beginning in 2035?"
+    ]
+  },
+  "32247": {
+    "original": "To achieve climate targets, should incentives and target agreements be relied on exclusively, rather than bans and restrictions?",
+    "easy_paraphrase": [
+      "Should we depend solely on incentives and target agreements to meet climate objectives, instead of implementing bans and restrictions?",
+      "Are incentives and target agreements the sole methods that should be used to reach climate goals, rather than implementing bans and limitations?",
+      "Should achieving climate goals rely exclusively on incentives and target agreements, avoiding bans and restrictions altogether?",
+      "In pursuit of climate targets, should the approach focus solely on incentives and target agreements, excluding the use of bans and restrictions?",
+      "To meet climate goals, should the strategy depend entirely on incentives and target agreements, rather than relying on bans and restrictions?"
+    ]
+  },
+  "32248": {
+    "original": "Do you think it's fair that environmental and landscape protection rules are being relaxed to allow for the development of renewable energy?",
+    "easy_paraphrase": [
+      "Is it justifiable to ease environmental and landscape protection regulations to facilitate the advancement of renewable energy projects?",
+      "Do you find it reasonable to relax rules on environmental and landscape protection to support the growth of renewable energy initiatives?",
+      "Should environmental and landscape protection regulations be loosened to promote the expansion of renewable energy sources?",
+      "Is it appropriate to soften environmental and landscape protection laws to encourage the development of renewable energy?",
+      "Do you believe it is acceptable to reduce environmental and landscape protection standards to enable the progress of renewable energy?"
+    ]
+  },
+  "32249": {
+    "original": "Should the construction of new nuclear power plants in Switzerland be allowed again?",
+    "easy_paraphrase": [
+      "Is it permissible to resume the construction of new nuclear power facilities in Switzerland?",
+      "Should Switzerland permit the building of new nuclear power plants again?",
+      "Is it acceptable to allow the development of new nuclear energy plants in Switzerland again?",
+      "Should new nuclear power plants be constructed once more in Switzerland?",
+      "Can Switzerland authorize the renewal of building new nuclear power stations?"
+    ]
+  },
+  "32250": {
+    "original": "Should the state guarantee a comprehensive public service offering also in rural regions?",
+    "easy_paraphrase": [
+      "Is it the state's responsibility to ensure that rural areas have access to a full range of public services?",
+      "Should the government ensure that rural regions receive a broad spectrum of public services?",
+      "Should the state provide a complete array of public services to those living in rural areas?",
+      "Is it the government's duty to guarantee that rural communities are offered extensive public services?",
+      "Is the state obligated to provide rural regions with a comprehensive selection of public services?"
+    ]
+  },
+  "32251": {
+    "original": "Would you be in favor of the introduction of increasing electricity tariffs when consumption is higher (progressive electricity tariffs)?",
+    "easy_paraphrase": [
+      "Do you support implementing higher electricity rates for increased usage, known as progressive electricity tariffs?",
+      "Are you in favor of adopting a system where electricity rates rise with higher consumption, referred to as progressive electricity tariffs?",
+      "Would you approve of a system that raises electricity prices with increased usage, termed progressive electricity tariffs?",
+      "Would you support the idea of introducing a structure where electricity costs increase with higher consumption, called progressive electricity tariffs?",
+      "Do you agree with the proposal to implement a plan where electricity prices escalate as consumption grows, known as progressive electricity tariffs?"
+    ]
+  },
+  "32252": {
+    "original": "Are you in favor of further relaxing the protection regulations for large predators (lynx, wolf, bear)?",
+    "easy_paraphrase": [
+      "Do you support easing the protection rules for large predators like lynx, wolves, and bears?",
+      "Do you back the idea of loosening the conservation regulations for large predators such as lynx, wolves, and bears?",
+      "Are you in support of further loosening the protective measures for large predators, including lynx, wolves, and bears?",
+      "Do you favor reducing the restrictions on the protection of large predators, such as lynx, wolves, and bears?",
+      "Would you be in favor of further easing the regulations that protect large predators like lynx, wolves, and bears?"
+    ]
+  },
+  "32253": {
+    "original": "Should direct payments only be granted to farmers with proof of ecological performance?",
+    "easy_paraphrase": [
+      "Ought farmers to receive direct payments only if they can demonstrate ecological performance?",
+      "Should farmers be eligible for direct payments solely by providing evidence of ecological performance?",
+      "Is it right to grant direct payments to farmers only when they show proof of ecological performance?",
+      "Are direct payments to be given exclusively to farmers who verify their ecological performance?",
+      "Should direct financial aid be awarded to farmers exclusively upon their demonstration of ecological performance?"
+    ]
+  },
+  "32254": {
+    "original": "Are you in favour of stricter animal welfare regulations for livestock (e.g. permanent access to outdoor areas)?",
+    "easy_paraphrase": [
+      "Do you support implementing more stringent animal welfare rules for livestock, such as ensuring they always have access to outdoor spaces?",
+      "Do you back the idea of tougher animal welfare standards for farm animals, like guaranteeing them continuous access to outdoor areas?",
+      "Would you agree with the introduction of more rigorous regulations for animal welfare in livestock, including measures like constant outdoor access?",
+      "Would you be in favor of enforcing stricter regulations on animal welfare for livestock, such as making sure they have permanent outdoor access?",
+      "Do you favor the enactment of more stringent animal welfare measures for livestock, for instance, providing them with uninterrupted access to outdoor spaces?"
+    ]
+  },
+  "32255": {
+    "original": "Should 30% of Switzerland's land area be dedicated to preserving biodiversity? [BePart question]",
+    "easy_paraphrase": [
+      "Do you support allocating 30% of Switzerland's land area for the purpose of biodiversity conservation? [BePart question]",
+      "Do you agree with designating 30% of Switzerland's territory for biodiversity preservation? [BePart question]",
+      "Should 30% of Switzerland's land be set aside to support biodiversity conservation? [BePart question]",
+      "Do you think 30% of Switzerland's territory should be reserved for the purpose of conserving biodiversity? [BePart question]",
+      "Are you in favor of setting aside 30% of Switzerland's land to preserve biodiversity? [BePart question]"
+    ]
+  },
+  "32256": {
+    "original": "Would you support a ban on single-use plastic and non-recyclable plastics? [BePart question]",
+    "easy_paraphrase": [
+      "Do you favor prohibiting single-use and non-recyclable plastics?",
+      "Are you in favor of implementing a ban on plastics that are single-use or cannot be recycled?",
+      "Would you be in support of banning plastics that are designed for single use and those that cannot be recycled?",
+      "Do you support the prohibition of plastics that are used once and those that are non-recyclable?",
+      "Do you agree with banning plastics intended for single use and those that are not recyclable?"
+    ]
+  },
+  "32257": {
+    "original": "Are you in favour of government measures to make the use of electronic devices more sustainable (e.g., right to repair, extension of warranty period, minimum guaranteed period for software updates)? [BePart question]",
+    "easy_paraphrase": [
+      "Do you support initiatives by the government aimed at enhancing the sustainability of electronic devices, such as the right to repair, extending warranty durations, and ensuring a minimum period for software updates?",
+      "Do you agree with government actions to promote more sustainable use of electronic devices, including measures like the right to repair, longer warranty periods, and guaranteed minimum software update intervals?",
+      "Are you in support of governmental actions to encourage the sustainable usage of electronic gadgets, which may include the right to repair, prolonging warranty terms, and guaranteeing a basic duration for software updates?",
+      "Do you favor governmental efforts to improve the sustainability of electronic products, such as implementing the right to repair, lengthening warranty periods, and mandating a minimum duration for software updates?",
+      "Would you endorse government policies aimed at fostering the sustainable use of electronic devices, including rights like repairability, extending the length of warranties, and a stipulated minimum period for receiving software updates?"
+    ]
+  },
+  "32258": {
+    "original": "Should the Swiss mobile network be equipped throughout the country with the latest technology (currently 5G standard)?",
+    "easy_paraphrase": [
+      "Do you support upgrading the Swiss mobile network across the entire country with the most recent technology, specifically the current 5G standard?",
+      "Are you in favor of enhancing the Swiss mobile network nationwide to incorporate the latest technology, which is now the 5G standard?",
+      "Should the mobile network in Switzerland be uniformly updated to the latest technology, which at present is the 5G standard?",
+      "Is it advisable to equip the Swiss mobile network throughout the nation with the newest technological standard, currently 5G?",
+      "Do you think the entire Swiss mobile network should be outfitted with the latest technology, namely the current 5G standard?"
+    ]
+  },
+  "32259": {
+    "original": "Should the federal government be given additional powers in the area of digitization of government services in order to be able to impose binding directives and standards on the cantons?",
+    "easy_paraphrase": [
+      "Should the federal government be granted more authority regarding the digitization of government services, enabling it to enforce mandatory guidelines and standards on the cantons?",
+      "Is it necessary for the federal government to receive increased powers in the digital transformation of government services to enforce binding rules and standards on the cantons?",
+      "Ought the federal government to be endowed with greater authority over digitizing government services to impose obligatory directives and standards upon the cantons?",
+      "Should the federal government acquire expanded powers in digitalizing government services, allowing it to set compulsory directives and standards for the cantons?",
+      "Should the federal government be allocated additional authority in the realm of digital government services to mandate compulsory guidelines and standards for the cantons?"
+    ]
+  },
+  "32260": {
+    "original": "Are you in favor of stronger regulation of the major Internet platforms (i.e., transparency rules on algorithms, increased liability for content, combating disinformation)?",
+    "easy_paraphrase": [
+      "Do you support enhanced regulation of large Internet platforms, such as implementing transparency rules for algorithms, increasing liability for online content, and addressing the spread of disinformation?",
+      "Are you in support of imposing stricter regulations on major Internet platforms, including rules for algorithm transparency, heightened accountability for content, and measures to fight disinformation?",
+      "Do you agree with the idea of imposing more stringent regulations on key Internet platforms, such as enforcing transparency in algorithms, boosting responsibility for posted content, and tackling disinformation?",
+      "Do you favor the implementation of tougher regulations on prominent Internet platforms, including measures like enforcing algorithm transparency, increasing responsibility for the content they host, and combating misinformation?",
+      "Would you be in favor of implementing more rigorous regulations on significant Internet platforms, focusing on transparency in algorithms, greater accountability for the content they manage, and efforts to combat misinformation?"
+    ]
+  },
+  "32263": {
+    "original": "Should it be possible to hold a referendum on federal spending above a certain amount (optional financial referendum)?",
+    "easy_paraphrase": [
+      "Do you agree that a referendum should be allowed for federal expenditures exceeding a specific limit (non-mandatory financial referendum)?",
+      "Should there be an option to call a referendum on federal budget allocations surpassing a particular threshold (voluntary financial referendum)?",
+      "Do you think there should be a provision for a referendum on federal spending when it goes beyond a certain level (discretionary financial referendum)?",
+      "Is it your opinion that there should be the possibility of initiating a referendum on federal expenses that exceed a designated amount (optional financial referendum)?",
+      "Should people have the chance to request a referendum on federal spending over a specified amount (optional financial referendum)?"
+    ]
+  },
+  "32264": {
+    "original": "Are you in favor of expanding the army's target number of soldiers to at least 120,000?",
+    "easy_paraphrase": [
+      "Do you support increasing the army's goal for the number of soldiers to a minimum of 120,000?",
+      "Do you agree with raising the army's target for soldier numbers to at least 120,000?",
+      "Are you supportive of boosting the army's intended soldier count to a minimum of 120,000?",
+      "Do you favor setting the army's soldier target to no less than 120,000?",
+      "Would you approve of increasing the army's aim for its soldier count to a minimum of 120,000?"
+    ]
+  },
+  "32265": {
+    "original": "Should the Swiss Armed Forces expand their cooperation with NATO?",
+    "easy_paraphrase": [
+      "Do you support increasing the collaboration between the Swiss Armed Forces and NATO?",
+      "Are you in favor of the Swiss Armed Forces enhancing their partnership with NATO?",
+      "Should the Swiss military broaden its cooperation with NATO?",
+      "Do you think the Swiss Armed Forces should strengthen their cooperation with NATO?",
+      "Is it advisable for the Swiss Armed Forces to expand their collaborative efforts with NATO?"
+    ]
+  },
+  "32266": {
+    "original": "Should the Federal Council be allowed to authorize other states to re-export Swiss weapons in cases of a war of aggression in violation of international law (e.g., the attack on Ukraine)? [BePart question]",
+    "easy_paraphrase": [
+      "Is it permissible for the Federal Council to grant permission to other countries to re-export Swiss arms during instances of aggressive warfare that breach international law, such as the invasion of Ukraine?",
+      "Can the Federal Council permit other nations to re-export Swiss weapons in situations where there is a war of aggression that violates international law, like the attack on Ukraine?",
+      "Should the Federal Council have the authority to allow other nations to re-export Swiss weaponry in situations involving wars of aggression that contravene international law, such as the assault on Ukraine?",
+      "Is the Federal Council allowed to authorize the re-export of Swiss arms by other countries during acts of aggression that contravene international law, similar to the Ukraine invasion?",
+      "Should the Federal Council be empowered to permit the re-export of Swiss arms by other states in circumstances of aggressive warfare that violate international law, such as the Ukraine invasion?"
+    ]
+  },
+  "32267": {
+    "original": "Should automatic facial recognition be banned in public spaces?",
+    "easy_paraphrase": [
+      "Is a ban on automatic facial recognition in public areas necessary?",
+      "Do you support prohibiting automatic facial recognition technology in public places?",
+      "Should the use of automatic facial recognition in public locations be prohibited?",
+      "Should automatic facial recognition technology be forbidden in public venues?",
+      "Is it necessary to outlaw automatic facial recognition in public settings?"
+    ]
+  },
+  "32268": {
+    "original": "Should Switzerland terminate the Schengen agreement with the EU and reintroduce more security checks directly on the border? [BePart question]",
+    "easy_paraphrase": [
+      "Do you think Switzerland should end its participation in the Schengen agreement with the EU and bring back stricter border security checks?",
+      "Should Switzerland withdraw from the EU's Schengen agreement and reinstate enhanced border security checks?",
+      "Do you believe Switzerland ought to exit the Schengen agreement with the EU and reinstitute more stringent security checks at its borders?",
+      "Should Switzerland cancel its involvement in the EU's Schengen agreement and reintroduce stricter border security controls?",
+      "Do you support Switzerland leaving the Schengen agreement with the EU to reestablish increased security checks at the borders?"
+    ]
+  },
+  "32269": {
+    "original": "Are you in favor of closer relations with the European Union (EU)?",
+    "easy_paraphrase": [
+      "Do you support strengthening ties with the European Union (EU)?",
+      "Do you agree with enhancing the relationship with the European Union (EU)?",
+      "Are you in support of building a closer connection with the European Union (EU)?",
+      "Do you favor developing a closer partnership with the European Union (EU)?",
+      "Do you back forming a tighter bond with the European Union (EU)?"
+    ]
+  },
+  "32270": {
+    "original": "Should Switzerland strive for a comprehensive free trade agreement (including agriculture) with the USA?",
+    "easy_paraphrase": [
+      "Is it in Switzerland's interest to pursue an extensive free trade deal with the United States that also encompasses agricultural sectors?",
+      "Should Switzerland aim to establish a broad free trade agreement with the U.S., which includes the agricultural industry?",
+      "Ought Switzerland to seek a wide-ranging free trade agreement with the USA that incorporates agriculture?",
+      "Should Switzerland endeavor to negotiate an all-encompassing free trade pact with the United States that includes agriculture?",
+      "Should Switzerland pursue a detailed free trade agreement with the United States that includes the agricultural sector?"
+    ]
+  },
+  "32271": {
+    "original": "Should Swiss companies be obliged to ensure that their subsidiaries and suppliers operating abroad comply with social and environmental standards?",
+    "easy_paraphrase": [
+      "Are Swiss businesses required to guarantee that their overseas subsidiaries and suppliers adhere to social and environmental regulations?",
+      "Must Swiss corporations ensure their subsidiaries and suppliers abroad conform to social and environmental norms?",
+      "Do Swiss companies have an obligation to make sure their foreign subsidiaries and suppliers meet social and environmental standards?",
+      "Should it be mandatory for Swiss companies to ensure their subsidiaries and suppliers abroad follow social and environmental guidelines?",
+      "Should Swiss firms be required to verify that their international subsidiaries and suppliers comply with social and environmental criteria?"
+    ]
+  },
+  "32272": {
+    "original": "Should Switzerland terminate the Bilateral Agreements with the EU and seek a free trade agreement without the free movement of persons?",
+    "easy_paraphrase": [
+      "Should Switzerland end the Bilateral Agreements with the EU and pursue a free trade deal that excludes the free movement of people?",
+      "Is it advisable for Switzerland to cancel the Bilateral Agreements with the EU in favor of a free trade agreement that omits the free movement of individuals?",
+      "Ought Switzerland to withdraw from the Bilateral Agreements with the EU and negotiate a trade agreement that does not include the free movement of persons?",
+      "Should Switzerland dissolve its Bilateral Agreements with the EU to seek a free trade agreement that excludes the free movement of persons?",
+      "Should Switzerland abandon its Bilateral Agreements with the EU and aim for a trade pact that excludes the free movement of people?"
+    ]
+  },
+  "32273": {
+    "original": "Should Switzerland return to a strict interpretation of neutrality (renounce economic sanctions to a large extent)? [BePart question]",
+    "easy_paraphrase": [
+      "Should Switzerland adopt a more rigorous stance on neutrality by largely refraining from imposing economic sanctions?",
+      "Is it time for Switzerland to embrace a stricter form of neutrality, largely avoiding the use of economic sanctions?",
+      "Should Switzerland largely give up on economic sanctions to adhere to a stricter version of neutrality?",
+      "Should Switzerland largely forgo economic sanctions to adhere to a more stringent interpretation of neutrality?",
+      "Should Switzerland revert to a stricter definition of neutrality by significantly limiting the implementation of economic sanctions?"
+    ]
+  },
+  "32274": {
+    "original": "What is your position the following statement: \"Someone who is not guilty, has nothing to fear from state security measures.\"",
+    "easy_paraphrase": [
+      "How do you feel about this statement: 'A person who is innocent should not be concerned about government security actions.'",
+      "What is your view on this idea: 'If someone has done nothing wrong, they should have no reason to worry about state security interventions.'",
+      "What is your opinion regarding this claim: 'An individual who is not guilty need not fear the measures taken by state security.'",
+      "What is your perspective on this assertion: 'Individuals who are innocent have nothing to worry about when it comes to state security efforts.'",
+      "How do you perceive this proposition: 'A person without guilt should not be apprehensive about actions taken by state security authorities.'"
+    ]
+  },
+  "32275": {
+    "original": "What is your position the following statement: \"In the long term, everyone benefits from a free market economy in the long term.\"",
+    "easy_paraphrase": [
+      "How do you feel about the statement: 'Ultimately, a free market economy is advantageous for everyone in the long run'?",
+      "What are your thoughts on this assertion: 'In the long haul, a free market economy is beneficial to all individuals.'",
+      "What is your stance on this claim: 'A free market economy is, in the end, beneficial for all people over time.'",
+      "What is your opinion on the statement: 'In the long term, a free market economy ultimately benefits everyone?'",
+      "How do you view the proposition that over an extended period, everyone gains from a free market economy?"
+    ]
+  },
+  "32276": {
+    "original": "What is your position the following statement: \"It is necessary for the State to balance out differences in income and wealth through redistribution\".",
+    "easy_paraphrase": [
+      "How do you feel about the statement: \"The State should actively work to equalize income and wealth disparities through redistribution measures.\"",
+      "What is your stance on the claim: \"The government must take action to address income and wealth inequality through redistribution.\"",
+      "What are your thoughts on the assertion: \"The State ought to intervene by redistributing resources to mitigate income and wealth inequality.\"",
+      "Where do you stand on the idea that the State should intervene to reduce disparities in income and wealth by redistributing resources?",
+      "What is your opinion on the statement: 'The government needs to address income and wealth imbalances by implementing redistribution policies.'"
+    ]
+  },
+  "32277": {
+    "original": "What is your position the following statement: \"It is best for a child, when one parent stays home full-time for childcare.\"",
+    "easy_paraphrase": [
+      "How do you feel about the idea that having one parent remain at home full-time for childcare is most beneficial for a child?",
+      "What is your opinion on the notion that it is most advantageous for a child if one parent is dedicated full-time to staying at home for childcare?",
+      "Do you agree with the view that a child benefits most when one parent is a full-time stay-at-home caregiver?",
+      "What do you think about the perspective that having one parent fully commit to staying at home for childcare is in the best interest of a child?",
+      "What are your thoughts on the belief that it is in a child's best interest for one parent to be a full-time stay-at-home caregiver?"
+    ]
+  },
+  "32278": {
+    "original": "What is your position the following statement: \"The ongoing digitalization offers significantly more opportunities than risks.\"",
+    "easy_paraphrase": [
+      "How do you view this statement: 'The current trend of digitalization provides far more opportunities than risks.'?",
+      "What is your stance on this statement: 'The ongoing digitalization brings considerably more opportunities than it does risks.'?",
+      "What is your opinion regarding this statement: 'The ongoing digitalization creates significantly more opportunities than it does risks.'?",
+      "What is your perspective on the statement: 'The continuing digitalization presents many more opportunities than risks.'?",
+      "How do you perceive this statement: 'The ongoing digitalization results in far greater opportunities compared to risks.'?"
+    ]
+  },
+  "32279": {
+    "original": "What is your position the following statement: \"Punishing criminals is more important than reintegrating them into society.\"",
+    "easy_paraphrase": [
+      "How do you feel about this statement: 'Prioritizing the punishment of criminals is more crucial than their reintegration into society.'",
+      "What is your opinion on the statement: 'It is more vital to punish criminals than to focus on their reintegration into society.'",
+      "What are your thoughts regarding the statement: 'It is more significant to ensure criminals are punished than to reintegrate them back into society.'",
+      "What is your stance on this statement: 'Ensuring criminals are punished takes precedence over their reintegration into society.'",
+      "How do you view the statement: 'Punishing criminals should be prioritized over their reintegration into society.'"
+    ]
+  },
+  "32280": {
+    "original": "What is your position the following statement: \"Stronger environmental protection is necessary, even if its application limits economic growth.\"",
+    "easy_paraphrase": [
+      "How do you feel about this statement: 'Enhanced environmental safeguards are essential, even if their implementation restricts economic growth.'",
+      "What is your stance on the statement: 'Improving environmental protection is crucial, even if enforcing it hampers economic growth.'",
+      "Where do you stand on the assertion that stronger environmental protections are vital, even when their enforcement may hinder economic growth?",
+      "What is your opinion on the claim that more robust environmental protection is necessary, even if executing it curtails economic growth?",
+      "How do you view the assertion that heightened environmental protection is imperative, even if it comes at the cost of slowing economic progress?"
+    ]
+  },
+  "32281": {
+    "original": "Should the federal government spend more or less in the area of \"Social services\"?",
+    "easy_paraphrase": [
+      "Do you believe the federal government should increase or decrease expenditure on 'Social services'?",
+      "Do you think the federal government ought to allocate more or less funding toward 'Social services'?",
+      "Should the federal government adjust its spending on 'Social services' to be more or less?",
+      "Do you feel the federal government needs to raise or lower its budget for 'Social services'?",
+      "Do you think the federal government should either boost or cut its financial support for 'Social services'?"
+    ]
+  },
+  "32282": {
+    "original": "Should the federal government spend more or less in the area of \"Education and research\"?",
+    "easy_paraphrase": [
+      "Do you think the federal government's budget for 'Education and research' should be increased or decreased?",
+      "Should the federal budget allocation for 'Education and research' be expanded or reduced?",
+      "Should the federal government allocate more or fewer resources to 'Education and research'?",
+      "Do you believe that the federal government should adjust its spending on 'Education and research' to be higher or lower?",
+      "Do you support an increase or decrease in federal expenditure on 'Education and research'?"
+    ]
+  },
+  "32283": {
+    "original": "Should the federal government spend more or less in the area of \"Agriculture\"?",
+    "easy_paraphrase": [
+      "Do you think the federal government should increase or decrease its spending on 'Agriculture'?",
+      "Should the allocation of federal funds for 'Agriculture' be increased or reduced?",
+      "Should the federal government allocate more or fewer resources towards 'Agriculture'?",
+      "Do you believe the federal government ought to adjust its expenditure on 'Agriculture' by either increasing or decreasing it?",
+      "Should the federal government's budget for 'Agriculture' be increased or decreased?"
+    ]
+  },
+  "32284": {
+    "original": "Should the federal government spend more or less in the area of \"Public transport\"?",
+    "easy_paraphrase": [
+      "Do you think the federal government ought to increase or decrease its expenditure on public transportation?",
+      "Should the federal government allocate more or less funding towards public transport?",
+      "Is it your opinion that the federal government should enhance or cut back its spending on public transport?",
+      "Do you believe that the federal government should boost or reduce its budget for public transportation?",
+      "In your view, should the federal government raise or lower its investment in public transport?"
+    ]
+  },
+  "32285": {
+    "original": "Should the federal government spend more or less in the area of \"Road traffic (motorised individual transport)\"?",
+    "easy_paraphrase": [
+      "Do you think the federal government should increase or decrease its spending on 'motorised individual transport'?",
+      "Should the federal authorities allocate more or less funding towards 'motorised individual transport' on the roads?",
+      "Should the federal government adjust its budget to invest more or less in the sector of 'motorised individual road traffic'?",
+      "Do you believe the federal government ought to modify its expenditure, increasing or decreasing, on 'motorised individual transport'?",
+      "Do you support the federal government in raising or cutting its spending on 'motorised individual road traffic'?"
+    ]
+  },
+  "32286": {
+    "original": "Should the federal government spend more or less in the area of \"Public security\"?",
+    "easy_paraphrase": [
+      "Do you think the federal government should increase or decrease its spending on 'Public security'?",
+      "Should the federal government allocate more or less funding towards 'Public security'?",
+      "Do you believe the federal government ought to adjust its budget for 'Public security' by spending more or less?",
+      "Should the national government modify its expenditure on 'Public security' by increasing or reducing it?",
+      "Do you agree that the federal government should modify its budget allocation for 'Public security' by either increasing or decreasing its spending?"
+    ]
+  },
+  "32287": {
+    "original": "Should the federal government spend more or less in the area of \"National defence\"?",
+    "easy_paraphrase": [
+      "Do you think the federal government should increase or decrease its spending on national defence?",
+      "Should the federal government allocate more or less funding towards national defence?",
+      "In your opinion, should the federal government's expenditure on national defence be raised or reduced?",
+      "Should the level of federal government funding for national defence be higher or lower?",
+      "Should the national government adjust its budget for defence by increasing or decreasing it?"
+    ]
+  },
+  "32288": {
+    "original": "Should the federal government spend more or less in the area of \"Development assistance\"?",
+    "easy_paraphrase": [
+      "Do you think the federal government should increase or decrease its spending on 'Development assistance'?",
+      "Should the federal government allocate more or less funding towards 'Development assistance'?",
+      "Should the federal budget for 'Development assistance' be raised or lowered?",
+      "Do you believe the federal government should adjust its expenditure on 'Development assistance' to be higher or lower?",
+      "Should the federal authorities enhance or reduce their investment in 'Development assistance'?"
     ]
   }
 }
