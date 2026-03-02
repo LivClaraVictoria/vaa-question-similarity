@@ -1,0 +1,109 @@
+================================================================================
+PARTY IMPACT ANALYSIS — PHASE 1 REPORT
+================================================================================
+Generated: 2026-03-02 00:57
+Clone type: identical, n_clones: 4
+Top-k (n): 36
+Questions tested: 75
+Major parties: SP, Green, GLP, Centre, FDP, SVP
+
+TOP 10 QUESTIONS BY MAX PARTY IMPACT (abs Δ visibility):
+--------------------------------------------------------------------------------
+  1. Q32245 — max |Δ| = 1.86pp (Centre)
+     "Should busy sections of highways be widened?"
+             SP: -0.56pp
+          Green: -0.78pp
+            GLP: -0.43pp
+         Centre: +1.86pp
+            FDP: +0.05pp
+
+  2. Q32228 — max |Δ| = 1.59pp (Centre)
+     "Should the conditions for naturalization be relaxed (e.g., shorter res"
+             SP: -0.67pp
+          Green: -0.64pp
+            GLP: -1.15pp
+         Centre: +1.59pp
+            FDP: +0.08pp
+            SVP: +0.19pp
+
+  3. Q32262 — max |Δ| = 1.51pp (Centre)
+     "Are you in favour of lowering the voting age to 16?"
+             SP: -0.66pp
+          Green: -0.77pp
+            GLP: -1.33pp
+         Centre: +1.51pp
+            FDP: +0.16pp
+            SVP: +0.15pp
+
+  4. Q32222 — max |Δ| = 1.28pp (GLP)
+     "Should insured persons contribute more to health care costs (e.g., inc"
+             SP: -0.28pp
+          Green: -0.19pp
+            GLP: +1.28pp
+         Centre: -0.27pp
+            FDP: +0.08pp
+            SVP: +0.03pp
+
+  5. Q32242 — max |Δ| = 1.25pp (GLP)
+     "Should private households be free to choose their electricity supplier"
+             SP: -1.02pp
+          Green: -0.02pp
+            GLP: +1.25pp
+         Centre: -0.04pp
+            FDP: +0.04pp
+
+  6. Q32233 — max |Δ| = 1.19pp (GLP)
+     "Would you be in favour of doctors being allowed to administer direct a"
+             SP: +0.25pp
+          Green: +0.25pp
+            GLP: +1.19pp
+         Centre: +0.26pp
+            FDP: +0.15pp
+            SVP: +0.23pp
+
+  7. Q32220 — max |Δ| = 1.17pp (SP)
+     "Should compulsory vaccination of children be introduced based on the S"
+             SP: +1.17pp
+          Green: -0.06pp
+            GLP: -0.83pp
+         Centre: -0.56pp
+            FDP: -0.19pp
+            SVP: +0.02pp
+
+  8. Q32248 — max |Δ| = 1.08pp (SP)
+     "Do you think it's fair that environmental and landscape protection rul"
+             SP: +1.08pp
+          Green: -0.86pp
+            GLP: +0.08pp
+         Centre: -0.15pp
+            FDP: +0.04pp
+            SVP: -0.05pp
+
+  9. Q32261 — max |Δ| = 1.07pp (SP)
+     "A popular initiative aims to reduce television and radio fees (CHF 200"
+             SP: -1.07pp
+          Green: -0.34pp
+            GLP: -0.31pp
+         Centre: -0.43pp
+            FDP: +0.31pp
+            SVP: +0.17pp
+
+  10. Q32236 — max |Δ| = 0.98pp (Centre)
+     "Do you support tax cuts at the federal level over the next four years?"
+             SP: -0.92pp
+          Green: -0.40pp
+            GLP: +0.46pp
+         Centre: +0.98pp
+            FDP: -0.02pp
+            SVP: -0.03pp
+
+================================================================================
+PER-PARTY BEST QUESTION:
+--------------------------------------------------------------------------------
+        SP: Q32220 (+1.17pp) — "Should compulsory vaccination of children be intro"
+     Green: Q32217 (+0.69pp) — "As part of the reform of the BVG (occupational pen"
+       GLP: Q32222 (+1.28pp) — "Should insured persons contribute more to health c"
+    Centre: Q32245 (+1.86pp) — "Should busy sections of highways be widened?"
+       FDP: Q32230 (+0.69pp) — "Do you support efforts to house asylum seekers in "
+       SVP: Q32230 (+0.50pp) — "Do you support efforts to house asylum seekers in "
+================================================================================

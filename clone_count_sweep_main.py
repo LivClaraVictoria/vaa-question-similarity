@@ -236,7 +236,26 @@ def _compute_for_question(
     var = pipeline["var_info"][q_id]
     question_order = pipeline["question_ids"].index(q_id) + 1
 
-    rows = []
+    # Baseline point: no clones added, perfect agreement
+    rows = [{
+        "question_id": q_id,
+        "question_text": q_text,
+        "question_order": question_order,
+        "n_clones": 0,
+        "jaccard_mean": 1.0,
+        "jaccard_median": 1.0,
+        "jaccard_p10": 1.0,
+        "spearman_mean": 1.0,
+        "kendall_mean": 1.0,
+        "n_changed_mean": 0.0,
+        "avg_pos_moved_mean": 0.0,
+        "voter_nan_pct": nan["voter_nan_pct"],
+        "candidate_nan_pct": nan["candidate_nan_pct"],
+        "candidate_var": var["candidate_var"],
+        "voter_var": var["voter_var"],
+        "combined_var": var["combined_var"],
+    }]
+
     for n_clones in n_values:
         spec = CloneSpec(source_q_id=q_id, clone_type="identical", n_clones=n_clones)
         cloned_data = apply_specs(
@@ -389,6 +408,23 @@ def _save_collect_outputs(
     output_dir: Path,
 ):
     """Save CSV, plots, and report."""
+    # Inject n_clones=0 baseline rows if not already present
+    if 0 not in df["n_clones"].values:
+        baseline_rows = []
+        for q_id, grp in df.groupby("question_id"):
+            row = grp.iloc[0].to_dict()
+            row["n_clones"] = 0
+            row["jaccard_mean"] = 1.0
+            row["jaccard_median"] = 1.0
+            row["jaccard_p10"] = 1.0
+            row["spearman_mean"] = 1.0
+            row["kendall_mean"] = 1.0
+            row["n_changed_mean"] = 0.0
+            row["avg_pos_moved_mean"] = 0.0
+            baseline_rows.append(row)
+        df = pd.concat([pd.DataFrame(baseline_rows), df], ignore_index=True)
+        df = df.sort_values(["question_id", "n_clones"]).reset_index(drop=True)
+
     name = _get_clean_name(config)
     timestamp = datetime.now().strftime("%m%d_%H%M")
 

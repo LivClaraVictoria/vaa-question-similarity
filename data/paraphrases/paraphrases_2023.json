@@ -192,5 +192,65 @@
       "Should people with medical coverage lessen their contribution to treatment costs, such as by keeping current thresholds for personal expense responsibility?",
       "Should policyholders be required to decrease their input toward medical expenses, such as by maintaining the existing starting point for payments?"
     ]
+  },
+  "32245": {
+    "original": "Should busy sections of highways be widened?",
+    "easy_paraphrase": [
+      "Is it necessary to expand congested highway sections?"
+    ],
+    "hard_paraphrase": [
+      "Is there a need to increase the breadth of heavily trafficked motorway segments?"
+    ],
+    "negation_easy": [
+      "Should busy sections of highways remain the same width?"
+    ],
+    "negation_hard": [
+      "Is it preferable to keep narrow the parts of expressways that experience heavy traffic flow?"
+    ]
+  },
+  "32262": {
+    "original": "Are you in favour of lowering the voting age to 16?",
+    "easy_paraphrase": [
+      "Do you support reducing the voting age to 16?"
+    ],
+    "hard_paraphrase": [
+      "Do you agree with allowing individuals aged 16 to participate in elections?"
+    ],
+    "negation_easy": [
+      "Do you oppose reducing the voting age to 16?"
+    ],
+    "negation_hard": [
+      "Do you oppose granting citizens the privilege to participate in elections when they are 16 years old?"
+    ]
+  },
+  "32236": {
+    "original": "Do you support tax cuts at the federal level over the next four years?",
+    "easy_paraphrase": [
+      "Are you in favor of reducing federal taxes during the next four years?"
+    ],
+    "hard_paraphrase": [
+      "Are you in favor of reducing the national financial obligations over the upcoming four-year period?"
+    ],
+    "negation_easy": [
+      "Do you oppose reducing taxes at the national level in the coming four years?"
+    ],
+    "negation_hard": [
+      "Do you oppose reducing the country's financial obligations over the coming four years?"
+    ]
+  },
+  "32239": {
+    "original": "Should the differences between cantons with high and low financial capacity be further reduced through fiscal equalization?",
+    "easy_paraphrase": [
+      "Should fiscal equalization be used to further diminish the financial capacity disparities between wealthier and less wealthy cantons?"
+    ],
+    "hard_paraphrase": [
+      "Is it advisable to use financial redistribution mechanisms to decrease the economic disparities between regions with varying monetary strength?"
+    ],
+    "negation_easy": [
+      "Should fiscal equalization efforts be limited to maintain differences between cantons with varying financial capacities?"
+    ],
+    "negation_hard": [
+      "Should we increase the fiscal disparities between regions with varying economic strengths through the redistribution of financial resources?"
+    ]
   }
 }

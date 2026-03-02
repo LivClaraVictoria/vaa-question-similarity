@@ -83,9 +83,8 @@ def main():
     )
     paraphrases = None
     if needs_paraphrases:
-        paraphrase_dir = DATA_DIR / "paraphrases"
         paraphrases = ensure_paraphrases(
-            specs, dataframes["questions"], config.data_year, paraphrase_dir
+            specs, dataframes["questions"], config.data_year, config.PARAPHRASES_DIR
         )
 
     # 4. Apply

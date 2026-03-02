@@ -1,0 +1,31 @@
+==========================================================================================
+CLONE COUNT SWEEP — ALL QUESTIONS REPORT
+==========================================================================================
+Generated: 2026-03-02 01:49
+Config: pipeline_e5_ZH
+Clone type: identical
+n_clones values: [0, 1, 2, 3, 4, 5, 7, 10, 15, 20, 30]
+Jaccard top-k (n): 36
+Questions tested: 75
+
+TOP 10 WORST-CASE QUESTIONS (by Jaccard at n=30):
+------------------------------------------------------------------------------------------
+Rank     QID    Jac@1   Jac@30   Spe@30   Ken@30   CombVar  Text
+------------------------------------------------------------------------------------------
+   1   32214   0.8466   0.3877   0.6560   0.5613  2731684.8  Do you support an increase in the retirement 
+   2   32222   0.8771   0.4064   0.7152   0.6216  1989899.1  Should insured persons contribute more to hea
+   3   32267   0.8669   0.4094   0.7431   0.6563  1621888.8  Should automatic facial recognition be banned
+   4   32223   0.9001   0.4105   0.7606   0.6851  1890517.6  Should the Federal Council's ability to restr
+   5   32252   0.8857   0.4173   0.7487   0.6594  1674468.0  Are you in favor of further relaxing the prot
+   6   32236   0.8877   0.4230   0.6881   0.6355  2425423.3  Do you support tax cuts at the federal level 
+   7   32232   0.8709   0.4262   0.7324   0.6474  2116557.2  Should cannabis use be legalized? [BePart que
+   8   32270   0.8705   0.4325   0.7076   0.6163  2212982.5  Should Switzerland strive for a comprehensive
+   9   32245   0.8892   0.4360   0.7051   0.6439  2765535.0  Should busy sections of highways be widened?
+  10   32256   0.9168   0.4389   0.8042   0.7210  1648364.5  Would you support a ban on single-use plastic
+
+==========================================================================================
+STATISTICS AT n_clones=30:
+  Jaccard  — mean: 0.5865, median: 0.6215, min: 0.3877, max: 0.7768
+  Spearman — mean: 0.8284, median: 0.8319
+  Kendall  — mean: 0.7645, median: 0.7637
+==========================================================================================
