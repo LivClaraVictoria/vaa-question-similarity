@@ -41,11 +41,11 @@ Outputs (saved to experiment_results/question_alpha_sweep_results/):
 """
 
 import argparse
-import copy
 import json
 import sys
 from datetime import datetime
 from pathlib import Path
+from types import SimpleNamespace
 
 import matplotlib
 
@@ -230,8 +230,9 @@ def _compute_question_sweep(
         paraphrases=paraphrases,
     )
 
-    # Compute cloned distances with unique clone_id for cache safety
-    cloned_config = copy.deepcopy(config)
+    # Shallow-copy config with unique clone_id for cache safety
+    # (deepcopy fails because config contains module references)
+    cloned_config = SimpleNamespace(**vars(config))
     cloned_config.clone_id = f"qa_sweep_ep{n_clones}_q{q_id}"
 
     calculator = get_calculator(cloned_config)

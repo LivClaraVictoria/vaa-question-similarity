@@ -1,0 +1,46 @@
+==========================================================================================
+PER-QUESTION ALPHA SWEEP REPORT
+==========================================================================================
+Generated: 2026-03-02 17:39
+Config: pipeline_e5_instruct_ZH_a03
+Clone type: easy_paraphrase × 5
+Alpha range: [0.01, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.8, 2.1, 2.4, 2.7, 3.0]
+Jaccard top-k (n): 36
+Questions tested: 75
+
+TOP 10 MOST CORRECTABLE QUESTIONS (by CRW Jaccard improvement):
+------------------------------------------------------------------------------------------
+Rank     QID   BaseJac   BestCRW   Improv  OptAlpha  Text
+------------------------------------------------------------------------------------------
+   1   32252    0.6739    0.8542  +0.1802      0.40  Are you in favor of further relaxing the prot
+   2   32267    0.6529    0.8185  +0.1656      0.30  Should automatic facial recognition be banned
+   3   32214    0.6270    0.7911  +0.1641      0.30  Do you support an increase in the retirement 
+   4   32246    0.7079    0.8708  +0.1629      0.30  Should Switzerland ban the registration of ne
+   5   32232    0.6769    0.8343  +0.1574      0.40  Should cannabis use be legalized? [BePart que
+   6   32245    0.6883    0.8446  +0.1563      0.40  Should busy sections of highways be widened?
+   7   32270    0.6636    0.8196  +0.1560      0.30  Should Switzerland strive for a comprehensive
+   8   32221    0.7635    0.9189  +0.1554      0.40  Are you in favor of the introduction of a tax
+   9   32261    0.6722    0.8273  +0.1551      0.30  A popular initiative aims to reduce televisio
+  10   32238    0.6942    0.8492  +0.1550      0.30  Would you support the introduction of a natio
+
+BOTTOM 10 LEAST CORRECTABLE QUESTIONS:
+------------------------------------------------------------------------------------------
+   1   32286    0.9145    0.9518  +0.0373      0.40  Should the federal government spend more or l
+   2   32285    0.8849    0.9319  +0.0470      0.40  Should the federal government spend more or l
+   3   32276    0.8755    0.9229  +0.0474      0.40  What is your position the following statement
+   4   32280    0.8964    0.9449  +0.0485      0.30  What is your position the following statement
+   5   32271    0.9067    0.9553  +0.0486      0.30  Should Swiss companies be obliged to ensure t
+   6   32287    0.8689    0.9185  +0.0496      0.30  Should the federal government spend more or l
+   7   32281    0.8978    0.9488  +0.0509      0.30  Should the federal government spend more or l
+   8   32288    0.8882    0.9396  +0.0514      0.30  Should the federal government spend more or l
+   9   32283    0.8773    0.9298  +0.0525      0.30  Should the federal government spend more or l
+  10   32282    0.8981    0.9508  +0.0526      0.30  Should the federal government spend more or l
+
+==========================================================================================
+OVERALL STATISTICS:
+  Baseline Jaccard — mean: 0.7880, median: 0.7883
+  Best CRW Jaccard — mean: 0.8877, median: 0.8876
+  Improvement — mean: 0.0998, median: 0.0956, min: 0.0373, max: 0.1802
+  Optimal alpha — mean: 0.35, median: 0.30, mode: 0.30
+  Questions with improvement > 0: 75/75
+==========================================================================================

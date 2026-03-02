@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import Any
 from itertools import combinations
+import numpy as np
 import pandas as pd
 from sentence_transformers import SentenceTransformer  # type: ignore
 from vqs.result_management import ResultManager
@@ -352,6 +353,108 @@ class Qwen3Calculator(BaseDistanceCalculator):
         return {}
 
 
+# --- 2b. Answer-Correlation Distance (no embedding model) ---
+
+
+class CorrelationDistanceCalculator:
+    """Distance metric based on answer correlations: distance(i,j) = 1 - |Pearson_r(answers_i, answers_j)|.
+
+    Unlike embedding-based metrics, this uses respondent answer data directly.
+    Requires load_voters=True and/or load_candidates=True in the config.
+    """
+
+    def __init__(self, config: Any, **kwargs):
+        self.config = config
+        self.value_name = "Distance"
+        self.important_params_list = list(config.DISTANCE_HASH_PARAMS)
+
+        source = getattr(config, "correlation_answer_source", None) or "voters"
+        print(
+            f"Initialized Answer-Correlation Calculator. "
+            f"Source: {source}. "
+            f"Important parameters for caching: {self.important_params_list}"
+        )
+
+    def calculate_distance(self, dataset: dict, config: Any) -> pd.DataFrame:
+        if config.data_choice == "fake":
+            raise ValueError(
+                "ANSWER-CORRELATION metric requires real answer data. "
+                "Cannot be used with data_choice='fake'."
+            )
+
+        source = getattr(config, "correlation_answer_source", None) or "voters"
+
+        # Validate that required data is loaded
+        if source in ("voters", "both") and "voters" not in dataset:
+            raise ValueError(
+                f"correlation_answer_source='{source}' requires load_voters=True in config."
+            )
+        if source in ("candidates", "both") and "candidates" not in dataset:
+            raise ValueError(
+                f"correlation_answer_source='{source}' requires load_candidates=True in config."
+            )
+
+        # Check cache
+        prefix = f"dist_{config.data_year}_{config.dist}"
+        rm = ResultManager(
+            config=config,
+            dir=config.DISTANCE_CACHE_DIR,
+            prefix=prefix,
+            params_list=self.important_params_list,
+        )
+        cached_df = rm.load()
+        if cached_df is not None:
+            return cached_df  # type: ignore
+
+        print("No cache found. Computing answer-correlation distances...")
+
+        # Get question metadata
+        questions_df = dataset["questions"]
+        question_ids = questions_df["ID_question"].tolist()
+        questions_text = (
+            questions_df.rename(columns=str.lower)["question_en"].tolist()
+        )
+
+        # Build answer column names
+        answer_cols = [f"answer_{qid}" for qid in question_ids]
+
+        # Select respondent data
+        if source == "voters":
+            respondents = dataset["voters"][answer_cols]
+        elif source == "candidates":
+            respondents = dataset["candidates"][answer_cols]
+        else:  # "both"
+            respondents = pd.concat(
+                [dataset["voters"][answer_cols], dataset["candidates"][answer_cols]],
+                ignore_index=True,
+            )
+
+        # Compute Pearson correlation matrix (pairwise deletion for NaNs)
+        corr_matrix = respondents.corr()
+
+        # Convert to distance: 1 - |r|
+        results = []
+        for i, j in combinations(range(len(question_ids)), 2):
+            col_i = answer_cols[i]
+            col_j = answer_cols[j]
+            r = corr_matrix.loc[col_i, col_j]
+            distance = 1.0 - abs(r) if not np.isnan(r) else 1.0
+            results.append(
+                {
+                    "Qu1": questions_text[i],
+                    "Qu2": questions_text[j],
+                    "ID1": question_ids[i],
+                    "ID2": question_ids[j],
+                    "Distance": distance,
+                    "Type": "Real-Symmetric",
+                }
+            )
+
+        results_df = pd.DataFrame(results)
+        rm.save(results_df)
+        return results_df
+
+
 # --- 3. The Registry (Configuration) ---
 
 METRIC_REGISTRY = {
@@ -370,6 +473,7 @@ METRIC_REGISTRY = {
     "GTE": {"class": GTECalculator, "kwargs": {}},
     "NOMIC-V2": {"class": NomicCalculator, "kwargs": {}},
     "QWEN3": {"class": Qwen3Calculator, "kwargs": {}},
+    "ANSWER-CORRELATION": {"class": CorrelationDistanceCalculator, "kwargs": {}},
 }
 
 

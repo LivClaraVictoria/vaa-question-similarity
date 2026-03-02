@@ -253,12 +253,14 @@ Options for dist:
 - "GTE": GTE multilingual base, euclidean distance
 - "NOMIC-V2": Nomic Embed v2 MoE with task prefix (set embedding_task, e.g. "clustering")
 - "QWEN3": Qwen3-Embedding with custom instructions (set embedding_instruction)
+- "ANSWER-CORRELATION": Answer-correlation distance: 1 - |Pearson_r| across respondents (no embedding model; requires load_voters/load_candidates; set correlation_answer_source)
 """
 dist = "SBERT"
 
 # Unified instruction/task config (used by instruction-tuned and task-aware models)
 embedding_instruction: str | None = None  # Free-form text for instruction-tuned models (E5-instruct, Qwen3)
 embedding_task: str | None = None  # Task/mode selector for task-aware models (Jina: "separation", Nomic: "clustering")
+correlation_answer_source: str | None = None  # Answer source for ANSWER-CORRELATION metric: "voters", "candidates", or "both"
 
 # Model name defaults (overridable per config)
 sbert_model_name = "all-MiniLM-L6-v2"
@@ -365,7 +367,7 @@ p_rbo = 0.9  # RBO parameter: how steeply to discount lower ranks (0.9 means top
 # --- HASH PARAMETERS FOR CACHING ---
 # Layered constants: each stage extends the previous.
 # embedding_instruction/embedding_task included from distance stage — None hashes as null, non-None as its value.
-DISTANCE_HASH_PARAMS = ["data_year", "dist", "data_choice", "clone_id", "embedding_instruction", "embedding_task"]
+DISTANCE_HASH_PARAMS = ["data_year", "dist", "data_choice", "clone_id", "embedding_instruction", "embedding_task", "correlation_answer_source"]
 CRW_HASH_PARAMS = DISTANCE_HASH_PARAMS + ["alpha", "crw_paper_choice"]
 REC_HASH_PARAMS = CRW_HASH_PARAMS + ["rec_dist_method", "n_recommendations", "subset_n", "use_OG_weights", "district"]
 COMPARATOR_HASH_PARAMS = REC_HASH_PARAMS
