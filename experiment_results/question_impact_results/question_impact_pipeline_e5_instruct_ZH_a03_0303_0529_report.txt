@@ -1,0 +1,30 @@
+================================================================================
+QUESTION IMPACT SWEEP REPORT
+================================================================================
+Generated: 2026-03-03 05:30
+Clone types: easy_paraphrase, hard_paraphrase, negation_easy, negation_hard, perfect_mix
+Clones per question: 4
+Jaccard top-k (n): 36
+Questions tested: 75
+Total rows: 375
+CRW mode: yes
+
+CRW CORRECTION SUMMARY BY CLONE TYPE:
+--------------------------------------------------------------------------------
+            Clone Type  Base Jac   CRW Jac   Improve  Base Spe   CRW Spe
+       easy_paraphrase    0.8109    0.9016   +0.0907    0.9811    0.9965
+       hard_paraphrase    0.8109    0.8540   +0.0431    0.9811    0.9911
+         negation_easy    0.8109    0.8918   +0.0809    0.9811    0.9959
+         negation_hard    0.8109    0.8393   +0.0283    0.9811    0.9884
+           perfect_mix    0.8109    0.8555   +0.0446    0.9811    0.9913
+
+================================================================================
+FULL STATISTICS:
+  Mean Jaccard (baseline):   0.8109
+  Median Jaccard (baseline): 0.8079
+  Min Jaccard (baseline):    0.6573
+  Max Jaccard (baseline):    0.9278
+  Mean Jaccard (CRW):   0.8684
+  Median Jaccard (CRW): 0.8735
+  Mean improvement:     0.0575
+================================================================================

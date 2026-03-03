@@ -620,6 +620,434 @@ def load_benchmark_scores() -> pd.DataFrame | None:
 
 
 # ---------------------------------------------------------------------------
+# Plot — Winner showcase (best vs worst model across clone types)
+# ---------------------------------------------------------------------------
+
+# Clone types ordered by detection difficulty (easy → hard)
+_CLONE_DIFFICULTY_ORDER = [
+    "easy_paraphrase", "negation_easy", "mixed",
+    "perfect_mix", "hard_paraphrase", "negation_hard",
+]
+_CLONE_DIFFICULTY_COLORS = {
+    "easy_paraphrase": "#4CAF50",   # green — easiest
+    "negation_easy": "#8BC34A",     # light green
+    "mixed": "#FFC107",             # amber
+    "perfect_mix": "#FF9800",       # orange
+    "hard_paraphrase": "#F44336",   # red
+    "negation_hard": "#B71C1C",     # dark red — hardest
+}
+
+
+def plot_winner_showcase(
+    combined: pd.DataFrame,
+    aggregated_ranking: pd.DataFrame,
+    baselines: dict[str, float],
+    outpath: Path,
+):
+    """Two-panel plot: best model vs worst model, alpha curves across all clone types.
+
+    Shows WHY the best model wins: sharp peaks at a consistent alpha,
+    while the worst model has flat, barely-above-baseline curves.
+    """
+    display_to_key = {v: k for k, v in MODEL_DISPLAY.items()}
+    best_display = aggregated_ranking.iloc[0]["model"]
+    worst_display = aggregated_ranking.iloc[-1]["model"]
+    best_key = display_to_key[best_display]
+    worst_key = display_to_key[worst_display]
+
+    sns.set_theme(style="whitegrid")
+    fig, (ax_best, ax_worst) = plt.subplots(1, 2, figsize=(18, 7), sharey=True)
+
+    baseline = baselines["jaccard"]
+    available = [c for c in _CLONE_DIFFICULTY_ORDER if c in combined["clone_type"].unique()]
+
+    for ax, model_key, model_display, panel_title in [
+        (ax_best, best_key, best_display, f"Best Model: {best_display}"),
+        (ax_worst, worst_key, worst_display, f"Worst Model: {worst_display}"),
+    ]:
+        for clone in available:
+            data = combined[
+                (combined["model"] == model_key) & (combined["clone_type"] == clone)
+            ].sort_values("alpha")
+            if data.empty:
+                continue
+
+            color = _CLONE_DIFFICULTY_COLORS[clone]
+            label = CLONE_DISPLAY[clone]
+
+            ax.plot(
+                data["alpha"], data["crw_jaccard_mean"],
+                color=color, linewidth=2, label=label,
+                marker="o", markersize=3,
+            )
+
+            # Mark optimal alpha
+            best_idx = data["crw_jaccard_mean"].idxmax()
+            ax.plot(
+                data.loc[best_idx, "alpha"],
+                data.loc[best_idx, "crw_jaccard_mean"],
+                marker="*", color=color, markersize=14, zorder=5,
+            )
+
+        ax.axhline(baseline, color="black", linestyle="--", linewidth=1.5, alpha=0.6)
+        ax.text(
+            2.8, baseline + 0.003, f"Baseline: {baseline:.3f}",
+            fontsize=9, ha="right", va="bottom", color="black", alpha=0.7,
+        )
+        ax.set_xlabel(r"Alpha ($\alpha$)", fontsize=12)
+        ax.set_title(panel_title, fontsize=14, fontweight="bold")
+
+    ax_best.set_ylabel("Jaccard Similarity (mean)", fontsize=12)
+
+    # Single legend below both panels
+    handles, labels = ax_best.get_legend_handles_labels()
+    fig.legend(
+        handles, labels, loc="lower center", ncol=len(available),
+        fontsize=10, bbox_to_anchor=(0.5, -0.02), frameon=True,
+    )
+
+    fig.suptitle(
+        "CRW Correction: Best vs Worst Embedding Model\n"
+        "(\u2605 = optimal \u03b1; clone types ordered by detection difficulty)",
+        fontsize=14, y=1.02,
+    )
+    fig.tight_layout(rect=[0, 0.06, 1, 0.96])
+    fig.savefig(outpath, dpi=300, bbox_inches="tight")
+    plt.close(fig)
+    print(f"  -> {outpath.name}")
+
+
+# ---------------------------------------------------------------------------
+# Plot — Model ranking dot plot
+# ---------------------------------------------------------------------------
+
+def plot_model_ranking_dot(
+    per_clone_rankings: dict[str, pd.DataFrame],
+    aggregated_ranking: pd.DataFrame,
+    baselines: dict[str, float],
+    outpath: Path,
+):
+    """Horizontal dot plot: models sorted by avg Jaccard, whiskers = min/max across clones."""
+    sns.set_theme(style="whitegrid")
+
+    models = aggregated_ranking.sort_values("rank")["model"].tolist()
+    n = len(models)
+
+    # Compute per-model min/max Jaccard across clone types
+    model_stats = {}
+    for model in models:
+        jaccards = []
+        for clone, df in per_clone_rankings.items():
+            row = df[df["model"] == model]
+            if not row.empty:
+                jaccards.append(row["max_jaccard"].values[0])
+        model_stats[model] = {
+            "mean": np.mean(jaccards),
+            "min": np.min(jaccards),
+            "max": np.max(jaccards),
+        }
+
+    fig, ax = plt.subplots(figsize=(10, max(6, n * 0.55)))
+
+    y = np.arange(n)
+    baseline = baselines["jaccard"]
+
+    # Baseline vertical line
+    ax.axvline(baseline, color="black", linestyle="--", linewidth=1.5, alpha=0.5,
+               label=f"Baseline (no CRW): {baseline:.3f}")
+
+    for i, model in enumerate(models):
+        s = model_stats[model]
+        # Whisker: min to max
+        ax.plot(
+            [s["min"], s["max"]], [i, i],
+            color="#90CAF9", linewidth=3, solid_capstyle="round", zorder=3,
+        )
+        # Dot: mean
+        is_best = (i == 0)
+        ax.scatter(
+            s["mean"], i,
+            s=144 if is_best else 81,
+            color="#1565C0" if is_best else "#2196F3",
+            edgecolors="black" if is_best else "none",
+            linewidths=1.5 if is_best else 0,
+            zorder=5,
+        )
+        # Value label
+        ax.text(
+            s["max"] + 0.005, i,
+            f"{s['mean']:.3f}",
+            va="center", fontsize=10, fontweight="bold" if is_best else "normal",
+        )
+
+    ax.set_yticks(y)
+    ax.set_yticklabels(models, fontsize=11)
+    ax.invert_yaxis()
+    ax.set_xlabel("Peak Jaccard Similarity (higher = better CRW correction)", fontsize=11)
+    ax.set_title(
+        "Model Ranking: Average Peak Jaccard\n"
+        "(dot = mean across 6 clone types, bar = min\u2013max range)",
+        fontsize=13,
+    )
+    ax.legend(loc="lower right", fontsize=10)
+
+    fig.tight_layout()
+    fig.savefig(outpath, dpi=300, bbox_inches="tight")
+    plt.close(fig)
+    print(f"  -> {outpath.name}")
+
+
+# ---------------------------------------------------------------------------
+# Plot — Clone difficulty gradient
+# ---------------------------------------------------------------------------
+
+def plot_clone_difficulty_gradient(
+    per_clone_rankings: dict[str, pd.DataFrame],
+    aggregated_ranking: pd.DataFrame,
+    baselines: dict[str, float],
+    outpath: Path,
+):
+    """Bar chart for the best model: peak Jaccard per clone type, sorted by difficulty."""
+    best_model = aggregated_ranking.iloc[0]["model"]
+    baseline = baselines["jaccard"]
+
+    available = [c for c in _CLONE_DIFFICULTY_ORDER if c in per_clone_rankings]
+
+    clone_labels = []
+    jaccards = []
+    colors = []
+    for clone in available:
+        df = per_clone_rankings[clone]
+        row = df[df["model"] == best_model]
+        if not row.empty:
+            clone_labels.append(CLONE_DISPLAY[clone])
+            jaccards.append(row["max_jaccard"].values[0])
+            colors.append(_CLONE_DIFFICULTY_COLORS[clone])
+
+    sns.set_theme(style="whitegrid")
+    fig, ax = plt.subplots(figsize=(12, 6))
+
+    x = np.arange(len(clone_labels))
+    bars = ax.bar(x, jaccards, color=colors, edgecolor="white", linewidth=0.5)
+
+    # Baseline line
+    ax.axhline(baseline, color="black", linestyle="--", linewidth=1.5, alpha=0.5)
+    ax.text(
+        len(clone_labels) - 0.5, baseline + 0.003,
+        f"Baseline: {baseline:.3f}", ha="right", va="bottom",
+        fontsize=9, color="black", alpha=0.7,
+    )
+
+    # Value labels on bars
+    for bar, val in zip(bars, jaccards):
+        recovery = (val - baseline) / (1.0 - baseline) * 100
+        ax.text(
+            bar.get_x() + bar.get_width() / 2,
+            bar.get_height() + 0.004,
+            f"{val:.3f}\n({recovery:.0f}% recovery)",
+            ha="center", va="bottom", fontsize=9, fontweight="bold",
+        )
+
+    ax.set_xticks(x)
+    ax.set_xticklabels(clone_labels, fontsize=10, rotation=15, ha="right")
+    ax.set_ylabel("Peak Jaccard Similarity (best \u03b1)", fontsize=11)
+    ax.set_title(
+        f"CRW Effectiveness by Clone Difficulty ({best_model})\n"
+        f"(% recovery = fraction of distortion corrected by CRW)",
+        fontsize=13,
+    )
+    ax.set_ylim(bottom=baseline * 0.92)
+
+    # Gradient arrow annotation
+    ax.annotate(
+        "Easier to detect \u2192 Harder to detect",
+        xy=(0.5, 0.02), xycoords="axes fraction",
+        fontsize=10, ha="center", color="gray", fontstyle="italic",
+    )
+
+    fig.tight_layout()
+    fig.savefig(outpath, dpi=300, bbox_inches="tight")
+    plt.close(fig)
+    print(f"  -> {outpath.name}")
+
+
+# ---------------------------------------------------------------------------
+# Plot — CRW recovery plot
+# ---------------------------------------------------------------------------
+
+def plot_crw_recovery(
+    per_clone_rankings: dict[str, pd.DataFrame],
+    aggregated_ranking: pd.DataFrame,
+    baselines: dict[str, float],
+    outpath: Path,
+):
+    """Per clone type: % of Jaccard distortion recovered by CRW for top 3 models."""
+    baseline = baselines["jaccard"]
+    top3 = aggregated_ranking.head(3)["model"].tolist()
+
+    available = [c for c in _CLONE_DIFFICULTY_ORDER if c in per_clone_rankings]
+
+    sns.set_theme(style="whitegrid")
+    fig, ax = plt.subplots(figsize=(14, 7))
+
+    n_clones = len(available)
+    n_models = len(top3)
+    width = 0.22
+    x = np.arange(n_clones)
+
+    bar_colors = ["#1565C0", "#42A5F5", "#90CAF9"]  # dark to light blue for top 3
+
+    for j, model in enumerate(top3):
+        recoveries = []
+        peak_jaccards = []
+        for clone in available:
+            df = per_clone_rankings[clone]
+            row = df[df["model"] == model]
+            if not row.empty:
+                peak_j = row["max_jaccard"].values[0]
+                recovery = (peak_j - baseline) / (1.0 - baseline) * 100
+                recoveries.append(recovery)
+                peak_jaccards.append(peak_j)
+            else:
+                recoveries.append(0)
+                peak_jaccards.append(baseline)
+
+        offset = (j - (n_models - 1) / 2) * width
+        bars = ax.bar(
+            x + offset, recoveries, width,
+            label=model, color=bar_colors[j], edgecolor="white", linewidth=0.5,
+        )
+
+        # Value labels
+        for bar, rec, pj in zip(bars, recoveries, peak_jaccards):
+            ax.text(
+                bar.get_x() + bar.get_width() / 2,
+                bar.get_height() + 0.5,
+                f"{rec:.0f}%",
+                ha="center", va="bottom", fontsize=8, fontweight="bold",
+            )
+
+    ax.set_xticks(x)
+    ax.set_xticklabels(
+        [CLONE_DISPLAY[c] for c in available],
+        fontsize=10, rotation=15, ha="right",
+    )
+    ax.set_ylabel("Distortion Recovered by CRW (%)", fontsize=12)
+    ax.set_title(
+        "CRW Mitigation: Fraction of Cloning Distortion Recovered\n"
+        f"(top 3 models; baseline Jaccard = {baseline:.3f}, perfect = 1.000)",
+        fontsize=13,
+    )
+    ax.legend(fontsize=11, title="Model", title_fontsize=11)
+    ax.set_ylim(bottom=0)
+
+    fig.tight_layout()
+    fig.savefig(outpath, dpi=300, bbox_inches="tight")
+    plt.close(fig)
+    print(f"  -> {outpath.name}")
+
+
+# ---------------------------------------------------------------------------
+# Plot — Hero plot: single "CRW works" demonstration
+# ---------------------------------------------------------------------------
+
+def plot_hero(
+    combined: pd.DataFrame,
+    aggregated_ranking: pd.DataFrame,
+    baselines: dict[str, float],
+    outpath: Path,
+    clone_type: str = "mixed",
+):
+    """Single-panel plot: best model's alpha curve vs baseline.
+
+    The simplest possible demonstration that CRW corrects clone distortion.
+    Shows: baseline (problem), CRW curve (solution), optimal alpha (parameter).
+    """
+    display_to_key = {v: k for k, v in MODEL_DISPLAY.items()}
+    best_display = aggregated_ranking.iloc[0]["model"]
+    best_key = display_to_key[best_display]
+    baseline = baselines["jaccard"]
+
+    data = combined[
+        (combined["model"] == best_key) & (combined["clone_type"] == clone_type)
+    ].sort_values("alpha")
+
+    if data.empty:
+        print(f"  WARNING: No data for {best_key} x {clone_type}")
+        return
+
+    best_idx = data["crw_jaccard_mean"].idxmax()
+    opt_alpha = data.loc[best_idx, "alpha"]
+    peak_jaccard = data.loc[best_idx, "crw_jaccard_mean"]
+    recovery_pct = (peak_jaccard - baseline) / (1.0 - baseline) * 100
+
+    sns.set_theme(style="whitegrid")
+    fig, ax = plt.subplots(figsize=(10, 6))
+
+    # CRW curve
+    ax.plot(
+        data["alpha"], data["crw_jaccard_mean"],
+        color="#1565C0", linewidth=2.5, zorder=4,
+        label=f"CRW ({best_display})",
+    )
+
+    # Shade the improvement area between baseline and curve
+    ax.fill_between(
+        data["alpha"], baseline, data["crw_jaccard_mean"],
+        where=data["crw_jaccard_mean"] > baseline,
+        color="#1565C0", alpha=0.12, zorder=2,
+    )
+
+    # Baseline
+    ax.axhline(baseline, color="#E53935", linestyle="--", linewidth=2, alpha=0.8,
+               label=f"Baseline (no CRW): {baseline:.3f}", zorder=3)
+
+    # Optimal alpha marker
+    ax.plot(opt_alpha, peak_jaccard, marker="*", color="#1565C0",
+            markersize=18, zorder=6)
+
+    # Annotation: improvement arrow
+    ax.annotate(
+        f"  +{peak_jaccard - baseline:.3f}\n  ({recovery_pct:.0f}% of distortion\n  recovered)",
+        xy=(opt_alpha, peak_jaccard),
+        xytext=(opt_alpha + 0.6, peak_jaccard - 0.01),
+        fontsize=11, fontweight="bold", color="#1565C0",
+        arrowprops=dict(arrowstyle="->", color="#1565C0", lw=1.5),
+        va="center",
+    )
+
+    # Annotation: optimal alpha
+    ax.annotate(
+        f"optimal \u03b1 = {opt_alpha}",
+        xy=(opt_alpha, baseline),
+        xytext=(opt_alpha, baseline - 0.015),
+        fontsize=10, ha="center", color="gray",
+        arrowprops=dict(arrowstyle="->", color="gray", lw=1),
+    )
+
+    # Perfect similarity reference
+    ax.axhline(1.0, color="gray", linestyle=":", linewidth=0.8, alpha=0.4)
+    ax.text(2.9, 1.002, "Perfect (1.0)", fontsize=8, ha="right", color="gray", alpha=0.5)
+
+    ax.set_xlabel(r"CRW threshold parameter $\alpha$", fontsize=12)
+    ax.set_ylabel("Jaccard Similarity\n(original vs CRW-corrected recommendations)", fontsize=11)
+    ax.set_title(
+        f"CRW Corrects Clone-Induced Recommendation Distortion\n"
+        f"({CLONE_DISPLAY[clone_type]} clones, {best_display} embeddings, "
+        f"5 cloned questions \u00d7 4 clones = 20 added)",
+        fontsize=13,
+    )
+    ax.legend(fontsize=11, loc="upper right")
+    ax.set_xlim(0, 3.1)
+    ax.set_ylim(bottom=baseline - 0.03)
+
+    fig.tight_layout()
+    fig.savefig(outpath, dpi=300, bbox_inches="tight")
+    plt.close(fig)
+    print(f"  -> {outpath.name}")
+
+
+# ---------------------------------------------------------------------------
 # Abstract-ready numbers CSV
 # ---------------------------------------------------------------------------
 
@@ -1012,6 +1440,33 @@ def main():
     plot_peak_jaccard_heatmap(
         per_clone_rankings, aggregated, baselines,
         OUTPUT_DIR / "peak_jaccard_heatmap.png",
+    )
+
+    # --- Hero plot ---
+    print("\nGenerating hero plot...")
+    plot_hero(
+        combined, aggregated, baselines,
+        OUTPUT_DIR / "hero_crw_works.png",
+        clone_type="mixed",
+    )
+
+    # --- Focused presentation-ready figures ---
+    print("\nGenerating focused presentation figures...")
+    plot_winner_showcase(
+        combined, aggregated, baselines,
+        OUTPUT_DIR / "winner_showcase.png",
+    )
+    plot_model_ranking_dot(
+        per_clone_rankings, aggregated, baselines,
+        OUTPUT_DIR / "model_ranking_dot.png",
+    )
+    plot_clone_difficulty_gradient(
+        per_clone_rankings, aggregated, baselines,
+        OUTPUT_DIR / "clone_difficulty_gradient.png",
+    )
+    plot_crw_recovery(
+        per_clone_rankings, aggregated, baselines,
+        OUTPUT_DIR / "crw_recovery.png",
     )
 
     # --- Benchmark scatter + correlation ---

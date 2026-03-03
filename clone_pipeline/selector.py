@@ -24,6 +24,8 @@ def build_selector(selector_type: str, params: dict) -> BaseSelector:
         return HighCandidateVarianceSelector(**params)
     elif selector_type == "high_voter_variance":
         return HighVoterVarianceSelector(**params)
+    elif selector_type == "all":
+        return AllSelector(**params)
     else:
         raise ValueError(f"Unknown selector type: {selector_type}")
 
@@ -112,6 +114,12 @@ class HighVoterVarianceSelector(BaseSelector):
         return [int(col.replace("answer_", "")) for col in top_cols]
 
 
-# Future selectors ideas:
-# class PartyBenefitSelector(BaseSelector): ...
-# class NeutralAnswerFloodSelector(BaseSelector): ...
+class AllSelector(BaseSelector):
+    """Selects all original questions (excludes synthetic clones with ID >= 9M)."""
+
+    def select(self, df_questions, df_candidates, df_voters) -> list[int]:
+        return sorted(
+            df_questions.loc[
+                df_questions["ID_question"] < 9_000_000, "ID_question"
+            ].tolist()
+        )

@@ -82,7 +82,7 @@ def _parse_args():
     parser.add_argument(
         "--mode",
         type=str,
-        choices=["sweep", "worker", "collect", "phase2"],
+        choices=["sweep", "worker", "collect", "phase2", "pre-paraphrases", "compile"],
         default="sweep",
         help="Execution mode",
     )
@@ -876,7 +876,8 @@ def _save_phase2_outputs(
 ):
     name = _get_clean_name(config)
     timestamp = datetime.now().strftime("%m%d_%H%M")
-    base = f"party_impact_{name}_{timestamp}"
+    party_tag = f"_{target_party}" if target_party else ""
+    base = f"party_impact_{name}_{timestamp}{party_tag}"
 
     # Save CSV (one row per party, columns = conditions)
     vis = results["visibility"]
@@ -1433,6 +1434,564 @@ def _save_phase2_report(
 
 
 # ---------------------------------------------------------------------------
+# Pre-paraphrase generation (for parallel party sweep)
+# ---------------------------------------------------------------------------
+
+
+def _run_pre_paraphrases(args, config):
+    """Pre-generate paraphrases for ALL parties' top-K questions.
+
+    Collects the union of top-K questions across all major parties from the
+    Phase 1 CSV, then generates all needed paraphrases in a single serial
+    call.  This primes the cache so that parallel Phase 2 jobs only read
+    (no concurrent writes).
+    """
+    from clone_pipeline.paraphrase_generator import ensure_paraphrases
+
+    # Load Phase 1 CSV
+    if args.phase1_csv:
+        phase1_path = Path(args.phase1_csv)
+    else:
+        csvs = sorted(RESULTS_DIR.glob("party_impact_*.csv"))
+        csvs = [c for c in csvs if "phase2" not in c.name]
+        if not csvs:
+            print("ERROR: No Phase 1 CSV found.", file=sys.stderr)
+            sys.exit(1)
+        phase1_path = csvs[-1]
+
+    print(f"  Loading Phase 1 CSV: {phase1_path.name}")
+    phase1_df = pd.read_csv(phase1_path)
+    top_k = args.top_k
+
+    # Collect union of top-K question IDs across all parties
+    all_q_ids: set[int] = set()
+    for party in MAJOR_PARTIES:
+        col = f"delta_{party}"
+        if col not in phase1_df.columns:
+            print(f"  WARNING: {col} not in Phase 1 CSV, skipping {party}")
+            continue
+        top_qs = phase1_df.nlargest(top_k, col)
+        party_ids = set(int(row["question_id"]) for _, row in top_qs.iterrows())
+        print(f"  {party}: top-{top_k} questions = {sorted(party_ids)}")
+        all_q_ids |= party_ids
+
+    print(f"\n  Union of all questions: {len(all_q_ids)} unique IDs")
+    print(f"  IDs: {sorted(all_q_ids)}")
+
+    # Load questions for text
+    print("\n  Loading questions data...")
+    dataset = load_dataset(config)
+    questions_df = dataset["questions"]
+
+    # Build specs: 4 mixed types + easy_paraphrase (for realistic scenario)
+    specs = []
+    for q_id in sorted(all_q_ids):
+        specs.extend([
+            CloneSpec(source_q_id=q_id, clone_type="easy_paraphrase", n_clones=1),
+            CloneSpec(source_q_id=q_id, clone_type="hard_paraphrase", n_clones=1),
+            CloneSpec(
+                source_q_id=q_id, clone_type="negation_easy",
+                n_clones=1, flip_answers=True,
+            ),
+            CloneSpec(
+                source_q_id=q_id, clone_type="negation_hard",
+                n_clones=1, flip_answers=True,
+            ),
+        ])
+
+    print(f"  Total specs: {len(specs)} ({len(all_q_ids)} questions × 4 types)")
+    print("  Generating/loading paraphrases...")
+
+    ensure_paraphrases(
+        specs=specs,
+        questions_df=questions_df,
+        data_year=config.data_year,
+        paraphrase_dir=config.PARAPHRASES_DIR,
+    )
+
+    print("\n=== Pre-paraphrase generation complete ===")
+
+
+# ---------------------------------------------------------------------------
+# Compile: aggregate all 6 party Phase 2 results
+# ---------------------------------------------------------------------------
+
+
+def _run_compile(args, config):
+    """Load all per-party Phase 2 CSVs and produce aggregated outputs."""
+    name = _get_clean_name(config)
+    timestamp = datetime.now().strftime("%m%d_%H%M")
+    base = f"party_impact_{name}_{timestamp}_compiled"
+
+    # Find Phase 2 CSVs with party tags
+    csvs = {}
+    for party in MAJOR_PARTIES:
+        pattern = f"party_impact_*_{party}_phase2.csv"
+        matches = sorted(RESULTS_DIR.glob(pattern))
+        if not matches:
+            print(f"  WARNING: No Phase 2 CSV for {party}, skipping")
+            continue
+        csvs[party] = matches[-1]  # most recent
+        print(f"  {party}: {matches[-1].name}")
+
+    if len(csvs) < 2:
+        print("ERROR: Need at least 2 party CSVs to compile.", file=sys.stderr)
+        sys.exit(1)
+
+    # Load all CSVs: dict[target_party] -> DataFrame
+    dfs = {}
+    for party, path in csvs.items():
+        dfs[party] = pd.read_csv(path)
+
+    print(f"\n  Loaded {len(dfs)} party results, compiling...")
+
+    sns.set_theme(style="whitegrid")
+    _compile_report(dfs, RESULTS_DIR, base)
+    _compile_heatmap(dfs, RESULTS_DIR, base)
+    _compile_bar_chart(dfs, RESULTS_DIR, base)
+    _compile_effect_size_chart(dfs, RESULTS_DIR, base)
+
+    print(f"\n=== Compilation complete ===")
+
+
+def _compile_report(dfs: dict, output_dir: Path, base: str):
+    """Summary table: one row per target party showing attack gain and CRW reduction."""
+    lines = [
+        "=" * 90,
+        "PARTY IMPACT ANALYSIS — COMPILED REPORT (ALL PARTIES)",
+        "=" * 90,
+        f"Generated: {datetime.now().strftime('%Y-%m-%d %H:%M')}",
+        f"Parties compiled: {', '.join(dfs.keys())}",
+        "",
+    ]
+
+    for scenario, attack_col, crw_col, label in [
+        ("A", "worst_case", "worst_case_crw", "WORST-CASE (4 mixed clones × 5 questions = 20 clones)"),
+        ("B", "realistic", "realistic_crw", "REALISTIC (1 easy paraphrase × 5 questions = 5 clones)"),
+    ]:
+        lines.append("=" * 90)
+        lines.append(f"SCENARIO {scenario} — {label}")
+        lines.append("=" * 90)
+        lines.append(
+            f"{'Target':>8s}  {'Original':>8s}  {'Attacked':>8s}  {'CRW Fix':>8s}  "
+            f"{'Δ Attack':>8s}  {'Δ CRW':>8s}  {'Reduced':>7s}"
+        )
+        lines.append("-" * 75)
+
+        for target in MAJOR_PARTIES:
+            if target not in dfs:
+                continue
+            df = dfs[target]
+            row = df[df["party"] == target].iloc[0]
+            o = row["original"] * 100
+            a = row[attack_col] * 100
+            c = row[crw_col] * 100
+            da = a - o
+            dc = c - o
+            reduction = (1 - abs(dc) / abs(da)) * 100 if abs(da) > 0.001 else 0
+            lines.append(
+                f"{target:>8s}  {o:>7.2f}%  {a:>7.2f}%  {c:>7.2f}%  "
+                f"{da:>+7.2f}  {dc:>+7.2f}  {reduction:>6.0f}%"
+            )
+
+        # Averages
+        gains, reductions = [], []
+        for target in MAJOR_PARTIES:
+            if target not in dfs:
+                continue
+            df = dfs[target]
+            row = df[df["party"] == target].iloc[0]
+            o = row["original"] * 100
+            a = row[attack_col] * 100
+            c = row[crw_col] * 100
+            da = a - o
+            dc = c - o
+            gains.append(da)
+            if abs(da) > 0.001:
+                reductions.append((1 - abs(dc) / abs(da)) * 100)
+        lines.append("-" * 75)
+        lines.append(
+            f"{'AVG':>8s}  {'':>8s}  {'':>8s}  {'':>8s}  "
+            f"{np.mean(gains):>+7.2f}  {'':>8s}  {np.mean(reductions):>6.0f}%"
+        )
+        lines.append("")
+
+    # Side-by-side comparison: worst-case vs realistic
+    lines.append("=" * 90)
+    lines.append("COMPARISON — WORST-CASE vs REALISTIC (target party only)")
+    lines.append("=" * 90)
+    lines.append(
+        f"{'Target':>8s}  {'Δ Worst':>8s}  {'CRW':>8s}  {'Red.':>6s}  │  "
+        f"{'Δ Real.':>8s}  {'CRW':>8s}  {'Red.':>6s}  │  "
+        f"{'Abs. CRW':>9s}  {'vs Drift':>8s}"
+    )
+    lines.append("-" * 90)
+
+    for target in MAJOR_PARTIES:
+        if target not in dfs:
+            continue
+        df = dfs[target]
+        row = df[df["party"] == target].iloc[0]
+        o = row["original"] * 100
+
+        # Worst-case
+        da_w = row["worst_case"] * 100 - o
+        dc_w = row["worst_case_crw"] * 100 - o
+        red_w = (1 - abs(dc_w) / abs(da_w)) * 100 if abs(da_w) > 0.001 else 0
+        correction_w = abs(da_w) - abs(dc_w)  # absolute pp recovered by CRW
+
+        # Realistic
+        da_r = row["realistic"] * 100 - o
+        dc_r = row["realistic_crw"] * 100 - o
+        red_r = (1 - abs(dc_r) / abs(da_r)) * 100 if abs(da_r) > 0.001 else 0
+        correction_r = abs(da_r) - abs(dc_r)
+
+        # Natural drift
+        drift = abs(row["original_crw"] * 100 - o)
+        ratio_r = correction_r / drift if drift > 0.001 else float("inf")
+
+        lines.append(
+            f"{target:>8s}  {da_w:>+7.2f}  {dc_w:>+7.2f}  {red_w:>5.0f}%  │  "
+            f"{da_r:>+7.2f}  {dc_r:>+7.2f}  {red_r:>5.0f}%  │  "
+            f"{correction_r:>8.2f}pp  {ratio_r:>7.1f}×"
+        )
+
+    lines.append("")
+
+    # Collateral damage table: when party X attacks, how much do others lose?
+    lines.append("=" * 90)
+    lines.append("COLLATERAL DAMAGE — WORST-CASE (Δpp for non-target parties)")
+    lines.append("=" * 90)
+
+    header = f"{'Attacker':>8s}"
+    for p in MAJOR_PARTIES:
+        header += f"  {p:>8s}"
+    lines.append(header)
+    lines.append("-" * (10 + 10 * len(MAJOR_PARTIES)))
+
+    for target in MAJOR_PARTIES:
+        if target not in dfs:
+            continue
+        df = dfs[target]
+        row_str = f"{target:>8s}"
+        for p in MAJOR_PARTIES:
+            row = df[df["party"] == p].iloc[0]
+            delta = (row["worst_case"] - row["original"]) * 100
+            if p == target:
+                row_str += f"  {'[' + f'{delta:+.2f}' + ']':>8s}"
+            else:
+                row_str += f"  {delta:>+7.2f} "
+        lines.append(row_str)
+
+    lines.append("")
+
+    # Significance: CRW correction vs natural drift
+    lines.append("=" * 90)
+    lines.append("EFFECT SIZE — CRW CORRECTION vs NATURAL DRIFT")
+    lines.append("=" * 90)
+    lines.append(
+        "Natural drift = how much CRW changes visibility on the *original*"
+    )
+    lines.append(
+        "questionnaire (no clones). If CRW correction >> drift, the effect"
+    )
+    lines.append(
+        "is meaningful and not an artifact of CRW's baseline behavior."
+    )
+    lines.append("")
+    lines.append(
+        f"{'Target':>8s}  {'Drift':>8s}  {'Corr.(W)':>9s}  {'Ratio':>7s}  "
+        f"{'Corr.(R)':>9s}  {'Ratio':>7s}"
+    )
+    lines.append("-" * 65)
+
+    for target in MAJOR_PARTIES:
+        if target not in dfs:
+            continue
+        df = dfs[target]
+        row = df[df["party"] == target].iloc[0]
+        o = row["original"] * 100
+        drift = abs(row["original_crw"] * 100 - o)
+
+        da_w = row["worst_case"] * 100 - o
+        dc_w = row["worst_case_crw"] * 100 - o
+        corr_w = abs(da_w) - abs(dc_w)
+
+        da_r = row["realistic"] * 100 - o
+        dc_r = row["realistic_crw"] * 100 - o
+        corr_r = abs(da_r) - abs(dc_r)
+
+        ratio_w = corr_w / drift if drift > 0.001 else float("inf")
+        ratio_r = corr_r / drift if drift > 0.001 else float("inf")
+
+        lines.append(
+            f"{target:>8s}  {drift:>7.2f}pp  {corr_w:>8.2f}pp  {ratio_w:>6.1f}×  "
+            f"{corr_r:>8.2f}pp  {ratio_r:>6.1f}×"
+        )
+
+    lines.append("")
+    lines.append("=" * 90)
+
+    path = output_dir / f"{base}_report.txt"
+    path.write_text("\n".join(lines))
+    print(f"  -> Compiled report: {path.name}")
+
+
+def _compile_heatmap(dfs: dict, output_dir: Path, base: str):
+    """Heatmap: rows = target (attacker), columns = affected party, cells = Δpp."""
+    for scenario, attack_col, title_suffix in [
+        ("worst_case", "worst_case", "Worst-case (20 clones)"),
+        ("realistic", "realistic", "Realistic (5 clones)"),
+    ]:
+        targets = [p for p in MAJOR_PARTIES if p in dfs]
+        matrix = np.zeros((len(targets), len(MAJOR_PARTIES)))
+
+        for i, target in enumerate(targets):
+            df = dfs[target]
+            for j, party in enumerate(MAJOR_PARTIES):
+                row = df[df["party"] == party].iloc[0]
+                matrix[i, j] = (row[attack_col] - row["original"]) * 100
+
+        fig, ax = plt.subplots(figsize=(10, 7))
+
+        # Diverging colormap: red for gains, blue for losses
+        vmax = max(abs(matrix.max()), abs(matrix.min()))
+        im = ax.imshow(
+            matrix, cmap="RdBu_r", vmin=-vmax, vmax=vmax, aspect="auto",
+        )
+
+        ax.set_xticks(range(len(MAJOR_PARTIES)))
+        ax.set_xticklabels(MAJOR_PARTIES, fontsize=11)
+        ax.set_yticks(range(len(targets)))
+        ax.set_yticklabels(targets, fontsize=11)
+        ax.set_xlabel("Affected Party", fontsize=12)
+        ax.set_ylabel("Attacker (Target Party)", fontsize=12)
+
+        # Annotate cells
+        for i in range(len(targets)):
+            for j in range(len(MAJOR_PARTIES)):
+                val = matrix[i, j]
+                color = "white" if abs(val) > vmax * 0.6 else "black"
+                weight = "bold" if targets[i] == MAJOR_PARTIES[j] else "normal"
+                ax.text(
+                    j, i, f"{val:+.2f}",
+                    ha="center", va="center",
+                    fontsize=10, fontweight=weight, color=color,
+                )
+
+        # Draw box around diagonal cells
+        for k, target in enumerate(targets):
+            if target in MAJOR_PARTIES:
+                j = MAJOR_PARTIES.index(target)
+                ax.add_patch(plt.Rectangle(
+                    (j - 0.5, k - 0.5), 1, 1,
+                    fill=False, edgecolor="black", linewidth=2,
+                ))
+
+        plt.colorbar(im, ax=ax, label="Δ Visibility (pp)", shrink=0.8)
+        ax.set_title(
+            f"Party Visibility Change by Attacker — {title_suffix}",
+            fontsize=13, fontweight="bold", pad=12,
+        )
+        fig.tight_layout()
+
+        suffix = "worst" if scenario == "worst_case" else "realistic"
+        path = output_dir / f"{base}_heatmap_{suffix}.png"
+        fig.savefig(path, dpi=300, bbox_inches="tight")
+        plt.close(fig)
+        print(f"  -> Heatmap ({title_suffix}): {path.name}")
+
+
+def _compile_bar_chart(dfs: dict, output_dir: Path, base: str):
+    """Combined bar chart: attack gain vs CRW-corrected for all target parties."""
+    targets = [p for p in MAJOR_PARTIES if p in dfs]
+
+    for scenario, attack_col, crw_col, title_suffix in [
+        ("worst_case", "worst_case", "worst_case_crw", "Worst-case (20 clones)"),
+        ("realistic", "realistic", "realistic_crw", "Realistic (5 clones)"),
+    ]:
+        attack_gains = []
+        crw_gains = []
+        for target in targets:
+            df = dfs[target]
+            row = df[df["party"] == target].iloc[0]
+            o = row["original"]
+            attack_gains.append((row[attack_col] - o) * 100)
+            crw_gains.append((row[crw_col] - o) * 100)
+
+        x = np.arange(len(targets))
+        width = 0.35
+
+        fig, ax = plt.subplots(figsize=(12, 7))
+
+        bars_attack = ax.bar(
+            x - width / 2, attack_gains, width,
+            label="Attack (no CRW)", color="#F44336", alpha=0.85,
+        )
+        bars_crw = ax.bar(
+            x + width / 2, crw_gains, width,
+            label="CRW-corrected", color="#2196F3", alpha=0.85,
+        )
+
+        # Annotate reduction %
+        for i, (da, dc) in enumerate(zip(attack_gains, crw_gains)):
+            if abs(da) > 0.001:
+                reduction = (1 - abs(dc) / abs(da)) * 100
+                ax.annotate(
+                    f"{reduction:.0f}%\nreduced",
+                    xy=(x[i] + width / 2, dc),
+                    xytext=(x[i] + width / 2, dc + 0.15 * np.sign(dc)),
+                    fontsize=9, ha="center", va="bottom",
+                    color="#1565C0", fontweight="bold",
+                )
+
+        # Color x-tick labels by party
+        ax.set_xticks(x)
+        ax.set_xticklabels(targets, fontsize=12)
+        for i, label in enumerate(ax.get_xticklabels()):
+            label.set_color(PARTY2COLOR.get(targets[i], "black"))
+            label.set_fontweight("bold")
+
+        ax.axhline(0, color="black", linewidth=0.8)
+        ax.set_ylabel("Δ Target Party Visibility (pp)", fontsize=12)
+        ax.set_title(
+            f"Self-Benefit from Clone Attack — {title_suffix}\n"
+            f"(each party clones its top-5 questions)",
+            fontsize=13, fontweight="bold",
+        )
+        ax.legend(fontsize=11)
+        fig.tight_layout()
+
+        suffix = "worst" if scenario == "worst_case" else "realistic"
+        path = output_dir / f"{base}_bar_{suffix}.png"
+        fig.savefig(path, dpi=300, bbox_inches="tight")
+        plt.close(fig)
+        print(f"  -> Bar chart ({title_suffix}): {path.name}")
+
+
+def _compile_effect_size_chart(dfs: dict, output_dir: Path, base: str):
+    """Bar chart: CRW correction vs natural drift per party (effect size)."""
+    targets = [p for p in MAJOR_PARTIES if p in dfs]
+
+    drifts = []
+    corr_worst = []
+    corr_real = []
+
+    for target in targets:
+        df = dfs[target]
+        row = df[df["party"] == target].iloc[0]
+        o = row["original"] * 100
+
+        drift = abs(row["original_crw"] * 100 - o)
+        drifts.append(drift)
+
+        da_w = row["worst_case"] * 100 - o
+        dc_w = row["worst_case_crw"] * 100 - o
+        corr_worst.append(abs(da_w) - abs(dc_w))
+
+        da_r = row["realistic"] * 100 - o
+        dc_r = row["realistic_crw"] * 100 - o
+        corr_real.append(abs(da_r) - abs(dc_r))
+
+    x = np.arange(len(targets))
+    width = 0.25
+
+    fig, ax = plt.subplots(figsize=(12, 6))
+
+    bars_drift = ax.bar(
+        x - width, drifts, width,
+        label="Natural CRW drift (no clones)", color="#BDBDBD", edgecolor="#757575",
+    )
+    bars_real = ax.bar(
+        x, corr_real, width,
+        label="CRW correction (realistic)", color="#42A5F5", edgecolor="#1565C0",
+    )
+    bars_worst = ax.bar(
+        x + width, corr_worst, width,
+        label="CRW correction (worst-case)", color="#1565C0", edgecolor="#0D47A1",
+    )
+
+    # Annotate ratios above correction bars
+    for i in range(len(targets)):
+        drift = drifts[i]
+        for bars, corr_val, y_offset in [
+            (bars_real, corr_real[i], 0),
+            (bars_worst, corr_worst[i], 0),
+        ]:
+            if drift > 0.001:
+                ratio = corr_val / drift
+                ax.text(
+                    bars[i].get_x() + bars[i].get_width() / 2,
+                    corr_val + 0.03,
+                    f"{ratio:.0f}×",
+                    ha="center", va="bottom", fontsize=9, fontweight="bold",
+                    color="#0D47A1",
+                )
+
+    ax.set_xticks(x)
+    ax.set_xticklabels(targets, fontsize=12)
+    for i, label in enumerate(ax.get_xticklabels()):
+        label.set_color(PARTY2COLOR.get(targets[i], "black"))
+        label.set_fontweight("bold")
+
+    ax.set_ylabel("Visibility change (pp)", fontsize=12)
+    ax.set_title(
+        "Effect Size: CRW Correction vs Natural Drift\n"
+        "(drift = CRW's effect on original questionnaire without clones)",
+        fontsize=13, fontweight="bold",
+    )
+    ax.legend(fontsize=10, loc="upper right")
+
+    # Add table below the chart
+    cell_text = []
+    col_labels = ["Drift (pp)", "Corr. realistic (pp)", "Ratio", "Corr. worst-case (pp)", "Ratio"]
+    for i, target in enumerate(targets):
+        drift = drifts[i]
+        ratio_r = corr_real[i] / drift if drift > 0.001 else float("inf")
+        ratio_w = corr_worst[i] / drift if drift > 0.001 else float("inf")
+        cell_text.append([
+            f"{drift:.2f}",
+            f"{corr_real[i]:.2f}",
+            f"{ratio_r:.1f}×",
+            f"{corr_worst[i]:.2f}",
+            f"{ratio_w:.1f}×",
+        ])
+
+    table = ax.table(
+        cellText=cell_text,
+        rowLabels=targets,
+        colLabels=col_labels,
+        cellLoc="center",
+        loc="bottom",
+        bbox=[0.0, -0.45, 1.0, 0.35],
+    )
+    table.auto_set_font_size(False)
+    table.set_fontsize(9)
+
+    # Style header row
+    for j in range(len(col_labels)):
+        table[0, j].set_facecolor("#E3F2FD")
+        table[0, j].set_text_props(fontweight="bold")
+    # Style row labels
+    for i in range(len(targets)):
+        table[i + 1, -1].set_text_props(
+            fontweight="bold",
+            color=PARTY2COLOR.get(targets[i], "black"),
+        )
+    # Highlight ratio columns
+    for i in range(len(targets)):
+        for j in [2, 4]:  # ratio columns
+            table[i + 1, j].set_facecolor("#E8F5E9")
+            table[i + 1, j].set_text_props(fontweight="bold")
+
+    fig.subplots_adjust(bottom=0.30)
+    path = output_dir / f"{base}_effect_size.png"
+    fig.savefig(path, dpi=300, bbox_inches="tight")
+    plt.close(fig)
+    print(f"  -> Effect size chart: {path.name}")
+
+
+# ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
 
@@ -1457,6 +2016,10 @@ def main():
         _run_collect(args, config, n)
     elif args.mode == "phase2":
         _run_phase2(args, config, n)
+    elif args.mode == "pre-paraphrases":
+        _run_pre_paraphrases(args, config)
+    elif args.mode == "compile":
+        _run_compile(args, config)
 
 
 if __name__ == "__main__":
