@@ -57,9 +57,7 @@ import seaborn as sns
 
 from alpha_sweep_main import (
     DEFAULT_ALPHAS,
-    _compute_alpha,
     _get_clean_name,
-    _get_or_compute_recs,
     _resolve_n,
     _setup_side,
 )
@@ -68,12 +66,17 @@ from clone_pipeline.paraphrase_generator import ensure_paraphrases
 from clone_pipeline.spec import CloneSpec
 from cross_run_analysis.analyzer import CrossRunAnalyzer
 from main import load_config
+from vqs.clone_robust_weighting import CloneRobustReweighter
 from vqs.data_loader import load_dataset
+from vqs.recommendation_engine import RecommendationEngine
 from vqs.similarity_metrics import get_calculator
 
 DEFAULT_N_CLONES = 5
 DEFAULT_ALPHA_REFERENCE = 0.3
 RESULTS_DIR = Path("experiment_results/question_alpha_sweep_results")
+FLIP_TYPES = {"negation", "negation_easy", "negation_hard"}
+PERFECT_MIX_COMPONENTS = ["easy_paraphrase", "hard_paraphrase", "negation_easy", "negation_hard"]
+ALL_CLONE_TYPES = ["easy_paraphrase", "hard_paraphrase", "negation_easy", "negation_hard", "perfect_mix"]
 
 
 # ---------------------------------------------------------------------------
@@ -107,8 +110,13 @@ def _parse_args():
         help="Comma-separated alpha values (default: standard 21-value range)",
     )
     parser.add_argument(
+        "--clone-type", type=str, default="easy_paraphrase",
+        help="Clone type to use (default: easy_paraphrase). "
+             "Use 'all' for prepare mode to generate paraphrases for all types.",
+    )
+    parser.add_argument(
         "--n-clones", type=int, default=DEFAULT_N_CLONES,
-        help=f"Number of easy_paraphrase clones per question (default: {DEFAULT_N_CLONES})",
+        help=f"Number of clones per question (default: {DEFAULT_N_CLONES})",
     )
     parser.add_argument(
         "-n", type=int, default=None,
@@ -148,7 +156,7 @@ def _load_paraphrases_readonly(config) -> dict:
 # ---------------------------------------------------------------------------
 
 
-def _setup_pipeline(config, n_clones: int):
+def _setup_pipeline(config, n_clones: int, clone_type: str = "easy_paraphrase"):
     """Load dataset, compute base side, load paraphrases, get question IDs."""
     print("\n--- Setting up base pipeline ---")
     base_side = _setup_side(config)
@@ -161,26 +169,37 @@ def _setup_pipeline(config, n_clones: int):
     )
 
     print(f"  Questions: {len(question_ids)}")
+    print(f"  Clone type: {clone_type}")
 
-    # Load paraphrases (read-only)
-    paraphrases = _load_paraphrases_readonly(config)
+    # Load paraphrases (read-only) — needed for all non-identical types
+    paraphrases = None
+    if clone_type != "identical":
+        paraphrases = _load_paraphrases_readonly(config)
 
-    # Verify all questions have enough paraphrases
-    missing = []
-    for q_id in question_ids:
-        q_id_str = str(q_id)
-        existing = paraphrases.get(q_id_str, {}).get("easy_paraphrase", [])
-        if len(existing) < n_clones:
-            missing.append((q_id, len(existing)))
-    if missing:
-        print(
-            f"ERROR: {len(missing)} questions lack enough easy_paraphrases "
-            f"(need {n_clones} each).\n"
-            f"Run with --mode prepare first.\n"
-            f"Examples: {missing[:5]}",
-            file=sys.stderr,
-        )
-        sys.exit(1)
+        # Determine which paraphrase types we need
+        if clone_type == "perfect_mix":
+            needed_types = PERFECT_MIX_COMPONENTS
+        else:
+            needed_types = [clone_type]
+
+        # Verify all questions have enough paraphrases
+        missing = []
+        for q_id in question_ids:
+            q_id_str = str(q_id)
+            for pt in needed_types:
+                existing = paraphrases.get(q_id_str, {}).get(pt, [])
+                n_needed = n_clones // len(PERFECT_MIX_COMPONENTS) if clone_type == "perfect_mix" else n_clones
+                if len(existing) < n_needed:
+                    missing.append((q_id, pt, len(existing)))
+        if missing:
+            print(
+                f"ERROR: {len(missing)} question/type combos lack enough paraphrases "
+                f"(need {n_clones} each).\n"
+                f"Run with --mode prepare first.\n"
+                f"Examples: {missing[:5]}",
+                file=sys.stderr,
+            )
+            sys.exit(1)
 
     # Pre-compute question metadata
     text_col = _get_question_text_col(questions_df)
@@ -209,19 +228,38 @@ def _compute_question_sweep(
     alphas: list[float],
     n_clones: int,
     n_jaccard: int,
+    clone_type: str = "easy_paraphrase",
 ) -> list[dict]:
-    """Run full alpha sweep for one question cloned n_clones times."""
+    """Run full alpha sweep for one question cloned n_clones times.
+
+    All computations are done in-memory — no recommendation or analysis
+    cache files are written to disk.  This avoids the combinatorial cache
+    explosion that previously generated ~787 MB per (question, alpha, clone_type).
+    """
     base_side = pipeline["base_side"]
     dataset = base_side["dataset"]
     paraphrases = pipeline["paraphrases"]
     q_text = pipeline["question_texts"][q_id]
 
-    # Clone in-memory
-    spec = CloneSpec(
-        source_q_id=q_id, clone_type="easy_paraphrase", n_clones=n_clones
-    )
+    # Build clone specs
+    if clone_type == "perfect_mix":
+        specs = [
+            CloneSpec(
+                source_q_id=q_id, clone_type=ct,
+                n_clones=n_clones // len(PERFECT_MIX_COMPONENTS),
+                flip_answers=(ct in FLIP_TYPES),
+            )
+            for ct in PERFECT_MIX_COMPONENTS
+        ]
+    else:
+        flip = clone_type in FLIP_TYPES
+        specs = [CloneSpec(
+            source_q_id=q_id, clone_type=clone_type,
+            n_clones=n_clones, flip_answers=flip,
+        )]
+
     cloned_data = apply_specs(
-        specs=[spec],
+        specs=specs,
         dataframes={
             "questions": dataset["questions"],
             "voters": dataset["voters"],
@@ -230,40 +268,66 @@ def _compute_question_sweep(
         paraphrases=paraphrases,
     )
 
-    # Shallow-copy config with unique clone_id for cache safety
-    # (deepcopy fails because config contains module references)
+    # Compute distances for cloned data (in-memory, no cache)
     cloned_config = SimpleNamespace(**vars(config))
-    cloned_config.clone_id = f"qa_sweep_ep{n_clones}_q{q_id}"
+    cloned_config.clone_id = f"qa_sweep_{clone_type}_n{n_clones}_q{q_id}"
 
     calculator = get_calculator(cloned_config)
     cloned_dist = calculator.calculate_distance(cloned_data, cloned_config)
 
-    # Set up cloned side (baseline recs + rec engine)
-    cloned_side = _setup_side(
-        cloned_config, dataset=cloned_data, dist_df=cloned_dist
-    )
+    # Build cloned-side rec engine and baseline (once per question, reused across alphas)
+    cloned_rec_engine = RecommendationEngine(config=cloned_config, data_map=cloned_data)
+    cloned_baseline = cloned_rec_engine.run_baseline()
 
-    # Build pipeline dict compatible with _compute_alpha
-    sweep_pipeline = {
-        "dist_df_a": base_side["dist_df"],
-        "dist_df_b": cloned_side["dist_df"],
-        "rec_engine_a": base_side["rec_engine"],
-        "rec_engine_b": cloned_side["rec_engine"],
-        "baseline_a": base_side["baseline"],
-        "baseline_b": cloned_side["baseline"],
-    }
+    # Base side: combine baseline with CRW for each alpha (in-memory)
+    base_rec_engine = base_side["rec_engine"]
+    base_baseline = base_side["baseline"]
+    base_dist = base_side["dist_df"]
 
     analyzer = CrossRunAnalyzer.from_n(n_jaccard)
     rows = []
 
     for i, alpha in enumerate(alphas):
-        row, std_metrics = _compute_alpha(
-            alpha, config, cloned_config, sweep_pipeline, analyzer, n_jaccard
-        )
+        # --- Base side: compute CRW recs for this alpha ---
+        config.alpha = alpha
+        base_reweighter = CloneRobustReweighter(config)
+        base_weights = base_reweighter.reweight(base_dist)
+        base_crw = base_rec_engine.run_crw(base_weights)
+
+        base_match_cols = [c for c in base_crw.columns if "match" in c or "Dist" in c]
+        base_combined = base_baseline.join(base_crw[base_match_cols].add_prefix("CRW_"))
+
+        # --- Cloned side: compute CRW recs for this alpha ---
+        cloned_config.alpha = alpha
+        cloned_reweighter = CloneRobustReweighter(cloned_config)
+        cloned_weights = cloned_reweighter.reweight(cloned_dist)
+        cloned_crw = cloned_rec_engine.run_crw(cloned_weights)
+
+        cloned_match_cols = [c for c in cloned_crw.columns if "match" in c or "Dist" in c]
+        cloned_combined = cloned_baseline.join(cloned_crw[cloned_match_cols].add_prefix("CRW_"))
+
+        # --- Cross-run analysis (in-memory, no cache) ---
+        results = analyzer.analyze_from_dfs(base_combined, cloned_combined)
+
+        crw_jac = results["crw_jaccard"]
+        row = {
+            "alpha": alpha,
+            "crw_jaccard_mean": crw_jac.mean(),
+            "crw_jaccard_median": crw_jac.median(),
+            "crw_jaccard_p10": crw_jac.quantile(0.1),
+            "crw_spearman_mean": results["crw_spearman"].mean(),
+            "crw_kendall_mean": results["crw_kendall"].mean(),
+        }
+        std_metrics = {
+            "base_jaccard_mean": results["base_jaccard"].mean(),
+            "base_spearman_mean": results["base_spearman"].mean(),
+            "base_kendall_mean": results["base_kendall"].mean(),
+        }
 
         rows.append({
             "question_id": q_id,
             "question_text": q_text,
+            "clone_type": clone_type,
             "alpha": alpha,
             "base_jaccard_mean": std_metrics["base_jaccard_mean"],
             "base_spearman_mean": std_metrics["base_spearman_mean"],
@@ -286,8 +350,8 @@ def _compute_question_sweep(
 # ---------------------------------------------------------------------------
 
 
-def _run_prepare(config, n_clones: int):
-    """Generate all needed easy_paraphrase paraphrases for every question."""
+def _run_prepare(config, n_clones: int, clone_type: str = "easy_paraphrase"):
+    """Generate all needed paraphrases for every question."""
     print("\n--- Loading dataset for paraphrase generation ---")
     dataset = load_dataset(config)
     questions_df = dataset["questions"]
@@ -298,13 +362,28 @@ def _run_prepare(config, n_clones: int):
         ].tolist()
     )
 
+    # Determine which paraphrase types to generate
+    if clone_type == "all":
+        prep_types = list(set(
+            ct for ct in ALL_CLONE_TYPES if ct != "identical" and ct != "perfect_mix"
+        ) | set(PERFECT_MIX_COMPONENTS))
+    elif clone_type == "perfect_mix":
+        prep_types = PERFECT_MIX_COMPONENTS
+    elif clone_type == "identical":
+        print("  No paraphrases needed for identical clones.")
+        print("\n=== Prepare Complete ===")
+        return
+    else:
+        prep_types = [clone_type]
+
     print(f"  Questions: {len(question_ids)}")
-    print(f"  Clones per question: {n_clones} (easy_paraphrase)")
-    print(f"  Total paraphrases needed: {len(question_ids) * n_clones}")
+    print(f"  Paraphrase types: {prep_types}")
+    print(f"  Clones per question per type: {n_clones}")
 
     specs = [
-        CloneSpec(source_q_id=q_id, clone_type="easy_paraphrase", n_clones=n_clones)
+        CloneSpec(source_q_id=q_id, clone_type=ct, n_clones=n_clones)
         for q_id in question_ids
+        for ct in prep_types
     ]
 
     paraphrases = ensure_paraphrases(
@@ -315,13 +394,16 @@ def _run_prepare(config, n_clones: int):
     )
 
     # Verify
-    ready = sum(
-        1 for q_id in question_ids
-        if len(paraphrases.get(str(q_id), {}).get("easy_paraphrase", [])) >= n_clones
-    )
-    print(f"\n  Ready: {ready}/{len(question_ids)} questions have >= {n_clones} easy paraphrases")
+    ready = 0
+    total = len(question_ids) * len(prep_types)
+    for q_id in question_ids:
+        for ct in prep_types:
+            existing = paraphrases.get(str(q_id), {}).get(ct, [])
+            if len(existing) >= n_clones:
+                ready += 1
+    print(f"\n  Ready: {ready}/{total} question/type combos have >= {n_clones} paraphrases")
 
-    if ready < len(question_ids):
+    if ready < total:
         print("WARNING: Some questions still lack paraphrases!", file=sys.stderr)
     else:
         print("All paraphrases ready. You can now run sweep/worker mode.")
@@ -334,15 +416,17 @@ def _run_prepare(config, n_clones: int):
 # ---------------------------------------------------------------------------
 
 
-def _run_sweep(args, config, alphas: list[float], n_clones: int, n_jaccard: int):
-    pipeline = _setup_pipeline(config, n_clones)
+def _run_sweep(args, config, alphas: list[float], n_clones: int, n_jaccard: int,
+               clone_type: str = "easy_paraphrase"):
+    pipeline = _setup_pipeline(config, n_clones, clone_type=clone_type)
     question_ids = pipeline["question_ids"]
 
     all_rows = []
     for i, q_id in enumerate(question_ids):
         print(f"\n--- Question {q_id} ({i + 1}/{len(question_ids)}) ---")
         rows = _compute_question_sweep(
-            q_id, config, pipeline, alphas, n_clones, n_jaccard
+            q_id, config, pipeline, alphas, n_clones, n_jaccard,
+            clone_type=clone_type,
         )
         all_rows.extend(rows)
 
@@ -360,7 +444,8 @@ def _run_sweep(args, config, alphas: list[float], n_clones: int, n_jaccard: int)
 # ---------------------------------------------------------------------------
 
 
-def _run_worker(args, config, alphas: list[float], n_clones: int, n_jaccard: int):
+def _run_worker(args, config, alphas: list[float], n_clones: int, n_jaccard: int,
+                clone_type: str = "easy_paraphrase"):
     task_id = args.task_id
     if task_id is None:
         print("ERROR: --task-id is required in worker mode", file=sys.stderr)
@@ -369,7 +454,7 @@ def _run_worker(args, config, alphas: list[float], n_clones: int, n_jaccard: int
     sweep_dir = Path(args.sweep_dir) if args.sweep_dir else RESULTS_DIR / "workers"
     sweep_dir.mkdir(parents=True, exist_ok=True)
 
-    pipeline = _setup_pipeline(config, n_clones)
+    pipeline = _setup_pipeline(config, n_clones, clone_type=clone_type)
     question_ids = pipeline["question_ids"]
 
     if task_id < 0 or task_id >= len(question_ids):
@@ -380,17 +465,18 @@ def _run_worker(args, config, alphas: list[float], n_clones: int, n_jaccard: int
         sys.exit(1)
 
     q_id = question_ids[task_id]
-    out_path = sweep_dir / f"qa_sweep_worker_{task_id:03d}_q{q_id}.csv"
+    out_path = sweep_dir / f"qa_sweep_worker_{task_id:03d}_q{q_id}_{clone_type}.csv"
 
     # Skip if already computed
     if out_path.exists():
         print(f"  [SKIP] Worker CSV already exists: {out_path}")
         return
 
-    print(f"\n=== Worker: question {q_id} (task {task_id}/{len(question_ids) - 1}) ===")
+    print(f"\n=== Worker: question {q_id} (task {task_id}/{len(question_ids) - 1}), clone_type={clone_type} ===")
 
     rows = _compute_question_sweep(
-        q_id, config, pipeline, alphas, n_clones, n_jaccard
+        q_id, config, pipeline, alphas, n_clones, n_jaccard,
+        clone_type=clone_type,
     )
 
     worker_df = pd.DataFrame(rows)
@@ -414,6 +500,7 @@ def _run_collect(args, config, alphas: list[float], n_clones: int, n_jaccard: in
         sys.exit(1)
 
     print(f"\n=== Collect: reading {len(worker_files)} worker CSVs from {sweep_dir} ===")
+    print(f"  (covers multiple clone types if present in worker CSVs)")
 
     dfs = [pd.read_csv(f) for f in worker_files]
     combined = pd.concat(dfs, ignore_index=True)
@@ -442,11 +529,19 @@ def _save_collect_outputs(
     name = _get_clean_name(config)
     timestamp = datetime.now().strftime("%m%d_%H%M")
 
-    subfolder_name = f"question_alpha_sweep_{name}_ep{n_clones}"
+    # Determine clone types present in data
+    has_clone_types = "clone_type" in df.columns
+    if has_clone_types:
+        clone_types_in_data = sorted(df["clone_type"].unique())
+        ct_suffix = f"_{len(clone_types_in_data)}ct" if len(clone_types_in_data) > 1 else f"_{clone_types_in_data[0]}"
+    else:
+        ct_suffix = "_ep"
+
+    subfolder_name = f"question_alpha_sweep_{name}{ct_suffix}_n{n_clones}"
     subfolder = output_dir / subfolder_name
     subfolder.mkdir(parents=True, exist_ok=True)
 
-    base = f"question_alpha_sweep_{name}_ep{n_clones}_{timestamp}"
+    base = f"question_alpha_sweep_{name}{ct_suffix}_n{n_clones}_{timestamp}"
 
     # --- CSV ---
     csv_path = subfolder / f"{base}.csv"
@@ -466,9 +561,18 @@ def _save_collect_outputs(
 
 
 def _compute_per_question_summary(df: pd.DataFrame) -> pd.DataFrame:
-    """Per-question aggregation: optimal alpha, max CRW Jaccard, baseline distortion."""
+    """Per-question (per clone_type) aggregation: optimal alpha, max CRW Jaccard, baseline distortion."""
+    has_clone_types = "clone_type" in df.columns
+    group_cols = ["question_id", "clone_type"] if has_clone_types else ["question_id"]
+
     rows = []
-    for q_id, grp in df.groupby("question_id"):
+    for key, grp in df.groupby(group_cols):
+        if has_clone_types:
+            q_id, clone_type = key
+        else:
+            q_id = key
+            clone_type = None
+
         # Baseline distortion (alpha-independent — take from first row)
         base_jac = grp["base_jaccard_mean"].iloc[0]
 
@@ -476,7 +580,7 @@ def _compute_per_question_summary(df: pd.DataFrame) -> pd.DataFrame:
         best_idx = grp["crw_jaccard_mean"].idxmax()
         best_row = grp.loc[best_idx]
 
-        rows.append({
+        row = {
             "question_id": q_id,
             "question_text": grp["question_text"].iloc[0],
             "base_jaccard_mean": base_jac,
@@ -487,7 +591,10 @@ def _compute_per_question_summary(df: pd.DataFrame) -> pd.DataFrame:
             "max_crw_spearman": best_row["crw_spearman_mean"],
             "max_crw_kendall": best_row["crw_kendall_mean"],
             "improvement": best_row["crw_jaccard_mean"] - base_jac,
-        })
+        }
+        if has_clone_types:
+            row["clone_type"] = clone_type
+        rows.append(row)
 
     summary = pd.DataFrame(rows).sort_values("improvement", ascending=False)
     return summary.reset_index(drop=True)
@@ -823,22 +930,24 @@ def main():
     else:
         alphas = DEFAULT_ALPHAS
 
+    clone_type = args.clone_type
     n_clones = args.n_clones
     n_jaccard = _resolve_n(config, args.n)
     name = _get_clean_name(config)
 
     print(f"\n=== Question Alpha Sweep ({args.mode} mode) ===")
     print(f"  Config    : {name}")
-    print(f"  Clones    : {n_clones} × easy_paraphrase")
+    print(f"  Clone type: {clone_type}")
+    print(f"  Clones    : {n_clones}")
     print(f"  Alphas    : {len(alphas)} values")
     print(f"  Top-k (n) : {n_jaccard}")
 
     if args.mode == "prepare":
-        _run_prepare(config, n_clones)
+        _run_prepare(config, n_clones, clone_type=clone_type)
     elif args.mode == "sweep":
-        _run_sweep(args, config, alphas, n_clones, n_jaccard)
+        _run_sweep(args, config, alphas, n_clones, n_jaccard, clone_type=clone_type)
     elif args.mode == "worker":
-        _run_worker(args, config, alphas, n_clones, n_jaccard)
+        _run_worker(args, config, alphas, n_clones, n_jaccard, clone_type=clone_type)
     elif args.mode == "collect":
         _run_collect(args, config, alphas, n_clones, n_jaccard)
 
