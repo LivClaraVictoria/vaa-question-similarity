@@ -1,0 +1,31 @@
+party,rank,question_id,question_text,delta_visibility,category,topic_mean_abs_r
+Centre,1,32245,Should busy sections of highways be widened?,0.0185851990547337,Energy & transport,0.213
+Centre,2,32228,"Should the conditions for naturalization be relaxed (e.g., shorter residence period)?",0.0159179776060063,Immigration & integration,0.453
+Centre,3,32262,Are you in favour of lowering the voting age to 16?,0.0150671339638615,"Democracy, Media & Digitalization",0.156
+Centre,4,32236,Do you support tax cuts at the federal level over the next four years?,0.0098087068776966,Finances & taxes,0.141
+Centre,5,32239,Should the differences between cantons with high and low financial capacity be further reduced through fiscal equalization?,0.0082103744245444,Finances & taxes,0.141
+SP,1,32220,Should compulsory vaccination of children be introduced based on the Swiss vaccination plan?,0.0116797627239745,Health,0.113
+SP,2,32248,Do you think it's fair that environmental and landscape protection rules are being relaxed to allow for the development of renewable energy?,0.0107915779815491,Energy & transport,0.213
+SP,3,32240,"Are you in favor of introducing a minimum wage of CHF 4,000 for all full-time employees?",0.0084877654552136,Economy & labour,0.244
+SP,4,32217,"As part of the reform of the BVG (occupational pension plan), pensions are to be reduced (lowering the minimum conversion rate from 6.8% to 6%). Are you in favor of this measure?",0.0073135212124087,Welfare state & family,0.235
+SP,5,32270,Should Switzerland strive for a comprehensive free trade agreement (including agriculture) with the USA?,0.006494684227653,Foreign trade & foreign policy,0.257
+Green,1,32217,"As part of the reform of the BVG (occupational pension plan), pensions are to be reduced (lowering the minimum conversion rate from 6.8% to 6%). Are you in favor of this measure?",0.0068807645323512,Welfare state & family,0.235
+Green,2,32240,"Are you in favor of introducing a minimum wage of CHF 4,000 for all full-time employees?",0.0060099167293433,Economy & labour,0.244
+Green,3,32251,Would you be in favor of the introduction of increasing electricity tariffs when consumption is higher (progressive electricity tariffs)?,0.0046856412800499,Energy & transport,0.213
+Green,4,32221,Are you in favor of the introduction of a tax on foods containing sugar (sugar tax)?,0.0037667834909641,Health,0.113
+Green,5,32266,"Should the Federal Council be allowed to authorize other states to re-export Swiss weapons in cases of a war of aggression in violation of international law (e.g., the attack on Ukraine)? [BePart question]",0.0027665754476895,Security & military,0.191
+GLP,1,32222,"Should insured persons contribute more to health care costs (e.g., increase the minimum deductible)?",0.0127633214375234,Health,0.113
+GLP,2,32242,Should private households be free to choose their electricity supplier (complete liberalization of the electricity market)?,0.0124885976283031,Economy & labour,0.244
+GLP,3,32233,Would you be in favour of doctors being allowed to administer direct active euthanasia in Switzerland?,0.0119404836205882,Society & ethics,0.297
+GLP,4,32214,"Do you support an increase in the retirement age (e.g., to 67)?",0.0092565920378059,Welfare state & family,0.235
+GLP,5,32237,Should married couples be taxed separately (individual taxation)? [BePart question],0.0084997679517304,Finances & taxes,0.141
+FDP,1,32230,Do you support efforts to house asylum seekers in centers outside Europe during the asylum procedure?,0.0069007686932225,Immigration & integration,0.453
+FDP,2,32249,Should the construction of new nuclear power plants in Switzerland be allowed again?,0.0064273368860726,Energy & transport,0.213
+FDP,3,32261,"A popular initiative aims to reduce television and radio fees (CHF 200 per household, exemption for businesses). Do you support this initiative?",0.0031253167325475,"Democracy, Media & Digitalization",0.156
+FDP,4,32271,Should Swiss companies be obliged to ensure that their subsidiaries and suppliers operating abroad comply with social and environmental standards?,0.0023131478014096,Foreign trade & foreign policy,0.257
+FDP,5,32244,Are you in favor of stricter controls on equal pay for women and men?,0.0022284635204129,Economy & labour,0.244
+SVP,1,32230,Do you support efforts to house asylum seekers in centers outside Europe during the asylum procedure?,0.0049877041091225,Immigration & integration,0.453
+SVP,2,32227,"Should the state be more committed to equal educational opportunities (e.g., through subsidized remedial courses for students from low-income families)?",0.0034220451187185,Education,0.192
+SVP,3,32233,Would you be in favour of doctors being allowed to administer direct active euthanasia in Switzerland?,0.0023178154389447,Society & ethics,0.297
+SVP,4,32234,"Should a third official gender be introduced alongside ""female"" and ""male""?",0.0020410912136393,Society & ethics,0.297
+SVP,5,32249,Should the construction of new nuclear power plants in Switzerland be allowed again?,0.0020290887171202,Energy & transport,0.213

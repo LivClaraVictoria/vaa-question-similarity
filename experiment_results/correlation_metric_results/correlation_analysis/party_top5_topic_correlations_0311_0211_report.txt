@@ -1,0 +1,104 @@
+====================================================================================================
+PARTY-BENEFITING QUESTIONS vs WITHIN-TOPIC ANSWER CORRELATION
+====================================================================================================
+
+Question: Do the questions that most benefit each party belong to
+high within-topic correlation topics? If yes, a correlation-aware
+distance metric could detect strategic question addition.
+
+Overall mean topic |r|: 0.238
+
+--- Centre ---
+  Avg topic mean|r|: 0.221  |  High-corr topics (>0.25): 1/5
+  #1: Q32245 (Energy & transport, |r|=0.213)  delta=+0.0186
+       Should busy sections of highways be widened?
+  #2: Q32228 (Immigration & integration, |r|=0.453)  delta=+0.0159
+       Should the conditions for naturalization be relaxed (e.g., shorter residence period)?
+  #3: Q32262 (Democracy, Media & Digitalization, |r|=0.156)  delta=+0.0151
+       Are you in favour of lowering the voting age to 16?
+  #4: Q32236 (Finances & taxes, |r|=0.141)  delta=+0.0098
+       Do you support tax cuts at the federal level over the next four years?
+  #5: Q32239 (Finances & taxes, |r|=0.141)  delta=+0.0082
+       Should the differences between cantons with high and low financial capacity be further red
+
+--- SP ---
+  Avg topic mean|r|: 0.212  |  High-corr topics (>0.25): 1/5
+  #1: Q32220 (Health, |r|=0.113)  delta=+0.0117
+       Should compulsory vaccination of children be introduced based on the Swiss vaccination pla
+  #2: Q32248 (Energy & transport, |r|=0.213)  delta=+0.0108
+       Do you think it's fair that environmental and landscape protection rules are being relaxed
+  #3: Q32240 (Economy & labour, |r|=0.244)  delta=+0.0085
+       Are you in favor of introducing a minimum wage of CHF 4,000 for all full-time employees?
+  #4: Q32217 (Welfare state & family, |r|=0.235)  delta=+0.0073
+       As part of the reform of the BVG (occupational pension plan), pensions are to be reduced (
+  #5: Q32270 (Foreign trade & foreign policy, |r|=0.257)  delta=+0.0065
+       Should Switzerland strive for a comprehensive free trade agreement (including agriculture)
+
+--- Green ---
+  Avg topic mean|r|: 0.199  |  High-corr topics (>0.25): 0/5
+  #1: Q32217 (Welfare state & family, |r|=0.235)  delta=+0.0069
+       As part of the reform of the BVG (occupational pension plan), pensions are to be reduced (
+  #2: Q32240 (Economy & labour, |r|=0.244)  delta=+0.0060
+       Are you in favor of introducing a minimum wage of CHF 4,000 for all full-time employees?
+  #3: Q32251 (Energy & transport, |r|=0.213)  delta=+0.0047
+       Would you be in favor of the introduction of increasing electricity tariffs when consumpti
+  #4: Q32221 (Health, |r|=0.113)  delta=+0.0038
+       Are you in favor of the introduction of a tax on foods containing sugar (sugar tax)?
+  #5: Q32266 (Security & military, |r|=0.191)  delta=+0.0028
+       Should the Federal Council be allowed to authorize other states to re-export Swiss weapons
+
+--- GLP ---
+  Avg topic mean|r|: 0.206  |  High-corr topics (>0.25): 1/5
+  #1: Q32222 (Health, |r|=0.113)  delta=+0.0128
+       Should insured persons contribute more to health care costs (e.g., increase the minimum de
+  #2: Q32242 (Economy & labour, |r|=0.244)  delta=+0.0125
+       Should private households be free to choose their electricity supplier (complete liberaliz
+  #3: Q32233 (Society & ethics, |r|=0.297)  delta=+0.0119
+       Would you be in favour of doctors being allowed to administer direct active euthanasia in 
+  #4: Q32214 (Welfare state & family, |r|=0.235)  delta=+0.0093
+       Do you support an increase in the retirement age (e.g., to 67)?
+  #5: Q32237 (Finances & taxes, |r|=0.141)  delta=+0.0085
+       Should married couples be taxed separately (individual taxation)? [BePart question]
+
+--- FDP ---
+  Avg topic mean|r|: 0.265  |  High-corr topics (>0.25): 2/5
+  #1: Q32230 (Immigration & integration, |r|=0.453)  delta=+0.0069
+       Do you support efforts to house asylum seekers in centers outside Europe during the asylum
+  #2: Q32249 (Energy & transport, |r|=0.213)  delta=+0.0064
+       Should the construction of new nuclear power plants in Switzerland be allowed again?
+  #3: Q32261 (Democracy, Media & Digitalization, |r|=0.156)  delta=+0.0031
+       A popular initiative aims to reduce television and radio fees (CHF 200 per household, exem
+  #4: Q32271 (Foreign trade & foreign policy, |r|=0.257)  delta=+0.0023
+       Should Swiss companies be obliged to ensure that their subsidiaries and suppliers operatin
+  #5: Q32244 (Economy & labour, |r|=0.244)  delta=+0.0022
+       Are you in favor of stricter controls on equal pay for women and men?
+
+--- SVP ---
+  Avg topic mean|r|: 0.290  |  High-corr topics (>0.25): 3/5
+  #1: Q32230 (Immigration & integration, |r|=0.453)  delta=+0.0050
+       Do you support efforts to house asylum seekers in centers outside Europe during the asylum
+  #2: Q32227 (Education, |r|=0.192)  delta=+0.0034
+       Should the state be more committed to equal educational opportunities (e.g., through subsi
+  #3: Q32233 (Society & ethics, |r|=0.297)  delta=+0.0023
+       Would you be in favour of doctors being allowed to administer direct active euthanasia in 
+  #4: Q32234 (Society & ethics, |r|=0.297)  delta=+0.0020
+       Should a third official gender be introduced alongside "female" and "male"?
+  #5: Q32249 (Energy & transport, |r|=0.213)  delta=+0.0020
+       Should the construction of new nuclear power plants in Switzerland be allowed again?
+
+====================================================================================================
+INTERPRETATION
+====================================================================================================
+
+Most parties' top-5 benefiting questions are spread across low-to-medium
+correlation topics. Average topic mean|r| for top-5 ranges from 0.199 (Green)
+to 0.290 (SVP), close to the overall mean of 0.238.
+
+Key observations:
+- Immigration (|r|=0.45) appears for Centre and FDP/SVP — strongest signal
+- Centre's top 5 mostly in low-corr topics (1/5 high-corr) — CRW would not
+  detect strategic addition of these questions via correlation
+- SVP (3/5) and FDP (2/5) have more questions in high-corr topics
+- CRW detects redundancy within clusters, not strategic topic loading
+- Adding genuinely different questions from different topics won't trigger
+  CRW regardless of distance metric quality
