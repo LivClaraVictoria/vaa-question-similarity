@@ -13,8 +13,8 @@ from pathlib import Path
 
 import pandas as pd
 
-RESULTS_DIR = Path("experiment_results/alpha_sweep_results")
-OUTPUT_PATH = Path("experiment_results/ic2s2_compilation/alpha_sweep_all_models_all_clones.csv")
+RESULTS_DIR = Path("experiment_results/exp1/model_alpha_sweep/top5impact")
+OUTPUT_PATH = Path("experiment_results/exp1/model_alpha_sweep/compiled/alpha_sweep_all_models_all_clones.csv")
 GEN2_FILTER = "top5impact_n4"
 
 

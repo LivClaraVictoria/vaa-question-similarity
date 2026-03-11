@@ -22,7 +22,7 @@ import pandas as pd
 # ---------------------------------------------------------------------------
 
 DATA_DIR = Path("data/cleaned")
-IMPACT_DIR = Path("experiment_results/question_impact_results")
+IMPACT_DIR = Path("experiment_results/question_impact")
 OUTPUT_DIR = Path("experiment_results/category_analysis")
 
 

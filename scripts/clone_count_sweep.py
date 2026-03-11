@@ -14,7 +14,7 @@ Usage:
         --config configs/full_pipeline/base_data/pipeline_e5_ZH.py \\
         --question-id 32214 --n-values 1,2,3,5,10,20,50
 
-Outputs (saved to experiment_results/clone_count_sweep_results/):
+Outputs (saved to experiment_results/clone_count_sweep/):
     - clone_count_sweep_*.csv            -- one row per n_clones
     - clone_count_sweep_*_metrics.png    -- Jaccard/Spearman/Kendall vs n_clones
 """
@@ -42,7 +42,7 @@ from vqs.data_loader import load_dataset
 from vqs.recommendation_engine import RecommendationEngine
 
 DEFAULT_N_VALUES = [1, 2, 3, 4, 5, 7, 10, 15, 20, 30]
-RESULTS_DIR = Path("experiment_results/clone_count_sweep_results")
+RESULTS_DIR = Path("experiment_results/clone_count_sweep")
 
 
 # ---------------------------------------------------------------------------

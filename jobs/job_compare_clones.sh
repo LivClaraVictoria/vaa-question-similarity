@@ -59,8 +59,8 @@ find_rec() {
     ls -t "${dir}/${prefix}"*.parquet 2>/dev/null | head -1
 }
 
-RECS_CLEANED="${DIRECTORY}/experiment_results/recommendation_results/cleaned"
-RECS_CLONED="${DIRECTORY}/experiment_results/recommendation_results/cloned"
+RECS_CLEANED="${DIRECTORY}/experiment_results/pipeline_outputs/recommendations/cleaned"
+RECS_CLONED="${DIRECTORY}/experiment_results/pipeline_outputs/recommendations/cloned"
 
 # ── Locate recommendation parquets ───────────────────────────────────────────
 BASE_REC=$(find_rec "${RECS_CLEANED}" "recs_pipeline_e5_ZH")

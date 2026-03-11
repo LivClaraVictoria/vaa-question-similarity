@@ -1,13 +1,13 @@
 """
 Evaluate embedding models on the fake benchmark dataset.
 
-Reads distance CSVs from experiment_results/distance_metric/fake_results/,
+Reads distance CSVs from experiment_results/pipeline_outputs/distance_metrics/fake_results/,
 computes per-model scoring metrics, and saves a comparison table + plot
 to experiment_results/model_benchmark/.
 
 Usage:
     python scripts/evaluate_embedding_models.py
-    python scripts/evaluate_embedding_models.py --results-dir experiment_results/distance_metric/fake_results/
+    python scripts/evaluate_embedding_models.py --results-dir experiment_results/pipeline_outputs/distance_metrics/fake_results/
     python scripts/evaluate_embedding_models.py --output-dir experiment_results/model_benchmark/
 """
 
@@ -235,7 +235,7 @@ def main():
     parser.add_argument(
         "--results-dir",
         type=Path,
-        default=Path("experiment_results/distance_metric/fake_results"),
+        default=Path("experiment_results/pipeline_outputs/distance_metrics/fake_results"),
         help="Directory containing fake result CSVs",
     )
     parser.add_argument(

@@ -21,7 +21,7 @@ from clone_pipeline.spec import CLONE_ID_BASE, CLONE_TYPE_OFFSETS
 # --- Config for hash computation ---
 DISTANCE_HASH_PARAMS = ["data_year", "dist", "data_choice", "clone_id", "embedding_instruction", "embedding_task"]
 CACHE_DIR = Path("cache/distance_calculations")
-EXPERIMENT_DIR = Path("experiment_results/distance_metric/cloned_results")
+EXPERIMENT_DIR = Path("experiment_results/pipeline_outputs/distance_metrics/cloned_results")
 
 
 def compute_distance_hash(clone_id: str) -> str:

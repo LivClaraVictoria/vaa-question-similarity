@@ -8,8 +8,8 @@ __pycache__/
 scripts/tests.py
 CLAUDE.md
 cache/*
-experiment_results/recommendation_results/**/*.parquet
-experiment_results/recommendation_results/**/*.csv
+experiment_results/pipeline_outputs/recommendations/**/*.parquet
+experiment_results/pipeline_outputs/recommendations/**/*.csv
 experiment_results/comparator_results/**/*.parquet
 experiment_results/comparator_results/**/*.csv
 jobs/out/*

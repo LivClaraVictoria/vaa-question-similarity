@@ -26,9 +26,9 @@ import sys
 # ---------------------------------------------------------------------------
 # Paths
 # ---------------------------------------------------------------------------
-RESULTS_DIR = Path("experiment_results/alpha_sweep_results")
+RESULTS_DIR = Path("experiment_results/exp1/model_alpha_sweep/top5impact")
 BENCHMARK_CSV = Path("experiment_results/model_benchmark/model_comparison.csv")
-OUTPUT_DIR = Path("experiment_results/exp1_compilation")
+OUTPUT_DIR = Path("experiment_results/exp1/model_alpha_sweep/compiled")
 
 # ---------------------------------------------------------------------------
 # Gen2 filter

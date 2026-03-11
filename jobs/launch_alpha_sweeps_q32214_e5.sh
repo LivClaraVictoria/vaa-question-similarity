@@ -5,7 +5,7 @@
 
 set -o errexit
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-RESULTS_BASE="/itet-stor/liweiss/net_scratch/vaa-question-similarity/experiment_results/alpha_sweep_results"
+RESULTS_BASE="/itet-stor/liweiss/net_scratch/vaa-question-similarity/experiment_results/exp1/model_alpha_sweep/top5impact"
 
 export CONFIG_A="configs/full_pipeline/base_data/pipeline_e5_ZH.py"
 

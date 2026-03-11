@@ -47,7 +47,7 @@ cd ${DIRECTORY}
 python -u -m alpha_sweep_main \
     --config_a configs/full_pipeline/base_data/pipeline_e5_instruct_ZH.py \
     --config_b configs/full_pipeline/removed/removed_health_3of5_e5_instruct_ZH.py \
-    --output-dir experiment_results/question_removal_results
+    --output-dir experiment_results/exp2_question_removal
 
 echo "Finished at: $(date)"
 exit 0

@@ -5,12 +5,12 @@ Usage:
 
 Example:
     python scripts/compare_party_impact.py \
-        experiment_results/party_impact_results/phase2/pipeline_e5_instruct_ZH_a03 \
-        experiment_results/party_impact_results/phase2/pipeline_e5_instruct_ZH_a04
+        experiment_results/party_impact/phase2/pipeline_e5_instruct_ZH_a03 \
+        experiment_results/party_impact/phase2/pipeline_e5_instruct_ZH_a04
 
     python scripts/compare_party_impact.py \
-        experiment_results/party_impact_results/phase2/pipeline_e5_instruct_ZH_a04 \
-        experiment_results/party_impact_results/phase2/pipeline_qwen3_ZH
+        experiment_results/party_impact/phase2/pipeline_e5_instruct_ZH_a04 \
+        experiment_results/party_impact/phase2/pipeline_qwen3_ZH
 """
 
 import argparse

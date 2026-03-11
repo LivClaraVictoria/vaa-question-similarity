@@ -8,7 +8,7 @@ set -o errexit
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 PROJECT_DIR="/itet-stor/liweiss/net_scratch/vaa-question-similarity"
-SWEEP_DIR="${PROJECT_DIR}/experiment_results/threshold_alpha_sweep_results/workers_combinedvar_$(date +%Y%m%d_%H%M%S)"
+SWEEP_DIR="${PROJECT_DIR}/experiment_results/exp1/model_alpha_sweep/workers_combinedvar_$(date +%Y%m%d_%H%M%S)"
 mkdir -p "${SWEEP_DIR}"
 
 export CONFIG_A="configs/full_pipeline/base_data/pipeline_e5_ZH.py"

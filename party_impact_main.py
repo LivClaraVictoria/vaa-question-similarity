@@ -27,7 +27,7 @@ Usage:
     # Phase 2 — CRW correction for top-K:
     python -m party_impact_main --mode phase2 \\
         --config configs/full_pipeline/base_data/pipeline_e5_ZH.py \\
-        --phase1-csv experiment_results/party_impact_results/party_impact_*.csv \\
+        --phase1-csv experiment_results/party_impact/party_impact_*.csv \\
         --top-k 5
 """
 
@@ -58,7 +58,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent / "dependencies" / "rsfp"
 from rsfp.constants import BIG_PARTIES, PARTIES_LEFT_TO_RIGHT, PARTY2COLOR
 
 N_CLONES = 4
-RESULTS_DIR = default_config.RESULTS_DIR / "party_impact_results"
+RESULTS_DIR = default_config.RESULTS_DIR / "party_impact"
 
 # Parties to analyse (left-to-right order for plots, filtered to big parties)
 MAJOR_PARTIES = [p for p in PARTIES_LEFT_TO_RIGHT if p in BIG_PARTIES]

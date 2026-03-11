@@ -24,7 +24,7 @@ Usage:
         --config configs/full_pipeline/base_data/pipeline_e5_ZH.py \\
         --sweep-dir /path/to/sweep_dir
 
-Outputs (saved to experiment_results/clone_count_sweep_results/):
+Outputs (saved to experiment_results/clone_count_sweep/):
     - clone_count_sweep_all_*.csv                  — one row per (question, n_clones)
     - clone_count_sweep_all_*_metric_comparison.png — 1×3: Jaccard/Spearman/Kendall panels
     - clone_count_sweep_all_*_heatmap.png           — questions × n_clones heatmap
@@ -52,7 +52,7 @@ from vqs.data_loader import load_dataset
 from vqs.recommendation_engine import RecommendationEngine
 
 DEFAULT_N_VALUES = [1, 2, 3, 4, 5, 7, 10, 15, 20, 30]
-RESULTS_DIR = Path("experiment_results/clone_count_sweep_results")
+RESULTS_DIR = Path("experiment_results/clone_count_sweep")
 
 
 # ---------------------------------------------------------------------------

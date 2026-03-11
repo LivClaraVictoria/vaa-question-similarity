@@ -38,7 +38,7 @@ Usage:
         --config configs/full_pipeline/base_data/pipeline_e5_instruct_ZH_a03.py \\
         --sweep-dir /path/to/sweep_dir
 
-Outputs (saved to experiment_results/question_impact_results/):
+Outputs (saved to experiment_results/question_impact/):
     - question_impact_*.csv          — per-question metrics sorted by composite rank
     - question_impact_*_ranking.png  — impact ranking bar chart
     - question_impact_*_correlation_analysis.png — scatter plots of predictors vs impact
@@ -73,7 +73,7 @@ from vqs.recommendation_engine import RecommendationEngine
 from vqs.similarity_metrics import get_calculator
 
 N_CLONES = 10
-RESULTS_DIR = default_config.RESULTS_DIR / "question_impact_results"
+RESULTS_DIR = default_config.RESULTS_DIR / "question_impact"
 
 # Clone types that require flipping voter/candidate answers
 FLIP_TYPES = {"negation", "negation_easy", "negation_hard"}

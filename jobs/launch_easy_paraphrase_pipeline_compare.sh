@@ -30,8 +30,8 @@ cd ${DIRECTORY}
 [[ -f /itet-stor/liweiss/net_scratch/conda/bin/conda ]] && eval \"\$(/itet-stor/liweiss/net_scratch/conda/bin/conda shell.bash hook)\"
 conda activate bachelor-thesis
 
-RECS_CLEANED='${DIRECTORY}/experiment_results/recommendation_results/cleaned'
-RECS_CLONED='${DIRECTORY}/experiment_results/recommendation_results/cloned'
+RECS_CLEANED='${DIRECTORY}/experiment_results/pipeline_outputs/recommendations/cleaned'
+RECS_CLONED='${DIRECTORY}/experiment_results/pipeline_outputs/recommendations/cloned'
 BASE_REC=\$(ls -t \${RECS_CLEANED}/recs_pipeline_e5_ZH*.parquet 2>/dev/null | head -1)
 CLONE_REC=\$(ls -t \${RECS_CLONED}/recs_easy_paraphrase_combinedvar_n10_e5_ZH*.parquet 2>/dev/null | head -1)
 

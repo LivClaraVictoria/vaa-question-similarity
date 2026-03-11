@@ -29,7 +29,7 @@ Usage:
     python -m threshold_alpha_sweep_main --mode collect \\
         --config_a ... --config_b ... --sweep-dir /path/to/sweep_dir
 
-Outputs (saved to experiment_results/threshold_alpha_sweep_results/):
+Outputs (saved to experiment_results/exp1/model_alpha_sweep/):
     - threshold_sweep_<a>_vs_<b>_<timestamp>_<hash>.csv
     - threshold_sweep_<a>_vs_<b>_<timestamp>_<hash>_metrics.png
     - threshold_sweep_<a>_vs_<b>_<timestamp>_<hash>_jaccard_dist.png

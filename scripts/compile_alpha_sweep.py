@@ -29,8 +29,8 @@ import sys
 # ---------------------------------------------------------------------------
 # Paths
 # ---------------------------------------------------------------------------
-RESULTS_DIR = Path("experiment_results/alpha_sweep_results")
-OUTPUT_DIR = Path("experiment_results/alpha_sweep_compilation")
+RESULTS_DIR = Path("experiment_results/exp1/model_alpha_sweep/top5impact")
+OUTPUT_DIR = Path("experiment_results/exp1/model_alpha_sweep/compiled")
 
 # ---------------------------------------------------------------------------
 # Display names and ordering

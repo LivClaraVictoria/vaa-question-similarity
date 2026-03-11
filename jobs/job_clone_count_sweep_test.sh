@@ -40,7 +40,7 @@ cd ${DIRECTORY}
 python -u -m clone_count_sweep_main \
     --config configs/full_pipeline/base_data/pipeline_e5_ZH.py \
     --mode worker --task-id 0 --n-values 1,5,10 \
-    --sweep-dir experiment_results/clone_count_sweep_results/test_workers
+    --sweep-dir experiment_results/clone_count_sweep/test_workers
 
 echo "Finished at: $(date)"
 exit 0

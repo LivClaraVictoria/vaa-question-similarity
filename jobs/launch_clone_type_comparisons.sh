@@ -7,8 +7,8 @@ set -o errexit
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 DIRECTORY="/itet-stor/liweiss/net_scratch/vaa-question-similarity"
 
-RECS_CLEANED="${DIRECTORY}/experiment_results/recommendation_results/cleaned"
-RECS_CLONED="${DIRECTORY}/experiment_results/recommendation_results/cloned"
+RECS_CLEANED="${DIRECTORY}/experiment_results/pipeline_outputs/recommendations/cleaned"
+RECS_CLONED="${DIRECTORY}/experiment_results/pipeline_outputs/recommendations/cloned"
 
 CONDA_INIT='[ -f /itet-stor/liweiss/net_scratch/conda/bin/conda ] && eval "$(/itet-stor/liweiss/net_scratch/conda/bin/conda shell.bash hook)" && conda activate bachelor-thesis'
 

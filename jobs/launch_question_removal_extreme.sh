@@ -7,7 +7,7 @@
 set -o errexit
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-export OUTPUT_DIR="experiment_results/question_removal_results"
+export OUTPUT_DIR="experiment_results/exp2_question_removal"
 
 export CONFIG_A="configs/full_pipeline/base_data/pipeline_e5_instruct_ZH.py"
 export CONFIG_B="configs/full_pipeline/removed/removed_top37_e5_instruct_ZH.py"

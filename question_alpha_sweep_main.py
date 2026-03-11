@@ -31,7 +31,7 @@ Usage:
         --config configs/full_pipeline/base_data/pipeline_e5_instruct_ZH_a03.py \\
         --sweep-dir /path/to/sweep_dir
 
-Outputs (saved to experiment_results/question_alpha_sweep_results/):
+Outputs (saved to experiment_results/exp1/question_alpha_sweep/):
     - question_alpha_sweep_*.csv              — one row per (question, alpha)
     - question_alpha_sweep_*_heatmap.png      — questions × alpha heatmap
     - question_alpha_sweep_*_avg_curve.png    — average CRW metrics vs alpha
@@ -73,7 +73,7 @@ from vqs.similarity_metrics import get_calculator
 
 DEFAULT_N_CLONES = 5
 DEFAULT_ALPHA_REFERENCE = 0.4
-RESULTS_DIR = Path("experiment_results/question_alpha_sweep_results")
+RESULTS_DIR = Path("experiment_results/exp1/question_alpha_sweep")
 FLIP_TYPES = {"negation", "negation_easy", "negation_hard"}
 PERFECT_MIX_COMPONENTS = ["easy_paraphrase", "hard_paraphrase", "negation_easy", "negation_hard"]
 ALL_CLONE_TYPES = ["easy_paraphrase", "hard_paraphrase", "negation_easy", "negation_hard", "perfect_mix"]

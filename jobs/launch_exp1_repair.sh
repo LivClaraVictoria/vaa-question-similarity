@@ -22,7 +22,7 @@ echo ""
 # --- 1. BGE-M3 x easy_paraphrase: workers 14, 15 ---
 export CONFIG_A="configs/full_pipeline/base_data/pipeline_bge_m3_ZH.py"
 export CONFIG_B="configs/full_pipeline/cloned/easy_paraphrase_top5impact_n4_bge_m3_ZH.py"
-export SWEEP_DIR="/itet-stor/liweiss/net_scratch/vaa-question-similarity/experiment_results/alpha_sweep_results/alpha_sweep_pipeline_bge_m3_ZH_vs_easy_paraphrase_top5impact_n4_bge_m3_ZH/workers_20260228_022310"
+export SWEEP_DIR="/itet-stor/liweiss/net_scratch/vaa-question-similarity/experiment_results/exp1/model_alpha_sweep/top5impact/alpha_sweep_pipeline_bge_m3_ZH_vs_easy_paraphrase_top5impact_n4_bge_m3_ZH/workers_20260228_022310"
 
 W1=$(sbatch --parsable --export=ALL --exclude="${EXCLUDE_NODES}" \
     --array=14,15 --job-name="repair_bge_ep" \
@@ -37,7 +37,7 @@ echo "  BGE-M3 x easy_paraphrase:    collect → job ${C1}"
 # --- 2. E5-INSTRUCT x negation_easy: worker 3 ---
 export CONFIG_A="configs/full_pipeline/base_data/pipeline_e5_instruct_ZH.py"
 export CONFIG_B="configs/full_pipeline/cloned/negation_easy_top5impact_n4_e5_instruct_ZH.py"
-export SWEEP_DIR="/itet-stor/liweiss/net_scratch/vaa-question-similarity/experiment_results/alpha_sweep_results/alpha_sweep_pipeline_e5_instruct_ZH_vs_negation_easy_top5impact_n4_e5_instruct_ZH/workers_20260228_022310"
+export SWEEP_DIR="/itet-stor/liweiss/net_scratch/vaa-question-similarity/experiment_results/exp1/model_alpha_sweep/top5impact/alpha_sweep_pipeline_e5_instruct_ZH_vs_negation_easy_top5impact_n4_e5_instruct_ZH/workers_20260228_022310"
 
 W2=$(sbatch --parsable --export=ALL --exclude="${EXCLUDE_NODES}" \
     --array=3 --job-name="repair_e5i_ne" \
@@ -52,7 +52,7 @@ echo "  E5-INSTRUCT x negation_easy: collect → job ${C2}"
 # --- 3. GTE x negation_easy: workers 1, 6 ---
 export CONFIG_A="configs/full_pipeline/base_data/pipeline_gte_ZH.py"
 export CONFIG_B="configs/full_pipeline/cloned/negation_easy_top5impact_n4_gte_ZH.py"
-export SWEEP_DIR="/itet-stor/liweiss/net_scratch/vaa-question-similarity/experiment_results/alpha_sweep_results/alpha_sweep_pipeline_gte_ZH_vs_negation_easy_top5impact_n4_gte_ZH/workers_20260228_022310"
+export SWEEP_DIR="/itet-stor/liweiss/net_scratch/vaa-question-similarity/experiment_results/exp1/model_alpha_sweep/top5impact/alpha_sweep_pipeline_gte_ZH_vs_negation_easy_top5impact_n4_gte_ZH/workers_20260228_022310"
 
 W3=$(sbatch --parsable --export=ALL --exclude="${EXCLUDE_NODES}" \
     --array=1,6 --job-name="repair_gte_ne" \

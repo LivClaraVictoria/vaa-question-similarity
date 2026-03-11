@@ -14,7 +14,7 @@ Usage:
     python scripts/compile_question_alpha_sweep.py [--csv PATH]
 
     If --csv not provided, auto-discovers the latest CSV in
-    experiment_results/question_alpha_sweep_results/.
+    experiment_results/exp1/question_alpha_sweep/.
 """
 
 import argparse
@@ -30,8 +30,8 @@ from pathlib import Path
 # ---------------------------------------------------------------------------
 # Paths
 # ---------------------------------------------------------------------------
-SWEEP_RESULTS_DIR = Path("experiment_results/question_alpha_sweep_results")
-OUTPUT_DIR = Path("experiment_results/ic2s2_compilation")
+SWEEP_RESULTS_DIR = Path("experiment_results/exp1/question_alpha_sweep")
+OUTPUT_DIR = Path("experiment_results/exp1/question_alpha_sweep/compiled")
 
 ALPHA_REFERENCE = 0.3
 

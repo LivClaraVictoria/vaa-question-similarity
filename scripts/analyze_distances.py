@@ -1,14 +1,14 @@
 """
 Analyze pairwise question distance matrices.
 
-Reads a distance parquet from experiment_results/distance_metric/ (or cache/),
+Reads a distance parquet from experiment_results/pipeline_outputs/distance_metrics/ (or cache/),
 produces summary statistics and a visualization of the distance space.
 
 Outputs saved to experiment_results/distance_analysis/.
 
 Usage:
     # Analyze a specific distance file:
-    python -m scripts.analyze_distances experiment_results/distance_metric/cleaned_results/ANSWER-CORRELATION_2023_ZH_*.parquet
+    python -m scripts.analyze_distances experiment_results/pipeline_outputs/distance_metrics/cleaned_results/ANSWER-CORRELATION_2023_ZH_*.parquet
 
     # With question metadata (adds category labels):
     python -m scripts.analyze_distances <path> --config configs/full_pipeline/base_data/pipeline_answer_corr_ZH.py

@@ -10,7 +10,7 @@
 #SBATCH --exclude=tikgpu10,tikgpu[06-09]
 
 # Evaluate all embedding models on the fake benchmark.
-# Reads distance CSVs from experiment_results/distance_metric/fake_results/
+# Reads distance CSVs from experiment_results/pipeline_outputs/distance_metrics/fake_results/
 # Outputs comparison CSV + plot to experiment_results/model_benchmark/
 
 ETH_USERNAME=liweiss

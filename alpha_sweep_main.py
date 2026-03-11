@@ -21,7 +21,7 @@ Usage:
     python -m alpha_sweep_main --mode collect \\
         --config_a ... --config_b ... --sweep-dir /path/to/sweep_dir
 
-Outputs (saved to experiment_results/alpha_sweep_results/):
+Outputs (saved to experiment_results/exp1/model_alpha_sweep/):
     - alpha_sweep_<a>_vs_<b>_<timestamp>_<hash>.csv          — sweep data
     - alpha_sweep_<a>_vs_<b>_<timestamp>_<hash>_metrics.png  — CRW vs STANDARD metrics
     - alpha_sweep_<a>_vs_<b>_<timestamp>_<hash>_jaccard_dist.png — Jaccard distribution

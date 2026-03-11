@@ -14,7 +14,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # --- Configuration ---
 export PIPELINE_CONFIG="configs/full_pipeline/base_data/pipeline_e5_instruct_ZH_a03.py"
-export PHASE1_CSV="experiment_results/party_impact_results/party_impact_pipeline_e5_ZH_0302_0057.csv"
+export PHASE1_CSV="experiment_results/party_impact/party_impact_pipeline_e5_ZH_0302_0057.csv"
 export TOP_K=5
 
 PARTIES=("SP" "Green" "GLP" "Centre" "FDP" "SVP")

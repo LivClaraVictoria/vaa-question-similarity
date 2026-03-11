@@ -27,7 +27,7 @@ from question_removal.remover import get_category_questions, remove_questions
 from vqs.data_loader import load_dataset
 
 # Path to question impact CSV (for sorting by impact)
-IMPACT_DIR = Path("experiment_results/question_impact_results")
+IMPACT_DIR = Path("experiment_results/question_impact")
 
 
 def _find_impact_csv() -> Path | None:
@@ -313,7 +313,7 @@ def main():
     print(f"  python -m alpha_sweep_main \\")
     print(f"      --config_a {args.config} \\")
     print(f"      --config_b {config_path} \\")
-    print(f"      --output-dir experiment_results/question_removal_results")
+    print(f"      --output-dir experiment_results/exp2_question_removal")
     print(f"{'='*70}")
 
 

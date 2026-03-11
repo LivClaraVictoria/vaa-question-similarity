@@ -8,7 +8,7 @@ set -o errexit
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 SUBFOLDER="alpha_sweep_pipeline_answer_corr_ZH_vs_easy_paraphrase_top5impact_n4_answer_corr_ZH"
-SWEEP_DIR="/itet-stor/liweiss/net_scratch/vaa-question-similarity/experiment_results/alpha_sweep_results/${SUBFOLDER}/workers_$(date +%Y%m%d_%H%M%S)"
+SWEEP_DIR="/itet-stor/liweiss/net_scratch/vaa-question-similarity/experiment_results/exp1/model_alpha_sweep/top5impact/${SUBFOLDER}/workers_$(date +%Y%m%d_%H%M%S)"
 mkdir -p "${SWEEP_DIR}"
 
 export CONFIG_A="configs/full_pipeline/base_data/pipeline_answer_corr_ZH.py"

@@ -10,7 +10,7 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 PROJECT_DIR="/itet-stor/liweiss/net_scratch/vaa-question-similarity"
 
 # Reuse the existing sweep directory (don't create a new one)
-export SWEEP_DIR="${PROJECT_DIR}/experiment_results/question_alpha_sweep_results/workers_allct_20260304_002148"
+export SWEEP_DIR="${PROJECT_DIR}/experiment_results/exp1/question_alpha_sweep/workers_allct_20260304_002148"
 export PIPELINE_CONFIG="configs/full_pipeline/base_data/pipeline_e5_instruct_ZH_a03.py"
 export N_CLONES=4
 

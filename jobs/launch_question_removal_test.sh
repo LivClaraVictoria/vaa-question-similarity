@@ -3,14 +3,14 @@
 #   1) Health top-3 impact removed (3 questions, 72 remaining)
 #   2) Health + Welfare top-3 each removed (6 questions, 69 remaining)
 # Both run as 21-task job arrays + dependent collect jobs.
-# Results go to experiment_results/question_removal_results/.
+# Results go to experiment_results/exp2_question_removal/.
 #
 # Run with: bash jobs/launch_question_removal_test.sh
 
 set -o errexit
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-export OUTPUT_DIR="experiment_results/question_removal_results"
+export OUTPUT_DIR="experiment_results/exp2_question_removal"
 
 CONFIG_A="configs/full_pipeline/base_data/pipeline_e5_instruct_ZH.py"
 
