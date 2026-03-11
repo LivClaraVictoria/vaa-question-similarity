@@ -1,0 +1,19 @@
+{
+    "config_name": "pipeline_answer_corr_ZH",
+    "overrides": [],
+    "n_jaccard": 36,
+    "data_year": 2023,
+    "dist": "ANSWER-CORRELATION",
+    "data_choice": "cleaned",
+    "clone_id": "cleaned",
+    "embedding_instruction": null,
+    "embedding_task": null,
+    "correlation_answer_source": "voters",
+    "alpha": 0.6,
+    "crw_paper_choice": "P2",
+    "rec_dist_method": "L2",
+    "n_recommendations": "all",
+    "subset_n": null,
+    "use_OG_weights": false,
+    "district": "ZH"
+}

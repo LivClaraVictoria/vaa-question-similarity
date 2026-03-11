@@ -1,0 +1,155 @@
+======================================================================
+DISTANCE ANALYSIS: dist_2023_ANSWER-CORRELATION_151e65d35fd2
+======================================================================
+  Questions:  95
+  Pairs:      4465
+  Has clones: True
+
+  Statistic                 Value
+  --------------------------------
+  mean                     0.7956
+  median                   0.8155
+  std                      0.1497
+  min                      0.0000
+  max                      0.9999
+  p5                       0.5638
+  p10                      0.6220
+  p25                      0.7130
+  p75                      0.9032
+  p90                      0.9629
+  p95                      0.9829
+
+  Pair Type                      N     Mean      Min      Max
+  ---------------------------------------------------------
+  original-original           2775   0.8099   0.2246   0.9999
+  clone-source                  20   0.0000   0.0000   0.0000
+  clone-other                 1480   0.7958   0.3985   0.9986
+  clone-clone                  190   0.6685   0.0000   0.9883
+
+======================================================================
+TOP 20 CLOSEST PAIRS
+======================================================================
+  41222103 — 41222104  d=0.0000  [clone-clone]  Health / Health
+    Q1: Is it your opinion that insured individuals o
+    Q2: Do you support insured members taking on high
+     32214 — 41214101  d=0.0000  [clone-source]  Welfare state & family / Welfare state & family
+    Q1: Do you support an increase in the retirement 
+    Q2: Are you in favor of raising the retirement ag
+  41228101 — 41228104  d=0.0000  [clone-clone]  Immigration & integration / Immigration & integration
+    Q1: Do you think that the requirements for obtain
+    Q2: Should the process for acquiring Swiss citize
+  41228101 — 41228103  d=0.0000  [clone-clone]  Immigration & integration / Immigration & integration
+    Q1: Do you think that the requirements for obtain
+    Q2: Do you believe the qualifications for Swiss n
+  41228101 — 41228102  d=0.0000  [clone-clone]  Immigration & integration / Immigration & integration
+    Q1: Do you think that the requirements for obtain
+    Q2: Should the criteria for becoming a naturalize
+     32234 — 41234103  d=0.0000  [clone-source]  Society & ethics / Society & ethics
+    Q1: Should a third official gender be introduced 
+    Q2: Is the establishment of a third official gend
+     32234 — 41234102  d=0.0000  [clone-source]  Society & ethics / Society & ethics
+    Q1: Should a third official gender be introduced 
+    Q2: Should there be an official recognition of a 
+     32234 — 41234101  d=0.0000  [clone-source]  Society & ethics / Society & ethics
+    Q1: Should a third official gender be introduced 
+    Q2: Do you support the introduction of a third of
+     32228 — 41228101  d=0.0000  [clone-source]  Immigration & integration / Immigration & integration
+    Q1: Should the conditions for naturalization be r
+    Q2: Do you think that the requirements for obtain
+     32228 — 41228102  d=0.0000  [clone-source]  Immigration & integration / Immigration & integration
+    Q1: Should the conditions for naturalization be r
+    Q2: Should the criteria for becoming a naturalize
+     32228 — 41228103  d=0.0000  [clone-source]  Immigration & integration / Immigration & integration
+    Q1: Should the conditions for naturalization be r
+    Q2: Do you believe the qualifications for Swiss n
+     32228 — 41228104  d=0.0000  [clone-source]  Immigration & integration / Immigration & integration
+    Q1: Should the conditions for naturalization be r
+    Q2: Should the process for acquiring Swiss citize
+  41214101 — 41214102  d=0.0000  [clone-clone]  Welfare state & family / Welfare state & family
+    Q1: Are you in favor of raising the retirement ag
+    Q2: Do you agree with increasing the age of retir
+  41214101 — 41214103  d=0.0000  [clone-clone]  Welfare state & family / Welfare state & family
+    Q1: Are you in favor of raising the retirement ag
+    Q2: Would you endorse elevating the retirement ag
+  41214101 — 41214104  d=0.0000  [clone-clone]  Welfare state & family / Welfare state & family
+    Q1: Are you in favor of raising the retirement ag
+    Q2: Would you support setting the retirement age 
+  41214102 — 41214103  d=0.0000  [clone-clone]  Welfare state & family / Welfare state & family
+    Q1: Do you agree with increasing the age of retir
+    Q2: Would you endorse elevating the retirement ag
+  41214102 — 41214104  d=0.0000  [clone-clone]  Welfare state & family / Welfare state & family
+    Q1: Do you agree with increasing the age of retir
+    Q2: Would you support setting the retirement age 
+  41261103 — 41261104  d=0.0000  [clone-clone]  Democracy, Media & Digitalization / Democracy, Media & Digitalization
+    Q1: Would you support the popular initiative that
+    Q2: Do you agree with the proposal of a popular i
+  41214103 — 41214104  d=0.0000  [clone-clone]  Welfare state & family / Welfare state & family
+    Q1: Would you endorse elevating the retirement ag
+    Q2: Would you support setting the retirement age 
+  41261101 — 41261102  d=0.0000  [clone-clone]  Democracy, Media & Digitalization / Democracy, Media & Digitalization
+    Q1: Do you back the proposal of a popular initiat
+    Q2: Are you in favor of the popular initiative th
+
+======================================================================
+TOP 20 MOST DISTANT PAIRS
+======================================================================
+     32217 —    32272  d=0.9999
+    Q1: As part of the reform of the BVG (occupationa
+    Q2: Should Switzerland terminate the Bilateral Ag
+     32216 —    32266  d=0.9998
+    Q1: For married couples, the pension is currently
+    Q2: Should the Federal Council be allowed to auth
+     32278 —    32286  d=0.9997
+    Q1: What is your position the following statement
+    Q2: Should the federal government spend more or l
+     32217 —    32233  d=0.9996
+    Q1: As part of the reform of the BVG (occupationa
+    Q2: Would you be in favour of doctors being allow
+     32216 —    32232  d=0.9995
+    Q1: For married couples, the pension is currently
+    Q2: Should cannabis use be legalized? [BePart que
+     32216 —    32246  d=0.9995
+    Q1: For married couples, the pension is currently
+    Q2: Should Switzerland ban the registration of ne
+     32253 —    32258  d=0.9994
+    Q1: Should direct payments only be granted to far
+    Q2: Should the Swiss mobile network be equipped t
+     32216 —    32233  d=0.9994
+    Q1: For married couples, the pension is currently
+    Q2: Would you be in favour of doctors being allow
+     32224 —    32274  d=0.9989
+    Q1: Should the federal government be given the au
+    Q2: What is your position the following statement
+     32256 —    32263  d=0.9988
+    Q1: Would you support a ban on single-use plastic
+    Q2: Should it be possible to hold a referendum on
+     32266 —    32281  d=0.9986
+    Q1: Should the Federal Council be allowed to auth
+    Q2: Should the federal government spend more or l
+     32278 — 41261104  d=0.9986
+    Q1: What is your position the following statement
+    Q2: Do you agree with the proposal of a popular i
+     32261 —    32278  d=0.9986
+    Q1: A popular initiative aims to reduce televisio
+    Q2: What is your position the following statement
+     32278 — 41261103  d=0.9986
+    Q1: What is your position the following statement
+    Q2: Would you support the popular initiative that
+     32278 — 41261101  d=0.9986
+    Q1: What is your position the following statement
+    Q2: Do you back the proposal of a popular initiat
+     32278 — 41261102  d=0.9986
+    Q1: What is your position the following statement
+    Q2: Are you in favor of the popular initiative th
+     32258 —    32274  d=0.9984
+    Q1: Should the Swiss mobile network be equipped t
+    Q2: What is your position the following statement
+     32248 —    32256  d=0.9983
+    Q1: Do you think it's fair that environmental and
+    Q2: Would you support a ban on single-use plastic
+     32264 —    32278  d=0.9982
+    Q1: Are you in favor of expanding the army's targ
+    Q2: What is your position the following statement
+     32252 —    32263  d=0.9981
+    Q1: Are you in favor of further relaxing the prot
+    Q2: Should it be possible to hold a referendum on

@@ -72,7 +72,7 @@ from vqs.recommendation_engine import RecommendationEngine
 from vqs.similarity_metrics import get_calculator
 
 DEFAULT_N_CLONES = 5
-DEFAULT_ALPHA_REFERENCE = 0.3
+DEFAULT_ALPHA_REFERENCE = 0.4
 RESULTS_DIR = Path("experiment_results/question_alpha_sweep_results")
 FLIP_TYPES = {"negation", "negation_easy", "negation_hard"}
 PERFECT_MIX_COMPONENTS = ["easy_paraphrase", "hard_paraphrase", "negation_easy", "negation_hard"]
@@ -171,6 +171,17 @@ def _setup_pipeline(config, n_clones: int, clone_type: str = "easy_paraphrase"):
     print(f"  Questions: {len(question_ids)}")
     print(f"  Clone type: {clone_type}")
 
+    # Validate perfect_mix clone count
+    if clone_type == "perfect_mix":
+        n_components = len(PERFECT_MIX_COMPONENTS)
+        if n_clones % n_components != 0:
+            raise ValueError(
+                f"n_clones={n_clones} is not divisible by {n_components} "
+                f"(PERFECT_MIX_COMPONENTS={PERFECT_MIX_COMPONENTS}). "
+                f"For perfect_mix, n_clones must be a multiple of {n_components} "
+                f"so each component type gets an equal number of clones."
+            )
+
     # Load paraphrases (read-only) — needed for all non-identical types
     paraphrases = None
     if clone_type != "identical":
@@ -190,11 +201,11 @@ def _setup_pipeline(config, n_clones: int, clone_type: str = "easy_paraphrase"):
                 existing = paraphrases.get(q_id_str, {}).get(pt, [])
                 n_needed = n_clones // len(PERFECT_MIX_COMPONENTS) if clone_type == "perfect_mix" else n_clones
                 if len(existing) < n_needed:
-                    missing.append((q_id, pt, len(existing)))
+                    missing.append((q_id, pt, len(existing), n_needed))
         if missing:
             print(
                 f"ERROR: {len(missing)} question/type combos lack enough paraphrases "
-                f"(need {n_clones} each).\n"
+                f"(need {missing[0][3]} each).\n"
                 f"Run with --mode prepare first.\n"
                 f"Examples: {missing[:5]}",
                 file=sys.stderr,

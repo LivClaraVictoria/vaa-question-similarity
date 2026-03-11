@@ -68,9 +68,18 @@ def _find_latest_csv() -> Path:
 
 
 def compute_summary(df: pd.DataFrame) -> pd.DataFrame:
-    """Per-question: baseline distortion, optimal alpha, best CRW, improvement."""
+    """Per-question (per clone_type): baseline distortion, optimal alpha, best CRW, improvement."""
+    has_clone_type = "clone_type" in df.columns
+    group_cols = ["question_id", "clone_type"] if has_clone_type else ["question_id"]
+
     rows = []
-    for q_id, grp in df.groupby("question_id"):
+    for key, grp in df.groupby(group_cols):
+        if has_clone_type:
+            q_id, clone_type = key
+        else:
+            q_id = key
+            clone_type = None
+
         base_jac = grp["base_jaccard_mean"].iloc[0]
         base_spe = grp["base_spearman_mean"].iloc[0]
         base_ken = grp["base_kendall_mean"].iloc[0]
@@ -85,7 +94,7 @@ def compute_summary(df: pd.DataFrame) -> pd.DataFrame:
         alpha_95_lo = above.min()
         alpha_95_hi = above.max()
 
-        rows.append({
+        row = {
             "question_id": int(q_id),
             "question_text": grp["question_text"].iloc[0],
             "base_jaccard": base_jac,
@@ -101,19 +110,22 @@ def compute_summary(df: pd.DataFrame) -> pd.DataFrame:
             "alpha_95_lo": alpha_95_lo,
             "alpha_95_hi": alpha_95_hi,
             "alpha_95_width": alpha_95_hi - alpha_95_lo,
-        })
+        }
+        if has_clone_type:
+            row["clone_type"] = clone_type
+        rows.append(row)
 
     summary = pd.DataFrame(rows).sort_values("improvement_jaccard", ascending=False)
     return summary.reset_index(drop=True)
 
 
 def compute_key_numbers(summary: pd.DataFrame) -> pd.DataFrame:
-    """Abstract-ready statistics."""
+    """Abstract-ready statistics, with per-clone-type breakdown if available."""
     n_improved = (summary["improvement_jaccard"] > 0).sum()
     n_total = len(summary)
 
     rows = [
-        ("n_questions", n_total),
+        ("n_entries", n_total),
         ("n_improved", n_improved),
         ("pct_improved", 100.0 * n_improved / n_total),
         ("base_jaccard_mean", summary["base_jaccard"].mean()),
@@ -139,6 +151,24 @@ def compute_key_numbers(summary: pd.DataFrame) -> pd.DataFrame:
         ("base_kendall_mean", summary["base_kendall"].mean()),
         ("crw_kendall_mean", summary["crw_kendall"].mean()),
     ]
+
+    # Per-clone-type breakdown
+    if "clone_type" in summary.columns:
+        n_questions = summary["question_id"].nunique()
+        rows.append(("n_questions", n_questions))
+        rows.append(("n_clone_types", summary["clone_type"].nunique()))
+
+        for ct, ct_grp in summary.groupby("clone_type"):
+            rows.extend([
+                (f"{ct}__optimal_alpha_mean", ct_grp["optimal_alpha"].mean()),
+                (f"{ct}__optimal_alpha_median", ct_grp["optimal_alpha"].median()),
+                (f"{ct}__optimal_alpha_mode", ct_grp["optimal_alpha"].mode().iloc[0]),
+                (f"{ct}__improvement_mean", ct_grp["improvement_jaccard"].mean()),
+                (f"{ct}__improvement_median", ct_grp["improvement_jaccard"].median()),
+                (f"{ct}__crw_jaccard_mean", ct_grp["crw_jaccard"].mean()),
+                (f"{ct}__base_jaccard_mean", ct_grp["base_jaccard"].mean()),
+            ])
+
     return pd.DataFrame(rows, columns=["metric", "value"])
 
 
@@ -397,7 +427,8 @@ def main():
     print(f"  Input: {csv_path}")
 
     df = pd.read_csv(csv_path)
-    print(f"  Rows: {len(df)} ({df['question_id'].nunique()} questions × {df['alpha'].nunique()} alphas)")
+    n_ct = df["clone_type"].nunique() if "clone_type" in df.columns else 1
+    print(f"  Rows: {len(df)} ({df['question_id'].nunique()} questions × {df['alpha'].nunique()} alphas × {n_ct} clone types)")
 
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 

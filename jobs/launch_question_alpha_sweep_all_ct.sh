@@ -12,7 +12,7 @@ PROJECT_DIR="/itet-stor/liweiss/net_scratch/vaa-question-similarity"
 SWEEP_DIR="${PROJECT_DIR}/experiment_results/question_alpha_sweep_results/workers_allct_$(date +%Y%m%d_%H%M%S)"
 mkdir -p "${SWEEP_DIR}"
 
-export PIPELINE_CONFIG="configs/full_pipeline/base_data/pipeline_e5_instruct_ZH_a03.py"
+export PIPELINE_CONFIG="configs/full_pipeline/base_data/pipeline_e5_instruct_ZH_a04.py"
 export SWEEP_DIR
 export N_CLONES=4
 

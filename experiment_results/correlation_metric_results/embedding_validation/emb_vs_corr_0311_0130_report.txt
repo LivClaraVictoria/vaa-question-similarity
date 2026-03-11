@@ -1,0 +1,19 @@
+
+======================================================================
+EMBEDDING MODEL VALIDATION vs ANSWER-CORRELATION
+  Ground truth: 1 - |Pearson_r| of voter answers (75 original questions)
+  Metric: Spearman rank correlation between distance matrices
+======================================================================
+
+  Rank  Model                           Spearman r   Pearson r  N pairs
+  -------------------------------------------------------------------
+  1     QWEN3                              +0.1977     +0.2141     2775
+  2     JINA-V3                            +0.1919     +0.2326     2775
+  3     GTE                                +0.1665     +0.1894     2775
+  4     E5-ASYMMETRIC-INSTRUCT             +0.1403     +0.1783     2775
+  5     NOMIC-V2                           +0.1285     +0.1544     2775
+  6     BGE-M3                             +0.1120     +0.1411     2775
+  7     E5-INSTRUCT                        +0.1054     +0.1639     2775
+  8     E5-ASYMMETRIC                      +0.0752     +0.1171     2775
+  9     E5                                 +0.0677     +0.1058     2775
+  10    SBERT                              +0.0599     +0.1031     2775

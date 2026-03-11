@@ -1,0 +1,148 @@
+======================================================================
+DISTANCE ANALYSIS: ANSWER-CORRELATION_2023_0302_1824_2409ec9392ca
+======================================================================
+  Questions:  75
+  Pairs:      2775
+  Has clones: False
+
+  Statistic                 Value
+  --------------------------------
+  mean                     0.8099
+  median                   0.8229
+  std                      0.1223
+  min                      0.2246
+  max                      0.9999
+  p5                       0.5952
+  p10                      0.6397
+  p25                      0.7260
+  p75                      0.9055
+  p90                      0.9653
+  p95                      0.9843
+
+======================================================================
+TOP 20 CLOSEST PAIRS
+======================================================================
+     32264 —    32287  d=0.2246
+    Q1: Are you in favor of expanding the army's targ
+    Q2: Should the federal government spend more or l
+     32245 —    32285  d=0.2635
+    Q1: Should busy sections of highways be widened?
+    Q2: Should the federal government spend more or l
+     32268 —    32272  d=0.3454
+    Q1: Should Switzerland terminate the Schengen agr
+    Q2: Should Switzerland terminate the Bilateral Ag
+     32219 —    32281  d=0.3953
+    Q1: Should the federal government provide more fi
+    Q2: Should the federal government spend more or l
+     32228 —    32231  d=0.3985
+    Q1: Should the conditions for naturalization be r
+    Q2: Should foreign nationals who have lived in Sw
+     32276 —    32281  d=0.4089
+    Q1: What is your position the following statement
+    Q2: Should the federal government spend more or l
+     32215 —    32281  d=0.4117
+    Q1: Should the federal government allocate more f
+    Q2: Should the federal government spend more or l
+     32265 —    32266  d=0.4595
+    Q1: Should the Swiss Armed Forces expand their co
+    Q2: Should the Federal Council be allowed to auth
+     32271 —    32280  d=0.4618
+    Q1: Should Swiss companies be obliged to ensure t
+    Q2: What is your position the following statement
+     32238 —    32276  d=0.4626
+    Q1: Would you support the introduction of a natio
+    Q2: What is your position the following statement
+     32219 —    32276  d=0.4685
+    Q1: Should the federal government provide more fi
+    Q2: What is your position the following statement
+     32281 —    32288  d=0.4737
+    Q1: Should the federal government spend more or l
+    Q2: Should the federal government spend more or l
+     32266 —    32273  d=0.4751
+    Q1: Should the Federal Council be allowed to auth
+    Q2: Should Switzerland return to a strict interpr
+     32215 —    32219  d=0.4769
+    Q1: Should the federal government allocate more f
+    Q2: Should the federal government provide more fi
+     32240 —    32281  d=0.4769
+    Q1: Are you in favor of introducing a minimum wag
+    Q2: Should the federal government spend more or l
+     32280 —    32285  d=0.4769
+    Q1: What is your position the following statement
+    Q2: Should the federal government spend more or l
+     32246 —    32280  d=0.4793
+    Q1: Should Switzerland ban the registration of ne
+    Q2: What is your position the following statement
+     32228 —    32234  d=0.4815
+    Q1: Should the conditions for naturalization be r
+    Q2: Should a third official gender be introduced 
+     32244 —    32271  d=0.4845
+    Q1: Are you in favor of stricter controls on equa
+    Q2: Should Swiss companies be obliged to ensure t
+     32246 —    32285  d=0.4856
+    Q1: Should Switzerland ban the registration of ne
+    Q2: Should the federal government spend more or l
+
+======================================================================
+TOP 20 MOST DISTANT PAIRS
+======================================================================
+     32217 —    32272  d=0.9999
+    Q1: As part of the reform of the BVG (occupationa
+    Q2: Should Switzerland terminate the Bilateral Ag
+     32216 —    32266  d=0.9998
+    Q1: For married couples, the pension is currently
+    Q2: Should the Federal Council be allowed to auth
+     32278 —    32286  d=0.9997
+    Q1: What is your position the following statement
+    Q2: Should the federal government spend more or l
+     32217 —    32233  d=0.9996
+    Q1: As part of the reform of the BVG (occupationa
+    Q2: Would you be in favour of doctors being allow
+     32216 —    32232  d=0.9995
+    Q1: For married couples, the pension is currently
+    Q2: Should cannabis use be legalized? [BePart que
+     32216 —    32246  d=0.9995
+    Q1: For married couples, the pension is currently
+    Q2: Should Switzerland ban the registration of ne
+     32253 —    32258  d=0.9994
+    Q1: Should direct payments only be granted to far
+    Q2: Should the Swiss mobile network be equipped t
+     32216 —    32233  d=0.9994
+    Q1: For married couples, the pension is currently
+    Q2: Would you be in favour of doctors being allow
+     32224 —    32274  d=0.9989
+    Q1: Should the federal government be given the au
+    Q2: What is your position the following statement
+     32256 —    32263  d=0.9988
+    Q1: Would you support a ban on single-use plastic
+    Q2: Should it be possible to hold a referendum on
+     32266 —    32281  d=0.9986
+    Q1: Should the Federal Council be allowed to auth
+    Q2: Should the federal government spend more or l
+     32261 —    32278  d=0.9986
+    Q1: A popular initiative aims to reduce televisio
+    Q2: What is your position the following statement
+     32258 —    32274  d=0.9984
+    Q1: Should the Swiss mobile network be equipped t
+    Q2: What is your position the following statement
+     32248 —    32256  d=0.9983
+    Q1: Do you think it's fair that environmental and
+    Q2: Would you support a ban on single-use plastic
+     32264 —    32278  d=0.9982
+    Q1: Are you in favor of expanding the army's targ
+    Q2: What is your position the following statement
+     32252 —    32263  d=0.9981
+    Q1: Are you in favor of further relaxing the prot
+    Q2: Should it be possible to hold a referendum on
+     32251 —    32263  d=0.9981
+    Q1: Would you be in favor of the introduction of 
+    Q2: Should it be possible to hold a referendum on
+     32248 —    32285  d=0.9981
+    Q1: Do you think it's fair that environmental and
+    Q2: Should the federal government spend more or l
+     32218 —    32263  d=0.9978
+    Q1: Should paid parental leave be increased beyon
+    Q2: Should it be possible to hold a referendum on
+     32280 —    32283  d=0.9972
+    Q1: What is your position the following statement
+    Q2: Should the federal government spend more or l

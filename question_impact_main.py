@@ -250,6 +250,18 @@ def _setup_pipeline(config, clone_types: list[str] | None = None, n_clones: int 
         result["calculator"] = calculator
         result["base_crw_rankings"] = base_crw_rankings
 
+        # Validate perfect_mix clone count
+        _n = n_clones if n_clones is not None else N_CLONES
+        if "perfect_mix" in clone_types:
+            n_components = len(PERFECT_MIX_COMPONENTS)
+            if _n % n_components != 0:
+                raise ValueError(
+                    f"n_clones={_n} is not divisible by {n_components} "
+                    f"(PERFECT_MIX_COMPONENTS={PERFECT_MIX_COMPONENTS}). "
+                    f"For perfect_mix, n_clones must be a multiple of {n_components} "
+                    f"so each component type gets an equal number of clones."
+                )
+
         # Load paraphrases if any non-identical clone types
         if clone_types and any(ct != "identical" for ct in clone_types):
             print("\n--- Loading paraphrases ---")
