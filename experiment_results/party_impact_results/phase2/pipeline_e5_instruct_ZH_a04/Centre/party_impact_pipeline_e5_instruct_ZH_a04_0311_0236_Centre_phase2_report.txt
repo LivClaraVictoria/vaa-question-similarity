@@ -1,0 +1,51 @@
+================================================================================
+PARTY IMPACT ANALYSIS — PHASE 2 REPORT (CUMULATIVE)
+================================================================================
+Generated: 2026-03-11 02:36
+Target party: Centre
+Top-k (n): 36
+Questions cloned: 5
+
+SELECTED QUESTIONS:
+  Q32245: "Should busy sections of highways be widened?"
+  Q32228: "Should the conditions for naturalization be relaxed (e.g., shorter res"
+  Q32262: "Are you in favour of lowering the voting age to 16?"
+  Q32236: "Do you support tax cuts at the federal level over the next four years?"
+  Q32239: "Should the differences between cantons with high and low financial cap"
+
+================================================================================
+SCENARIO A — WORST-CASE: 4 mixed clones per question (20 total clones)
+  Clone types: easy paraphrase, hard paraphrase, negation (easy), negation (hard)
+================================================================================
+   Party  Original  Attacked   CRW Fix  Δ Attack     Δ CRW  Reduced
+----------------------------------------------------------------------
+      SP    13.20%    10.85%    11.47%    -2.35    -1.74      26%
+   Green    13.54%    11.15%    11.82%    -2.39    -1.71      28%
+     GLP    16.20%    14.86%    15.20%    -1.33    -1.00      25%
+  Centre    17.45%    22.21%    21.05%    +4.76    +3.60      24%
+     FDP     4.32%     4.52%     4.50%    +0.19    +0.18       7%
+     SVP     4.66%     4.98%     4.90%    +0.32    +0.24      25%
+
+================================================================================
+SCENARIO B — REALISTIC: 1 easy paraphrase per question (5 total clones)
+================================================================================
+   Party  Original  Attacked   CRW Fix  Δ Attack     Δ CRW  Reduced
+----------------------------------------------------------------------
+      SP    13.20%    12.36%    12.74%    -0.85    -0.46      45%
+   Green    13.54%    12.74%    13.02%    -0.79    -0.52      35%
+     GLP    16.20%    15.57%    15.65%    -0.63    -0.55      12%
+  Centre    17.45%    19.28%    18.61%    +1.83    +1.16      37%
+     FDP     4.32%     4.42%     4.41%    +0.10    +0.08      15%
+     SVP     4.66%     4.79%     4.77%    +0.12    +0.10      19%
+
+================================================================================
+CRW NATURAL DRIFT (CRW on original questionnaire, no clones)
+================================================================================
+        SP: 13.20% -> 13.22% (Δ+0.02pp)
+     Green: 13.54% -> 13.46% (Δ-0.08pp)
+       GLP: 16.20% -> 16.12% (Δ-0.07pp)
+    Centre: 17.45% -> 17.56% (Δ+0.11pp)
+       FDP: 4.32% -> 4.35% (Δ+0.02pp)
+       SVP: 4.66% -> 4.67% (Δ+0.01pp)
+
+================================================================================

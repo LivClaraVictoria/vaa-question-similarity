@@ -368,7 +368,8 @@ def _run_sweep(args, config, n: int):
 
     sweep_df = pd.DataFrame(rows)
 
-    output_dir = RESULTS_DIR
+    name = _get_clean_name(config)
+    output_dir = RESULTS_DIR / "phase1" / name
     output_dir.mkdir(parents=True, exist_ok=True)
     _save_phase1_outputs(sweep_df, config, n, output_dir)
 
@@ -386,7 +387,8 @@ def _run_worker(args, config, n: int):
         print("ERROR: --task-id is required in worker mode", file=sys.stderr)
         sys.exit(1)
 
-    sweep_dir = Path(args.sweep_dir) if args.sweep_dir else RESULTS_DIR / "workers"
+    name = _get_clean_name(config)
+    sweep_dir = Path(args.sweep_dir) if args.sweep_dir else RESULTS_DIR / "phase1" / name / "workers"
     sweep_dir.mkdir(parents=True, exist_ok=True)
 
     pipeline = _setup_pipeline(config)
@@ -429,7 +431,8 @@ def _run_worker(args, config, n: int):
 
 
 def _run_collect(args, config, n: int):
-    sweep_dir = Path(args.sweep_dir) if args.sweep_dir else RESULTS_DIR / "workers"
+    name = _get_clean_name(config)
+    sweep_dir = Path(args.sweep_dir) if args.sweep_dir else RESULTS_DIR / "phase1" / name / "workers"
 
     worker_files = sorted(sweep_dir.glob("party_worker_*.csv"))
     if not worker_files:
@@ -443,7 +446,8 @@ def _run_collect(args, config, n: int):
     dfs = [pd.read_csv(f) for f in worker_files]
     combined = pd.concat(dfs, ignore_index=True)
 
-    output_dir = RESULTS_DIR
+    name = _get_clean_name(config)
+    output_dir = RESULTS_DIR / "phase1" / name
     output_dir.mkdir(parents=True, exist_ok=True)
 
     _save_phase1_outputs(combined, config, n, output_dir)
@@ -643,9 +647,7 @@ def _run_phase2(args, config, n: int):
         phase1_path = Path(args.phase1_csv)
     else:
         # Auto-detect latest Phase 1 CSV
-        csvs = sorted(RESULTS_DIR.glob("party_impact_*.csv"))
-        # Filter out phase2 csvs
-        csvs = [c for c in csvs if "phase2" not in c.name]
+        csvs = sorted((RESULTS_DIR / "phase1").glob("**/party_impact_*.csv"))
         if not csvs:
             print("ERROR: No Phase 1 CSV found. Run Phase 1 first.", file=sys.stderr)
             sys.exit(1)
@@ -855,7 +857,9 @@ def _run_phase2(args, config, n: int):
         },
     }
 
-    output_dir = RESULTS_DIR
+    name = _get_clean_name(config)
+    party_subdir = target_party if target_party else "no_target"
+    output_dir = RESULTS_DIR / "phase2" / name / party_subdir
     output_dir.mkdir(parents=True, exist_ok=True)
     _save_phase2_outputs(results, config, n, output_dir, target_party)
 
@@ -1452,8 +1456,7 @@ def _run_pre_paraphrases(args, config):
     if args.phase1_csv:
         phase1_path = Path(args.phase1_csv)
     else:
-        csvs = sorted(RESULTS_DIR.glob("party_impact_*.csv"))
-        csvs = [c for c in csvs if "phase2" not in c.name]
+        csvs = sorted((RESULTS_DIR / "phase1").glob("**/party_impact_*.csv"))
         if not csvs:
             print("ERROR: No Phase 1 CSV found.", file=sys.stderr)
             sys.exit(1)
@@ -1523,11 +1526,13 @@ def _run_compile(args, config):
     timestamp = datetime.now().strftime("%m%d_%H%M")
     base = f"party_impact_{name}_{timestamp}_compiled"
 
-    # Find Phase 2 CSVs with party tags
+    phase2_dir = RESULTS_DIR / "phase2" / name
+
+    # Find Phase 2 CSVs with party tags (search in phase2/{name}/*/)
     csvs = {}
     for party in MAJOR_PARTIES:
-        pattern = f"party_impact_*_{party}_phase2.csv"
-        matches = sorted(RESULTS_DIR.glob(pattern))
+        pattern = f"**/*_{party}_phase2.csv"
+        matches = sorted(phase2_dir.glob(pattern))
         if not matches:
             print(f"  WARNING: No Phase 2 CSV for {party}, skipping")
             continue
@@ -1545,11 +1550,14 @@ def _run_compile(args, config):
 
     print(f"\n  Loaded {len(dfs)} party results, compiling...")
 
+    compiled_dir = phase2_dir / "compiled"
+    compiled_dir.mkdir(parents=True, exist_ok=True)
+
     sns.set_theme(style="whitegrid")
-    _compile_report(dfs, RESULTS_DIR, base)
-    _compile_heatmap(dfs, RESULTS_DIR, base)
-    _compile_bar_chart(dfs, RESULTS_DIR, base)
-    _compile_effect_size_chart(dfs, RESULTS_DIR, base)
+    _compile_report(dfs, compiled_dir, base)
+    _compile_heatmap(dfs, compiled_dir, base)
+    _compile_bar_chart(dfs, compiled_dir, base)
+    _compile_effect_size_chart(dfs, compiled_dir, base)
 
     print(f"\n=== Compilation complete ===")
 
