@@ -10,7 +10,7 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 
 export PIPELINE_CONFIG="configs/full_pipeline/base_data/pipeline_e5_instruct_ZH_a04.py"
 export TOP_K=5
-export PHASE1_CSV="experiment_results/party_impact/party_impact_pipeline_e5_ZH_0302_0057.csv"
+export PHASE1_CSV="experiment_results/party_impact/high_impact/phase1/pipeline_e5_ZH/party_impact_pipeline_e5_ZH_0302_0057.csv"
 
 PARTIES=("SP" "Green" "GLP" "Centre" "FDP" "SVP")
 

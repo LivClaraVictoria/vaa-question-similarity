@@ -58,7 +58,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent / "dependencies" / "rsfp"
 from rsfp.constants import BIG_PARTIES, PARTIES_LEFT_TO_RIGHT, PARTY2COLOR
 
 N_CLONES = 4
-RESULTS_DIR = default_config.RESULTS_DIR / "party_impact"
+RESULTS_DIR = default_config.RESULTS_DIR / "party_impact" / "high_impact"
 
 # Parties to analyse (left-to-right order for plots, filtered to big parties)
 MAJOR_PARTIES = [p for p in PARTIES_LEFT_TO_RIGHT if p in BIG_PARTIES]
