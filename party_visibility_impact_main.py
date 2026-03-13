@@ -739,12 +739,15 @@ def _plot_topic_party_boxplot(df: pd.DataFrame, output_dir: Path, base: str, n_c
 
         color = PARTY2COLOR.get(party, "#888888")
 
-        sns.boxplot(
+        box_artists = sns.boxplot(
             data=plot_df, y="category", x=delta_col,
             order=topic_order, ax=ax,
-            color=color, alpha=0.4, width=0.6,
+            color=color, width=0.6,
             fliersize=0,
         )
+        # Set alpha on box patches
+        for patch in ax.patches:
+            patch.set_alpha(0.4)
         sns.stripplot(
             data=plot_df, y="category", x=delta_col,
             order=topic_order, ax=ax,

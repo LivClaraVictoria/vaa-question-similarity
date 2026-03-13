@@ -1,0 +1,109 @@
+================================================================================
+PARTY VISIBILITY IMPACT — SVP REPORT
+================================================================================
+Generated: 2026-03-13 16:51
+Clone type: identical, n_clones: 4
+Top-k (n): 36
+Questions tested: 75
+
+TOP 10 QUESTIONS BENEFITING SVP:
+--------------------------------------------------------------------------------
+  1. Q32230 — Δ = +0.50pp
+     [Immigration & integration] "Do you support efforts to house asylum seekers in centers outside"
+     Other parties: SP: +0.04pp, Green: -0.23pp, GLP: -0.29pp, Centre: -0.73pp, FDP: +0.69pp
+
+  2. Q32227 — Δ = +0.34pp
+     [Education] "Should the state be more committed to equal educational opportuni"
+     Other parties: SP: +0.05pp, Green: +0.04pp, GLP: +0.15pp, Centre: -0.13pp, FDP: -0.16pp
+
+  3. Q32233 — Δ = +0.23pp
+     [Society & ethics] "Would you be in favour of doctors being allowed to administer dir"
+     Other parties: SP: +0.25pp, Green: +0.25pp, GLP: +1.19pp, Centre: +0.26pp, FDP: +0.15pp
+
+  4. Q32234 — Δ = +0.20pp
+     [Society & ethics] "Should a third official gender be introduced alongside "female" a"
+     Other parties: SP: -0.16pp, Green: -0.48pp, GLP: -0.47pp, Centre: -0.24pp, FDP: -0.02pp
+
+  5. Q32249 — Δ = +0.20pp
+     [Energy & transport] "Should the construction of new nuclear power plants in Switzerlan"
+     Other parties: SP: -0.30pp, Green: -0.34pp, GLP: -0.49pp, Centre: -0.05pp, FDP: +0.64pp
+
+  6. Q32228 — Δ = +0.19pp
+     [Immigration & integration] "Should the conditions for naturalization be relaxed (e.g., shorte"
+     Other parties: SP: -0.67pp, Green: -0.64pp, GLP: -1.15pp, Centre: +1.59pp, FDP: +0.08pp
+
+  7. Q32267 — Δ = +0.18pp
+     [Security & military] "Should automatic facial recognition be banned in public spaces?"
+     Other parties: SP: +0.14pp, Green: -0.17pp, GLP: -0.36pp, Centre: +0.33pp, FDP: -0.20pp
+
+  8. Q32261 — Δ = +0.17pp
+     [Democracy, Media & Digitalization] "A popular initiative aims to reduce television and radio fees (CH"
+     Other parties: SP: -1.07pp, Green: -0.34pp, GLP: -0.31pp, Centre: -0.43pp, FDP: +0.31pp
+
+  9. Q32269 — Δ = +0.17pp
+     [Foreign trade & foreign policy] "Are you in favor of closer relations with the European Union (EU)"
+     Other parties: SP: -0.04pp, Green: -0.19pp, GLP: -0.31pp, FDP: -0.12pp
+
+  10. Q32232 — Δ = +0.16pp
+     [Society & ethics] "Should cannabis use be legalized? [BePart question]"
+     Other parties: SP: -0.22pp, Green: -0.19pp, GLP: -0.16pp, Centre: -0.10pp, FDP: -0.23pp
+
+BOTTOM 5 QUESTIONS (MOST HARMFUL TO SVP):
+--------------------------------------------------------------------------------
+  1. Q32264 — Δ = -0.32pp
+     [Security & military] "Are you in favor of expanding the army's target number of soldier"
+
+  2. Q32223 — Δ = -0.25pp
+     [Health] "Should the Federal Council's ability to restrict private and econ"
+
+  3. Q32240 — Δ = -0.20pp
+     [Economy & labour] "Are you in favor of introducing a minimum wage of CHF 4,000 for a"
+
+  4. Q32255 — Δ = -0.18pp
+     [Nature conservation] "Should 30% of Switzerland's land area be dedicated to preserving "
+
+  5. Q32253 — Δ = -0.14pp
+     [Nature conservation] "Should direct payments only be granted to farmers with proof of e"
+
+================================================================================
+TOPIC BREAKDOWN FOR SVP:
+--------------------------------------------------------------------------------
+  Topic                                         Mean    Median       Std     N
+--------------------------------------------------------------------------------
+  Immigration & integration                   +0.16    +0.10     0.25     4
+  Education                                   +0.16    +0.06     0.16     3
+  Society & ethics                            +0.15    +0.18     0.10     4
+  Democracy, Media & Digitalization           +0.05    +0.04     0.10     6
+  Values                                      +0.03    +0.01     0.04     7
+  Energy & transport                          +0.03    -0.00     0.09     7
+  Foreign trade & foreign policy              +0.01    -0.02     0.09     5
+  Welfare state & family                      +0.01    +0.01     0.07     6
+  Federal budget                              +0.00    +0.00     0.04     8
+  Finances & taxes                            -0.01    -0.02     0.07     4
+  Security & military                         -0.06    -0.10     0.20     5
+  Economy & labour                            -0.06    -0.00     0.10     5
+  Health                                      -0.07    -0.06     0.11     5
+  Nature conservation                         -0.09    -0.09     0.07     6
+
+  Kruskal-Wallis test: H=21.52, p=0.0633 (n.s.)
+  Not significant: topic does not significantly predict visibility delta for SVP.
+
+================================================================================
+PREDICTOR CORRELATIONS (Spearman vs delta_SVP):
+--------------------------------------------------------------------------------
+  combined_var               r=+0.000  p=0.9969
+  voter_var                  r=+0.077  p=0.5132
+  candidate_var              r=-0.074  p=0.5260
+  voter_nan_pct              r=-0.151  p=0.1972
+  question_order             r=-0.053  p=0.6543
+  voter_avg_abs_corr         r=+0.129  p=0.2707
+  candidate_avg_abs_corr     r=+0.022  p=0.8501
+
+================================================================================
+SUMMARY STATISTICS (delta_SVP):
+  Mean:   +0.01pp
+  Median: +0.00pp
+  Std:    0.12pp
+  Max:    +0.50pp
+  Min:    -0.32pp
+================================================================================

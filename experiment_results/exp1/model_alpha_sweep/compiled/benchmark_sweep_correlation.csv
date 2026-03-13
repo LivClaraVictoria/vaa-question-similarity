@@ -1,0 +1,13 @@
+benchmark_metric,sweep_metric,spearman_rho,p_value
+ordering_accuracy,avg_max_jaccard,0.6484848484848483,0.04254012768448945
+ordering_accuracy,avg_max_spearman,0.6484848484848483,0.04254012768448945
+ordering_accuracy,avg_max_kendall,0.6484848484848483,0.04254012768448945
+ordering_accuracy,avg_composite_rank,-0.6443798763008685,0.04431151432143616
+negation_invariance,avg_max_jaccard,-0.8787878787878788,0.0008138621117322101
+negation_invariance,avg_max_spearman,-0.8787878787878788,0.0008138621117322101
+negation_invariance,avg_max_kendall,-0.8787878787878788,0.0008138621117322101
+negation_invariance,avg_composite_rank,0.8571468165888911,0.0015278398373375572
+topic_coherence,avg_max_jaccard,-0.9878787878787878,9.307459988955517e-08
+topic_coherence,avg_max_spearman,-0.9878787878787878,9.307459988955517e-08
+topic_coherence,avg_max_kendall,-0.9878787878787878,9.307459988955517e-08
+topic_coherence,avg_composite_rank,0.9848069807617047,2.2888344854823716e-07

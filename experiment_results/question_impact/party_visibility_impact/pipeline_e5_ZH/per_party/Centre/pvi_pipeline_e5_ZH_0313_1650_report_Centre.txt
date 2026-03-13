@@ -1,0 +1,109 @@
+================================================================================
+PARTY VISIBILITY IMPACT — CENTRE REPORT
+================================================================================
+Generated: 2026-03-13 16:51
+Clone type: identical, n_clones: 4
+Top-k (n): 36
+Questions tested: 75
+
+TOP 10 QUESTIONS BENEFITING CENTRE:
+--------------------------------------------------------------------------------
+  1. Q32245 — Δ = +1.86pp
+     [Energy & transport] "Should busy sections of highways be widened?"
+     Other parties: SP: -0.56pp, Green: -0.78pp, GLP: -0.43pp, FDP: +0.05pp
+
+  2. Q32228 — Δ = +1.59pp
+     [Immigration & integration] "Should the conditions for naturalization be relaxed (e.g., shorte"
+     Other parties: SP: -0.67pp, Green: -0.64pp, GLP: -1.15pp, FDP: +0.08pp, SVP: +0.19pp
+
+  3. Q32262 — Δ = +1.51pp
+     [Democracy, Media & Digitalization] "Are you in favour of lowering the voting age to 16?"
+     Other parties: SP: -0.66pp, Green: -0.77pp, GLP: -1.33pp, FDP: +0.16pp, SVP: +0.15pp
+
+  4. Q32236 — Δ = +0.98pp
+     [Finances & taxes] "Do you support tax cuts at the federal level over the next four y"
+     Other parties: SP: -0.92pp, Green: -0.40pp, GLP: +0.46pp, FDP: -0.02pp, SVP: -0.03pp
+
+  5. Q32239 — Δ = +0.82pp
+     [Finances & taxes] "Should the differences between cantons with high and low financia"
+     Other parties: SP: -0.39pp, Green: -0.37pp, GLP: +0.46pp
+
+  6. Q32223 — Δ = +0.58pp
+     [Health] "Should the Federal Council's ability to restrict private and econ"
+     Other parties: SP: +0.12pp, Green: +0.04pp, GLP: -0.05pp, FDP: -0.32pp, SVP: -0.25pp
+
+  7. Q32229 — Δ = +0.51pp
+     [Immigration & integration] "Should more qualified workers from non-EU/EFTA countries be allow"
+     Other parties: SP: +0.33pp, Green: -0.30pp, GLP: -0.38pp, FDP: -0.06pp, SVP: +0.01pp
+
+  8. Q32260 — Δ = +0.45pp
+     [Democracy, Media & Digitalization] "Are you in favor of stronger regulation of the major Internet pla"
+     Other parties: SP: -0.07pp, Green: -0.01pp, GLP: +0.41pp, FDP: -0.18pp, SVP: +0.09pp
+
+  9. Q32253 — Δ = +0.45pp
+     [Nature conservation] "Should direct payments only be granted to farmers with proof of e"
+     Other parties: SP: -0.33pp, Green: -0.21pp, GLP: +0.06pp, FDP: -0.12pp, SVP: -0.14pp
+
+  10. Q32231 — Δ = +0.43pp
+     [Immigration & integration] "Should foreign nationals who have lived in Switzerland for at lea"
+     Other parties: SP: -0.10pp, Green: -0.17pp, GLP: +0.47pp, FDP: -0.15pp, SVP: -0.06pp
+
+BOTTOM 5 QUESTIONS (MOST HARMFUL TO CENTRE):
+--------------------------------------------------------------------------------
+  1. Q32230 — Δ = -0.73pp
+     [Immigration & integration] "Do you support efforts to house asylum seekers in centers outside"
+
+  2. Q32237 — Δ = -0.68pp
+     [Finances & taxes] "Should married couples be taxed separately (individual taxation)?"
+
+  3. Q32217 — Δ = -0.63pp
+     [Welfare state & family] "As part of the reform of the BVG (occupational pension plan), pen"
+
+  4. Q32224 — Δ = -0.57pp
+     [Health] "Should the federal government be given the authority to determine"
+
+  5. Q32220 — Δ = -0.56pp
+     [Health] "Should compulsory vaccination of children be introduced based on "
+
+================================================================================
+TOPIC BREAKDOWN FOR CENTRE:
+--------------------------------------------------------------------------------
+  Topic                                         Mean    Median       Std     N
+--------------------------------------------------------------------------------
+  Immigration & integration                   +0.45    +0.47     0.95     4
+  Finances & taxes                            +0.33    +0.52     0.75     4
+  Democracy, Media & Digitalization           +0.29    +0.15     0.66     6
+  Energy & transport                          +0.18    -0.06     0.78     7
+  Nature conservation                         +0.13    +0.13     0.19     6
+  Values                                      +0.09    +0.07     0.11     7
+  Foreign trade & foreign policy              +0.09    +0.13     0.08     5
+  Federal budget                              +0.08    +0.07     0.08     8
+  Education                                   +0.05    +0.10     0.16     3
+  Society & ethics                            +0.04    +0.07     0.24     4
+  Security & military                         -0.06    -0.16     0.23     5
+  Economy & labour                            -0.16    -0.15     0.09     5
+  Health                                      -0.21    -0.27     0.47     5
+  Welfare state & family                      -0.28    -0.29     0.28     6
+
+  Kruskal-Wallis test: H=19.82, p=0.0997 (n.s.)
+  Not significant: topic does not significantly predict visibility delta for Centre.
+
+================================================================================
+PREDICTOR CORRELATIONS (Spearman vs delta_Centre):
+--------------------------------------------------------------------------------
+  combined_var               r=-0.008  p=0.9438
+  voter_var                  r=-0.018  p=0.8756
+  candidate_var              r=+0.037  p=0.7544
+  voter_nan_pct              r=-0.024  p=0.8393
+  question_order             r=+0.237  p=0.0409
+  voter_avg_abs_corr         r=+0.156  p=0.1814
+  candidate_avg_abs_corr     r=+0.241  p=0.0375
+
+================================================================================
+SUMMARY STATISTICS (delta_Centre):
+  Mean:   +0.07pp
+  Median: +0.01pp
+  Std:    0.45pp
+  Max:    +1.86pp
+  Min:    -0.73pp
+================================================================================

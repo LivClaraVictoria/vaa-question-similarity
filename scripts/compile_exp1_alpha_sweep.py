@@ -463,6 +463,8 @@ def load_benchmark_scores() -> pd.DataFrame | None:
                 "model": key,
                 "model_display": MODEL_DISPLAY[key],
                 "ordering_accuracy": row["ordering_accuracy_mean"],
+                "negation_invariance": row["negation_invariance_mean"],
+                "topic_coherence": row["topic_coherence_mean"],
             })
 
     if not rows:
@@ -639,8 +641,14 @@ def generate_narrative_report(
     if benchmark is not None:
         section("5. Fake Benchmark Correlation")
         lines.append("")
-        lines.append("  Do models that score high on topic similarity (ordering accuracy)")
-        lines.append("  in the fake benchmark also achieve better CRW correction?")
+        lines.append("  Do models that score high on the fake benchmark also achieve")
+        lines.append("  better CRW correction? Correlating all 3 benchmark metrics")
+        lines.append("  against all sweep performance metrics.")
+        lines.append("")
+        lines.append("  Benchmark metrics (direction):")
+        lines.append("    ordering_accuracy  — higher is better")
+        lines.append("    negation_invariance — lower is better (ratio)")
+        lines.append("    topic_coherence     — lower is better (ratio)")
         lines.append("")
 
         # Merge benchmark with aggregated ranking
@@ -654,39 +662,106 @@ def generate_narrative_report(
                     "model": agg_row["model"],
                     "avg_composite_rank": agg_row["avg_composite_rank"],
                     "avg_max_jaccard": agg_row["avg_max_jaccard"],
+                    "avg_max_spearman": agg_row["avg_max_spearman"],
+                    "avg_max_kendall": agg_row["avg_max_kendall"],
                     "ordering_accuracy": bench_row["ordering_accuracy"].values[0],
+                    "negation_invariance": bench_row["negation_invariance"].values[0],
+                    "topic_coherence": bench_row["topic_coherence"].values[0],
                 })
 
         if len(merged_rows) >= 3:
             merged = pd.DataFrame(merged_rows)
 
-            # Spearman correlation: ordering accuracy vs avg_max_jaccard
-            # (higher accuracy should correlate with higher jaccard)
-            rho_j, p_j = stats.spearmanr(
-                merged["ordering_accuracy"], merged["avg_max_jaccard"]
-            )
-            # Spearman: ordering accuracy vs composite rank
-            # (higher accuracy should correlate with LOWER rank = better)
-            rho_r, p_r = stats.spearmanr(
-                merged["ordering_accuracy"], merged["avg_composite_rank"]
-            )
+            bench_metrics = ["ordering_accuracy", "negation_invariance", "topic_coherence"]
+            sweep_metrics = ["avg_max_jaccard", "avg_max_spearman", "avg_max_kendall",
+                             "avg_composite_rank"]
 
-            lines.append(f"  Spearman correlation (ordering_accuracy vs avg_max_jaccard):")
-            lines.append(f"    rho = {rho_j:.3f}, p = {p_j:.4f}")
-            lines.append(f"  Spearman correlation (ordering_accuracy vs avg_composite_rank):")
-            lines.append(f"    rho = {rho_r:.3f}, p = {p_r:.4f}")
-            lines.append(f"    (negative rho expected: higher accuracy -> lower/better rank)")
+            # Compute full correlation matrix
+            corr_rows = []
+            for bm in bench_metrics:
+                for sm in sweep_metrics:
+                    rho, p = stats.spearmanr(merged[bm], merged[sm])
+                    corr_rows.append({
+                        "benchmark_metric": bm,
+                        "sweep_metric": sm,
+                        "spearman_rho": rho,
+                        "p_value": p,
+                    })
+            corr_df = pd.DataFrame(corr_rows)
+
+            # Save CSV
+            corr_csv_path = outpath.parent / "benchmark_sweep_correlation.csv"
+            corr_df.to_csv(corr_csv_path, index=False)
+            print(f"  -> {corr_csv_path.name}")
+
+            # Save heatmap
+            rho_matrix = corr_df.pivot(
+                index="benchmark_metric", columns="sweep_metric", values="spearman_rho"
+            )
+            p_matrix = corr_df.pivot(
+                index="benchmark_metric", columns="sweep_metric", values="p_value"
+            )
+            # Reorder rows and columns
+            rho_matrix = rho_matrix.loc[bench_metrics, sweep_metrics]
+            p_matrix = p_matrix.loc[bench_metrics, sweep_metrics]
+
+            # Build annotation strings: "rho\n(p=...)" with significance stars
+            annot = np.empty_like(rho_matrix, dtype=object)
+            for i, bm in enumerate(bench_metrics):
+                for j, sm in enumerate(sweep_metrics):
+                    r = rho_matrix.loc[bm, sm]
+                    p = p_matrix.loc[bm, sm]
+                    stars = "***" if p < 0.001 else "**" if p < 0.01 else "*" if p < 0.05 else ""
+                    annot[i, j] = f"{r:.3f}{stars}\n(p={p:.3f})"
+
+            fig, ax = plt.subplots(figsize=(8, 4))
+            sns.heatmap(
+                rho_matrix.astype(float), annot=annot, fmt="",
+                cmap="RdBu_r", center=0, vmin=-1, vmax=1,
+                linewidths=0.5, ax=ax,
+                xticklabels=[s.replace("avg_", "").replace("_", " ") for s in sweep_metrics],
+                yticklabels=bench_metrics,
+            )
+            ax.set_title("Benchmark vs Sweep: Spearman Correlations")
+            fig.tight_layout()
+            plot_path = outpath.parent / "benchmark_sweep_correlation.png"
+            fig.savefig(plot_path, dpi=150)
+            plt.close(fig)
+            print(f"  -> {plot_path.name}")
+
+            # Write correlation matrix to report
+            lines.append("  Spearman correlation matrix (benchmark × sweep):")
+            lines.append("")
+            header = f"  {'':24s}" + "".join(f"  {s:>16s}" for s in sweep_metrics)
+            lines.append(header)
+            for bm in bench_metrics:
+                row_str = f"  {bm:24s}"
+                for sm in sweep_metrics:
+                    r = rho_matrix.loc[bm, sm]
+                    p = p_matrix.loc[bm, sm]
+                    sig = "*" if p < 0.05 else " "
+                    row_str += f"  {r:>+7.3f} (p={p:.3f}){sig}"
+                lines.append(row_str)
+            lines.append("")
+            lines.append("  * = significant at p < 0.05")
+            lines.append(f"  Full matrix saved to: {corr_csv_path.name}")
+            lines.append(f"  Heatmap saved to: {plot_path.name}")
             lines.append("")
 
-            lines.append(f"  {'Model':22s}  {'Ordering Acc':>12s}  {'Avg Jaccard':>11s}  "
-                         f"{'Comp Rank':>9s}")
+            # Model table with all benchmark metrics
+            lines.append(f"  {'Model':22s}  {'Ord Acc':>8s}  {'Neg Inv':>8s}  {'Top Coh':>8s}  "
+                         f"{'Jaccard':>8s}  {'Spearman':>8s}  {'Kendall':>8s}  {'Rank':>5s}")
             merged_sorted = merged.sort_values("ordering_accuracy", ascending=False)
             for _, row in merged_sorted.iterrows():
                 lines.append(
                     f"  {row['model']:22s}  "
-                    f"{row['ordering_accuracy']:12.1f}%  "
-                    f"{row['avg_max_jaccard']:11.4f}  "
-                    f"{row['avg_composite_rank']:9.1f}"
+                    f"{row['ordering_accuracy']:7.1f}%  "
+                    f"{row['negation_invariance']:8.3f}  "
+                    f"{row['topic_coherence']:8.3f}  "
+                    f"{row['avg_max_jaccard']:8.4f}  "
+                    f"{row['avg_max_spearman']:8.4f}  "
+                    f"{row['avg_max_kendall']:8.4f}  "
+                    f"{row['avg_composite_rank']:5.1f}"
                 )
         else:
             lines.append("  Not enough matched models for correlation analysis.")

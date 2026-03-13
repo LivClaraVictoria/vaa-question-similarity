@@ -1,12 +1,12 @@
 Experiment 1 Analysis: Alpha Sweep Compilation
 (Generation 2: top5impact_n4, 3 clone conditions x 10 models)
-Generated: 2026-02-28 14:05
+Generated: 2026-03-13 16:39
 
 ================================================================================
 1. Data Overview
 ================================================================================
   Models: 10
-  Clone conditions: 3 (Easy Paraphrase, Negation + Easy Paraphrase, Mixed)
+  Clone conditions: 6 (Easy Paraphrase, Negation + Easy Paraphrase, Mixed)
   Alpha values: 21
   Baseline (no CRW):
     Jaccard:  0.4412
@@ -135,26 +135,37 @@ Clone: Mixed
 5. Fake Benchmark Correlation
 ================================================================================
 
-  Do models that score high on topic similarity (ordering accuracy)
-  in the fake benchmark also achieve better CRW correction?
+  Do models that score high on the fake benchmark also achieve
+  better CRW correction? Correlating all 3 benchmark metrics
+  against all sweep performance metrics.
 
-  Spearman correlation (ordering_accuracy vs avg_max_jaccard):
-    rho = 0.648, p = 0.0425
-  Spearman correlation (ordering_accuracy vs avg_composite_rank):
-    rho = -0.644, p = 0.0443
-    (negative rho expected: higher accuracy -> lower/better rank)
+  Benchmark metrics (direction):
+    ordering_accuracy  — higher is better
+    negation_invariance — lower is better (ratio)
+    topic_coherence     — lower is better (ratio)
 
-  Model                   Ordering Acc  Avg Jaccard  Comp Rank
-  Jina v3                         99.7%       0.6281        1.7
-  E5-Instruct                     99.4%       0.6313        1.4
-  Qwen3                           98.5%       0.6216        2.9
-  E5-Asym-Instruct                94.0%       0.4863       10.0
-  Nomic v2                        93.2%       0.5684        7.0
-  SBERT                           92.3%       0.5961        4.7
-  GTE                             90.2%       0.5873        4.7
-  BGE-M3                          88.1%       0.5791        5.9
-  E5-Asym                         85.1%       0.5246        9.0
-  E5                              80.4%       0.5472        7.8
+  Spearman correlation matrix (benchmark × sweep):
+
+                             avg_max_jaccard  avg_max_spearman   avg_max_kendall  avg_composite_rank
+  ordering_accuracy          +0.648 (p=0.043)*   +0.648 (p=0.043)*   +0.648 (p=0.043)*   -0.644 (p=0.044)*
+  negation_invariance        -0.879 (p=0.001)*   -0.879 (p=0.001)*   -0.879 (p=0.001)*   +0.857 (p=0.002)*
+  topic_coherence            -0.988 (p=0.000)*   -0.988 (p=0.000)*   -0.988 (p=0.000)*   +0.985 (p=0.000)*
+
+  * = significant at p < 0.05
+  Full matrix saved to: benchmark_sweep_correlation.csv
+  Heatmap saved to: benchmark_sweep_correlation.png
+
+  Model                    Ord Acc   Neg Inv   Top Coh   Jaccard  Spearman   Kendall   Rank
+  Jina v3                    99.7%     0.109     0.409    0.6281    0.9651    0.8717    1.7
+  E5-Instruct                99.4%     0.198     0.368    0.6313    0.9651    0.8724    1.4
+  Qwen3                      98.5%     0.146     0.459    0.6216    0.9619    0.8667    2.9
+  E5-Asym-Instruct           94.0%     0.853     0.883    0.4863    0.9179    0.7931   10.0
+  Nomic v2                   93.2%     0.220     0.631    0.5684    0.9482    0.8404    7.0
+  SBERT                      92.3%     0.134     0.587    0.5961    0.9565    0.8560    4.7
+  GTE                        90.2%     0.247     0.604    0.5873    0.9540    0.8509    4.7
+  BGE-M3                     88.1%     0.320     0.674    0.5791    0.9505    0.8447    5.9
+  E5-Asym                    85.1%     0.637     0.808    0.5246    0.9337    0.8169    9.0
+  E5                         80.4%     0.336     0.722    0.5472    0.9418    0.8291    7.8
 
 ================================================================================
 End of report

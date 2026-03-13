@@ -1,0 +1,173 @@
+================================================================================
+PARTY VISIBILITY IMPACT — COMPILED REPORT
+================================================================================
+Generated: 2026-03-13 16:50
+Clone type: identical, n_clones: 4
+Top-k (n): 36
+Questions tested: 75
+Major parties: SP, Green, GLP, Centre, FDP, SVP
+
+TOP 10 QUESTIONS BY MAX PARTY IMPACT (abs Δ visibility):
+--------------------------------------------------------------------------------
+  1. Q32245 — max |Δ| = 1.86pp (Centre)
+     [Energy & transport] "Should busy sections of highways be widened?"
+             SP: -0.56pp
+          Green: -0.78pp
+            GLP: -0.43pp
+         Centre: +1.86pp
+            FDP: +0.05pp
+
+  2. Q32228 — max |Δ| = 1.59pp (Centre)
+     [Immigration & integration] "Should the conditions for naturalization be relaxed (e.g., shorte"
+             SP: -0.67pp
+          Green: -0.64pp
+            GLP: -1.15pp
+         Centre: +1.59pp
+            FDP: +0.08pp
+            SVP: +0.19pp
+
+  3. Q32262 — max |Δ| = 1.51pp (Centre)
+     [Democracy, Media & Digitalization] "Are you in favour of lowering the voting age to 16?"
+             SP: -0.66pp
+          Green: -0.77pp
+            GLP: -1.33pp
+         Centre: +1.51pp
+            FDP: +0.16pp
+            SVP: +0.15pp
+
+  4. Q32222 — max |Δ| = 1.28pp (GLP)
+     [Health] "Should insured persons contribute more to health care costs (e.g."
+             SP: -0.28pp
+          Green: -0.19pp
+            GLP: +1.28pp
+         Centre: -0.27pp
+            FDP: +0.08pp
+            SVP: +0.03pp
+
+  5. Q32242 — max |Δ| = 1.25pp (GLP)
+     [Economy & labour] "Should private households be free to choose their electricity sup"
+             SP: -1.02pp
+          Green: -0.02pp
+            GLP: +1.25pp
+         Centre: -0.04pp
+            FDP: +0.04pp
+
+  6. Q32233 — max |Δ| = 1.19pp (GLP)
+     [Society & ethics] "Would you be in favour of doctors being allowed to administer dir"
+             SP: +0.25pp
+          Green: +0.25pp
+            GLP: +1.19pp
+         Centre: +0.26pp
+            FDP: +0.15pp
+            SVP: +0.23pp
+
+  7. Q32220 — max |Δ| = 1.17pp (SP)
+     [Health] "Should compulsory vaccination of children be introduced based on "
+             SP: +1.17pp
+          Green: -0.06pp
+            GLP: -0.83pp
+         Centre: -0.56pp
+            FDP: -0.19pp
+            SVP: +0.02pp
+
+  8. Q32248 — max |Δ| = 1.08pp (SP)
+     [Energy & transport] "Do you think it's fair that environmental and landscape protectio"
+             SP: +1.08pp
+          Green: -0.86pp
+            GLP: +0.08pp
+         Centre: -0.15pp
+            FDP: +0.04pp
+            SVP: -0.05pp
+
+  9. Q32261 — max |Δ| = 1.07pp (SP)
+     [Democracy, Media & Digitalization] "A popular initiative aims to reduce television and radio fees (CH"
+             SP: -1.07pp
+          Green: -0.34pp
+            GLP: -0.31pp
+         Centre: -0.43pp
+            FDP: +0.31pp
+            SVP: +0.17pp
+
+  10. Q32236 — max |Δ| = 0.98pp (Centre)
+     [Finances & taxes] "Do you support tax cuts at the federal level over the next four y"
+             SP: -0.92pp
+          Green: -0.40pp
+            GLP: +0.46pp
+         Centre: +0.98pp
+            FDP: -0.02pp
+            SVP: -0.03pp
+
+================================================================================
+PER-PARTY TOP-5 BENEFITING QUESTIONS:
+--------------------------------------------------------------------------------
+
+  SP:
+    1. Q32220 (+1.17pp) [Health] "Should compulsory vaccination of children be "
+    2. Q32248 (+1.08pp) [Energy & transport] "Do you think it's fair that environmental and"
+    3. Q32240 (+0.85pp) [Economy & labour] "Are you in favor of introducing a minimum wag"
+    4. Q32217 (+0.73pp) [Welfare state & family] "As part of the reform of the BVG (occupationa"
+    5. Q32270 (+0.65pp) [Foreign trade & foreign policy] "Should Switzerland strive for a comprehensive"
+
+  Green:
+    1. Q32217 (+0.69pp) [Welfare state & family] "As part of the reform of the BVG (occupationa"
+    2. Q32240 (+0.60pp) [Economy & labour] "Are you in favor of introducing a minimum wag"
+    3. Q32251 (+0.47pp) [Energy & transport] "Would you be in favor of the introduction of "
+    4. Q32221 (+0.38pp) [Health] "Are you in favor of the introduction of a tax"
+    5. Q32266 (+0.28pp) [Security & military] "Should the Federal Council be allowed to auth"
+
+  GLP:
+    1. Q32222 (+1.28pp) [Health] "Should insured persons contribute more to hea"
+    2. Q32242 (+1.25pp) [Economy & labour] "Should private households be free to choose t"
+    3. Q32233 (+1.19pp) [Society & ethics] "Would you be in favour of doctors being allow"
+    4. Q32214 (+0.93pp) [Welfare state & family] "Do you support an increase in the retirement "
+    5. Q32237 (+0.85pp) [Finances & taxes] "Should married couples be taxed separately (i"
+
+  Centre:
+    1. Q32245 (+1.86pp) [Energy & transport] "Should busy sections of highways be widened?"
+    2. Q32228 (+1.59pp) [Immigration & integration] "Should the conditions for naturalization be r"
+    3. Q32262 (+1.51pp) [Democracy, Media & Digitalization] "Are you in favour of lowering the voting age "
+    4. Q32236 (+0.98pp) [Finances & taxes] "Do you support tax cuts at the federal level "
+    5. Q32239 (+0.82pp) [Finances & taxes] "Should the differences between cantons with h"
+
+  FDP:
+    1. Q32230 (+0.69pp) [Immigration & integration] "Do you support efforts to house asylum seeker"
+    2. Q32249 (+0.64pp) [Energy & transport] "Should the construction of new nuclear power "
+    3. Q32261 (+0.31pp) [Democracy, Media & Digitalization] "A popular initiative aims to reduce televisio"
+    4. Q32271 (+0.23pp) [Foreign trade & foreign policy] "Should Swiss companies be obliged to ensure t"
+    5. Q32244 (+0.22pp) [Economy & labour] "Are you in favor of stricter controls on equa"
+
+  SVP:
+    1. Q32230 (+0.50pp) [Immigration & integration] "Do you support efforts to house asylum seeker"
+    2. Q32227 (+0.34pp) [Education] "Should the state be more committed to equal e"
+    3. Q32233 (+0.23pp) [Society & ethics] "Would you be in favour of doctors being allow"
+    4. Q32234 (+0.20pp) [Society & ethics] "Should a third official gender be introduced "
+    5. Q32249 (+0.20pp) [Energy & transport] "Should the construction of new nuclear power "
+
+================================================================================
+TOPIC-PARTY ASSOCIATION (Kruskal-Wallis):
+--------------------------------------------------------------------------------
+     Party    H-stat   p-value   Sig                       Top Topic                    Bottom Topic
+        SP     10.93    0.6170  n.s.                          Health                Finances & taxes
+     Green     20.28    0.0883  n.s.                Economy & labour       Immigration & integration
+       GLP     16.54    0.2214  n.s.                Finances & taxes  Democracy, Media & Digitalization
+    Centre     19.82    0.0997  n.s.       Immigration & integration          Welfare state & family
+       FDP     13.40    0.4171  n.s.       Immigration & integration                          Health
+       SVP     21.52    0.0633  n.s.       Immigration & integration             Nature conservation
+
+================================================================================
+PREDICTOR CORRELATIONS (Spearman vs max_abs_delta):
+--------------------------------------------------------------------------------
+  combined_var               r=+0.621  p=0.0000
+  voter_var                  r=+0.604  p=0.0000
+  candidate_var              r=+0.598  p=0.0000
+  voter_nan_pct              r=-0.358  p=0.0016
+  question_order             r=-0.576  p=0.0000
+  voter_avg_abs_corr         r=-0.197  p=0.0903
+
+================================================================================
+FULL STATISTICS:
+  Mean max_abs_delta:   0.49pp
+  Median max_abs_delta: 0.36pp
+  Max max_abs_delta:    1.86pp
+  Min max_abs_delta:    0.07pp
+================================================================================

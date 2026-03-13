@@ -1,0 +1,109 @@
+================================================================================
+PARTY VISIBILITY IMPACT — FDP REPORT
+================================================================================
+Generated: 2026-03-13 16:51
+Clone type: identical, n_clones: 4
+Top-k (n): 36
+Questions tested: 75
+
+TOP 10 QUESTIONS BENEFITING FDP:
+--------------------------------------------------------------------------------
+  1. Q32230 — Δ = +0.69pp
+     [Immigration & integration] "Do you support efforts to house asylum seekers in centers outside"
+     Other parties: SP: +0.04pp, Green: -0.23pp, GLP: -0.29pp, Centre: -0.73pp, SVP: +0.50pp
+
+  2. Q32249 — Δ = +0.64pp
+     [Energy & transport] "Should the construction of new nuclear power plants in Switzerlan"
+     Other parties: SP: -0.30pp, Green: -0.34pp, GLP: -0.49pp, Centre: -0.05pp, SVP: +0.20pp
+
+  3. Q32261 — Δ = +0.31pp
+     [Democracy, Media & Digitalization] "A popular initiative aims to reduce television and radio fees (CH"
+     Other parties: SP: -1.07pp, Green: -0.34pp, GLP: -0.31pp, Centre: -0.43pp, SVP: +0.17pp
+
+  4. Q32271 — Δ = +0.23pp
+     [Foreign trade & foreign policy] "Should Swiss companies be obliged to ensure that their subsidiari"
+     Other parties: SP: -0.03pp, Green: +0.04pp, GLP: -0.28pp, Centre: +0.13pp
+
+  5. Q32244 — Δ = +0.22pp
+     [Economy & labour] "Are you in favor of stricter controls on equal pay for women and "
+     Other parties: SP: +0.05pp, Green: +0.07pp, GLP: +0.23pp, Centre: -0.12pp, SVP: +0.04pp
+
+  6. Q32241 — Δ = +0.20pp
+     [Economy & labour] "Do you support stricter regulations for the financial sector (e.g"
+     Other parties: SP: +0.01pp, Green: -0.01pp, GLP: +0.31pp, Centre: -0.25pp
+
+  7. Q32237 — Δ = +0.20pp
+     [Finances & taxes] "Should married couples be taxed separately (individual taxation)?"
+     Other parties: SP: +0.15pp, Green: +0.26pp, GLP: +0.85pp, Centre: -0.68pp, SVP: +0.08pp
+
+  8. Q32215 — Δ = +0.18pp
+     [Welfare state & family] "Should the federal government allocate more funding for health in"
+     Other parties: SP: -0.23pp, GLP: +0.75pp, Centre: -0.17pp, SVP: -0.11pp
+
+  9. Q32262 — Δ = +0.16pp
+     [Democracy, Media & Digitalization] "Are you in favour of lowering the voting age to 16?"
+     Other parties: SP: -0.66pp, Green: -0.77pp, GLP: -1.33pp, Centre: +1.51pp, SVP: +0.15pp
+
+  10. Q32233 — Δ = +0.15pp
+     [Society & ethics] "Would you be in favour of doctors being allowed to administer dir"
+     Other parties: SP: +0.25pp, Green: +0.25pp, GLP: +1.19pp, Centre: +0.26pp, SVP: +0.23pp
+
+BOTTOM 5 QUESTIONS (MOST HARMFUL TO FDP):
+--------------------------------------------------------------------------------
+  1. Q32223 — Δ = -0.32pp
+     [Health] "Should the Federal Council's ability to restrict private and econ"
+
+  2. Q32264 — Δ = -0.31pp
+     [Security & military] "Are you in favor of expanding the army's target number of soldier"
+
+  3. Q32240 — Δ = -0.30pp
+     [Economy & labour] "Are you in favor of introducing a minimum wage of CHF 4,000 for a"
+
+  4. Q32274 — Δ = -0.29pp
+     [Values] "What is your position the following statement: "Someone who is no"
+
+  5. Q32224 — Δ = -0.28pp
+     [Health] "Should the federal government be given the authority to determine"
+
+================================================================================
+TOPIC BREAKDOWN FOR FDP:
+--------------------------------------------------------------------------------
+  Topic                                         Mean    Median       Std     N
+--------------------------------------------------------------------------------
+  Immigration & integration                   +0.14    +0.01     0.38     4
+  Energy & transport                          +0.09    +0.04     0.25     7
+  Foreign trade & foreign policy              +0.06    +0.09     0.13     5
+  Democracy, Media & Digitalization           +0.04    +0.03     0.18     6
+  Economy & labour                            +0.02    +0.04     0.21     5
+  Federal budget                              +0.01    +0.00     0.03     8
+  Finances & taxes                            -0.00    -0.01     0.16     4
+  Welfare state & family                      -0.03    -0.03     0.17     6
+  Society & ethics                            -0.03    -0.02     0.16     4
+  Security & military                         -0.04    +0.08     0.20     5
+  Nature conservation                         -0.04    -0.06     0.08     6
+  Education                                   -0.07    -0.04     0.08     3
+  Values                                      -0.10    -0.07     0.10     7
+  Health                                      -0.17    -0.19     0.16     5
+
+  Kruskal-Wallis test: H=13.40, p=0.4171 (n.s.)
+  Not significant: topic does not significantly predict visibility delta for FDP.
+
+================================================================================
+PREDICTOR CORRELATIONS (Spearman vs delta_FDP):
+--------------------------------------------------------------------------------
+  combined_var               r=-0.015  p=0.8961
+  voter_var                  r=-0.052  p=0.6570
+  candidate_var              r=+0.018  p=0.8766
+  voter_nan_pct              r=+0.032  p=0.7865
+  question_order             r=+0.123  p=0.2931
+  voter_avg_abs_corr         r=+0.105  p=0.3680
+  candidate_avg_abs_corr     r=+0.207  p=0.0747
+
+================================================================================
+SUMMARY STATISTICS (delta_FDP):
+  Mean:   -0.01pp
+  Median: -0.01pp
+  Std:    0.18pp
+  Max:    +0.69pp
+  Min:    -0.32pp
+================================================================================

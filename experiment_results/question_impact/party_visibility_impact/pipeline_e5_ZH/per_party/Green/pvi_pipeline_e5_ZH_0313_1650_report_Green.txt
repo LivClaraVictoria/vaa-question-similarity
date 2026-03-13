@@ -1,0 +1,109 @@
+================================================================================
+PARTY VISIBILITY IMPACT — GREEN REPORT
+================================================================================
+Generated: 2026-03-13 16:50
+Clone type: identical, n_clones: 4
+Top-k (n): 36
+Questions tested: 75
+
+TOP 10 QUESTIONS BENEFITING GREEN:
+--------------------------------------------------------------------------------
+  1. Q32217 — Δ = +0.69pp
+     [Welfare state & family] "As part of the reform of the BVG (occupational pension plan), pen"
+     Other parties: SP: +0.73pp, GLP: -0.69pp, Centre: -0.63pp, FDP: -0.25pp, SVP: +0.04pp
+
+  2. Q32240 — Δ = +0.60pp
+     [Economy & labour] "Are you in favor of introducing a minimum wage of CHF 4,000 for a"
+     Other parties: SP: +0.85pp, GLP: -0.88pp, Centre: -0.15pp, FDP: -0.30pp, SVP: -0.20pp
+
+  3. Q32251 — Δ = +0.47pp
+     [Energy & transport] "Would you be in favor of the introduction of increasing electrici"
+     Other parties: SP: -0.26pp, GLP: +0.33pp, Centre: -0.30pp, FDP: -0.12pp, SVP: -0.03pp
+
+  4. Q32221 — Δ = +0.38pp
+     [Health] "Are you in favor of the introduction of a tax on foods containing"
+     Other parties: SP: -0.06pp, GLP: +0.02pp, Centre: -0.24pp, FDP: -0.16pp, SVP: -0.10pp
+
+  5. Q32266 — Δ = +0.28pp
+     [Security & military] "Should the Federal Council be allowed to authorize other states t"
+     Other parties: SP: +0.03pp, GLP: -0.28pp, Centre: -0.02pp, FDP: +0.08pp, SVP: -0.13pp
+
+  6. Q32237 — Δ = +0.26pp
+     [Finances & taxes] "Should married couples be taxed separately (individual taxation)?"
+     Other parties: SP: +0.15pp, GLP: +0.85pp, Centre: -0.68pp, FDP: +0.20pp, SVP: +0.08pp
+
+  7. Q32233 — Δ = +0.25pp
+     [Society & ethics] "Would you be in favour of doctors being allowed to administer dir"
+     Other parties: SP: +0.25pp, GLP: +1.19pp, Centre: +0.26pp, FDP: +0.15pp, SVP: +0.23pp
+
+  8. Q32219 — Δ = +0.25pp
+     [Welfare state & family] "Should the federal government provide more financial support for "
+     Other parties: SP: +0.36pp, GLP: -0.41pp, Centre: -0.54pp, FDP: -0.06pp, SVP: -0.02pp
+
+  9. Q32263 — Δ = +0.23pp
+     [Democracy, Media & Digitalization] "Should it be possible to hold a referendum on federal spending ab"
+     Other parties: SP: -0.25pp, GLP: -0.86pp, Centre: +0.20pp, FDP: -0.09pp, SVP: -0.01pp
+
+  10. Q32243 — Δ = +0.22pp
+     [Economy & labour] "Should housing construction regulations be relaxed (e.g., noise p"
+     Other parties: SP: +0.36pp, GLP: -0.34pp, Centre: -0.26pp, FDP: -0.08pp, SVP: -0.13pp
+
+BOTTOM 5 QUESTIONS (MOST HARMFUL TO GREEN):
+--------------------------------------------------------------------------------
+  1. Q32248 — Δ = -0.86pp
+     [Energy & transport] "Do you think it's fair that environmental and landscape protectio"
+
+  2. Q32245 — Δ = -0.78pp
+     [Energy & transport] "Should busy sections of highways be widened?"
+
+  3. Q32262 — Δ = -0.77pp
+     [Democracy, Media & Digitalization] "Are you in favour of lowering the voting age to 16?"
+
+  4. Q32228 — Δ = -0.64pp
+     [Immigration & integration] "Should the conditions for naturalization be relaxed (e.g., shorte"
+
+  5. Q32234 — Δ = -0.48pp
+     [Society & ethics] "Should a third official gender be introduced alongside "female" a"
+
+================================================================================
+TOPIC BREAKDOWN FOR GREEN:
+--------------------------------------------------------------------------------
+  Topic                                         Mean    Median       Std     N
+--------------------------------------------------------------------------------
+  Economy & labour                            +0.17    +0.07     0.26     5
+  Welfare state & family                      +0.11    -0.02     0.32     6
+  Health                                      +0.05    +0.04     0.21     5
+  Security & military                         +0.04    +0.04     0.17     5
+  Education                                   -0.00    -0.01     0.04     3
+  Nature conservation                         -0.01    -0.00     0.11     6
+  Society & ethics                            -0.06    +0.00     0.35     4
+  Federal budget                              -0.08    -0.04     0.11     8
+  Values                                      -0.12    -0.16     0.11     7
+  Democracy, Media & Digitalization           -0.14    -0.07     0.37     6
+  Foreign trade & foreign policy              -0.15    -0.19     0.16     5
+  Finances & taxes                            -0.18    -0.30     0.31     4
+  Energy & transport                          -0.29    -0.34     0.46     7
+  Immigration & integration                   -0.34    -0.27     0.21     4
+
+  Kruskal-Wallis test: H=20.28, p=0.0883 (n.s.)
+  Not significant: topic does not significantly predict visibility delta for Green.
+
+================================================================================
+PREDICTOR CORRELATIONS (Spearman vs delta_Green):
+--------------------------------------------------------------------------------
+  combined_var               r=-0.214  p=0.0654
+  voter_var                  r=-0.273  p=0.0178
+  candidate_var              r=-0.104  p=0.3766
+  voter_nan_pct              r=+0.159  p=0.1722
+  question_order             r=-0.088  p=0.4518
+  voter_avg_abs_corr         r=-0.246  p=0.0337
+  candidate_avg_abs_corr     r=-0.313  p=0.0062
+
+================================================================================
+SUMMARY STATISTICS (delta_Green):
+  Mean:   -0.07pp
+  Median: -0.04pp
+  Std:    0.27pp
+  Max:    +0.69pp
+  Min:    -0.86pp
+================================================================================
