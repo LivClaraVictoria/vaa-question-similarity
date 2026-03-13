@@ -1,0 +1,148 @@
+======================================================================
+DISTANCE ANALYSIS: dist_2023_E5-INSTRUCT_ba053f9f59a3
+======================================================================
+  Questions:  75
+  Pairs:      2775
+  Has clones: False
+
+  Statistic                 Value
+  --------------------------------
+  mean                     0.4387
+  median                   0.4466
+  std                      0.0434
+  min                      0.1800
+  max                      0.5391
+  p5                       0.3570
+  p10                      0.3820
+  p25                      0.4158
+  p75                      0.4685
+  p90                      0.4863
+  p95                      0.4954
+
+======================================================================
+TOP 20 CLOSEST PAIRS
+======================================================================
+     32215 —    32222  d=0.1800  Welfare state & family / Health
+    Q1: Should the federal government allocate more f
+    Q2: Should insured persons contribute more to hea
+     32242 —    32251  d=0.2019  Economy & labour / Energy & transport
+    Q1: Should private households be free to choose t
+    Q2: Would you be in favor of the introduction of 
+     32270 —    32272  d=0.2187  Foreign trade & foreign policy / Foreign trade & foreign policy
+    Q1: Should Switzerland strive for a comprehensive
+    Q2: Should Switzerland terminate the Bilateral Ag
+     32284 —    32285  d=0.2222  Federal budget / Federal budget
+    Q1: Should the federal government spend more or l
+    Q2: Should the federal government spend more or l
+     32268 —    32272  d=0.2282  Security & military / Foreign trade & foreign policy
+    Q1: Should Switzerland terminate the Schengen agr
+    Q2: Should Switzerland terminate the Bilateral Ag
+     32216 —    32217  d=0.2321  Welfare state & family / Welfare state & family
+    Q1: For married couples, the pension is currently
+    Q2: As part of the reform of the BVG (occupationa
+     32272 —    32273  d=0.2428  Foreign trade & foreign policy / Foreign trade & foreign policy
+    Q1: Should Switzerland terminate the Bilateral Ag
+    Q2: Should Switzerland return to a strict interpr
+     32218 —    32277  d=0.2610  Welfare state & family / Values
+    Q1: Should paid parental leave be increased beyon
+    Q2: What is your position the following statement
+     32266 —    32273  d=0.2614  Security & military / Foreign trade & foreign policy
+    Q1: Should the Federal Council be allowed to auth
+    Q2: Should Switzerland return to a strict interpr
+     32229 —    32272  d=0.2625  Immigration & integration / Foreign trade & foreign policy
+    Q1: Should more qualified workers from non-EU/EFT
+    Q2: Should Switzerland terminate the Bilateral Ag
+     32248 —    32280  d=0.2631  Energy & transport / Values
+    Q1: Do you think it's fair that environmental and
+    Q2: What is your position the following statement
+     32286 —    32287  d=0.2771  Federal budget / Federal budget
+    Q1: Should the federal government spend more or l
+    Q2: Should the federal government spend more or l
+     32219 —    32243  d=0.2783  Welfare state & family / Economy & labour
+    Q1: Should the federal government provide more fi
+    Q2: Should housing construction regulations be re
+     32265 —    32266  d=0.2795  Security & military / Security & military
+    Q1: Should the Swiss Armed Forces expand their co
+    Q2: Should the Federal Council be allowed to auth
+     32229 —    32231  d=0.2817  Immigration & integration / Immigration & integration
+    Q1: Should more qualified workers from non-EU/EFT
+    Q2: Should foreign nationals who have lived in Sw
+     32268 —    32273  d=0.2833  Security & military / Foreign trade & foreign policy
+    Q1: Should Switzerland terminate the Schengen agr
+    Q2: Should Switzerland return to a strict interpr
+     32229 —    32271  d=0.2838  Immigration & integration / Foreign trade & foreign policy
+    Q1: Should more qualified workers from non-EU/EFT
+    Q2: Should Swiss companies be obliged to ensure t
+     32229 —    32240  d=0.2856  Immigration & integration / Economy & labour
+    Q1: Should more qualified workers from non-EU/EFT
+    Q2: Are you in favor of introducing a minimum wag
+     32215 —    32224  d=0.2878  Welfare state & family / Health
+    Q1: Should the federal government allocate more f
+    Q2: Should the federal government be given the au
+     32271 —    32272  d=0.2916  Foreign trade & foreign policy / Foreign trade & foreign policy
+    Q1: Should Swiss companies be obliged to ensure t
+    Q2: Should Switzerland terminate the Bilateral Ag
+
+======================================================================
+TOP 20 MOST DISTANT PAIRS
+======================================================================
+     32227 —    32265  d=0.5391
+    Q1: Should the state be more committed to equal e
+    Q2: Should the Swiss Armed Forces expand their co
+     32227 —    32254  d=0.5256
+    Q1: Should the state be more committed to equal e
+    Q2: Are you in favour of stricter animal welfare 
+     32265 —    32276  d=0.5230
+    Q1: Should the Swiss Armed Forces expand their co
+    Q2: What is your position the following statement
+     32227 —    32249  d=0.5216
+    Q1: Should the state be more committed to equal e
+    Q2: Should the construction of new nuclear power 
+     32233 —    32245  d=0.5207
+    Q1: Would you be in favour of doctors being allow
+    Q2: Should busy sections of highways be widened?
+     32227 —    32233  d=0.5207
+    Q1: Should the state be more committed to equal e
+    Q2: Would you be in favour of doctors being allow
+     32245 —    32266  d=0.5190
+    Q1: Should busy sections of highways be widened?
+    Q2: Should the Federal Council be allowed to auth
+     32239 —    32256  d=0.5186
+    Q1: Should the differences between cantons with h
+    Q2: Would you support a ban on single-use plastic
+     32231 —    32257  d=0.5164
+    Q1: Should foreign nationals who have lived in Sw
+    Q2: Are you in favour of government measures to m
+     32228 —    32257  d=0.5161
+    Q1: Should the conditions for naturalization be r
+    Q2: Are you in favour of government measures to m
+     32265 —    32277  d=0.5154
+    Q1: Should the Swiss Armed Forces expand their co
+    Q2: What is your position the following statement
+     32231 —    32245  d=0.5152
+    Q1: Should foreign nationals who have lived in Sw
+    Q2: Should busy sections of highways be widened?
+     32214 —    32266  d=0.5149
+    Q1: Do you support an increase in the retirement 
+    Q2: Should the Federal Council be allowed to auth
+     32227 —    32258  d=0.5143
+    Q1: Should the state be more committed to equal e
+    Q2: Should the Swiss mobile network be equipped t
+     32254 —    32265  d=0.5141
+    Q1: Are you in favour of stricter animal welfare 
+    Q2: Should the Swiss Armed Forces expand their co
+     32217 —    32245  d=0.5141
+    Q1: As part of the reform of the BVG (occupationa
+    Q2: Should busy sections of highways be widened?
+     32237 —    32265  d=0.5137
+    Q1: Should married couples be taxed separately (i
+    Q2: Should the Swiss Armed Forces expand their co
+     32253 —    32265  d=0.5137
+    Q1: Should direct payments only be granted to far
+    Q2: Should the Swiss Armed Forces expand their co
+     32232 —    32239  d=0.5133
+    Q1: Should cannabis use be legalized? [BePart que
+    Q2: Should the differences between cantons with h
+     32239 —    32260  d=0.5133
+    Q1: Should the differences between cantons with h
+    Q2: Are you in favor of stronger regulation of th
