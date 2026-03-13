@@ -10,8 +10,8 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 PROJECT_DIR="/itet-stor/liweiss/net_scratch/vaa-question-similarity"
 
 # Reuse the existing sweep directory (don't create a new one)
-export SWEEP_DIR="${PROJECT_DIR}/experiment_results/exp1/question_alpha_sweep/workers_allct_20260304_002148"
-export PIPELINE_CONFIG="configs/full_pipeline/base_data/pipeline_e5_instruct_ZH_a03.py"
+export SWEEP_DIR="${PROJECT_DIR}/experiment_results/exp1/question_alpha_sweep/e5_instruct_5ct_n4"
+export PIPELINE_CONFIG="configs/full_pipeline/base_data/pipeline_e5_instruct_ZH_a04.py"
 export N_CLONES=4
 
 echo "=== Resubmitting missing question_alpha_sweep workers ==="
@@ -40,23 +40,25 @@ submit_worker() {
 }
 
 # easy_paraphrase: 8 missing
-for tid in 2 5 6 7 9 11 14 17; do
+for tid in 16 17 18 20 21 22 23 24; do
     submit_worker $tid easy_paraphrase
 done
 
-# hard_paraphrase: 3 missing
-for tid in 35 37 50; do
+# hard_paraphrase: 5 missing
+for tid in 8 9 12 70 73; do
     submit_worker $tid hard_paraphrase
 done
 
-# negation_easy: 1 missing
-submit_worker 42 negation_easy
+# negation_easy: 4 missing
+for tid in 54 56 59 60; do
+    submit_worker $tid negation_easy
+done
 
 # negation_hard: 1 missing
-submit_worker 55 negation_hard
+submit_worker 62 negation_hard
 
-# perfect_mix: 5 missing
-for tid in 39 56 60 61 63; do
+# perfect_mix: 2 missing
+for tid in 42 47; do
     submit_worker $tid perfect_mix
 done
 
@@ -68,5 +70,5 @@ COLLECT_JOB=$(sbatch --parsable --export=ALL \
 echo "  Collect: job ${COLLECT_JOB} (depends on all workers)"
 
 echo ""
-echo "  Total: 18 workers + 1 collect job"
+echo "  Total: 20 workers + 1 collect job"
 echo "  Monitor: squeue -u \$USER"

@@ -43,20 +43,20 @@ DATA_2019_DIR = RAW_DIR / "smart vote data"
 
 # experiment results path
 RESULTS_DIR = PROJECT_ROOT / "experiment_results"
-PIPELINE_OUTPUTS_DIR = RESULTS_DIR / "pipeline_outputs"
-DIST_RESULTS_DIR = PIPELINE_OUTPUTS_DIR / "distance_metrics"
+DIST_RESULTS_DIR = RESULTS_DIR / "distance_metric"
 FAKE_RESULTS_DIR = DIST_RESULTS_DIR / "fake_results"
 CLEANED_RESULTS_DIR = DIST_RESULTS_DIR / "cleaned_results"
 CLONED_RESULTS_DIR = DIST_RESULTS_DIR / "cloned_results"
 
-QU_WEIGHT_DIR = PIPELINE_OUTPUTS_DIR / "question_weights"
+QU_WEIGHT_DIR = RESULTS_DIR / "question_weighting_results"
 P1_WEIGHT_DIR = QU_WEIGHT_DIR / "P1"
 P2_WEIGHT_DIR = QU_WEIGHT_DIR / "P2"
 CLONED_QU_WEIGHT_DIR = QU_WEIGHT_DIR / "cloned"
-RECOMMENDATION_RESULTS_DIR = PIPELINE_OUTPUTS_DIR / "recommendations"
+RECOMMENDATION_RESULTS_DIR = RESULTS_DIR / "recommendation_results"
 COMPARISON_RESULTS_DIR = RESULTS_DIR / "comparator_results"
-ALPHA_SWEEP_RESULTS_DIR = RESULTS_DIR / "exp1" / "model_alpha_sweep"
-QUESTION_REMOVAL_RESULTS_DIR = RESULTS_DIR / "exp2_question_removal"
+ALPHA_SWEEP_RESULTS_DIR = RESULTS_DIR / "alpha_sweep_results"
+QUESTION_REMOVAL_RESULTS_DIR = RESULTS_DIR / "question_removal_results"
+THRESHOLD_SWEEP_RESULTS_DIR = RESULTS_DIR / "threshold_alpha_sweep_results"
 
 
 # Specific data files
@@ -253,14 +253,12 @@ Options for dist:
 - "GTE": GTE multilingual base, euclidean distance
 - "NOMIC-V2": Nomic Embed v2 MoE with task prefix (set embedding_task, e.g. "clustering")
 - "QWEN3": Qwen3-Embedding with custom instructions (set embedding_instruction)
-- "ANSWER-CORRELATION": Answer-correlation distance: 1 - |Pearson_r| across respondents (no embedding model; requires load_voters/load_candidates; set correlation_answer_source)
 """
 dist = "SBERT"
 
 # Unified instruction/task config (used by instruction-tuned and task-aware models)
 embedding_instruction: str | None = None  # Free-form text for instruction-tuned models (E5-instruct, Qwen3)
 embedding_task: str | None = None  # Task/mode selector for task-aware models (Jina: "separation", Nomic: "clustering")
-correlation_answer_source: str | None = None  # Answer source for ANSWER-CORRELATION metric: "voters", "candidates", or "both"
 
 # Model name defaults (overridable per config)
 sbert_model_name = "all-MiniLM-L6-v2"
@@ -367,7 +365,7 @@ p_rbo = 0.9  # RBO parameter: how steeply to discount lower ranks (0.9 means top
 # --- HASH PARAMETERS FOR CACHING ---
 # Layered constants: each stage extends the previous.
 # embedding_instruction/embedding_task included from distance stage — None hashes as null, non-None as its value.
-DISTANCE_HASH_PARAMS = ["data_year", "dist", "data_choice", "clone_id", "embedding_instruction", "embedding_task", "correlation_answer_source"]
+DISTANCE_HASH_PARAMS = ["data_year", "dist", "data_choice", "clone_id", "embedding_instruction", "embedding_task"]
 CRW_HASH_PARAMS = DISTANCE_HASH_PARAMS + ["alpha", "crw_paper_choice"]
 REC_HASH_PARAMS = CRW_HASH_PARAMS + ["rec_dist_method", "n_recommendations", "subset_n", "use_OG_weights", "district"]
 COMPARATOR_HASH_PARAMS = REC_HASH_PARAMS

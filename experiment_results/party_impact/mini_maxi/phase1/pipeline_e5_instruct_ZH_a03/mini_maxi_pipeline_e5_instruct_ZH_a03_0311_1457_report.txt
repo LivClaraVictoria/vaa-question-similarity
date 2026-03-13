@@ -1,0 +1,141 @@
+================================================================================
+MINI VS MAXI PARTY IMPACT — PHASE 1 REPORT
+================================================================================
+Generated: 2026-03-11 14:57
+Experiment: Add each full-only question to mini, measure party delta
+Top-k (n): 36
+Questions tested: 45
+Major parties: SP, Green, GLP, Centre, FDP, SVP
+
+TOP 10 QUESTIONS BY MAX PARTY IMPACT (abs Δ visibility):
+--------------------------------------------------------------------------------
+  1. Q32248 — max |Δ| = 1.64pp (SP)
+     "Do you think it's fair that environmental and landscape protection rul"
+     Category: Energy & transport, mean_abs_r: 0.068, max_abs_r: 0.191, n_high_corr: 0
+             SP: +1.64pp
+          Green: -1.41pp
+            GLP: +0.17pp
+         Centre: +0.08pp
+            FDP: +0.07pp
+            SVP: -0.05pp
+
+  2. Q32237 — max |Δ| = 1.28pp (Centre)
+     "Should married couples be taxed separately (individual taxation)? [BeP"
+     Category: Finances & taxes, mean_abs_r: 0.077, max_abs_r: 0.143, n_high_corr: 0
+             SP: +0.47pp
+          Green: +0.68pp
+            GLP: +1.18pp
+         Centre: -1.28pp
+            FDP: +0.26pp
+            SVP: -0.01pp
+
+  3. Q32221 — max |Δ| = 1.20pp (Green)
+     "Are you in favor of the introduction of a tax on foods containing suga"
+     Category: Health, mean_abs_r: 0.195, max_abs_r: 0.340, n_high_corr: 2
+             SP: -0.87pp
+          Green: +1.20pp
+            GLP: +0.04pp
+         Centre: -0.67pp
+            FDP: -0.04pp
+            SVP: -0.04pp
+
+  4. Q32251 — max |Δ| = 1.14pp (Green)
+     "Would you be in favor of the introduction of increasing electricity ta"
+     Category: Energy & transport, mean_abs_r: 0.197, max_abs_r: 0.310, n_high_corr: 2
+             SP: -1.06pp
+          Green: +1.14pp
+            GLP: +0.37pp
+         Centre: -0.46pp
+            FDP: -0.06pp
+            SVP: -0.02pp
+
+  5. Q32233 — max |Δ| = 0.94pp (GLP)
+     "Would you be in favour of doctors being allowed to administer direct a"
+     Category: Society & ethics, mean_abs_r: 0.089, max_abs_r: 0.297, n_high_corr: 0
+             SP: +0.42pp
+          Green: +0.54pp
+            GLP: +0.94pp
+         Centre: +0.29pp
+            FDP: +0.17pp
+            SVP: +0.15pp
+
+  6. Q32220 — max |Δ| = 0.90pp (SP)
+     "Should compulsory vaccination of children be introduced based on the S"
+     Category: Health, mean_abs_r: 0.100, max_abs_r: 0.241, n_high_corr: 0
+             SP: +0.90pp
+          Green: -0.05pp
+            GLP: -0.45pp
+         Centre: -0.49pp
+            FDP: -0.06pp
+
+  7. Q32217 — max |Δ| = 0.77pp (Centre)
+     "As part of the reform of the BVG (occupational pension plan), pensions"
+     Category: Welfare state & family, mean_abs_r: 0.154, max_abs_r: 0.422, n_high_corr: 5
+             SP: +0.67pp
+          Green: +0.72pp
+            GLP: -0.46pp
+         Centre: -0.77pp
+            FDP: -0.11pp
+
+  8. Q32262 — max |Δ| = 0.75pp (GLP)
+     "Are you in favour of lowering the voting age to 16?"
+     Category: Democracy, Media & Digitalization, mean_abs_r: 0.279, max_abs_r: 0.509, n_high_corr: 13
+             SP: -0.22pp
+          Green: -0.17pp
+            GLP: -0.75pp
+         Centre: +0.48pp
+            FDP: +0.12pp
+            SVP: +0.11pp
+
+  9. Q32263 — max |Δ| = 0.72pp (GLP)
+     "Should it be possible to hold a referendum on federal spending above a"
+     Category: Democracy, Media & Digitalization, mean_abs_r: 0.074, max_abs_r: 0.256, n_high_corr: 0
+             SP: -0.69pp
+          Green: +0.57pp
+            GLP: -0.72pp
+         Centre: -0.08pp
+            FDP: -0.07pp
+            SVP: -0.03pp
+
+  10. Q32242 — max |Δ| = 0.72pp (SP)
+     "Should private households be free to choose their electricity supplier"
+     Category: Economy & labour, mean_abs_r: 0.141, max_abs_r: 0.264, n_high_corr: 0
+             SP: -0.72pp
+          Green: +0.33pp
+            GLP: +0.61pp
+         Centre: +0.03pp
+            FDP: +0.08pp
+
+================================================================================
+PER-PARTY BEST QUESTION:
+--------------------------------------------------------------------------------
+        SP: Q32248 (+1.64pp) — "Do you think it's fair that environmental and land" [mean_abs_r=0.068]
+     Green: Q32221 (+1.20pp) — "Are you in favor of the introduction of a tax on f" [mean_abs_r=0.195]
+       GLP: Q32237 (+1.18pp) — "Should married couples be taxed separately (indivi" [mean_abs_r=0.077]
+    Centre: Q32235 (+0.48pp) — "Do you think it's right for same-sex couples to ha" [mean_abs_r=0.222]
+       FDP: Q32237 (+0.26pp) — "Should married couples be taxed separately (indivi" [mean_abs_r=0.077]
+       SVP: Q32233 (+0.15pp) — "Would you be in favour of doctors being allowed to" [mean_abs_r=0.089]
+
+================================================================================
+REDUNDANCY SUMMARY:
+--------------------------------------------------------------------------------
+  Mean redundancy (mean_abs_r): 0.197
+  Max redundancy: 0.376 (Q32281)
+  Questions with n_high_corr > 0: 29/45
+
+  Mean redundancy by category:
+    Foreign trade & foreign policy: 0.303 (2 questions)
+    Nature conservation: 0.253 (3 questions)
+    Federal budget: 0.249 (8 questions)
+    Values: 0.245 (7 questions)
+    Immigration & integration: 0.198 (1 questions)
+    Energy & transport: 0.176 (4 questions)
+    Education: 0.170 (2 questions)
+    Society & ethics: 0.156 (2 questions)
+    Welfare state & family: 0.154 (3 questions)
+    Democracy, Media & Digitalization: 0.148 (4 questions)
+    Economy & labour: 0.142 (2 questions)
+    Health: 0.139 (3 questions)
+    Finances & taxes: 0.138 (2 questions)
+    Security & military: 0.106 (2 questions)
+================================================================================

@@ -1,0 +1,46 @@
+==========================================================================================
+PER-QUESTION ALPHA SWEEP REPORT
+==========================================================================================
+Generated: 2026-03-11 15:43
+Config: pipeline_e5_instruct_ZH_a04
+Clone type: easy_paraphrase × 5
+Alpha range: [0.01, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.8, 2.1, 2.4, 2.7, 3.0]
+Jaccard top-k (n): 36
+Questions tested: 75
+
+TOP 10 MOST CORRECTABLE QUESTIONS (by CRW Jaccard improvement):
+------------------------------------------------------------------------------------------
+Rank     QID   BaseJac   BestCRW   Improv  OptAlpha  Text
+------------------------------------------------------------------------------------------
+   1   32238    0.7228    0.8947  +0.1719      0.30  Would you support the introduction of a natio
+   2   32267    0.6851    0.8483  +0.1632      0.30  Should automatic facial recognition be banned
+   3   32246    0.7369    0.8995  +0.1627      0.30  Should Switzerland ban the registration of ne
+   4   32252    0.7090    0.8701  +0.1611      0.40  Are you in favor of further relaxing the prot
+   5   32214    0.6573    0.8178  +0.1605      0.30  Do you support an increase in the retirement 
+   6   32267    0.6851    0.8394  +0.1543      0.40  Should automatic facial recognition be banned
+   7   32252    0.7090    0.8627  +0.1538      0.40  Are you in favor of further relaxing the prot
+   8   32246    0.7369    0.8899  +0.1531      0.30  Should Switzerland ban the registration of ne
+   9   32232    0.7055    0.8564  +0.1510      0.40  Should cannabis use be legalized? [BePart que
+  10   32252    0.7090    0.8565  +0.1475      0.40  Are you in favor of further relaxing the prot
+
+BOTTOM 10 LEAST CORRECTABLE QUESTIONS:
+------------------------------------------------------------------------------------------
+   1   32273    0.8171    0.8180  +0.0008      0.20  Should Switzerland return to a strict interpr
+   2   32283    0.8949    0.8973  +0.0024      0.60  Should the federal government spend more or l
+   3   32287    0.8874    0.8901  +0.0028      0.60  Should the federal government spend more or l
+   4   32286    0.9278    0.9310  +0.0033      0.60  Should the federal government spend more or l
+   5   32282    0.9151    0.9186  +0.0035      0.60  Should the federal government spend more or l
+   6   32281    0.9145    0.9181  +0.0035      0.60  Should the federal government spend more or l
+   7   32281    0.9145    0.9187  +0.0041      0.60  Should the federal government spend more or l
+   8   32259    0.8835    0.8882  +0.0047      0.40  Should the federal government be given additi
+   9   32274    0.8010    0.8059  +0.0049      0.40  What is your position the following statement
+  10   32250    0.8856    0.8910  +0.0053      0.60  Should the state guarantee a comprehensive pu
+
+==========================================================================================
+OVERALL STATISTICS:
+  Baseline Jaccard — mean: 0.8109, median: 0.8079
+  Best CRW Jaccard — mean: 0.8727, median: 0.8785
+  Improvement — mean: 0.0618, median: 0.0560, min: 0.0008, max: 0.1719
+  Optimal alpha — mean: 0.37, median: 0.40, mode: 0.40
+  Questions with improvement > 0: 375/375
+==========================================================================================

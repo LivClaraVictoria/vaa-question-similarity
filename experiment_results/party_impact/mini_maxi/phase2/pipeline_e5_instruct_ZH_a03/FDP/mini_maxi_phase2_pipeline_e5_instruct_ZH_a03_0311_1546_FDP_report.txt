@@ -1,0 +1,56 @@
+================================================================================
+MINI VS MAXI PARTY IMPACT — PHASE 2 REPORT
+================================================================================
+Generated: 2026-03-11 15:46
+Target party: FDP
+Questions added: 5
+Top-k (n): 36
+
+SELECTED QUESTIONS:
+--------------------------------------------------------------------------------
+  Q32237: "Should married couples be taxed separately (individual taxat"
+    Category: Finances & taxes, mean_abs_r: 0.077, max_abs_r: 0.143
+    Δ(FDP): +0.26pp
+  Q32233: "Would you be in favour of doctors being allowed to administe"
+    Category: Society & ethics, mean_abs_r: 0.089, max_abs_r: 0.297
+    Δ(FDP): +0.17pp
+  Q32262: "Are you in favour of lowering the voting age to 16?"
+    Category: Democracy, Media & Digitalization, mean_abs_r: 0.279, max_abs_r: 0.509
+    Δ(FDP): +0.12pp
+  Q32266: "Should the Federal Council be allowed to authorize other sta"
+    Category: Security & military, mean_abs_r: 0.106, max_abs_r: 0.525
+    Δ(FDP): +0.11pp
+  Q32258: "Should the Swiss mobile network be equipped throughout the c"
+    Category: Democracy, Media & Digitalization, mean_abs_r: 0.085, max_abs_r: 0.254
+    Δ(FDP): +0.11pp
+
+PARTY VISIBILITY TABLE (%):
+--------------------------------------------------------------------------------
+     Party |  Mini base |  + Additions | E5-INSTRUCT α=0.3 | E5-INSTRUCT α=0.4 | ANSWER-CORR α=0.3 | ANSWER-CORR α=0.4 |      QWEN3 α=0.6
+--------------------------------------------------------------------------------
+        SP |      12.50 |        13.46 |            13.43 |            13.50 |            13.46 |            13.43 |            13.29
+     Green |      12.62 |        13.08 |            13.10 |            13.09 |            13.08 |            13.09 |            13.10
+       GLP |      14.51 |        15.70 |            15.59 |            15.62 |            15.70 |            15.68 |            15.69
+    Centre |      18.09 |        17.62 |            17.68 |            17.64 |            17.62 |            17.66 |            17.66
+       FDP |       4.42 |         5.19 |             5.18 |             5.15 |             5.19 |             5.17 |             5.15
+       SVP |       4.87 |         5.08 |             5.10 |             5.11 |             5.08 |             5.10 |             5.14
+
+CRW REDUCTION FOR FDP:
+--------------------------------------------------------------------------------
+  Attack delta (no CRW): +0.77pp
+  E5-INSTRUCT α=0.3: +0.76pp (1% reduced)
+  E5-INSTRUCT α=0.4: +0.73pp (5% reduced)
+  ANSWER-CORR α=0.3: +0.77pp (0% reduced)
+  ANSWER-CORR α=0.4: +0.75pp (3% reduced)
+  QWEN3 α=0.6: +0.73pp (5% reduced)
+
+CRW WEIGHTS FOR ADDED QUESTIONS:
+--------------------------------------------------------------------------------
+  Question | E5-INSTRUCT α=0.3 | E5-INSTRUCT α=0.4 | ANSWER-CORR α=0.3 | ANSWER-CORR α=0.4 |      QWEN3 α=0.6
+Q    32237 |           1.0128 |           1.0318 |           1.0000 |           1.0041 |           1.0243
+Q    32233 |           1.0128 |           1.0318 |           1.0000 |           1.0041 |           1.0243
+Q    32262 |           1.0128 |           0.9789 |           1.0000 |           1.0041 |           1.0243
+Q    32266 |           1.0128 |           0.9518 |           1.0000 |           1.0041 |           1.0243
+Q    32258 |           1.0128 |           1.0097 |           1.0000 |           1.0041 |           1.0243
+  Avg mini |           0.9979 |           0.9999 |           1.0000 |           0.9993 |           0.9959
+================================================================================
