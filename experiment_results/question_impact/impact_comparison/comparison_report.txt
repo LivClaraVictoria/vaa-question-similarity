@@ -1,0 +1,107 @@
+====================================================================================================
+COMPARISON: RECOMMENDATION IMPACT vs PARTY VISIBILITY IMPACT
+====================================================================================================
+Questions analyzed: 75
+
+Overall Spearman ρ (rec impact vs max party delta): 0.688 (p = 9.3e-12)
+
+Top-10 overlap: 4/10 questions
+  In both:          [32222, 32236, 32245, 32261]
+  Only rec top-10:  [32214, 32232, 32238, 32252, 32267, 32270]
+  Only party top-10:[32220, 32228, 32233, 32242, 32248, 32262]
+
+----------------------------------------------------------------------------------------------------
+FEATURE CORRELATIONS
+----------------------------------------------------------------------------------------------------
+Feature                           ρ rec        p  ρ party        p   ρ bias        p    gap
+voter_nan_pct                   -0.654*  0.0000  -0.358*  0.0016  +0.363*  0.0014 0.296
+voter_var                       +0.806*  0.0000  +0.604*  0.0000  -0.285*  0.0132 0.202
+combined_var                    +0.782*  0.0000  +0.621*  0.0000  -0.244*  0.0349 0.160
+candidate_var                   +0.675*  0.0000  +0.598*  0.0000  -0.149   0.2027 0.077
+candidate_avg_abs_corr          -0.049   0.6760  -0.101   0.3895  -0.063   0.5935 0.052
+voter_avg_abs_corr              -0.151   0.1963  -0.197   0.0903  -0.044   0.7095 0.046
+
+Key: ρ rec = correlation with recommendation impact
+     ρ party = correlation with party visibility delta
+     ρ bias = correlation with rank_bias (positive = ranks higher on party metric)
+     gap = |ρ_rec - ρ_party|
+
+----------------------------------------------------------------------------------------------------
+PER-PARTY: |delta| CORRELATION WITH REC IMPACT
+----------------------------------------------------------------------------------------------------
+  SP         ρ = +0.609 (p = 0.0000)*
+  GLP        ρ = +0.494 (p = 0.0000)*
+  Centre     ρ = +0.455 (p = 0.0000)*
+  FDP        ρ = +0.426 (p = 0.0001)*
+  SVP        ρ = +0.383 (p = 0.0007)*
+  Green      ρ = +0.355 (p = 0.0018)*
+
+----------------------------------------------------------------------------------------------------
+BIGGEST RANK DISCREPANCIES
+----------------------------------------------------------------------------------------------------
+
+High rec impact / low party impact (symmetric churn):
+ question_id   impact  max_abs_delta  rank_rec  rank_party  rank_bias  voter_nan_pct   voter_var max_positive_party           _category
+       32232 0.294511       0.002313       6.0        51.0      -45.0       0.022901 1430.766951                SVP    Society & ethics
+       32256 0.226572       0.001606      24.0        60.0      -36.0       0.015339 1124.858297                GLP Nature conservation
+       32267 0.314917       0.003641       2.0        38.0      -36.0       0.035191 1373.218940             Centre Security & military
+       32252 0.291045       0.003617       7.0        39.0      -32.0       0.084210 1193.237029                 SP Nature conservation
+       32226 0.212552       0.001788      28.0        59.0      -31.0       0.383672 1386.867643             Centre           Education
+
+Low rec impact / high party impact (directional shifts):
+ question_id   impact  max_abs_delta  rank_rec  rank_party  rank_bias  voter_nan_pct   voter_var max_positive_party                         _category
+       32237 0.156379       0.008500      49.0        14.0       35.0       0.379951  837.489503                GLP                  Finances & taxes
+       32235 0.105919       0.004328      65.0        33.0       32.0       0.354650  830.905060                GLP                  Society & ethics
+       32248 0.187476       0.010792      40.0         8.0       32.0       0.370277 1165.995295                 SP                Energy & transport
+       32239 0.171583       0.008210      46.0        15.0       31.0       0.402900 1271.519940             Centre                  Finances & taxes
+       32262 0.198695       0.015067      34.0         3.0       31.0       0.357530 1720.755012             Centre Democracy, Media & Digitalization
+
+----------------------------------------------------------------------------------------------------
+TOPIC-LEVEL COMPARISON
+----------------------------------------------------------------------------------------------------
+
+Topic                                     N Rec Impact Rank    Party Δ Rank  Diff   NaN%
+----------------------------------------------------------------------------------------
+Health                                    5     0.2416    1   0.007925    3    -2 23.6%
+Immigration & integration                 4     0.2378    2   0.008263    1    +1 11.7%
+Finances & taxes                          4     0.2235    3   0.008226    2    +1 22.2%
+Society & ethics                          4     0.2188    4   0.005847    8    -4 19.6%
+Welfare state & family                    6     0.2188    5   0.006016    7    -2 19.6%
+Security & military                       5     0.2176    6   0.003535    9    -3 17.9%
+Economy & labour                          5     0.2170    7   0.006045    6    +1 16.9%
+Energy & transport                        7     0.2108    8   0.007132    4    +4 22.5%
+Democracy, Media & Digitalization         6     0.1978    9   0.006981    5    +4 27.3%
+Education                                 3     0.1941   10   0.002683   11    -1 25.5%
+Nature conservation                       6     0.1802   11   0.002550   12    -1 21.2%
+Foreign trade & foreign policy            5     0.1626   12   0.003032   10    +2 19.9%
+Values                                    7     0.1265   13   0.002347   13     0 37.4%
+Federal budget                            8     0.0928   14   0.001269   14     0 43.4%
+
+----------------------------------------------------------------------------------------------------
+INTERPRETATION
+----------------------------------------------------------------------------------------------------
+
+1. MODERATE CORRELATION (ρ ≈ 0.69): Questions that cause more individual
+   recommendation churn also tend to cause more party visibility shifts,
+   but the relationship is far from deterministic.
+
+2. NaN RATE IS THE KEY DIFFERENTIATOR:
+   - Rec impact is strongly anti-correlated with NaN rate (ρ = -0.65):
+     questions answered by more voters → more total churn when cloned.
+   - Party delta is only weakly anti-correlated (ρ = -0.36).
+   - High NaN questions rank relatively higher on party impact because
+     the self-selected subset who answers is more polarized, creating
+     directional (cross-party) shifts rather than symmetric churn.
+
+3. VOTER VARIANCE drives both metrics, but rec impact more strongly
+   (ρ = 0.81 vs 0.60). High-variance questions create more distance
+   distortion per voter, causing more recommendation shuffling.
+
+4. ANSWER CORRELATION is NOT predictive of either metric (ρ ≈ 0),
+   consistent with the mathematical independence of L2 distance terms.
+
+5. TOPIC-LEVEL patterns mirror question-level: Federal Budget and Values
+   (highest NaN rates) rank last on rec impact but not as low on party
+   impact. Immigration (lowest NaN) ranks top on both.
+
+====================================================================================================

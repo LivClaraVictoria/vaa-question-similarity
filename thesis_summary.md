@@ -47,7 +47,15 @@ CRW downweights questions that are similar to many others in embedding space. It
 
 **Fake benchmark**: 14-anchor dataset with same-topic variants (negations, paraphrases) and traps (keyword overlap, syntax similarity). Primary metric: ordering accuracy (% of same-topic/trap pairs correctly ordered). The benchmark is NOT used for model selection (would be circular) — it's used post-hoc to EXPLAIN why top models outperform (they recognize topic similarity despite negation/paraphrasing).
 
-**Correlation with CRW performance**: Spearman ρ = 0.648 (p = 0.04) between ordering accuracy and avg max Jaccard. Models that understand topic similarity do produce better CRW correction.
+**Correlation with CRW performance**: All three benchmark metrics correlate with sweep performance, but with very different strengths:
+
+| Benchmark Metric | vs Avg Max Jaccard (Spearman ρ) | p-value |
+|------------------|-------------------------------|---------|
+| Topic coherence | −0.988 | < 0.001 |
+| Negation invariance | −0.879 | 0.001 |
+| Ordering accuracy | +0.648 | 0.043 |
+
+Topic coherence (lower = better) is almost perfectly predictive of CRW clone detection success (ρ = −0.988). Negation invariance is also highly significant. Ordering accuracy — the primary benchmark metric — is the weakest predictor, though still significant. This suggests that what matters most for CRW is not overall ordering correctness but how tightly a model clusters same-topic variants (topic coherence) and how invariant it is to negation (negation invariance).
 
 ---
 
@@ -288,7 +296,7 @@ We explored whether selecting questions with BOTH high answer correlation AND pa
 
 - **CRW works well for what it's designed to do**: detecting and downweighting textually redundant questions (clones, paraphrases). 38% correction on realistic attacks is practically meaningful.
 - **CRW is NOT a general solution for topic imbalance**: it cannot detect that "Should we ban cars?" and "Should we build more highways?" both measure transport policy if they're worded differently enough.
-- **Model choice matters**: E5-INSTRUCT and JINA-V3 clearly outperform generic models. The fake benchmark explains why (topic similarity ≠ STS) without circular model selection.
+- **Model choice matters**: E5-INSTRUCT and JINA-V3 clearly outperform generic models. The fake benchmark explains why — topic coherence (ρ = −0.988) and negation invariance (ρ = −0.879) are near-perfect predictors of CRW success, while ordering accuracy alone is weaker (ρ = 0.648). What matters most is how tightly a model clusters same-topic variants, not just whether it orders them correctly.
 - **The asymmetry is fundamental**: CRW downweights dense clusters → good for overrepresentation. It cannot meaningfully upweight sparse topics → bad for underrepresentation.
 - **Practical recommendation**: Use CRW with E5-INSTRUCT (α=0.3) or JINA-V3 (α=0.6) as a defensive measure against question cloning in VAAs. It provides meaningful protection with negligible distortion on clean questionnaires.
 
@@ -308,7 +316,9 @@ We explored whether selecting questions with BOTH high answer correlation AND pa
 | Question removal CRW effect | ~0% (none) |
 | Mini vs Maxi CRW correction | ~0% (none) |
 | Embedding vs correlation agreement | ρ < 0.2 (all models) |
-| Fake benchmark → CRW performance correlation | ρ = 0.65 (p = 0.04) |
+| Benchmark → CRW: topic coherence | ρ = −0.988 (p < 0.001) |
+| Benchmark → CRW: negation invariance | ρ = −0.879 (p = 0.001) |
+| Benchmark → CRW: ordering accuracy | ρ = +0.648 (p = 0.043) |
 | Top model ordering accuracy | 99.4% (E5-INSTRUCT) |
 | Questions tested | 75 (full) / 30 (mini) |
 | Voters | ~5,000 |
@@ -326,6 +336,6 @@ We explored whether selecting questions with BOTH high answer correlation AND pa
 5. **Question impact ranking**: Per-question distortion bars (all 75 questions).
 6. **CRW weight distribution by topic** (Exp 3): Shows which topics get downweighted.
 7. **Embedding vs correlation scatter**: Model distance vs ANSWER-CORRELATION distance, showing weak agreement.
-8. **Fake benchmark vs CRW performance**: Ordering accuracy vs avg Jaccard, showing positive correlation.
+8. **Fake benchmark vs CRW performance heatmap**: Spearman correlation matrix (3 benchmark metrics × 4 sweep metrics). Topic coherence (ρ = −0.988) dominates; ordering accuracy (ρ = 0.648) is weakest.
 9. **Mini vs Maxi compiled heatmap**: Δpp for each party × metric combination, showing ~0% correction across the board.
 10. **Per-topic correlation heatmap**: Within-topic |r| showing Immigration >> Health.
