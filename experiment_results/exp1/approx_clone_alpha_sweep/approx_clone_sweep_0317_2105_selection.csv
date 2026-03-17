@@ -1,0 +1,6 @@
+question_id,question_text,category,max_abs_r,mean_abs_r,n_high_corr,most_correlated_mini_id
+32287,"Should the federal government spend more or less in the area of ""National defence""?",Federal budget,0.7754187904946274,0.28377643835631616,14,32264
+32285,"Should the federal government spend more or less in the area of ""Road traffic (motorised individual transport)""?",Federal budget,0.7365356285886429,0.31997344449967907,20,32245
+32281,"Should the federal government spend more or less in the area of ""Social services""?",Federal budget,0.604714896916644,0.37557515859864704,21,32219
+32276,"What is your position the following statement: ""It is necessary for the State to balance out differences in income and wealth through redistribution"".",Values,0.5373608393990486,0.33865272632997484,18,32238
+32266,"Should the Federal Council be allowed to authorize other states to re-export Swiss weapons in cases of a war of aggression in violation of international law (e.g., the attack on Ukraine)? [BePart question]",Security & military,0.5248628269936207,0.10639649540250502,1,32273

@@ -181,13 +181,17 @@ This aligns with intuition — Federal budget has 8 questions asking "should the
 
 ---
 
-## 8. Correlation Metric Analysis (Ground Truth Validation)
+## 8. Correlation Metric as Theoretical Ceiling
 
-### The ANSWER-CORRELATION metric
+### The ANSWER-CORRELATION-ARCCOS metric
 
-Uses `1 - |Pearson_r(voter_answers_i, voter_answers_j)|` as distance. Captures "functional redundancy" — questions measuring the same latent construct, regardless of wording. Can't be deployed pre-election (chicken-and-egg: need voter answers to compute distances).
+Uses `arccos(|Pearson_r|)` as distance between questions based on voter answers. This is a **proper metric** (satisfies triangle inequality) that captures "functional redundancy" — questions measuring the same latent construct, regardless of wording. Can't be deployed pre-election (chicken-and-egg: need voter answers to compute distances), so it serves as a **theoretical ceiling** for CRW performance.
 
-### Embedding validation against correlation ground truth
+### Clone detection: trivially perfect
+
+Alpha sweep with ANSWER-CORR-ARCCOS on identical clones: CRW achieves near-perfect correction (Jaccard ≈ 1.0) across a wide alpha range (0.1–1.5). Clones have identical voter answers → |r| = 1 → distance = 0 → trivially detected. This confirms the metric works as expected and establishes the ceiling.
+
+### Embedding models vs correlation ground truth
 
 Spearman rank correlation between each model's distance matrix and ANSWER-CORRELATION:
 
@@ -204,7 +208,7 @@ Spearman rank correlation between each model's distance matrix and ANSWER-CORREL
 | E5 | +0.068 |
 | SBERT | +0.060 |
 
-**Key insight**: All correlations are weak (ρ < 0.2). E5-INSTRUCT — the best clone detector — drops to 7th place here. This is NOT a failure; it reveals that **topic similarity ≠ answer correlation**. These are fundamentally different distance concepts:
+**Key insight**: All correlations are weak (ρ < 0.2). E5-INSTRUCT — the best clone detector — drops to 7th place here. This reveals that **topic similarity ≠ answer correlation**. These are fundamentally different distance concepts:
 - Embedding distance captures textual/semantic similarity (same topic?)
 - Answer correlation captures functional redundancy (do voters respond the same way?)
 
@@ -220,60 +224,87 @@ Within-topic mean |r| varies dramatically:
 - Finances & taxes: 0.141
 - Cross-topic average: 0.190
 
-### Party-benefiting questions vs topic correlations
+---
 
-Most parties' top-5 benefiting questions span multiple topics with moderate correlation. SVP is the strongest case (3/5 questions in high-correlation topics: Immigration + Society & ethics). Centre's top-5 are mostly in low-correlation topics despite Immigration being #1 by total delta.
+## 9. Natural Redundancy Experiment (NEGATIVE RESULT)
 
-**Bottom line**: Adding genuinely different questions from different topics won't trigger CRW regardless of distance metric quality. The functional redundancy that ANSWER-CORRELATION captures is real (especially Immigration) but operates at a different level than what embedding-based CRW detects.
+Tests whether CRW can detect and correct for **naturally correlated questions** (not synthetic clones). This is the critical boundary test: CRW works on clones — but does it help when genuinely different questions happen to measure the same construct?
+
+### Part 1: Recommendation distortion (approx_clone_alpha_sweep)
+
+Add the top-5 most correlated full-only questions to the 30-question mini questionnaire:
+
+| Question | Category | max |r| to mini | arccos distance |
+|----------|----------|-----------------|-----------------|
+| Q32287 | Federal budget | 0.775 | 0.684 |
+| Q32285 | Federal budget | 0.737 | 0.742 |
+| Q32281 | Federal budget | 0.605 | 0.921 |
+| Q32276 | Values | 0.537 | 1.004 |
+| Q32266 | Security | 0.525 | 1.018 |
+
+**Baseline distortion** from adding 5 questions: Jaccard 0.763, Spearman 0.989 (small change — 5 questions added to 30 is mild).
+
+**CRW correction across three metrics**:
+
+| Metric | Alpha | CRW Jaccard | Δ vs baseline | CRW weights (added Qs) |
+|--------|-------|-------------|---------------|----------------------|
+| ANSWER-CORR-ARCCOS | 1.10 | 0.765 | +0.002 | 0.92–1.08 |
+| E5-INSTRUCT | 0.40 | 0.749 | −0.014 | 0.95–1.03 |
+| QWEN3 | 0.60 | 0.750 | −0.013 | 0.93–1.03 |
+
+**Even the theoretical ceiling (ANSWER-CORR-ARCCOS) shows only +0.002 improvement.** The correlation metric has the "answer key" and still can't help — CRW weights for the added questions are 0.92–1.08 (barely different from 1.0). The embedding-based metrics actually make things slightly worse.
+
+**Why**: Even the most correlated question (r=0.775) has arccos distance 0.684 — not small on a [0, π/2] scale. CRW detects **dense clusters**, not single pairwise correlations. The added questions sit slightly closer to one mini question each, but the local density isn't dramatically higher than background. CRW would need near-identical questions (r≈0.95 → dist≈0.32) to produce meaningful downweighting.
+
+**Circularity note**: Using ANSWER-CORR-ARCCOS here is circular — voter answers used for question selection are the same ones CRW uses for distances. This makes the negative result even more definitive: even with the answer key, CRW can't correct the distortion.
+
+### Part 2: Party visibility (corr-weighted selection)
+
+For each of 6 major parties: select top-5 full-only questions by `party_delta × max_abs_r` (questions that both benefit the party AND are somewhat correlated with existing mini questions, giving CRW the best chance to detect them).
+
+**Results**: 0% CRW reduction across all metrics and all parties.
+
+| Metric | SP | Green | GLP | Centre | FDP | SVP |
+|--------|-----|-------|-----|--------|-----|-----|
+| E5-INSTRUCT α=0.3 | 0% | 0% | 3% | −3% | 1% | −4% |
+| E5-INSTRUCT α=0.4 | 0% | −0% | 3% | −1% | 5% | −6% |
+| ANSWER-CORR α=0.3 | 0% | 0% | 0% | 0% | 0% | 0% |
+| ANSWER-CORR α=0.4 | 1% | −0% | 0% | −1% | 3% | −4% |
+| QWEN3 α=0.6 | 5% | 0% | −1% | −2% | 5% | −15% |
+
+The addition deltas themselves are meaningful (SP +3.35pp, Green +3.53pp, GLP +3.17pp from their respective top-5 additions), but CRW cannot correct any of it.
+
+### The key takeaway
+
+CRW's mechanism is designed for **clone detection** (near-identical questions in distance space), not for correcting natural topic overrepresentation. Genuinely different questions from the same topic aren't close enough in **any** distance metric — embedding or correlation — for CRW to cluster and downweight them. This defines a clear boundary for CRW's applicability.
 
 ---
 
-## 9. Mini vs Maxi Party Impact (Natural Question Addition)
+## 10. Mini vs Maxi Party Impact (Benefit-Selected Addition)
 
 ### The experiment
 
-Instead of synthetic clones, test CRW on **real question additions**: add the 45 full-only questions to the 30-question mini questionnaire, measuring party visibility impact and CRW correction.
+Complements Section 9 with a different selection strategy: instead of selecting by correlation, select by **party benefit**. For each of 6 parties, add the 5 full-only questions that most increase that party's visibility. Tests whether CRW corrects for strategically chosen (but non-cloned) additions.
 
 ### Phase 1: Per-question addition
 
-For each of 45 full-only questions: add to mini, compute party visibility delta + redundancy score (mean |Pearson r| with mini questions). The 5 most beneficial questions per party are selected for Phase 2.
+For each of 45 full-only questions: add to mini, compute party visibility delta. Identifies which questions benefit which party most.
 
 ### Phase 2: Cumulative addition + CRW
 
-For each of 6 major parties, add their top-5 beneficial questions simultaneously. Test 5 (metric, alpha) combinations: E5-INSTRUCT (α=0.3, 0.4), ANSWER-CORR (α=0.3, 0.4), QWEN3 (α=0.6).
+For each party, add their top-5 beneficial questions simultaneously. Test 5 (metric, alpha) combinations.
 
-**Results** (compiled across all parties and metrics):
+**Results**: Same story as Section 9 — CRW reduction ≈ 0% across all metrics and parties.
 
-| Metric | Avg CRW Reduction |
-|--------|-------------------|
-| E5-INSTRUCT α=0.3 | ~0% |
-| E5-INSTRUCT α=0.4 | ~1% |
-| ANSWER-CORR α=0.3 | 0% (exactly — uniform weights) |
-| ANSWER-CORR α=0.4 | ~0% |
-| QWEN3 α=0.6 | ~-1% (slightly worse) |
-
-**CRW has ~0% reduction for genuine question additions across ALL metrics.**
-
-### Why this is the expected result
-
-1. **The added questions are genuinely different** — they were selected by SmartVote experts precisely because they cover distinct aspects
-2. **They're not textually similar to mini questions** — embeddings don't cluster them with existing questions
-3. **They're not functionally redundant** — mean |Pearson r| with mini questions is low-to-moderate
-4. **CRW is designed for redundancy detection, not topic-balance correction** — it downweights dense clusters, and adding 5 unique questions doesn't create a cluster
-
-### The "high correlation + party benefit" variant we considered but didn't run
-
-We explored whether selecting questions with BOTH high answer correlation AND party benefit would show CRW correction. Analysis showed:
-- Centre's combined-ranked top-5 have avg mean_abs_r = 0.321 (well above median 0.198)
-- But the delta values are tiny (0.001–0.005pp) — not enough to produce meaningful party visibility shifts
-- Even if CRW detected these as redundant, the correction on top of a ~0.002pp effect would be negligible
-- The fundamental issue: high-correlation questions that benefit a party are rare, and their individual impact is small
-
-**This confirms CRW's limitation**: it's a clone detector, not a general topic-balance corrector.
+**Why this is the expected result**:
+1. **The added questions are genuinely different** — selected by SmartVote experts for distinct aspects
+2. **They're not textually similar** — embeddings don't cluster them with existing questions
+3. **They're not functionally redundant** — mean |Pearson r| is low-to-moderate
+4. **CRW downweights dense clusters** — adding 5 unique questions doesn't create a cluster
 
 ---
 
-## 10. Thesis Storyline
+## 11. Thesis Storyline
 
 ### Narrative arc
 
@@ -285,24 +316,27 @@ We explored whether selecting questions with BOTH high answer correlation AND pa
 
 4. **Practical relevance** (Party Impact): Cloning distorts party visibility by up to +4.76pp (Centre in worst-case). CRW reduces this by 22–47% depending on clone realism. Realistic attack (easy paraphrases) → 38% reduction. CRW's natural drift on clean questionnaire is negligible.
 
-5. **Limitations**:
-   - CRW cannot correct underrepresentation (Experiment 2: question removal → no effect)
-   - CRW doesn't detect genuinely different questions even if they're functionally correlated (Mini vs Maxi experiment → 0% correction)
-   - Embedding distance ≠ answer correlation (ρ < 0.2 for all models). These are different distance concepts serving different purposes.
+5. **The ceiling** (Correlation metric): ANSWER-CORRELATION-ARCCOS uses voter answers as a theoretical ceiling — trivially perfect clone detection, but can't be deployed pre-election. Embedding models agree only weakly with it (ρ < 0.2), confirming that textual similarity and functional redundancy are different constructs.
 
-6. **Insight** (Correlation analysis): The ANSWER-CORRELATION metric trivially detects clones but can't be deployed pre-election. It reveals that functional redundancy exists (Immigration topic: |r| = 0.45) but is captured only weakly by embeddings. CRW works for clone detection because clones ARE textually similar — it's the right tool for that specific job.
+6. **The boundary** (Natural redundancy experiments): Three negative results sharply define CRW's scope:
+   - Question removal → no effect (CRW can't upweight sparse topics)
+   - Adding high-correlation questions → 0% correction, even with the correlation ceiling metric
+   - Adding party-beneficial questions → 0% correction across all metrics
+   - The fundamental reason: even the most correlated real question pair (r=0.775, arccos=0.684) isn't close enough in distance space for CRW to detect as redundant. CRW needs near-identical questions (r≈0.95 → dist≈0.32).
+
+7. **Insight** (Synthesis): CRW is a **clone detector**, not a topic-balance corrector. It works precisely because clones ARE textually near-identical — this is its strength and its limitation. The correlation analysis reveals that genuine functional redundancy exists (Immigration: |r|=0.45) but lives at distances too large for any CRW configuration to act on.
 
 ### Key takeaways for the reader
 
 - **CRW works well for what it's designed to do**: detecting and downweighting textually redundant questions (clones, paraphrases). 38% correction on realistic attacks is practically meaningful.
-- **CRW is NOT a general solution for topic imbalance**: it cannot detect that "Should we ban cars?" and "Should we build more highways?" both measure transport policy if they're worded differently enough.
-- **Model choice matters**: E5-INSTRUCT and JINA-V3 clearly outperform generic models. The fake benchmark explains why — topic coherence (ρ = −0.988) and negation invariance (ρ = −0.879) are near-perfect predictors of CRW success, while ordering accuracy alone is weaker (ρ = 0.648). What matters most is how tightly a model clusters same-topic variants, not just whether it orders them correctly.
-- **The asymmetry is fundamental**: CRW downweights dense clusters → good for overrepresentation. It cannot meaningfully upweight sparse topics → bad for underrepresentation.
+- **CRW is NOT a general solution for topic imbalance**: it cannot detect that "Should we ban cars?" and "Should we build more highways?" both measure transport policy if they're worded differently enough. Even the ANSWER-CORRELATION ceiling metric — which has the answer key — can't make CRW correct for natural redundancy.
+- **Model choice matters**: E5-INSTRUCT and JINA-V3 clearly outperform generic models. The fake benchmark explains why — topic coherence (ρ = −0.988) and negation invariance (ρ = −0.879) are near-perfect predictors of CRW success, while ordering accuracy alone is weaker (ρ = 0.648).
+- **The asymmetry is fundamental**: CRW downweights dense clusters → good for overrepresentation via cloning. It cannot meaningfully upweight sparse topics (question removal) or detect genuinely different questions even when they're functionally correlated (natural redundancy).
 - **Practical recommendation**: Use CRW with E5-INSTRUCT (α=0.3) or JINA-V3 (α=0.6) as a defensive measure against question cloning in VAAs. It provides meaningful protection with negligible distortion on clean questionnaires.
 
 ---
 
-## 11. Key Numbers for Quick Reference
+## 12. Key Numbers for Quick Reference
 
 | Metric | Value |
 |--------|-------|
@@ -314,7 +348,10 @@ We explored whether selecting questions with BOTH high answer correlation AND pa
 | CRW correction (Centre, realistic) | 38% reduction |
 | CRW natural drift (clean questionnaire) | ≤0.12pp |
 | Question removal CRW effect | ~0% (none) |
-| Mini vs Maxi CRW correction | ~0% (none) |
+| Natural redundancy CRW correction (ANSWER-CORR ceiling) | +0.002 Jaccard |
+| Natural redundancy CRW correction (E5-INSTRUCT) | −0.014 Jaccard |
+| Natural redundancy party visibility CRW | 0% (all metrics, all parties) |
+| Most correlated question pair (r=0.775) arccos dist | 0.684 (of max π/2=1.571) |
 | Embedding vs correlation agreement | ρ < 0.2 (all models) |
 | Benchmark → CRW: topic coherence | ρ = −0.988 (p < 0.001) |
 | Benchmark → CRW: negation invariance | ρ = −0.879 (p = 0.001) |
@@ -327,7 +364,7 @@ We explored whether selecting questions with BOTH high answer correlation AND pa
 
 ---
 
-## 12. Figures to Include
+## 13. Figures to Include
 
 1. **Alpha sweep curves** (Exp 1): All 10 models as lines, Jaccard vs alpha, baseline as dashed line. One per clone condition. Shows peaked vs flat profiles.
 2. **Model ranking bar chart**: Composite rank across conditions.
@@ -337,5 +374,6 @@ We explored whether selecting questions with BOTH high answer correlation AND pa
 6. **CRW weight distribution by topic** (Exp 3): Shows which topics get downweighted.
 7. **Embedding vs correlation scatter**: Model distance vs ANSWER-CORRELATION distance, showing weak agreement.
 8. **Fake benchmark vs CRW performance heatmap**: Spearman correlation matrix (3 benchmark metrics × 4 sweep metrics). Topic coherence (ρ = −0.988) dominates; ordering accuracy (ρ = 0.648) is weakest.
-9. **Mini vs Maxi compiled heatmap**: Δpp for each party × metric combination, showing ~0% correction across the board.
-10. **Per-topic correlation heatmap**: Within-topic |r| showing Immigration >> Health.
+9. **Correlation overview** (Natural redundancy): MDS 2D projection of all 75 questions colored by group (mini=red, added=green, rest=blue), plus pairwise |r| heatmap and correlation distribution plots.
+10. **Natural redundancy party impact heatmap**: CRW reduction % for each party × metric combination, showing ~0% correction across the board.
+11. **Per-topic correlation heatmap**: Within-topic |r| showing Immigration >> Health.
