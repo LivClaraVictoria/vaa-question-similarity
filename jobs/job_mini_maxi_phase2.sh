@@ -45,6 +45,7 @@ PHASE2_ARGS="--mode phase2 --config ${PIPELINE_CONFIG}"
 [[ -n "${PHASE1_CSV}" ]] && PHASE2_ARGS="${PHASE2_ARGS} --phase1-csv ${PHASE1_CSV}"
 [[ -n "${TOP_K}" ]] && PHASE2_ARGS="${PHASE2_ARGS} --top-k ${TOP_K}"
 [[ -n "${TARGET_PARTY}" ]] && PHASE2_ARGS="${PHASE2_ARGS} --target-party ${TARGET_PARTY}"
+[[ -n "${SELECTION_MODE}" ]] && PHASE2_ARGS="${PHASE2_ARGS} --selection-mode ${SELECTION_MODE}"
 
 python -u -m mini_maxi_party_impact_main ${PHASE2_ARGS}
 

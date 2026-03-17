@@ -25,13 +25,22 @@ Usage:
         --config configs/full_pipeline/base_data/pipeline_e5_instruct_ZH_a03.py \\
         --sweep-dir /path/to/sweep_dir
 
-    # Phase 2 — CRW correction for top-K:
+    # Phase 2 — CRW correction for top-K (by party delta):
     python -m mini_maxi_party_impact_main --mode phase2 \\
+        --config configs/full_pipeline/base_data/pipeline_e5_instruct_ZH_a03.py \\
+        --target-party Centre --top-k 5
+
+    # Phase 2 — Corr-weighted selection (delta * max_abs_r):
+    python -m mini_maxi_party_impact_main --mode phase2 --selection-mode corr_weighted \\
         --config configs/full_pipeline/base_data/pipeline_e5_instruct_ZH_a03.py \\
         --target-party Centre --top-k 5
 
     # Compile — aggregate all 6 per-party Phase 2 results:
     python -m mini_maxi_party_impact_main --mode compile \\
+        --config configs/full_pipeline/base_data/pipeline_e5_instruct_ZH_a03.py
+
+    # Compile — corr-weighted results:
+    python -m mini_maxi_party_impact_main --mode compile --selection-mode corr_weighted \\
         --config configs/full_pipeline/base_data/pipeline_e5_instruct_ZH_a03.py
 """
 
@@ -116,6 +125,13 @@ def _parse_args():
     parser.add_argument(
         "--target-party", type=str, default=None,
         help="Target party for Phase 2 (select questions that benefit this party most)",
+    )
+    parser.add_argument(
+        "--selection-mode", type=str,
+        choices=["delta", "corr_weighted"],
+        default="delta",
+        help="Phase 2 question selection: 'delta' = rank by party delta only, "
+        "'corr_weighted' = rank by delta * max_abs_r (favours CRW-detectable questions)",
     )
     return parser.parse_args()
 
@@ -946,17 +962,29 @@ def _run_phase2(args, config, n: int):
 
     top_k = args.top_k
     target_party = args.target_party
+    selection_mode = getattr(args, "selection_mode", "delta")
 
     if target_party:
-        sort_col = f"delta_{target_party}"
-        if sort_col not in phase1_df.columns:
+        delta_col = f"delta_{target_party}"
+        if delta_col not in phase1_df.columns:
             print(
                 f"ERROR: Party '{target_party}' not found in Phase 1 CSV.",
                 file=sys.stderr,
             )
             sys.exit(1)
-        top_questions = phase1_df.nlargest(top_k, sort_col)
-        print(f"  Top-{top_k} questions benefiting {target_party}:")
+
+        if selection_mode == "corr_weighted":
+            # Only consider questions that benefit the target party
+            positive = phase1_df[phase1_df[delta_col] > 0].copy()
+            positive["_combined_score"] = positive[delta_col] * positive["max_abs_r"]
+            top_questions = positive.nlargest(top_k, "_combined_score")
+            print(
+                f"  Top-{top_k} questions by delta*max_abs_r "
+                f"(corr-weighted, {target_party}):"
+            )
+        else:
+            top_questions = phase1_df.nlargest(top_k, delta_col)
+            print(f"  Top-{top_k} questions benefiting {target_party}:")
     else:
         top_questions = phase1_df.nlargest(top_k, "max_abs_delta")
         print(f"  Top-{top_k} questions by max |Δ|:")
@@ -967,9 +995,13 @@ def _run_phase2(args, config, n: int):
             if target_party
             else f"|Δ|={row['max_abs_delta'] * 100:.2f}pp ({row['max_delta_party']})"
         )
+        extra = ""
+        if selection_mode == "corr_weighted" and "_combined_score" in row.index:
+            extra = f", score={row['_combined_score']:.4f}"
         print(
             f"    Q{int(row['question_id'])}: {delta_str}, "
-            f"mean_abs_r={row.get('mean_abs_r', 0):.3f}"
+            f"mean_abs_r={row.get('mean_abs_r', 0):.3f}, "
+            f"max_abs_r={row.get('max_abs_r', 0):.3f}{extra}"
         )
 
     q_ids = [int(row["question_id"]) for _, row in top_questions.iterrows()]
@@ -1077,9 +1109,12 @@ def _run_phase2(args, config, n: int):
 
     name = _get_clean_name(config)
     party_subdir = target_party if target_party else "no_target"
-    output_dir = RESULTS_DIR / "phase2" / name / party_subdir
+    if selection_mode == "corr_weighted":
+        output_dir = RESULTS_DIR / "phase2_corr_weighted" / name / party_subdir
+    else:
+        output_dir = RESULTS_DIR / "phase2" / name / party_subdir
     output_dir.mkdir(parents=True, exist_ok=True)
-    _save_phase2_outputs(results, config, n, output_dir, target_party)
+    _save_phase2_outputs(results, config, n, output_dir, target_party, selection_mode)
 
     print("\n=== Phase 2 Complete ===")
 
@@ -1095,11 +1130,13 @@ def _save_phase2_outputs(
     n: int,
     output_dir: Path,
     target_party: str | None = None,
+    selection_mode: str = "delta",
 ):
     name = _get_clean_name(config)
     timestamp = datetime.now().strftime("%m%d_%H%M")
     party_tag = f"_{target_party}" if target_party else ""
-    base = f"mini_maxi_phase2_{name}_{timestamp}{party_tag}"
+    sel_tag = "_corrwt" if selection_mode == "corr_weighted" else ""
+    base = f"mini_maxi_phase2_{name}_{timestamp}{party_tag}{sel_tag}"
 
     # Save CSV
     vis = results["visibility"]
@@ -1419,11 +1456,16 @@ def _save_phase2_report(
 
 def _run_compile(args, config):
     """Load all per-party Phase 2 CSVs and produce aggregated outputs."""
+    selection_mode = getattr(args, "selection_mode", "delta")
     name = _get_clean_name(config)
     timestamp = datetime.now().strftime("%m%d_%H%M")
-    base = f"mini_maxi_compiled_{name}_{timestamp}"
+    sel_tag = "_corrwt" if selection_mode == "corr_weighted" else ""
+    base = f"mini_maxi_compiled_{name}_{timestamp}{sel_tag}"
 
-    phase2_dir = RESULTS_DIR / "phase2" / name
+    if selection_mode == "corr_weighted":
+        phase2_dir = RESULTS_DIR / "phase2_corr_weighted" / name
+    else:
+        phase2_dir = RESULTS_DIR / "phase2" / name
 
     # Find Phase 2 CSVs (one per party subdirectory)
     dfs = {}
@@ -1811,7 +1853,9 @@ def main():
     n = _resolve_n(config, args.n)
     name = _get_clean_name(config)
 
-    print(f"\n=== Mini vs Maxi Party Impact Analysis ({args.mode} mode) ===")
+    selection_mode = getattr(args, "selection_mode", "delta")
+    sel_str = f", selection={selection_mode}" if selection_mode != "delta" else ""
+    print(f"\n=== Mini vs Maxi Party Impact Analysis ({args.mode} mode{sel_str}) ===")
     print(f"  Config : {name}")
     print(f"  Top-k (n): {n}")
     print(f"  Major parties: {', '.join(MAJOR_PARTIES)}")

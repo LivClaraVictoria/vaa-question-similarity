@@ -39,7 +39,10 @@ echo "SLURM_JOB_ID: ${SLURM_JOB_ID}"
 conda activate ${CONDA_ENVIRONMENT}
 cd ${DIRECTORY}
 
-python -u -m mini_maxi_party_impact_main --mode compile --config ${PIPELINE_CONFIG}
+COMPILE_ARGS="--mode compile --config ${PIPELINE_CONFIG}"
+[[ -n "${SELECTION_MODE}" ]] && COMPILE_ARGS="${COMPILE_ARGS} --selection-mode ${SELECTION_MODE}"
+
+python -u -m mini_maxi_party_impact_main ${COMPILE_ARGS}
 
 echo "Finished at: $(date)"
 exit 0

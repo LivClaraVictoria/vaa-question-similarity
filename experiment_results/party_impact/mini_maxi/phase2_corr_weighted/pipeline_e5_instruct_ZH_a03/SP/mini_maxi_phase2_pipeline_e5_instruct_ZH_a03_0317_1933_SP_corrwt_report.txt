@@ -1,0 +1,56 @@
+================================================================================
+MINI VS MAXI PARTY IMPACT — PHASE 2 REPORT
+================================================================================
+Generated: 2026-03-17 19:33
+Target party: SP
+Questions added: 5
+Top-k (n): 36
+
+SELECTED QUESTIONS:
+--------------------------------------------------------------------------------
+  Q32248: "Do you think it's fair that environmental and landscape prot"
+    Category: Energy & transport, mean_abs_r: 0.068, max_abs_r: 0.191
+    Δ(SP): +1.64pp
+  Q32217: "As part of the reform of the BVG (occupational pension plan)"
+    Category: Welfare state & family, mean_abs_r: 0.154, max_abs_r: 0.422
+    Δ(SP): +0.67pp
+  Q32220: "Should compulsory vaccination of children be introduced base"
+    Category: Health, mean_abs_r: 0.100, max_abs_r: 0.241
+    Δ(SP): +0.90pp
+  Q32266: "Should the Federal Council be allowed to authorize other sta"
+    Category: Security & military, mean_abs_r: 0.106, max_abs_r: 0.525
+    Δ(SP): +0.26pp
+  Q32247: "To achieve climate targets, should incentives and target agr"
+    Category: Energy & transport, mean_abs_r: 0.277, max_abs_r: 0.505
+    Δ(SP): +0.26pp
+
+PARTY VISIBILITY TABLE (%):
+--------------------------------------------------------------------------------
+     Party |  Mini base |  + Additions | E5-INSTRUCT α=0.3 | E5-INSTRUCT α=0.4 | ANSWER-CORR α=0.3 | ANSWER-CORR α=0.4 |      QWEN3 α=0.6
+--------------------------------------------------------------------------------
+        SP |      12.50 |        15.85 |            15.84 |            15.85 |            15.85 |            15.81 |            15.67
+     Green |      12.62 |        11.60 |            11.59 |            11.58 |            11.60 |            11.60 |            11.63
+       GLP |      14.51 |        13.44 |            13.31 |            13.33 |            13.44 |            13.42 |            13.37
+    Centre |      18.09 |        17.00 |            17.06 |            17.04 |            17.00 |            17.02 |            17.02
+       FDP |       4.42 |         4.38 |             4.35 |             4.33 |             4.38 |             4.36 |             4.33
+       SVP |       4.87 |         4.69 |             4.70 |             4.72 |             4.69 |             4.71 |             4.74
+
+CRW REDUCTION FOR SP:
+--------------------------------------------------------------------------------
+  Attack delta (no CRW): +3.35pp
+  E5-INSTRUCT α=0.3: +3.34pp (0% reduced)
+  E5-INSTRUCT α=0.4: +3.35pp (0% reduced)
+  ANSWER-CORR α=0.3: +3.35pp (0% reduced)
+  ANSWER-CORR α=0.4: +3.31pp (1% reduced)
+  QWEN3 α=0.6: +3.17pp (5% reduced)
+
+CRW WEIGHTS FOR ADDED QUESTIONS:
+--------------------------------------------------------------------------------
+  Question | E5-INSTRUCT α=0.3 | E5-INSTRUCT α=0.4 | ANSWER-CORR α=0.3 | ANSWER-CORR α=0.4 |      QWEN3 α=0.6
+Q    32248 |           1.0128 |           1.0179 |           1.0000 |           1.0041 |           0.9992
+Q    32217 |           1.0128 |           1.0249 |           1.0000 |           1.0041 |           1.0261
+Q    32220 |           1.0128 |           1.0084 |           1.0000 |           1.0041 |           1.0261
+Q    32266 |           1.0128 |           0.9543 |           1.0000 |           1.0041 |           1.0261
+Q    32247 |           1.0128 |           0.9809 |           1.0000 |           1.0041 |           1.0261
+  Avg mini |           0.9979 |           1.0005 |           1.0000 |           0.9993 |           0.9965
+================================================================================

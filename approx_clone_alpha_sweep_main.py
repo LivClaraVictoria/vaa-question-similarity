@@ -40,6 +40,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
+from scipy.stats import pearsonr
+from sklearn.manifold import MDS
 
 from alpha_sweep_main import DEFAULT_ALPHAS, _resolve_n
 from cross_run_analysis.analyzer import CrossRunAnalyzer
@@ -184,6 +186,373 @@ def _select_top_k_questions(
 
     sel_df = pd.DataFrame(rows).sort_values("max_abs_r", ascending=False)
     return sel_df.head(top_k).reset_index(drop=True)
+
+
+# ---------------------------------------------------------------------------
+# Correlation overview: pairwise stats + MDS map + heatmap
+# ---------------------------------------------------------------------------
+
+
+def _compute_full_correlation_matrix(
+    voters_df: pd.DataFrame,
+    all_question_ids: list[int],
+) -> pd.DataFrame:
+    """Compute pairwise |Pearson r| matrix for all questions using voter answers."""
+    n = len(all_question_ids)
+    corr_matrix = np.zeros((n, n))
+
+    answer_cols = {
+        qid: voters_df[f"answer_{qid}"]
+        for qid in all_question_ids
+        if f"answer_{qid}" in voters_df.columns
+    }
+
+    for i in range(n):
+        corr_matrix[i, i] = 1.0
+        q_i = all_question_ids[i]
+        if q_i not in answer_cols:
+            continue
+        vals_i = answer_cols[q_i]
+
+        for j in range(i + 1, n):
+            q_j = all_question_ids[j]
+            if q_j not in answer_cols:
+                continue
+            vals_j = answer_cols[q_j]
+            mask = vals_i.notna() & vals_j.notna()
+            if mask.sum() < 10:
+                continue
+            r, _ = pearsonr(vals_i[mask], vals_j[mask])
+            corr_matrix[i, j] = abs(r)
+            corr_matrix[j, i] = abs(r)
+
+    return pd.DataFrame(
+        corr_matrix,
+        index=all_question_ids,
+        columns=all_question_ids,
+    )
+
+
+def _compute_correlation_overview(
+    full_dataset: dict,
+    questions_df: pd.DataFrame,
+    mini_ids: set[int],
+    selected_ids: list[int],
+    all_question_ids: list[int],
+) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """Compute per-question correlation stats and MDS coordinates.
+
+    Returns (overview_df, corr_matrix_df).
+    overview_df has one row per question with all stats needed for thesis plots.
+    """
+    voters_df = full_dataset["voters"]
+    text_col = _get_question_text_col(questions_df)
+    selected_set = set(selected_ids)
+
+    # Full pairwise |r| matrix
+    print("  Computing full pairwise correlation matrix...")
+    corr_df = _compute_full_correlation_matrix(voters_df, all_question_ids)
+
+    # Arccos distance matrix for MDS
+    abs_r_clipped = np.clip(corr_df.values, 0, 1)
+    dist_matrix = np.arccos(abs_r_clipped)
+    np.fill_diagonal(dist_matrix, 0.0)
+
+    # MDS to 2D
+    print("  Running MDS projection to 2D...")
+    mds = MDS(n_components=2, dissimilarity="precomputed", random_state=42, n_init=4)
+    coords = mds.fit_transform(dist_matrix)
+    stress = mds.stress_
+
+    print(f"  MDS stress: {stress:.2f}")
+
+    # Per-question stats
+    rows = []
+    for idx, q_id in enumerate(all_question_ids):
+        q_row = questions_df[questions_df["ID_question"] == q_id]
+        if q_row.empty:
+            continue
+
+        is_mini = q_id in mini_ids
+        is_selected = q_id in selected_set
+        if is_mini:
+            group = "mini"
+        elif is_selected:
+            group = "selected"
+        else:
+            group = "full_only"
+
+        # Correlations with mini questions
+        mini_list = sorted(mini_ids)
+        r_to_mini = [corr_df.loc[q_id, m] for m in mini_list if m != q_id and m in corr_df.index]
+        max_r_to_mini = max(r_to_mini) if r_to_mini else 0.0
+        mean_r_to_mini = np.mean(r_to_mini) if r_to_mini else 0.0
+
+        # Best mini partner
+        if r_to_mini:
+            best_mini_idx = np.argmax(r_to_mini)
+            candidates = [m for m in mini_list if m != q_id and m in corr_df.index]
+            best_mini_partner = candidates[best_mini_idx] if candidates else None
+        else:
+            best_mini_partner = None
+
+        # Correlations with full-only questions (excluding self)
+        full_only_list = [q for q in all_question_ids if q not in mini_ids and q != q_id]
+        r_to_full_only = [corr_df.loc[q_id, f] for f in full_only_list if f in corr_df.index]
+        max_r_to_full_only = max(r_to_full_only) if r_to_full_only else 0.0
+        mean_r_to_full_only = np.mean(r_to_full_only) if r_to_full_only else 0.0
+
+        # Correlations with ALL other questions
+        all_others = [q for q in all_question_ids if q != q_id]
+        r_to_all = [corr_df.loc[q_id, a] for a in all_others if a in corr_df.index]
+        max_r_overall = max(r_to_all) if r_to_all else 0.0
+        mean_r_overall = np.mean(r_to_all) if r_to_all else 0.0
+        n_high_corr = sum(1 for r in r_to_all if r > 0.3)
+
+        # Arccos distance to best mini partner
+        arccos_to_best_mini = np.arccos(np.clip(max_r_to_mini, 0, 1))
+
+        rows.append({
+            "question_id": q_id,
+            "question_text": q_row[text_col].iloc[0],
+            "category": q_row["_category"].iloc[0] if "_category" in q_row.columns else "",
+            "group": group,
+            "is_mini": is_mini,
+            "is_selected": is_selected,
+            "max_abs_r_to_mini": max_r_to_mini,
+            "mean_abs_r_to_mini": mean_r_to_mini,
+            "best_mini_partner": best_mini_partner,
+            "arccos_to_best_mini": arccos_to_best_mini,
+            "max_abs_r_to_full_only": max_r_to_full_only,
+            "mean_abs_r_to_full_only": mean_r_to_full_only,
+            "max_abs_r_overall": max_r_overall,
+            "mean_abs_r_overall": mean_r_overall,
+            "n_high_corr_all": n_high_corr,
+            "mds_x": coords[idx, 0],
+            "mds_y": coords[idx, 1],
+            "mds_stress": stress,
+        })
+
+    overview_df = pd.DataFrame(rows)
+    return overview_df, corr_df
+
+
+def _plot_question_map(
+    overview_df: pd.DataFrame,
+    output_dir: Path,
+    base: str,
+):
+    """2D MDS scatter: mini=red, selected=green, rest=blue."""
+    fig, ax = plt.subplots(figsize=(12, 10))
+
+    group_config = {
+        "mini": {"color": "#E53935", "label": "Mini (rapide)", "marker": "o", "s": 80, "zorder": 3},
+        "selected": {"color": "#43A047", "label": "Added (top-k correlated)", "marker": "D", "s": 120, "zorder": 4},
+        "full_only": {"color": "#1E88E5", "label": "Full-only (not added)", "marker": "o", "s": 50, "zorder": 2},
+    }
+
+    for group, cfg in group_config.items():
+        mask = overview_df["group"] == group
+        if not mask.any():
+            continue
+        subset = overview_df[mask]
+        ax.scatter(
+            subset["mds_x"], subset["mds_y"],
+            c=cfg["color"], label=cfg["label"],
+            marker=cfg["marker"], s=cfg["s"],
+            alpha=0.8, edgecolors="white", linewidth=0.5,
+            zorder=cfg["zorder"],
+        )
+
+    # Label selected questions
+    selected = overview_df[overview_df["group"] == "selected"]
+    for _, row in selected.iterrows():
+        ax.annotate(
+            f"Q{int(row['question_id'])}",
+            (row["mds_x"], row["mds_y"]),
+            fontsize=7, fontweight="bold",
+            xytext=(5, 5), textcoords="offset points",
+            color="#2E7D32",
+        )
+
+    # Draw lines from selected to their best mini partner
+    for _, row in selected.iterrows():
+        partner = row["best_mini_partner"]
+        if pd.isna(partner):
+            continue
+        partner_row = overview_df[overview_df["question_id"] == int(partner)]
+        if partner_row.empty:
+            continue
+        ax.plot(
+            [row["mds_x"], partner_row["mds_x"].iloc[0]],
+            [row["mds_y"], partner_row["mds_y"].iloc[0]],
+            color="#43A047", alpha=0.4, linewidth=1, linestyle="--",
+            zorder=1,
+        )
+
+    stress = overview_df["mds_stress"].iloc[0]
+    ax.set_title(
+        "Question Map: MDS Projection of Voter-Answer Correlation Distances\n"
+        f"(arccos(|Pearson r|), stress={stress:.1f})",
+        fontsize=12,
+    )
+    ax.set_xlabel("MDS dimension 1")
+    ax.set_ylabel("MDS dimension 2")
+    ax.legend(loc="best", fontsize=10)
+
+    fig.tight_layout()
+    path = output_dir / f"{base}_question_map.png"
+    fig.savefig(path, dpi=300)
+    plt.close(fig)
+    print(f"  -> Question map: {path.name}")
+
+
+def _plot_corr_heatmap(
+    corr_df: pd.DataFrame,
+    mini_ids: set[int],
+    selected_ids: list[int],
+    questions_df: pd.DataFrame,
+    output_dir: Path,
+    base: str,
+):
+    """Correlation heatmap grouped by mini / selected / rest."""
+    text_col = _get_question_text_col(questions_df)
+    selected_set = set(selected_ids)
+    all_ids = list(corr_df.index)
+
+    # Sort: mini first, then selected, then rest
+    def sort_key(q_id):
+        if q_id in mini_ids:
+            return (0, q_id)
+        elif q_id in selected_set:
+            return (1, q_id)
+        return (2, q_id)
+
+    sorted_ids = sorted(all_ids, key=sort_key)
+    reordered = corr_df.loc[sorted_ids, sorted_ids]
+
+    # Labels
+    labels = []
+    for q_id in sorted_ids:
+        q_row = questions_df[questions_df["ID_question"] == q_id]
+        text = str(q_row[text_col].iloc[0])[:25] if not q_row.empty else ""
+        prefix = ""
+        if q_id in mini_ids:
+            prefix = "[M] "
+        elif q_id in selected_set:
+            prefix = "[+] "
+        labels.append(f"{prefix}Q{q_id} {text}")
+
+    fig, ax = plt.subplots(figsize=(20, 18))
+    sns.heatmap(
+        reordered.values,
+        annot=False,
+        cmap="YlOrRd",
+        vmin=0, vmax=0.8,
+        xticklabels=labels,
+        yticklabels=labels,
+        ax=ax,
+        linewidths=0.1,
+        cbar_kws={"label": "|Pearson r|"},
+    )
+
+    # Draw group separator lines
+    n_mini = sum(1 for q in sorted_ids if q in mini_ids)
+    n_selected = sum(1 for q in sorted_ids if q in selected_set)
+    for boundary in [n_mini, n_mini + n_selected]:
+        ax.axhline(boundary, color="black", linewidth=1.5)
+        ax.axvline(boundary, color="black", linewidth=1.5)
+
+    ax.set_title(
+        "Pairwise |Pearson r| Between All Questions\n"
+        "[M] = Mini (rapide), [+] = Added to mini, others = full-only",
+        fontsize=12,
+    )
+    ax.tick_params(axis="both", labelsize=5)
+    fig.tight_layout()
+
+    path = output_dir / f"{base}_corr_heatmap.png"
+    fig.savefig(path, dpi=300)
+    plt.close(fig)
+    print(f"  -> Correlation heatmap: {path.name}")
+
+
+def _plot_corr_distributions(
+    overview_df: pd.DataFrame,
+    output_dir: Path,
+    base: str,
+):
+    """Box plots showing correlation distributions by group."""
+    fig, axes = plt.subplots(1, 3, figsize=(18, 6))
+
+    # 1. Max |r| to mini by group
+    ax = axes[0]
+    for group, color in [("mini", "#E53935"), ("selected", "#43A047"), ("full_only", "#1E88E5")]:
+        subset = overview_df[overview_df["group"] == group]
+        if subset.empty:
+            continue
+        label = {"mini": "Mini", "selected": "Added", "full_only": "Full-only"}[group]
+        ax.boxplot(
+            subset["max_abs_r_to_mini"].dropna(),
+            positions=[list({"mini": 0, "selected": 1, "full_only": 2}.keys()).index(group)],
+            widths=0.6,
+            patch_artist=True,
+            boxprops=dict(facecolor=color, alpha=0.6),
+            medianprops=dict(color="black"),
+        )
+    ax.set_xticks([0, 1, 2])
+    ax.set_xticklabels(["Mini\n(within-mini)", "Added\n(to mini)", "Full-only\n(to mini)"])
+    ax.set_ylabel("Max |Pearson r| to nearest mini question")
+    ax.set_title("Redundancy with Mini Questionnaire")
+
+    # 2. Mean |r| overall by group
+    ax = axes[1]
+    for i, (group, color) in enumerate([("mini", "#E53935"), ("selected", "#43A047"), ("full_only", "#1E88E5")]):
+        subset = overview_df[overview_df["group"] == group]
+        if subset.empty:
+            continue
+        ax.boxplot(
+            subset["mean_abs_r_overall"].dropna(),
+            positions=[i],
+            widths=0.6,
+            patch_artist=True,
+            boxprops=dict(facecolor=color, alpha=0.6),
+            medianprops=dict(color="black"),
+        )
+    ax.set_xticks([0, 1, 2])
+    ax.set_xticklabels(["Mini", "Added", "Full-only"])
+    ax.set_ylabel("Mean |Pearson r| to all other questions")
+    ax.set_title("Overall Correlation Level")
+
+    # 3. Arccos distance to best mini partner (full-only + selected only)
+    ax = axes[2]
+    non_mini = overview_df[overview_df["group"] != "mini"]
+    for i, (group, color) in enumerate([("selected", "#43A047"), ("full_only", "#1E88E5")]):
+        subset = non_mini[non_mini["group"] == group]
+        if subset.empty:
+            continue
+        ax.boxplot(
+            subset["arccos_to_best_mini"].dropna(),
+            positions=[i],
+            widths=0.6,
+            patch_artist=True,
+            boxprops=dict(facecolor=color, alpha=0.6),
+            medianprops=dict(color="black"),
+        )
+    ax.set_xticks([0, 1])
+    ax.set_xticklabels(["Added", "Full-only"])
+    ax.set_ylabel("Arccos distance to nearest mini question")
+    ax.set_title("CRW-Relevant Distance to Mini")
+    ax.axhline(np.pi / 2, color="gray", linestyle=":", alpha=0.5, label="max (π/2)")
+    ax.legend(fontsize=8)
+
+    fig.suptitle("Correlation Overview: Mini vs Added vs Full-Only Questions", fontsize=13)
+    fig.tight_layout()
+
+    path = output_dir / f"{base}_corr_distributions.png"
+    fig.savefig(path, dpi=300)
+    plt.close(fig)
+    print(f"  -> Correlation distributions: {path.name}")
 
 
 # ---------------------------------------------------------------------------
@@ -475,13 +844,24 @@ def main():
             f"category={row['category']}"
         )
 
-    # 3. Build augmented dataset
+    # 3. Correlation overview (before building augmented dataset)
+    print("\n--- Computing correlation overview ---")
+    all_question_ids = sorted(mini_ids | set(full_only_ids))
+    overview_df, corr_matrix_df = _compute_correlation_overview(
+        full_dataset,
+        full_dataset["questions"],
+        mini_ids,
+        q_ids,
+        all_question_ids,
+    )
+
+    # 4. Build augmented dataset
     print("\n--- Building augmented dataset ---")
     augmented_dataset = add_questions_to_mini(mini_dataset, full_dataset, q_ids)
     n_aug_q = len(augmented_dataset["questions"])
     print(f"  Augmented: {n_aug_q} questions ({len(mini_ids)} mini + {top_k} added)")
 
-    # 4. Compute baselines (shared across all metrics)
+    # 5. Compute baselines (shared across all metrics)
     print("\n--- Computing mini baseline recommendations ---")
     mini_rec_engine = RecommendationEngine(config=config, data_map=mini_dataset)
     mini_baseline = mini_rec_engine.run_baseline()
@@ -493,7 +873,7 @@ def main():
     aug_rec_engine = RecommendationEngine(config=aug_config, data_map=augmented_dataset)
     aug_baseline = aug_rec_engine.run_baseline()
 
-    # 5. Run per-metric sweeps
+    # 6. Run per-metric sweeps
     all_rows = []
     weight_lookups = {}
 
@@ -519,24 +899,35 @@ def main():
         all_rows.extend(rows)
         weight_lookups[metric_label] = wl
 
-    # 6. Save outputs
+    # 7. Save outputs
     RESULTS_DIR.mkdir(parents=True, exist_ok=True)
     timestamp = datetime.now().strftime("%m%d_%H%M")
     base = f"approx_clone_sweep_{timestamp}"
 
-    # CSV — all results
+    # Correlation overview CSV (single file with all per-question data)
+    overview_path = RESULTS_DIR / f"{base}_corr_overview.csv"
+    overview_df.to_csv(overview_path, index=False)
+    print(f"\n  -> Correlation overview CSV: {overview_path}")
+
+    # Alpha sweep results CSV
     results_df = pd.DataFrame(all_rows)
     csv_path = RESULTS_DIR / f"{base}.csv"
     results_df.to_csv(csv_path, index=False)
-    print(f"\n  -> Results CSV: {csv_path}")
+    print(f"  -> Results CSV: {csv_path}")
 
     # Selection CSV
     sel_path = RESULTS_DIR / f"{base}_selection.csv"
     selection_df.to_csv(sel_path, index=False)
     print(f"  -> Selection CSV: {sel_path}")
 
-    # Plot
+    # Plots
     sns.set_theme(style="whitegrid")
+    _plot_question_map(overview_df, RESULTS_DIR, base)
+    _plot_corr_heatmap(
+        corr_matrix_df, mini_ids, q_ids,
+        full_dataset["questions"], RESULTS_DIR, base,
+    )
+    _plot_corr_distributions(overview_df, RESULTS_DIR, base)
     _plot_metrics(all_rows, RESULTS_DIR, base)
 
     # Report

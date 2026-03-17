@@ -1,0 +1,77 @@
+================================================================================
+APPROXIMATE CLONE EXPERIMENT — REPORT
+================================================================================
+Generated: 2026-03-17 18:41
+Top-k for Jaccard: 36
+
+SELECTED QUESTIONS (top-5 by max |Pearson r| to mini questions):
+--------------------------------------------------------------------------------
+  Q32287: max_abs_r=0.775 (with mini Q32264), mean_abs_r=0.284
+    "Should the federal government spend more or less in the area of "Natio"
+    Category: Federal budget
+
+  Q32285: max_abs_r=0.737 (with mini Q32245), mean_abs_r=0.320
+    "Should the federal government spend more or less in the area of "Road "
+    Category: Federal budget
+
+  Q32281: max_abs_r=0.605 (with mini Q32219), mean_abs_r=0.376
+    "Should the federal government spend more or less in the area of "Socia"
+    Category: Federal budget
+
+  Q32276: max_abs_r=0.537 (with mini Q32238), mean_abs_r=0.339
+    "What is your position the following statement: "It is necessary for th"
+    Category: Values
+
+  Q32266: max_abs_r=0.525 (with mini Q32273), mean_abs_r=0.106
+    "Should the Federal Council be allowed to authorize other states to re-"
+    Category: Security & military
+
+================================================================================
+METRIC: ANSWER-CORR-ARCCOS
+--------------------------------------------------------------------------------
+  Baseline distortion (Jaccard mean): 0.7629
+  Baseline distortion (Spearman mean): 0.9885
+  Best CRW alpha: 1.10
+  Best CRW Jaccard mean: 0.7650
+  Best CRW Spearman mean: 0.9893
+  Jaccard improvement over baseline: +0.0021
+  CRW weights for added questions:
+    Q32287: 0.9236
+    Q32285: 0.9319
+    Q32281: 0.9912
+    Q32276: 0.9717
+    Q32266: 1.0842
+
+================================================================================
+METRIC: E5-INSTRUCT
+--------------------------------------------------------------------------------
+  Baseline distortion (Jaccard mean): 0.7629
+  Baseline distortion (Spearman mean): 0.9885
+  Alpha: 0.40
+  CRW Jaccard mean: 0.7490
+  CRW Spearman mean: 0.9889
+  Jaccard improvement over baseline: -0.0140
+  CRW weights for added questions:
+    Q32287: 0.9879
+    Q32285: 0.9959
+    Q32281: 1.0327
+    Q32276: 1.0327
+    Q32266: 0.9529
+
+================================================================================
+METRIC: QWEN3
+--------------------------------------------------------------------------------
+  Baseline distortion (Jaccard mean): 0.7629
+  Baseline distortion (Spearman mean): 0.9885
+  Alpha: 0.60
+  CRW Jaccard mean: 0.7498
+  CRW Spearman mean: 0.9884
+  Jaccard improvement over baseline: -0.0131
+  CRW weights for added questions:
+    Q32287: 0.9255
+    Q32285: 1.0065
+    Q32281: 0.9455
+    Q32276: 1.0266
+    Q32266: 1.0266
+
+================================================================================
