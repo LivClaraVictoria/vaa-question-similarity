@@ -502,6 +502,27 @@ def _run_worker(args, config, alphas: list[float], n_clones: int, n_jaccard: int
 # ---------------------------------------------------------------------------
 
 
+def _get_base_min_distance(config) -> float | None:
+    """Load the base (non-cloned) distance matrix and return the minimum distance.
+
+    This represents the tightest pair of original questions — the threshold
+    above which CRW starts treating naturally similar questions as clones.
+    Returns None if the distance cache is not available.
+    """
+    try:
+        calculator = get_calculator(config)
+        dataset = load_dataset(config)
+        dist_df = calculator.calculate_distance(dataset, config)
+        # Filter to original questions only (no clones)
+        orig = dist_df[(dist_df["ID1"] < 9_000_000) & (dist_df["ID2"] < 9_000_000)]
+        min_dist = orig["Distance"].min()
+        print(f"  Base min non-clone distance: {min_dist:.4f}")
+        return float(min_dist)
+    except Exception as e:
+        print(f"  Warning: could not load base distances for min-distance line: {e}")
+        return None
+
+
 def _run_collect(args, config, alphas: list[float], n_clones: int, n_jaccard: int):
     sweep_dir = Path(args.sweep_dir) if args.sweep_dir else RESULTS_DIR / "workers"
 
@@ -516,9 +537,13 @@ def _run_collect(args, config, alphas: list[float], n_clones: int, n_jaccard: in
     dfs = [pd.read_csv(f) for f in worker_files]
     combined = pd.concat(dfs, ignore_index=True)
 
+    # Try to compute min non-clone distance for annotation
+    min_dist = _get_base_min_distance(config)
+
     output_dir = RESULTS_DIR
     output_dir.mkdir(parents=True, exist_ok=True)
-    _save_collect_outputs(combined, config, alphas, n_clones, n_jaccard, output_dir)
+    _save_collect_outputs(combined, config, alphas, n_clones, n_jaccard, output_dir,
+                          min_nonclone_dist=min_dist)
 
     print("\n=== Collect Complete ===")
 
@@ -535,6 +560,7 @@ def _save_collect_outputs(
     n_clones: int,
     n_jaccard: int,
     output_dir: Path,
+    min_nonclone_dist: float | None = None,
 ):
     """Save CSV, plots, and report."""
     name = _get_clean_name(config)
@@ -555,6 +581,10 @@ def _save_collect_outputs(
     base = f"question_alpha_sweep_{name}{ct_suffix}_n{n_clones}_{timestamp}"
 
     # --- CSV ---
+    # Add min non-clone distance as a column (constant across rows, useful for thesis figures)
+    if min_nonclone_dist is not None:
+        df = df.copy()
+        df["min_nonclone_dist"] = min_nonclone_dist
     csv_path = subfolder / f"{base}.csv"
     df.to_csv(csv_path, index=False)
     print(f"  -> CSV: {subfolder_name}/{csv_path.name}")
@@ -564,8 +594,10 @@ def _save_collect_outputs(
 
     sns.set_theme(style="whitegrid")
 
-    _plot_heatmap(df, config, n_clones, n_jaccard, subfolder, base)
-    _plot_avg_curve(df, config, n_clones, n_jaccard, subfolder, base)
+    _plot_heatmap(df, config, n_clones, n_jaccard, subfolder, base,
+                  min_nonclone_dist=min_nonclone_dist)
+    _plot_avg_curve(df, config, n_clones, n_jaccard, subfolder, base,
+                    min_nonclone_dist=min_nonclone_dist)
     _plot_per_question(summary, config, n_clones, n_jaccard, subfolder, base)
     _plot_optimal_alpha_hist(summary, config, n_clones, subfolder, base)
     _save_report(df, summary, config, n_clones, n_jaccard, subfolder, base)
@@ -623,6 +655,7 @@ def _plot_heatmap(
     n_jaccard: int,
     output_dir: Path,
     base: str,
+    min_nonclone_dist: float | None = None,
 ):
     """Heatmap: questions (y, sorted by max CRW Jaccard) × alpha (x)."""
     # Sort questions by max CRW Jaccard (best correction at top)
@@ -663,11 +696,28 @@ def _plot_heatmap(
         ref_idx = alpha_cols.index(DEFAULT_ALPHA_REFERENCE)
         ax.axvline(ref_idx + 0.5, color="black", linewidth=1.5, linestyle="--", alpha=0.7)
 
+    # Mark min non-clone distance (alpha above which OG questions start being grouped)
+    if min_nonclone_dist is not None:
+        # Find position on the alpha axis (interpolate between discrete alpha columns)
+        for k, a in enumerate(alpha_cols):
+            if a >= min_nonclone_dist:
+                # Interpolate position between k-1 and k
+                if k > 0:
+                    frac = (min_nonclone_dist - alpha_cols[k - 1]) / (a - alpha_cols[k - 1])
+                    pos = (k - 1) + frac + 0.5
+                else:
+                    pos = 0.5
+                ax.axvline(pos, color="red", linewidth=1.5, linestyle=":", alpha=0.8)
+                ax.text(pos + 0.2, len(q_order) * 0.02,
+                        f"min OG dist={min_nonclone_dist:.3f}",
+                        color="red", fontsize=8, rotation=90, va="bottom")
+                break
+
     ax.set_xlabel("Alpha (α)", fontsize=12)
     ax.set_ylabel("")
     ax.set_title(
         f"Per-Question CRW Correction: Jaccard vs (Question, Alpha)\n"
-        f"({n_clones}× easy_paraphrase, top-{n_jaccard}, {config.district})",
+        f"({n_clones}× clones, top-{n_jaccard}, {config.district})",
         fontsize=13,
     )
     ax.tick_params(axis="y", labelsize=6)
@@ -688,6 +738,7 @@ def _plot_avg_curve(
     n_jaccard: int,
     output_dir: Path,
     base: str,
+    min_nonclone_dist: float | None = None,
 ):
     """Average CRW metrics vs alpha with percentile band."""
     alpha_agg = df.groupby("alpha").agg(
@@ -745,12 +796,19 @@ def _plot_avg_curve(
         label=f"Reference α={DEFAULT_ALPHA_REFERENCE}",
     )
 
+    # Min non-clone distance line
+    if min_nonclone_dist is not None:
+        ax.axvline(
+            min_nonclone_dist, color="red", linewidth=1.5, linestyle=":", alpha=0.8,
+            label=f"Min OG distance ({min_nonclone_dist:.3f})",
+        )
+
     ax.set_xlabel("Alpha (α)", fontsize=11)
     ax.set_ylabel("Metric Value", fontsize=11)
     ax.set_ylim(0, 1.05)
     ax.set_title(
         f"Average CRW Correction vs Alpha (across all questions)\n"
-        f"({n_clones}× easy_paraphrase, top-{n_jaccard}, {config.district})",
+        f"({n_clones}× clones, top-{n_jaccard}, {config.district})",
         fontsize=13,
     )
     ax.legend(loc="best", fontsize=8)
