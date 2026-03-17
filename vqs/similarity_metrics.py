@@ -361,6 +361,9 @@ class CorrelationDistanceCalculator:
 
     Unlike embedding-based metrics, this uses respondent answer data directly.
     Requires load_voters=True and/or load_candidates=True in the config.
+
+    NOTE: This is NOT a proper metric (violates triangle inequality).
+    Use ArcCosCorrelationDistanceCalculator for a proper metric.
     """
 
     def __init__(self, config: Any, **kwargs):
@@ -374,6 +377,10 @@ class CorrelationDistanceCalculator:
             f"Source: {source}. "
             f"Important parameters for caching: {self.important_params_list}"
         )
+
+    def _correlation_to_distance(self, r: float) -> float:
+        """Convert Pearson r to distance. Override in subclasses for different transforms."""
+        return 1.0 - abs(r) if not np.isnan(r) else 1.0
 
     def calculate_distance(self, dataset: dict, config: Any) -> pd.DataFrame:
         if config.data_choice == "fake":
@@ -432,13 +439,13 @@ class CorrelationDistanceCalculator:
         # Compute Pearson correlation matrix (pairwise deletion for NaNs)
         corr_matrix = respondents.corr()
 
-        # Convert to distance: 1 - |r|
+        # Convert correlation to distance
         results = []
         for i, j in combinations(range(len(question_ids)), 2):
             col_i = answer_cols[i]
             col_j = answer_cols[j]
             r = corr_matrix.loc[col_i, col_j]
-            distance = 1.0 - abs(r) if not np.isnan(r) else 1.0
+            distance = self._correlation_to_distance(r)
             results.append(
                 {
                     "Qu1": questions_text[i],
@@ -453,6 +460,19 @@ class CorrelationDistanceCalculator:
         results_df = pd.DataFrame(results)
         rm.save(results_df)
         return results_df
+
+
+class ArcCosCorrelationDistanceCalculator(CorrelationDistanceCalculator):
+    """Proper metric based on answer correlations: distance(i,j) = arccos(|Pearson_r(answers_i, answers_j)|).
+
+    Angular distance in projective space. Satisfies the triangle inequality.
+    Range: [0, pi/2]. Numerically stable via np.clip.
+    """
+
+    def _correlation_to_distance(self, r: float) -> float:
+        if np.isnan(r):
+            return np.pi / 2
+        return float(np.arccos(np.clip(abs(r), 0.0, 1.0)))
 
 
 # --- 3. The Registry (Configuration) ---
@@ -474,6 +494,7 @@ METRIC_REGISTRY = {
     "NOMIC-V2": {"class": NomicCalculator, "kwargs": {}},
     "QWEN3": {"class": Qwen3Calculator, "kwargs": {}},
     "ANSWER-CORRELATION": {"class": CorrelationDistanceCalculator, "kwargs": {}},
+    "ANSWER-CORRELATION-ARCCOS": {"class": ArcCosCorrelationDistanceCalculator, "kwargs": {}},
 }
 
 

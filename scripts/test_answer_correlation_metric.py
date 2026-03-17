@@ -11,7 +11,7 @@ from types import SimpleNamespace
 from itertools import combinations
 import shutil
 
-from vqs.similarity_metrics import CorrelationDistanceCalculator, METRIC_REGISTRY
+from vqs.similarity_metrics import CorrelationDistanceCalculator, ArcCosCorrelationDistanceCalculator, METRIC_REGISTRY
 
 
 def make_config(tmp_dir: Path, answer_source: str = "voters") -> SimpleNamespace:
@@ -284,6 +284,138 @@ def test_caching(tmp_dir: Path):
     print("PASS: Caching works correctly.")
 
 
+def make_arccos_config(tmp_dir: Path, answer_source: str = "voters") -> SimpleNamespace:
+    config = make_config(tmp_dir, answer_source)
+    config.dist = "ANSWER-CORRELATION-ARCCOS"
+    return config
+
+
+def test_arccos_registry():
+    """Test that ANSWER-CORRELATION-ARCCOS is registered."""
+    print("\n--- Test: ArcCos Registry ---")
+    assert "ANSWER-CORRELATION-ARCCOS" in METRIC_REGISTRY, "Missing from METRIC_REGISTRY"
+    entry = METRIC_REGISTRY["ANSWER-CORRELATION-ARCCOS"]
+    assert entry["class"] is ArcCosCorrelationDistanceCalculator
+    print("PASS: ANSWER-CORRELATION-ARCCOS is registered correctly.")
+
+
+def test_arccos_basic_computation(tmp_dir: Path):
+    """Test arccos distance computation with synthetic data."""
+    print("\n--- Test: ArcCos Basic Computation ---")
+    config = make_arccos_config(tmp_dir / "arccos_basic")
+    dataset = make_dataset()
+
+    calc = ArcCosCorrelationDistanceCalculator(config)
+    result = calc.calculate_distance(dataset, config)
+
+    # Check output format
+    assert isinstance(result, pd.DataFrame)
+    n_questions = 5
+    expected_rows = n_questions * (n_questions - 1) // 2
+    assert len(result) == expected_rows
+
+    # All distances in [0, pi/2]
+    assert (result["Distance"] >= 0).all(), "Found negative distances"
+    assert (result["Distance"] <= np.pi / 2 + 1e-9).all(), f"Found distances > pi/2: max={result['Distance'].max()}"
+
+    print(f"PASS: Distance range [{result['Distance'].min():.4f}, {result['Distance'].max():.4f}] is in [0, pi/2].")
+    return result
+
+
+def test_arccos_identical_zero(tmp_dir: Path):
+    """Test that identical answers give distance 0 with arccos metric."""
+    print("\n--- Test: ArcCos Identical → 0 ---")
+    config = make_arccos_config(tmp_dir / "arccos_identical")
+    np.random.seed(99)
+    n = 100
+    answers = np.random.randint(0, 101, size=n).astype(float)
+    df_voters = pd.DataFrame({
+        "answer_1": answers,
+        "answer_2": answers,
+        "answer_3": np.random.randint(0, 101, size=n).astype(float),
+    })
+    df_questions = pd.DataFrame({
+        "ID_question": [1, 2, 3],
+        "question_EN": ["Q1", "Q2 (clone)", "Q3"],
+    })
+    dataset = {"questions": df_questions, "voters": df_voters}
+
+    calc = ArcCosCorrelationDistanceCalculator(config)
+    result = calc.calculate_distance(dataset, config)
+    d = result[(result["ID1"] == 1) & (result["ID2"] == 2)]["Distance"].iloc[0]
+    assert abs(d) < 1e-10, f"Identical answers should have distance 0, got {d}"
+    print(f"PASS: Identical answers → distance = {d:.1e}")
+
+
+def test_arccos_negated_zero(tmp_dir: Path):
+    """Test that negated answers give distance 0 with arccos metric."""
+    print("\n--- Test: ArcCos Negated → 0 ---")
+    config = make_arccos_config(tmp_dir / "arccos_negated")
+    np.random.seed(99)
+    n = 100
+    answers = np.random.randint(0, 101, size=n).astype(float)
+    df_voters = pd.DataFrame({
+        "answer_1": answers,
+        "answer_2": 100.0 - answers,
+        "answer_3": np.random.randint(0, 101, size=n).astype(float),
+    })
+    df_questions = pd.DataFrame({
+        "ID_question": [1, 2, 3],
+        "question_EN": ["Q1", "Q2 (negation)", "Q3"],
+    })
+    dataset = {"questions": df_questions, "voters": df_voters}
+
+    calc = ArcCosCorrelationDistanceCalculator(config)
+    result = calc.calculate_distance(dataset, config)
+    d = result[(result["ID1"] == 1) & (result["ID2"] == 2)]["Distance"].iloc[0]
+    assert abs(d) < 1e-10, f"Negated answers should have distance 0, got {d}"
+    print(f"PASS: Negated answers → distance = {d:.1e}")
+
+
+def test_arccos_uncorrelated_max(tmp_dir: Path):
+    """Test that uncorrelated answers give distance ~pi/2."""
+    print("\n--- Test: ArcCos Uncorrelated → pi/2 ---")
+    config = make_arccos_config(tmp_dir / "arccos_uncorrelated")
+    np.random.seed(42)
+    n = 10000  # large N for stable correlation near 0
+    df_voters = pd.DataFrame({
+        "answer_1": np.random.randint(0, 101, size=n).astype(float),
+        "answer_2": np.random.randint(0, 101, size=n).astype(float),
+    })
+    df_questions = pd.DataFrame({
+        "ID_question": [1, 2],
+        "question_EN": ["Q1", "Q2"],
+    })
+    dataset = {"questions": df_questions, "voters": df_voters}
+
+    calc = ArcCosCorrelationDistanceCalculator(config)
+    result = calc.calculate_distance(dataset, config)
+    d = result["Distance"].iloc[0]
+    assert abs(d - np.pi / 2) < 0.1, f"Uncorrelated should be near pi/2={np.pi/2:.4f}, got {d:.4f}"
+    print(f"PASS: Uncorrelated → distance = {d:.4f} (pi/2 = {np.pi/2:.4f})")
+
+
+def test_arccos_rank_order_matches_old(tmp_dir: Path):
+    """Test that arccos preserves the rank order of the old 1-|r| metric."""
+    print("\n--- Test: ArcCos Rank Order Matches Old ---")
+    dataset = make_dataset()
+
+    old_config = make_config(tmp_dir / "rankorder_old")
+    old_calc = CorrelationDistanceCalculator(old_config)
+    old_result = old_calc.calculate_distance(dataset, old_config)
+
+    new_config = make_arccos_config(tmp_dir / "rankorder_new")
+    new_calc = ArcCosCorrelationDistanceCalculator(new_config)
+    new_result = new_calc.calculate_distance(dataset, new_config)
+
+    old_order = old_result.sort_values("Distance").reset_index(drop=True)
+    new_order = new_result.sort_values("Distance").reset_index(drop=True)
+
+    assert (old_order["ID1"].values == new_order["ID1"].values).all(), "Rank order differs"
+    assert (old_order["ID2"].values == new_order["ID2"].values).all(), "Rank order differs"
+    print("PASS: Rank order is identical between 1-|r| and arccos(|r|).")
+
+
 def main():
     tmp_dir = Path("test_answer_correlation_tmp")
     tmp_dir.mkdir(exist_ok=True)
@@ -336,6 +468,12 @@ def main():
         ("Fake Rejected", lambda: test_fake_data_rejected(tmp_dir)),
         ("Missing Voters", lambda: test_missing_voters_rejected(tmp_dir)),
         ("Caching", lambda: test_caching(tmp_dir)),
+        ("ArcCos Registry", lambda: test_arccos_registry()),
+        ("ArcCos Basic", lambda: test_arccos_basic_computation(tmp_dir)),
+        ("ArcCos Identical → 0", lambda: test_arccos_identical_zero(tmp_dir)),
+        ("ArcCos Negated → 0", lambda: test_arccos_negated_zero(tmp_dir)),
+        ("ArcCos Uncorrelated → pi/2", lambda: test_arccos_uncorrelated_max(tmp_dir)),
+        ("ArcCos Rank Order", lambda: test_arccos_rank_order_matches_old(tmp_dir)),
     ]:
         try:
             test_fn()
