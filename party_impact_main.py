@@ -887,14 +887,31 @@ def _save_phase2_outputs(
     vis = results["visibility"]
     rows = []
     for p in MAJOR_PARTIES:
+        o = vis["original"].get(p, 0)
+        oc = vis["original_crw"].get(p, 0)
+        wc = vis["worst_case"].get(p, 0)
+        wc_crw = vis["worst_case_crw"].get(p, 0)
+        rl = vis["realistic"].get(p, 0)
+        rl_crw = vis["realistic_crw"].get(p, 0)
+        da_w = wc - o
+        dc_w = wc_crw - oc
+        da_r = rl - o
+        dc_r = rl_crw - oc
         rows.append({
             "party": p,
-            "original": vis["original"].get(p, 0),
-            "original_crw": vis["original_crw"].get(p, 0),
-            "worst_case": vis["worst_case"].get(p, 0),
-            "worst_case_crw": vis["worst_case_crw"].get(p, 0),
-            "realistic": vis["realistic"].get(p, 0),
-            "realistic_crw": vis["realistic_crw"].get(p, 0),
+            "original": o,
+            "original_crw": oc,
+            "crw_drift": oc - o,
+            "worst_case": wc,
+            "worst_case_crw": wc_crw,
+            "delta_attack_worst": da_w,
+            "delta_crw_worst": dc_w,
+            "reduction_worst": (1 - abs(dc_w) / abs(da_w)) * 100 if abs(da_w) > 1e-9 else 0,
+            "realistic": rl,
+            "realistic_crw": rl_crw,
+            "delta_attack_realistic": da_r,
+            "delta_crw_realistic": dc_r,
+            "reduction_realistic": (1 - abs(dc_r) / abs(da_r)) * 100 if abs(da_r) > 1e-9 else 0,
         })
     csv_df = pd.DataFrame(rows)
     csv_path = output_dir / f"{base}_phase2.csv"
@@ -1001,10 +1018,11 @@ def _plot_phase2_deltas(
     )
     if focus in MAJOR_PARTIES:
         p_idx = MAJOR_PARTIES.index(focus)
+        orig_crw = vis["original_crw"]
         d_worst = (vis["worst_case"].get(focus, 0) - orig.get(focus, 0)) * 100
-        d_worst_crw = (vis["worst_case_crw"].get(focus, 0) - orig.get(focus, 0)) * 100
+        d_worst_crw = (vis["worst_case_crw"].get(focus, 0) - orig_crw.get(focus, 0)) * 100
         d_real = (vis["realistic"].get(focus, 0) - orig.get(focus, 0)) * 100
-        d_real_crw = (vis["realistic_crw"].get(focus, 0) - orig.get(focus, 0)) * 100
+        d_real_crw = (vis["realistic_crw"].get(focus, 0) - orig_crw.get(focus, 0)) * 100
 
         if abs(d_worst) > 0.001:
             red_w = (1 - abs(d_worst_crw) / abs(d_worst)) * 100
@@ -1378,12 +1396,14 @@ def _save_phase2_report(
     )
     lines.append("-" * 70)
 
+    orig_crw = vis["original_crw"]
     for p in MAJOR_PARTIES:
         o = orig.get(p, 0) * 100
+        oc = orig_crw.get(p, 0) * 100
         a = vis["worst_case"].get(p, 0) * 100
         c = vis["worst_case_crw"].get(p, 0) * 100
         da = a - o
-        dc = c - o
+        dc = c - oc
         reduction = (1 - abs(dc) / abs(da)) * 100 if abs(da) > 0.001 else 0
         lines.append(
             f"{p:>8s}  {o:>7.2f}%  {a:>7.2f}%  {c:>7.2f}%  "
@@ -1407,10 +1427,11 @@ def _save_phase2_report(
 
     for p in MAJOR_PARTIES:
         o = orig.get(p, 0) * 100
+        oc = orig_crw.get(p, 0) * 100
         a = vis["realistic"].get(p, 0) * 100
         c = vis["realistic_crw"].get(p, 0) * 100
         da = a - o
-        dc = c - o
+        dc = c - oc
         reduction = (1 - abs(dc) / abs(da)) * 100 if abs(da) > 0.001 else 0
         lines.append(
             f"{p:>8s}  {o:>7.2f}%  {a:>7.2f}%  {c:>7.2f}%  "
@@ -1553,6 +1574,29 @@ def _run_compile(args, config):
     compiled_dir = phase2_dir / "compiled"
     compiled_dir.mkdir(parents=True, exist_ok=True)
 
+    # Save compiled CSV with drift and corrected reduction columns
+    compiled_rows = []
+    for target in MAJOR_PARTIES:
+        if target not in dfs:
+            continue
+        df = dfs[target]
+        row = df[df["party"] == target].iloc[0]
+        o = row["original"]
+        oc = row["original_crw"]
+        r = {"party": target, "original": o, "original_crw": oc, "crw_drift": oc - o}
+        for scenario in ["worst_case", "realistic"]:
+            da = row[scenario] - o
+            dc = row[f"{scenario}_crw"] - oc
+            red = (1 - abs(dc) / abs(da)) * 100 if abs(da) > 1e-9 else 0
+            r[f"delta_attack_{scenario}"] = da
+            r[f"delta_crw_{scenario}"] = dc
+            r[f"reduction_{scenario}"] = red
+        compiled_rows.append(r)
+    compiled_csv = pd.DataFrame(compiled_rows)
+    csv_path = compiled_dir / f"{base}.csv"
+    compiled_csv.to_csv(csv_path, index=False)
+    print(f"  -> Compiled CSV: {csv_path.name}")
+
     sns.set_theme(style="whitegrid")
     _compile_report(dfs, compiled_dir, base)
     _compile_heatmap(dfs, compiled_dir, base)
@@ -1592,10 +1636,11 @@ def _compile_report(dfs: dict, output_dir: Path, base: str):
             df = dfs[target]
             row = df[df["party"] == target].iloc[0]
             o = row["original"] * 100
+            oc = row["original_crw"] * 100
             a = row[attack_col] * 100
             c = row[crw_col] * 100
             da = a - o
-            dc = c - o
+            dc = c - oc
             reduction = (1 - abs(dc) / abs(da)) * 100 if abs(da) > 0.001 else 0
             lines.append(
                 f"{target:>8s}  {o:>7.2f}%  {a:>7.2f}%  {c:>7.2f}%  "
@@ -1610,10 +1655,11 @@ def _compile_report(dfs: dict, output_dir: Path, base: str):
             df = dfs[target]
             row = df[df["party"] == target].iloc[0]
             o = row["original"] * 100
+            oc = row["original_crw"] * 100
             a = row[attack_col] * 100
             c = row[crw_col] * 100
             da = a - o
-            dc = c - o
+            dc = c - oc
             gains.append(da)
             if abs(da) > 0.001:
                 reductions.append((1 - abs(dc) / abs(da)) * 100)
@@ -1641,21 +1687,22 @@ def _compile_report(dfs: dict, output_dir: Path, base: str):
         df = dfs[target]
         row = df[df["party"] == target].iloc[0]
         o = row["original"] * 100
+        oc = row["original_crw"] * 100
 
         # Worst-case
         da_w = row["worst_case"] * 100 - o
-        dc_w = row["worst_case_crw"] * 100 - o
+        dc_w = row["worst_case_crw"] * 100 - oc
         red_w = (1 - abs(dc_w) / abs(da_w)) * 100 if abs(da_w) > 0.001 else 0
         correction_w = abs(da_w) - abs(dc_w)  # absolute pp recovered by CRW
 
         # Realistic
         da_r = row["realistic"] * 100 - o
-        dc_r = row["realistic_crw"] * 100 - o
+        dc_r = row["realistic_crw"] * 100 - oc
         red_r = (1 - abs(dc_r) / abs(da_r)) * 100 if abs(da_r) > 0.001 else 0
         correction_r = abs(da_r) - abs(dc_r)
 
         # Natural drift
-        drift = abs(row["original_crw"] * 100 - o)
+        drift = abs(oc - o)
         ratio_r = correction_r / drift if drift > 0.001 else float("inf")
 
         lines.append(
@@ -1719,14 +1766,15 @@ def _compile_report(dfs: dict, output_dir: Path, base: str):
         df = dfs[target]
         row = df[df["party"] == target].iloc[0]
         o = row["original"] * 100
-        drift = abs(row["original_crw"] * 100 - o)
+        oc = row["original_crw"] * 100
+        drift = abs(oc - o)
 
         da_w = row["worst_case"] * 100 - o
-        dc_w = row["worst_case_crw"] * 100 - o
+        dc_w = row["worst_case_crw"] * 100 - oc
         corr_w = abs(da_w) - abs(dc_w)
 
         da_r = row["realistic"] * 100 - o
-        dc_r = row["realistic_crw"] * 100 - o
+        dc_r = row["realistic_crw"] * 100 - oc
         corr_r = abs(da_r) - abs(dc_r)
 
         ratio_w = corr_w / drift if drift > 0.001 else float("inf")
@@ -1824,8 +1872,9 @@ def _compile_bar_chart(dfs: dict, output_dir: Path, base: str):
             df = dfs[target]
             row = df[df["party"] == target].iloc[0]
             o = row["original"]
+            oc = row["original_crw"]
             attack_gains.append((row[attack_col] - o) * 100)
-            crw_gains.append((row[crw_col] - o) * 100)
+            crw_gains.append((row[crw_col] - oc) * 100)
 
         x = np.arange(len(targets))
         width = 0.35
@@ -1889,16 +1938,17 @@ def _compile_effect_size_chart(dfs: dict, output_dir: Path, base: str):
         df = dfs[target]
         row = df[df["party"] == target].iloc[0]
         o = row["original"] * 100
+        oc = row["original_crw"] * 100
 
-        drift = abs(row["original_crw"] * 100 - o)
+        drift = abs(oc - o)
         drifts.append(drift)
 
         da_w = row["worst_case"] * 100 - o
-        dc_w = row["worst_case_crw"] * 100 - o
+        dc_w = row["worst_case_crw"] * 100 - oc
         corr_worst.append(abs(da_w) - abs(dc_w))
 
         da_r = row["realistic"] * 100 - o
-        dc_r = row["realistic_crw"] * 100 - o
+        dc_r = row["realistic_crw"] * 100 - oc
         corr_real.append(abs(da_r) - abs(dc_r))
 
     x = np.arange(len(targets))

@@ -48,7 +48,7 @@ def compute_metrics(df: pd.DataFrame, target_party: str) -> dict:
         attacked = row[scenario]
         corrected = row[f"{scenario}_crw"]
         delta_attack = attacked - orig
-        delta_crw = corrected - orig
+        delta_crw = corrected - orig_crw
         reduction = 1 - (delta_crw / delta_attack) if abs(delta_attack) > 1e-9 else 0
 
         metrics[f"{scenario}_attack_pp"] = delta_attack * 100

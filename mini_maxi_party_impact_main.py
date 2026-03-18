@@ -1144,15 +1144,27 @@ def _save_phase2_outputs(
 
     rows = []
     for p in MAJOR_PARTIES:
+        mb = vis["mini_baseline"].get(p, 0)
+        ab = vis["aug_baseline"].get(p, 0)
+        da = ab - mb
         row = {
             "party": p,
-            "mini_baseline": vis["mini_baseline"].get(p, 0),
-            "aug_baseline": vis["aug_baseline"].get(p, 0),
+            "mini_baseline": mb,
+            "aug_baseline": ab,
+            "delta_attack": da,
         }
         for ml, mr in metric_results.items():
             safe_label = ml.replace(" ", "_").replace("=", "")
-            row[f"mini_crw_{safe_label}"] = mr["mini_crw_vis"].get(p, 0)
-            row[f"aug_crw_{safe_label}"] = mr["aug_crw_vis"].get(p, 0)
+            mc = mr["mini_crw_vis"].get(p, 0)
+            ac = mr["aug_crw_vis"].get(p, 0)
+            dc = ac - mc
+            row[f"mini_crw_{safe_label}"] = mc
+            row[f"aug_crw_{safe_label}"] = ac
+            row[f"crw_drift_{safe_label}"] = mc - mb
+            row[f"delta_crw_{safe_label}"] = dc
+            row[f"reduction_{safe_label}"] = (
+                (1 - abs(dc) / abs(da)) * 100 if abs(da) > 1e-9 else 0
+            )
         rows.append(row)
 
     csv_df = pd.DataFrame(rows)
@@ -1263,7 +1275,7 @@ def _plot_phase2_deltas(
 
         if abs(d_attack) > 0.001:
             for i, (ml, mr) in enumerate(metric_results.items()):
-                d_crw = (mr["aug_crw_vis"].get(focus, 0) - orig.get(focus, 0)) * 100
+                d_crw = (mr["aug_crw_vis"].get(focus, 0) - mr["mini_crw_vis"].get(focus, 0)) * 100
                 red_pct = (1 - abs(d_crw) / abs(d_attack)) * 100
                 bar_i = i + 1  # offset by 1 since attack bar is at index 0
                 offset = (bar_i - n_conditions / 2 + 0.5) * width
@@ -1412,7 +1424,7 @@ def _save_phase2_report(
     ])
 
     for ml, mr in metric_results.items():
-        d_crw = (mr["aug_crw_vis"].get(focus, 0) - orig.get(focus, 0)) * 100
+        d_crw = (mr["aug_crw_vis"].get(focus, 0) - mr["mini_crw_vis"].get(focus, 0)) * 100
         red = (1 - abs(d_crw) / abs(d_attack)) * 100 if abs(d_attack) > 0.001 else 0
         lines.append(f"  {ml}: {d_crw:+.2f}pp ({red:.0f}% reduced)")
 
@@ -1498,6 +1510,32 @@ def _run_compile(args, config):
             label = col[len("aug_crw_"):]
             metric_labels.append(label)
 
+    # Save compiled CSV with drift and corrected reduction columns
+    compiled_rows = []
+    for target in MAJOR_PARTIES:
+        if target not in dfs:
+            continue
+        df = dfs[target]
+        row = df[df["party"] == target].iloc[0]
+        o = row["mini_baseline"]
+        a = row["aug_baseline"]
+        da = a - o
+        r = {"party": target, "mini_baseline": o, "aug_baseline": a, "delta_attack": da}
+        for ml in metric_labels:
+            mc = row[f"mini_crw_{ml}"]
+            ac = row[f"aug_crw_{ml}"]
+            dc = ac - mc
+            r[f"crw_drift_{ml}"] = mc - o
+            r[f"delta_crw_{ml}"] = dc
+            r[f"reduction_{ml}"] = (
+                (1 - abs(dc) / abs(da)) * 100 if abs(da) > 1e-9 else 0
+            )
+        compiled_rows.append(r)
+    compiled_csv = pd.DataFrame(compiled_rows)
+    csv_path = compiled_dir / f"{base}.csv"
+    compiled_csv.to_csv(csv_path, index=False)
+    print(f"  -> Compiled CSV: {csv_path.name}")
+
     sns.set_theme(style="whitegrid")
     _compile_report(dfs, metric_labels, compiled_dir, base)
     _compile_heatmap(dfs, metric_labels, compiled_dir, base)
@@ -1540,10 +1578,11 @@ def _compile_report(
             df = dfs[target]
             row = df[df["party"] == target].iloc[0]
             o = row["mini_baseline"] * 100
+            oc = row[f"mini_crw_{ml}"] * 100
             a = row["aug_baseline"] * 100
             c = row[f"aug_crw_{ml}"] * 100
             da = a - o
-            dc = c - o
+            dc = c - oc
             red = (1 - abs(dc) / abs(da)) * 100 if abs(da) > 0.001 else 0
             gains.append(da)
             if abs(da) > 0.001:
@@ -1583,8 +1622,9 @@ def _compile_report(
         da = a - o
         row_str = f"{target:>8s}"
         for ml in metric_labels:
+            oc = row[f"mini_crw_{ml}"] * 100
             c = row[f"aug_crw_{ml}"] * 100
-            dc = c - o
+            dc = c - oc
             red = (1 - abs(dc) / abs(da)) * 100 if abs(da) > 0.001 else 0
             row_str += f"  {red:>19.0f}%"
         lines.append(row_str)
@@ -1732,7 +1772,7 @@ def _compile_bar_chart(
         for target in targets:
             df = dfs[target]
             row = df[df["party"] == target].iloc[0]
-            crw_gains.append((row[f"aug_crw_{ml}"] - row["mini_baseline"]) * 100)
+            crw_gains.append((row[f"aug_crw_{ml}"] - row[f"mini_crw_{ml}"]) * 100)
 
         offset = x - (total_bars - 1) * width / 2 + (mi + 1) * width
         bars = ax.bar(
@@ -1798,10 +1838,11 @@ def _compile_crw_comparison(
             df = dfs[target]
             row = df[df["party"] == target].iloc[0]
             o = row["mini_baseline"] * 100
+            oc = row[f"mini_crw_{ml}"] * 100
             a = row["aug_baseline"] * 100
             c = row[f"aug_crw_{ml}"] * 100
             da = a - o
-            dc = c - o
+            dc = c - oc
             red = (1 - abs(dc) / abs(da)) * 100 if abs(da) > 0.001 else 0
             reductions.append(red)
 
