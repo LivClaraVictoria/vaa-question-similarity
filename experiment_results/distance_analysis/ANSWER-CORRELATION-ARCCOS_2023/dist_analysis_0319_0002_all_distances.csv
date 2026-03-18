@@ -1,0 +1,2776 @@
+ID1,ID2,Distance,cat1,cat2
+32264,32287,0.6834182784170582,Security & military,Federal budget
+32245,32285,0.7428621424607029,Energy & transport,Federal budget
+32268,32272,0.8571054660710726,Security & military,Foreign trade & foreign policy
+32219,32281,0.9213884789593505,Welfare state & family,Federal budget
+32228,32231,0.9254101854447995,Immigration & integration,Immigration & integration
+32276,32281,0.938354885437395,Values,Federal budget
+32215,32281,0.9418177527610618,Welfare state & family,Federal budget
+32265,32266,0.9998118571227994,Security & military,Security & military
+32271,32280,1.0025537320280673,Foreign trade & foreign policy,Values
+32238,32276,1.003491717229642,Finances & taxes,Values
+32219,32276,1.0104546742957656,Welfare state & family,Values
+32281,32288,1.0165080349594742,Federal budget,Federal budget
+32266,32273,1.018242376699051,Security & military,Foreign trade & foreign policy
+32215,32219,1.0203235342417336,Welfare state & family,Welfare state & family
+32240,32281,1.020353142654923,Economy & labour,Federal budget
+32280,32285,1.020368285384022,Values,Federal budget
+32246,32280,1.0231753003082202,Energy & transport,Values
+32228,32234,1.0256669929564257,Immigration & integration,Society & ethics
+32244,32271,1.0292354269435342,Economy & labour,Foreign trade & foreign policy
+32246,32285,1.0305265417148521,Energy & transport,Federal budget
+32275,32281,1.0327726448639325,Values,Federal budget
+32228,32262,1.0364304622391438,Immigration & integration,"Democracy, Media & Digitalization"
+32219,32240,1.0392368558078875,Welfare state & family,Economy & labour
+32244,32281,1.0402563641345959,Economy & labour,Federal budget
+32255,32280,1.041430222228137,Nature conservation,Values
+32246,32247,1.0416350944151291,Energy & transport,Energy & transport
+32268,32269,1.0432913068720135,Security & military,Foreign trade & foreign policy
+32276,32280,1.043861704210305,Values,Values
+32227,32281,1.0439624051350627,Education,Federal budget
+32269,32272,1.0447168164922898,Foreign trade & foreign policy,Foreign trade & foreign policy
+32275,32276,1.0450189544832489,Values,Values
+32247,32280,1.046644440330147,Energy & transport,Values
+32271,32281,1.0477944155833696,Foreign trade & foreign policy,Federal budget
+32254,32255,1.0519345902324626,Nature conservation,Nature conservation
+32228,32281,1.0528786278875963,Immigration & integration,Federal budget
+32269,32273,1.0549951572335405,Foreign trade & foreign policy,Foreign trade & foreign policy
+32231,32262,1.0558758709101577,Immigration & integration,"Democracy, Media & Digitalization"
+32230,32281,1.0601635240400074,Immigration & integration,Federal budget
+32219,32271,1.0610288586797916,Welfare state & family,Foreign trade & foreign policy
+32218,32281,1.0610827084054626,Welfare state & family,Federal budget
+32228,32230,1.0628871709867191,Immigration & integration,Immigration & integration
+32280,32281,1.063974643339555,Values,Federal budget
+32234,32281,1.0687141854611213,Society & ethics,Federal budget
+32240,32271,1.070975272222986,Economy & labour,Foreign trade & foreign policy
+32228,32279,1.0727460332175258,Immigration & integration,Values
+32234,32262,1.074361396787261,Society & ethics,"Democracy, Media & Digitalization"
+32219,32275,1.075190253651038,Welfare state & family,Values
+32286,32287,1.0753933673302445,Federal budget,Federal budget
+32219,32227,1.0791801128297893,Welfare state & family,Education
+32228,32229,1.0809992952319591,Immigration & integration,Immigration & integration
+32219,32244,1.0828936070965207,Welfare state & family,Economy & labour
+32231,32281,1.0867249742779896,Immigration & integration,Federal budget
+32240,32244,1.0888245512211763,Economy & labour,Economy & labour
+32253,32254,1.088871399636357,Nature conservation,Nature conservation
+32230,32288,1.0902785865694653,Immigration & integration,Federal budget
+32240,32276,1.0902799334681126,Economy & labour,Values
+32255,32271,1.090416678102037,Nature conservation,Foreign trade & foreign policy
+32215,32276,1.0908137721750553,Welfare state & family,Values
+32245,32280,1.0915607415356858,Energy & transport,Values
+32265,32273,1.092706012145899,Security & military,Foreign trade & foreign policy
+32247,32285,1.0949514217110432,Energy & transport,Federal budget
+32230,32279,1.0954692184445616,Immigration & integration,Values
+32228,32288,1.0982173876170394,Immigration & integration,Federal budget
+32241,32271,1.1019928974187285,Economy & labour,Foreign trade & foreign policy
+32279,32281,1.1024981932237825,Values,Federal budget
+32245,32246,1.1025397273380024,Energy & transport,Energy & transport
+32231,32288,1.1027032140643278,Immigration & integration,Federal budget
+32268,32273,1.105613232182515,Security & military,Foreign trade & foreign policy
+32234,32279,1.1063648862856326,Society & ethics,Values
+32271,32276,1.1064323434033594,Foreign trade & foreign policy,Values
+32240,32275,1.1072442004604648,Economy & labour,Values
+32256,32280,1.108005832701105,Nature conservation,Values
+32275,32280,1.1081136548441595,Values,Values
+32234,32246,1.1090137117267045,Society & ethics,Energy & transport
+32230,32234,1.1098888970153955,Immigration & integration,Society & ethics
+32228,32269,1.1112588501383196,Immigration & integration,Foreign trade & foreign policy
+32219,32280,1.1130312058644554,Welfare state & family,Values
+32228,32276,1.113332953618644,Immigration & integration,Values
+32218,32219,1.1138668628741006,Welfare state & family,Welfare state & family
+32272,32273,1.1139359584100208,Foreign trade & foreign policy,Foreign trade & foreign policy
+32230,32231,1.1141054488818858,Immigration & integration,Immigration & integration
+32254,32280,1.1144615876817636,Nature conservation,Values
+32271,32288,1.11485315982346,Foreign trade & foreign policy,Federal budget
+32238,32275,1.1149172239371967,Finances & taxes,Values
+32271,32275,1.1149902639556148,Foreign trade & foreign policy,Values
+32276,32285,1.1153125934795425,Values,Federal budget
+32231,32234,1.1170883644887273,Immigration & integration,Society & ethics
+32219,32288,1.1172410546555738,Welfare state & family,Federal budget
+32231,32279,1.1177392795593661,Immigration & integration,Values
+32215,32240,1.1194344045520037,Welfare state & family,Economy & labour
+32219,32238,1.119552255845455,Welfare state & family,Finances & taxes
+32281,32287,1.1195957183813812,Federal budget,Federal budget
+32244,32288,1.1199238677392582,Economy & labour,Federal budget
+32257,32271,1.12260901813653,Nature conservation,Foreign trade & foreign policy
+32227,32276,1.122982192130092,Education,Values
+32234,32276,1.1233636532042273,Society & ethics,Values
+32275,32285,1.1233689288597697,Values,Federal budget
+32234,32244,1.1237533619195148,Society & ethics,Economy & labour
+32279,32285,1.1241579999905353,Values,Federal budget
+32241,32275,1.1245785010393854,Economy & labour,Values
+32238,32281,1.1247292197107288,Finances & taxes,Federal budget
+32234,32285,1.1248063445049878,Society & ethics,Federal budget
+32227,32288,1.1258779535351453,Education,Federal budget
+32245,32275,1.1268648092285993,Energy & transport,Values
+32280,32288,1.1269334580319963,Values,Federal budget
+32281,32285,1.129750008471664,Federal budget,Federal budget
+32253,32280,1.1299371720191873,Nature conservation,Values
+32227,32244,1.1307027317903553,Education,Economy & labour
+32255,32256,1.1311304520968726,Nature conservation,Nature conservation
+32236,32261,1.1324936234689884,Finances & taxes,"Democracy, Media & Digitalization"
+32249,32280,1.1327580058346052,Energy & transport,Values
+32256,32271,1.1327632978490396,Nature conservation,Foreign trade & foreign policy
+32244,32280,1.134000704076234,Economy & labour,Values
+32254,32271,1.1345697625403033,Nature conservation,Foreign trade & foreign policy
+32249,32271,1.134768791102739,Energy & transport,Foreign trade & foreign policy
+32214,32217,1.1352734737075887,Welfare state & family,Welfare state & family
+32245,32247,1.1364560257452767,Energy & transport,Energy & transport
+32228,32287,1.1386454024679178,Immigration & integration,Federal budget
+32228,32285,1.1391996940284683,Immigration & integration,Federal budget
+32234,32280,1.139999109155486,Society & ethics,Values
+32218,32234,1.1426906179411438,Welfare state & family,Society & ethics
+32276,32279,1.1429676118395533,Values,Values
+32215,32244,1.1432778153761203,Welfare state & family,Economy & labour
+32219,32231,1.1447756249202206,Welfare state & family,Immigration & integration
+32279,32288,1.1458936650998177,Values,Federal budget
+32231,32269,1.1460928945879054,Immigration & integration,Foreign trade & foreign policy
+32218,32244,1.1464023324434898,Welfare state & family,Economy & labour
+32253,32255,1.1466671727923339,Nature conservation,Nature conservation
+32285,32287,1.1468742635926512,Federal budget,Federal budget
+32268,32279,1.1470524851554322,Security & military,Values
+32262,32281,1.1480441426623589,"Democracy, Media & Digitalization",Federal budget
+32218,32276,1.1490550975395735,Welfare state & family,Values
+32215,32218,1.149178976255057,Welfare state & family,Welfare state & family
+32219,32234,1.149546616343695,Welfare state & family,Society & ethics
+32279,32286,1.1499650722876469,Values,Federal budget
+32246,32269,1.1499826208091104,Energy & transport,Foreign trade & foreign policy
+32276,32288,1.1532144309610761,Values,Federal budget
+32215,32227,1.1537964955424758,Welfare state & family,Education
+32234,32288,1.1540670444028798,Society & ethics,Federal budget
+32238,32280,1.1540912523449354,Finances & taxes,Values
+32234,32235,1.1548624445416533,Society & ethics,Society & ethics
+32244,32249,1.1550849856679175,Economy & labour,Energy & transport
+32227,32231,1.1551481582150225,Education,Immigration & integration
+32215,32271,1.1555400543767957,Welfare state & family,Foreign trade & foreign policy
+32215,32288,1.1556674756959324,Welfare state & family,Federal budget
+32218,32228,1.15578057096962,Welfare state & family,Immigration & integration
+32231,32287,1.156094617310528,Immigration & integration,Federal budget
+32240,32280,1.1561166422221796,Economy & labour,Values
+32246,32276,1.1561408058740499,Energy & transport,Values
+32219,32228,1.156279095125829,Welfare state & family,Immigration & integration
+32245,32276,1.1565239670522038,Energy & transport,Values
+32230,32268,1.1565471929735411,Immigration & integration,Security & military
+32249,32281,1.1565589636861224,Energy & transport,Federal budget
+32257,32280,1.15750772419294,Nature conservation,Values
+32219,32257,1.1578521209155739,Welfare state & family,Nature conservation
+32218,32227,1.1580333358925503,Welfare state & family,Education
+32246,32256,1.1582155270604895,Energy & transport,Nature conservation
+32246,32271,1.1586587562120645,Energy & transport,Foreign trade & foreign policy
+32247,32275,1.1590228282742527,Energy & transport,Values
+32231,32276,1.1598303778184755,Immigration & integration,Values
+32246,32281,1.1599438503999568,Energy & transport,Federal budget
+32215,32275,1.1602519982806274,Welfare state & family,Values
+32246,32253,1.1603364494908557,Energy & transport,Nature conservation
+32227,32240,1.1604750366774987,Education,Economy & labour
+32227,32271,1.1608690389787157,Education,Foreign trade & foreign policy
+32244,32255,1.1616128104057488,Economy & labour,Nature conservation
+32230,32280,1.1617916865669513,Immigration & integration,Values
+32238,32285,1.161998607193426,Finances & taxes,Federal budget
+32238,32271,1.1623729765218962,Finances & taxes,Foreign trade & foreign policy
+32234,32287,1.1630525501901028,Society & ethics,Federal budget
+32219,32241,1.1637368612625607,Welfare state & family,Economy & labour
+32230,32285,1.164299359249592,Immigration & integration,Federal budget
+32218,32231,1.1644134177164749,Welfare state & family,Immigration & integration
+32219,32255,1.1646863633212843,Welfare state & family,Nature conservation
+32258,32278,1.1649194338426658,"Democracy, Media & Digitalization",Values
+32229,32231,1.1653071339619272,Immigration & integration,Immigration & integration
+32247,32276,1.1659158618537697,Energy & transport,Values
+32256,32257,1.166964390582269,Nature conservation,Nature conservation
+32241,32276,1.167055663331743,Economy & labour,Values
+32271,32285,1.16810541690909,Foreign trade & foreign policy,Federal budget
+32244,32256,1.1685644616547517,Economy & labour,Nature conservation
+32260,32271,1.169105875316986,"Democracy, Media & Digitalization",Foreign trade & foreign policy
+32255,32281,1.16979296704269,Nature conservation,Federal budget
+32230,32276,1.1701769032453022,Immigration & integration,Values
+32227,32228,1.1712612981525161,Education,Immigration & integration
+32238,32241,1.1716704656424668,Finances & taxes,Economy & labour
+32241,32280,1.1719172863568434,Economy & labour,Values
+32281,32284,1.1725585356433905,Federal budget,Federal budget
+32219,32230,1.1731498105179015,Welfare state & family,Immigration & integration
+32219,32285,1.1733287211831902,Welfare state & family,Federal budget
+32262,32276,1.1738072669080677,"Democracy, Media & Digitalization",Values
+32244,32276,1.1738761375225686,Economy & labour,Values
+32262,32285,1.1743382145380616,"Democracy, Media & Digitalization",Federal budget
+32228,32246,1.1743579158749053,Immigration & integration,Energy & transport
+32218,32280,1.1744801857311555,Welfare state & family,Values
+32270,32275,1.1745314062932974,Foreign trade & foreign policy,Values
+32230,32272,1.1761360438086492,Immigration & integration,Foreign trade & foreign policy
+32255,32257,1.17619581237874,Nature conservation,Nature conservation
+32222,32281,1.1772423694454,Health,Federal budget
+32230,32262,1.1773447128808494,Immigration & integration,"Democracy, Media & Digitalization"
+32230,32287,1.1776210786972925,Immigration & integration,Federal budget
+32218,32240,1.177626299647109,Welfare state & family,Economy & labour
+32267,32274,1.1777104561655696,Security & military,Values
+32244,32275,1.1782602430328073,Economy & labour,Values
+32272,32279,1.1785336888273608,Foreign trade & foreign policy,Values
+32230,32244,1.1789347205529954,Immigration & integration,Economy & labour
+32218,32271,1.179050378783891,Welfare state & family,Foreign trade & foreign policy
+32231,32244,1.1790694936255737,Immigration & integration,Economy & labour
+32246,32288,1.1790720650584787,Energy & transport,Federal budget
+32265,32269,1.1790993430215417,Security & military,Foreign trade & foreign policy
+32234,32275,1.1795208753361754,Society & ethics,Values
+32276,32287,1.1798228373970656,Values,Federal budget
+32246,32262,1.1798720479538687,Energy & transport,"Democracy, Media & Digitalization"
+32231,32285,1.1804366420040497,Immigration & integration,Federal budget
+32228,32268,1.1809033793550667,Immigration & integration,Security & military
+32240,32241,1.1815578517462992,Economy & labour,Economy & labour
+32228,32280,1.1816616900172252,Immigration & integration,Values
+32262,32279,1.1816882392016395,"Democracy, Media & Digitalization",Values
+32269,32288,1.1818463662413927,Foreign trade & foreign policy,Federal budget
+32241,32281,1.1823488109076852,Economy & labour,Federal budget
+32264,32286,1.182821395792504,Security & military,Federal budget
+32279,32280,1.182890278806695,Values,Values
+32227,32234,1.1829610246558495,Education,Society & ethics
+32279,32287,1.1830049078434728,Values,Federal budget
+32230,32271,1.1830682149148968,Immigration & integration,Foreign trade & foreign policy
+32234,32269,1.183235941595192,Society & ethics,Foreign trade & foreign policy
+32218,32279,1.183245797628223,Welfare state & family,Values
+32234,32245,1.1844651285663343,Society & ethics,Energy & transport
+32245,32281,1.1850169680570888,Energy & transport,Federal budget
+32227,32279,1.185149129205967,Education,Values
+32218,32288,1.185473473740241,Welfare state & family,Federal budget
+32262,32288,1.1856865805672052,"Democracy, Media & Digitalization",Federal budget
+32240,32288,1.1868681136970873,Economy & labour,Federal budget
+32246,32249,1.1882023884524915,Energy & transport,Energy & transport
+32235,32277,1.1886107701049544,Society & ethics,Values
+32231,32280,1.1889150530419272,Immigration & integration,Values
+32264,32281,1.1892448846120827,Security & military,Federal budget
+32228,32275,1.189508195041402,Immigration & integration,Values
+32227,32280,1.1898347918482233,Education,Values
+32245,32279,1.1909380141062467,Energy & transport,Values
+32280,32287,1.1911478914786628,Values,Federal budget
+32228,32286,1.1912081291212462,Immigration & integration,Federal budget
+32247,32281,1.1916188795061162,Energy & transport,Federal budget
+32229,32269,1.1916628930141495,Immigration & integration,Foreign trade & foreign policy
+32230,32249,1.1917887730806718,Immigration & integration,Energy & transport
+32269,32279,1.1923463636932012,Foreign trade & foreign policy,Values
+32219,32287,1.1925491987547372,Welfare state & family,Federal budget
+32219,32279,1.192711518264188,Welfare state & family,Values
+32234,32271,1.192838378965072,Society & ethics,Foreign trade & foreign policy
+32262,32280,1.1929345516990453,"Democracy, Media & Digitalization",Values
+32244,32254,1.1929530667890826,Economy & labour,Nature conservation
+32257,32281,1.1929915538245048,Nature conservation,Federal budget
+32218,32230,1.1931501012515553,Welfare state & family,Immigration & integration
+32285,32288,1.1934495510211909,Federal budget,Federal budget
+32238,32240,1.1935232980703085,Finances & taxes,Economy & labour
+32218,32287,1.1937038046510742,Welfare state & family,Federal budget
+32228,32264,1.1941580633812583,Immigration & integration,Security & military
+32240,32257,1.1942102241483423,Economy & labour,Nature conservation
+32246,32273,1.194632279594586,Energy & transport,Foreign trade & foreign policy
+32228,32245,1.1954665628759915,Immigration & integration,Energy & transport
+32241,32257,1.1955186586147089,Economy & labour,Nature conservation
+32275,32287,1.1965217184481813,Values,Federal budget
+32253,32271,1.196639406066776,Nature conservation,Foreign trade & foreign policy
+32282,32284,1.1973420659233582,Federal budget,Federal budget
+32255,32285,1.1973577195335228,Nature conservation,Federal budget
+32281,32282,1.1976882079170805,Federal budget,Federal budget
+32246,32255,1.1979848702988491,Energy & transport,Nature conservation
+32269,32281,1.198249832430961,Foreign trade & foreign policy,Federal budget
+32231,32271,1.1987241996784608,Immigration & integration,Foreign trade & foreign policy
+32231,32240,1.1993900798303552,Immigration & integration,Economy & labour
+32251,32280,1.199763877892644,Energy & transport,Values
+32230,32275,1.1997756995259554,Immigration & integration,Values
+32246,32279,1.2000744365799498,Energy & transport,Values
+32231,32264,1.2015109206215835,Immigration & integration,Security & military
+32218,32262,1.2016845175684938,Welfare state & family,"Democracy, Media & Digitalization"
+32241,32244,1.2017266425683333,Economy & labour,Economy & labour
+32257,32276,1.2018086983184701,Nature conservation,Values
+32262,32287,1.202144651275505,"Democracy, Media & Digitalization",Federal budget
+32230,32245,1.2024268034950416,Immigration & integration,Energy & transport
+32215,32228,1.20248793623236,Welfare state & family,Immigration & integration
+32247,32271,1.2026901827570786,Energy & transport,Foreign trade & foreign policy
+32264,32285,1.202900871898973,Security & military,Federal budget
+32219,32249,1.2035899752922217,Welfare state & family,Energy & transport
+32249,32288,1.2038633160298953,Energy & transport,Federal budget
+32269,32280,1.204075254581763,Foreign trade & foreign policy,Values
+32234,32247,1.2040796250896082,Society & ethics,Energy & transport
+32219,32246,1.2049390097800023,Welfare state & family,Energy & transport
+32219,32262,1.2049927245144227,Welfare state & family,"Democracy, Media & Digitalization"
+32249,32285,1.2056394751185007,Energy & transport,Federal budget
+32254,32256,1.205729215760191,Nature conservation,Nature conservation
+32234,32277,1.2058176395894928,Society & ethics,Values
+32234,32264,1.2058790738557923,Society & ethics,Security & military
+32229,32234,1.206022873390888,Immigration & integration,Society & ethics
+32230,32269,1.206100127420624,Immigration & integration,Foreign trade & foreign policy
+32231,32268,1.206541753331233,Immigration & integration,Security & military
+32231,32246,1.2066253744826834,Immigration & integration,Energy & transport
+32223,32273,1.20664175232171,Health,Foreign trade & foreign policy
+32230,32264,1.2067770146107355,Immigration & integration,Security & military
+32253,32285,1.2074495313324367,Nature conservation,Federal budget
+32215,32222,1.2079044125146896,Welfare state & family,Health
+32244,32257,1.208055168419487,Economy & labour,Nature conservation
+32249,32275,1.2082098055854473,Energy & transport,Values
+32275,32279,1.2089167358035229,Values,Values
+32245,32271,1.2089839912932483,Energy & transport,Foreign trade & foreign policy
+32227,32230,1.2093152891790775,Education,Immigration & integration
+32230,32246,1.2094927610388595,Immigration & integration,Energy & transport
+32234,32238,1.2098125333477219,Society & ethics,Finances & taxes
+32255,32276,1.2103253804963359,Nature conservation,Values
+32234,32240,1.210982139790138,Society & ethics,Economy & labour
+32240,32255,1.2110021203224834,Economy & labour,Nature conservation
+32271,32287,1.2116258029308078,Foreign trade & foreign policy,Federal budget
+32255,32288,1.2121532274637392,Nature conservation,Federal budget
+32285,32286,1.212437840243428,Federal budget,Federal budget
+32238,32246,1.2126947212031431,Finances & taxes,Energy & transport
+32260,32280,1.2127540760308528,"Democracy, Media & Digitalization",Values
+32238,32245,1.212898728055916,Finances & taxes,Energy & transport
+32228,32238,1.212947394628597,Immigration & integration,Finances & taxes
+32261,32273,1.2129648617591098,"Democracy, Media & Digitalization",Foreign trade & foreign policy
+32254,32281,1.2134699305097667,Nature conservation,Federal budget
+32229,32268,1.2136037604417926,Immigration & integration,Security & military
+32239,32281,1.2137863293040756,Finances & taxes,Federal budget
+32269,32276,1.2141314161280095,Foreign trade & foreign policy,Values
+32273,32277,1.2141343571575502,Foreign trade & foreign policy,Values
+32228,32240,1.2141375582582647,Immigration & integration,Economy & labour
+32219,32284,1.2150437368273959,Welfare state & family,Federal budget
+32272,32288,1.215047804268322,Foreign trade & foreign policy,Federal budget
+32249,32287,1.2154720861229174,Energy & transport,Federal budget
+32215,32231,1.2158943641007796,Welfare state & family,Immigration & integration
+32229,32279,1.2162513552544578,Immigration & integration,Values
+32257,32275,1.2163249159784184,Nature conservation,Values
+32269,32277,1.2167180391515142,Foreign trade & foreign policy,Values
+32257,32260,1.2170930414375492,Nature conservation,"Democracy, Media & Digitalization"
+32280,32284,1.2171632986969478,Values,Federal budget
+32249,32276,1.2173904451408026,Energy & transport,Values
+32236,32247,1.2177664104909318,Finances & taxes,Energy & transport
+32245,32249,1.218008548645312,Energy & transport,Energy & transport
+32287,32288,1.2180162855443606,Federal budget,Federal budget
+32218,32285,1.2180375317558216,Welfare state & family,Federal budget
+32228,32272,1.2181133165995968,Immigration & integration,Foreign trade & foreign policy
+32244,32287,1.2182700251243648,Economy & labour,Federal budget
+32262,32269,1.2190729134177836,"Democracy, Media & Digitalization",Foreign trade & foreign policy
+32215,32234,1.2192624561602043,Welfare state & family,Society & ethics
+32218,32246,1.2197093729647308,Welfare state & family,Energy & transport
+32274,32286,1.2198248046646,Values,Federal budget
+32251,32285,1.219927348143054,Energy & transport,Federal budget
+32228,32244,1.2203549374501708,Immigration & integration,Economy & labour
+32244,32246,1.2208863999192603,Economy & labour,Energy & transport
+32247,32261,1.2213700348598366,Energy & transport,"Democracy, Media & Digitalization"
+32269,32285,1.222052257398237,Foreign trade & foreign policy,Federal budget
+32229,32272,1.2223463954670744,Immigration & integration,Foreign trade & foreign policy
+32245,32262,1.2224887991685949,Energy & transport,"Democracy, Media & Digitalization"
+32241,32260,1.2225732529061666,Economy & labour,"Democracy, Media & Digitalization"
+32230,32247,1.222807500788087,Immigration & integration,Energy & transport
+32246,32275,1.223575405827456,Energy & transport,Values
+32221,32246,1.223590786722926,Health,Energy & transport
+32240,32254,1.2236054584994323,Economy & labour,Nature conservation
+32264,32279,1.2236082634081316,Security & military,Values
+32244,32260,1.2237033289606378,Economy & labour,"Democracy, Media & Digitalization"
+32240,32249,1.223717144692213,Economy & labour,Energy & transport
+32218,32264,1.224344914272652,Welfare state & family,Security & military
+32245,32288,1.2244262010471525,Energy & transport,Federal budget
+32219,32245,1.2245914997156186,Welfare state & family,Energy & transport
+32239,32276,1.2247513971284034,Finances & taxes,Values
+32231,32272,1.2248115327604545,Immigration & integration,Foreign trade & foreign policy
+32264,32276,1.2249470220970855,Security & military,Values
+32227,32255,1.2249487120129525,Education,Nature conservation
+32246,32254,1.2258006312580074,Energy & transport,Nature conservation
+32245,32255,1.2263453032178793,Energy & transport,Nature conservation
+32268,32277,1.2264917179218522,Security & military,Values
+32228,32271,1.2272351854698482,Immigration & integration,Foreign trade & foreign policy
+32235,32268,1.2273273924176136,Society & ethics,Security & military
+32238,32247,1.2282066281134774,Finances & taxes,Energy & transport
+32240,32287,1.228622006464695,Economy & labour,Federal budget
+32236,32275,1.22875993241065,Finances & taxes,Values
+32234,32268,1.2290252320307542,Society & ethics,Security & military
+32272,32281,1.2290643550463554,Foreign trade & foreign policy,Federal budget
+32261,32269,1.2290746066169784,"Democracy, Media & Digitalization",Foreign trade & foreign policy
+32284,32285,1.2291472170752213,Federal budget,Federal budget
+32221,32280,1.2294315197588497,Health,Values
+32275,32288,1.229631460908054,Values,Federal budget
+32264,32280,1.2296713709734926,Security & military,Values
+32225,32281,1.229743276938565,Education,Federal budget
+32234,32249,1.2300708554555926,Society & ethics,Energy & transport
+32219,32256,1.2305681363301033,Welfare state & family,Nature conservation
+32218,32255,1.2306010513542989,Welfare state & family,Nature conservation
+32238,32262,1.2308580118219876,Finances & taxes,"Democracy, Media & Digitalization"
+32262,32275,1.2308964776551334,"Democracy, Media & Digitalization",Values
+32219,32247,1.2312481060488631,Welfare state & family,Energy & transport
+32247,32273,1.2319652259323142,Energy & transport,Foreign trade & foreign policy
+32249,32255,1.2320120244179686,Energy & transport,Nature conservation
+32221,32256,1.2320416589283987,Health,Nature conservation
+32225,32234,1.2320580090504196,Education,Society & ethics
+32245,32287,1.232153508448872,Energy & transport,Federal budget
+32255,32275,1.2324191017968193,Nature conservation,Values
+32230,32286,1.232555834877363,Immigration & integration,Federal budget
+32242,32275,1.2328613667575985,Economy & labour,Values
+32218,32275,1.2333934350797342,Welfare state & family,Values
+32268,32281,1.2337380986084228,Security & military,Federal budget
+32256,32281,1.2341754666957894,Nature conservation,Federal budget
+32215,32280,1.2345040763787736,Welfare state & family,Values
+32219,32239,1.234692906824534,Welfare state & family,Finances & taxes
+32261,32285,1.2347251596977638,"Democracy, Media & Digitalization",Federal budget
+32240,32262,1.2350650087850497,Economy & labour,"Democracy, Media & Digitalization"
+32215,32287,1.2351907911415367,Welfare state & family,Federal budget
+32236,32285,1.235507085171133,Finances & taxes,Federal budget
+32215,32238,1.236170326401024,Welfare state & family,Finances & taxes
+32235,32272,1.23621541572211,Society & ethics,Foreign trade & foreign policy
+32230,32240,1.2362537888530314,Immigration & integration,Economy & labour
+32268,32288,1.2366074806458098,Security & military,Federal budget
+32273,32280,1.23663555118033,Foreign trade & foreign policy,Values
+32219,32264,1.2372843625998438,Welfare state & family,Security & military
+32229,32230,1.237768129849725,Immigration & integration,Immigration & integration
+32272,32277,1.2382653198158828,Foreign trade & foreign policy,Values
+32217,32222,1.2382813122482046,Welfare state & family,Health
+32247,32269,1.2388506753197024,Energy & transport,Foreign trade & foreign policy
+32245,32284,1.2389376015569378,Energy & transport,Federal budget
+32238,32287,1.2399258705405403,Finances & taxes,Federal budget
+32219,32254,1.2399965711741041,Welfare state & family,Nature conservation
+32234,32255,1.2400424731305342,Society & ethics,Nature conservation
+32227,32262,1.2402128598637292,Education,"Democracy, Media & Digitalization"
+32229,32262,1.2405736521094524,Immigration & integration,"Democracy, Media & Digitalization"
+32225,32228,1.240612483729032,Education,Immigration & integration
+32253,32256,1.2409752135380732,Nature conservation,Nature conservation
+32246,32261,1.2410014330565744,Energy & transport,"Democracy, Media & Digitalization"
+32215,32230,1.241145590214666,Welfare state & family,Immigration & integration
+32246,32284,1.2414955147851072,Energy & transport,Federal budget
+32227,32257,1.2418492912514005,Education,Nature conservation
+32245,32261,1.242042201439731,Energy & transport,"Democracy, Media & Digitalization"
+32276,32284,1.2420901412856227,Values,Federal budget
+32228,32247,1.2424822760407952,Immigration & integration,Energy & transport
+32254,32285,1.2425229693143014,Nature conservation,Federal budget
+32244,32285,1.2429597028063677,Economy & labour,Federal budget
+32249,32264,1.243041735017418,Energy & transport,Security & military
+32246,32268,1.2430547774641991,Energy & transport,Security & military
+32217,32281,1.2430853465785836,Welfare state & family,Federal budget
+32229,32288,1.2433127508713728,Immigration & integration,Federal budget
+32260,32281,1.2433944202042804,"Democracy, Media & Digitalization",Federal budget
+32262,32271,1.2434262648294636,"Democracy, Media & Digitalization",Foreign trade & foreign policy
+32264,32288,1.243431472033918,Security & military,Federal budget
+32231,32275,1.2437602781434756,Immigration & integration,Values
+32249,32254,1.2437743991926484,Energy & transport,Nature conservation
+32260,32276,1.2439223065424194,"Democracy, Media & Digitalization",Values
+32225,32288,1.2441350991427338,Education,Federal budget
+32266,32269,1.2442880779906136,Security & military,Foreign trade & foreign policy
+32236,32245,1.2448211233141384,Finances & taxes,Energy & transport
+32284,32288,1.2448874365437497,Federal budget,Federal budget
+32244,32262,1.2453707855366314,Economy & labour,"Democracy, Media & Digitalization"
+32256,32288,1.245662210056446,Nature conservation,Federal budget
+32224,32259,1.2457567967665009,Health,"Democracy, Media & Digitalization"
+32217,32240,1.2464367299669696,Welfare state & family,Economy & labour
+32249,32256,1.2466382102398552,Energy & transport,Nature conservation
+32256,32260,1.2467293445792056,Nature conservation,"Democracy, Media & Digitalization"
+32225,32230,1.24702309380902,Education,Immigration & integration
+32261,32280,1.247123566382011,"Democracy, Media & Digitalization",Values
+32231,32238,1.247432580315958,Immigration & integration,Finances & taxes
+32250,32281,1.2475459560005053,Energy & transport,Federal budget
+32247,32279,1.2479490701426459,Energy & transport,Values
+32232,32235,1.248062745677786,Society & ethics,Society & ethics
+32245,32264,1.2480667706131405,Energy & transport,Security & military
+32227,32275,1.2481083393003911,Education,Values
+32246,32287,1.2481134343085445,Energy & transport,Federal budget
+32274,32275,1.249691651021114,Values,Values
+32241,32255,1.2498405138703115,Economy & labour,Nature conservation
+32238,32288,1.2503626286614433,Finances & taxes,Federal budget
+32234,32272,1.2504482635450078,Society & ethics,Foreign trade & foreign policy
+32228,32277,1.2505805565913513,Immigration & integration,Values
+32261,32281,1.2516195531830463,"Democracy, Media & Digitalization",Federal budget
+32234,32254,1.2516323620309902,Society & ethics,Nature conservation
+32254,32257,1.252293432727015,Nature conservation,Nature conservation
+32261,32276,1.2524051052582443,"Democracy, Media & Digitalization",Values
+32252,32255,1.2525645103149525,Nature conservation,Nature conservation
+32235,32279,1.2529872314314867,Society & ethics,Values
+32231,32245,1.253044061777737,Immigration & integration,Energy & transport
+32240,32256,1.2533159543576244,Economy & labour,Nature conservation
+32227,32238,1.2535772653242887,Education,Finances & taxes
+32236,32276,1.253668986056387,Finances & taxes,Values
+32238,32257,1.2542858666545198,Finances & taxes,Nature conservation
+32235,32244,1.2542882339569628,Society & ethics,Economy & labour
+32245,32253,1.2543316938742772,Energy & transport,Nature conservation
+32271,32279,1.254501697604479,Foreign trade & foreign policy,Values
+32215,32217,1.2548015995660482,Welfare state & family,Welfare state & family
+32264,32275,1.2549700295148836,Security & military,Values
+32245,32251,1.2553286676145397,Energy & transport,Energy & transport
+32227,32254,1.2554232626589557,Education,Nature conservation
+32262,32264,1.2555885708471017,"Democracy, Media & Digitalization",Security & military
+32246,32251,1.2556918145306042,Energy & transport,Energy & transport
+32225,32231,1.2557805537664124,Education,Immigration & integration
+32247,32288,1.2560201707068195,Energy & transport,Federal budget
+32231,32286,1.2565333783038142,Immigration & integration,Federal budget
+32240,32285,1.2567330897247833,Economy & labour,Federal budget
+32227,32285,1.2572840946347403,Education,Federal budget
+32228,32235,1.257392078460609,Immigration & integration,Society & ethics
+32218,32238,1.257470147400248,Welfare state & family,Finances & taxes
+32234,32273,1.257532490941583,Society & ethics,Foreign trade & foreign policy
+32227,32246,1.2576983971519977,Education,Energy & transport
+32247,32262,1.2577697740647968,Energy & transport,"Democracy, Media & Digitalization"
+32222,32275,1.2578199933682304,Health,Values
+32215,32262,1.2580027616826852,Welfare state & family,"Democracy, Media & Digitalization"
+32231,32235,1.2580178596909546,Immigration & integration,Society & ethics
+32217,32244,1.258077354618304,Welfare state & family,Economy & labour
+32244,32264,1.2584418621618758,Economy & labour,Security & military
+32254,32288,1.258799474942308,Nature conservation,Federal budget
+32264,32271,1.2593626828628868,Security & military,Foreign trade & foreign policy
+32215,32257,1.2594192382060918,Welfare state & family,Nature conservation
+32235,32246,1.259671175206605,Society & ethics,Energy & transport
+32256,32285,1.259694138472855,Nature conservation,Federal budget
+32254,32276,1.259839020661309,Nature conservation,Values
+32230,32261,1.2599510060109202,Immigration & integration,"Democracy, Media & Digitalization"
+32218,32257,1.2599870799497106,Welfare state & family,Nature conservation
+32247,32249,1.2600624665350448,Energy & transport,Energy & transport
+32261,32279,1.2600926556912952,"Democracy, Media & Digitalization",Values
+32235,32269,1.260284934856168,Society & ethics,Foreign trade & foreign policy
+32261,32275,1.2603438149098471,"Democracy, Media & Digitalization",Values
+32274,32279,1.2609759974693908,Values,Values
+32246,32277,1.2610080744911472,Energy & transport,Values
+32241,32285,1.261297596029714,Economy & labour,Federal budget
+32239,32240,1.2613373344496623,Finances & taxes,Economy & labour
+32251,32271,1.2613434175404021,Energy & transport,Foreign trade & foreign policy
+32260,32275,1.2613615076530837,"Democracy, Media & Digitalization",Values
+32246,32272,1.261482130856031,Energy & transport,Foreign trade & foreign policy
+32239,32271,1.261513792375599,Finances & taxes,Foreign trade & foreign policy
+32238,32244,1.261686000097338,Finances & taxes,Economy & labour
+32268,32285,1.2617009900026888,Security & military,Federal budget
+32238,32279,1.2618428249541347,Finances & taxes,Values
+32219,32269,1.2623144008080618,Welfare state & family,Foreign trade & foreign policy
+32261,32268,1.2625594720031925,"Democracy, Media & Digitalization",Security & military
+32215,32249,1.262993707307751,Welfare state & family,Energy & transport
+32228,32273,1.2634799752305874,Immigration & integration,Foreign trade & foreign policy
+32221,32285,1.2636218194824087,Health,Federal budget
+32218,32247,1.2636885235230637,Welfare state & family,Energy & transport
+32247,32253,1.2641177385585836,Energy & transport,Nature conservation
+32239,32244,1.2642122467150505,Finances & taxes,Economy & labour
+32240,32246,1.2642641656924416,Economy & labour,Energy & transport
+32223,32269,1.2647446598640726,Health,Foreign trade & foreign policy
+32235,32280,1.2651607258411006,Society & ethics,Values
+32253,32269,1.2655448583610416,Nature conservation,Foreign trade & foreign policy
+32233,32235,1.2656807724703645,Society & ethics,Society & ethics
+32262,32286,1.2657774932350694,"Democracy, Media & Digitalization",Federal budget
+32273,32285,1.2658629368446686,Foreign trade & foreign policy,Federal budget
+32236,32280,1.2659670629001427,Finances & taxes,Values
+32227,32287,1.2660014729750255,Education,Federal budget
+32221,32253,1.2662890718337025,Health,Nature conservation
+32218,32235,1.2663685700445386,Welfare state & family,Society & ethics
+32238,32269,1.266554376031909,Finances & taxes,Foreign trade & foreign policy
+32219,32260,1.266700223026341,Welfare state & family,"Democracy, Media & Digitalization"
+32214,32275,1.26693365992945,Welfare state & family,Values
+32234,32284,1.2671203712356867,Society & ethics,Federal budget
+32231,32255,1.2673656611511475,Immigration & integration,Nature conservation
+32215,32255,1.2675302336072418,Welfare state & family,Nature conservation
+32239,32275,1.2675471764019464,Finances & taxes,Values
+32218,32269,1.26755298946232,Welfare state & family,Foreign trade & foreign policy
+32258,32259,1.2677701676580444,"Democracy, Media & Digitalization","Democracy, Media & Digitalization"
+32221,32271,1.268135415870737,Health,Foreign trade & foreign policy
+32227,32269,1.2682994563296595,Education,Foreign trade & foreign policy
+32215,32241,1.2684556001130654,Welfare state & family,Economy & labour
+32257,32285,1.2684648011844,Nature conservation,Federal budget
+32215,32279,1.2685811000455942,Welfare state & family,Values
+32215,32239,1.2685893742719183,Welfare state & family,Finances & taxes
+32225,32279,1.2687339593159235,Education,Values
+32277,32279,1.2692875027167432,Values,Values
+32264,32268,1.2692890049104109,Security & military,Security & military
+32232,32233,1.2694498917220354,Society & ethics,Society & ethics
+32246,32264,1.2695125953466906,Energy & transport,Security & military
+32240,32279,1.269704473374337,Economy & labour,Values
+32271,32284,1.2699109637650006,Foreign trade & foreign policy,Federal budget
+32268,32280,1.2699708875473557,Security & military,Values
+32234,32286,1.2701050193519412,Society & ethics,Federal budget
+32260,32288,1.270145877486914,"Democracy, Media & Digitalization",Federal budget
+32275,32284,1.270220049527347,Values,Federal budget
+32238,32251,1.2702867892316019,Finances & taxes,Energy & transport
+32228,32249,1.2704765472306643,Immigration & integration,Energy & transport
+32230,32273,1.270553549104339,Immigration & integration,Foreign trade & foreign policy
+32227,32284,1.2705944149051707,Education,Federal budget
+32230,32238,1.2708441051862944,Immigration & integration,Finances & taxes
+32234,32253,1.2711090631888662,Society & ethics,Nature conservation
+32261,32272,1.271590698057932,"Democracy, Media & Digitalization",Foreign trade & foreign policy
+32259,32269,1.2719421712668852,"Democracy, Media & Digitalization",Foreign trade & foreign policy
+32221,32255,1.2721874411850675,Health,Nature conservation
+32217,32219,1.2725007147939067,Welfare state & family,Welfare state & family
+32245,32286,1.27257665724284,Energy & transport,Federal budget
+32282,32288,1.27264988325359,Federal budget,Federal budget
+32218,32284,1.2726631452216894,Welfare state & family,Federal budget
+32253,32281,1.272720401659919,Nature conservation,Federal budget
+32253,32276,1.2727376985223302,Nature conservation,Values
+32246,32257,1.2731211038527863,Energy & transport,Nature conservation
+32218,32254,1.2731409271706597,Welfare state & family,Nature conservation
+32241,32256,1.2732360787570793,Economy & labour,Nature conservation
+32241,32254,1.273559989652934,Economy & labour,Nature conservation
+32231,32249,1.273913365004476,Immigration & integration,Energy & transport
+32221,32251,1.2740340023327836,Health,Energy & transport
+32227,32235,1.2742110325540672,Education,Society & ethics
+32260,32269,1.2745911686272506,"Democracy, Media & Digitalization",Foreign trade & foreign policy
+32247,32255,1.2748677954824421,Energy & transport,Nature conservation
+32234,32261,1.275001301549643,Society & ethics,"Democracy, Media & Digitalization"
+32272,32285,1.2751388661840988,Foreign trade & foreign policy,Federal budget
+32255,32260,1.2755279841875076,Nature conservation,"Democracy, Media & Digitalization"
+32241,32249,1.2755298300224613,Economy & labour,Energy & transport
+32238,32255,1.2756382755815179,Finances & taxes,Nature conservation
+32227,32256,1.2759595928237264,Education,Nature conservation
+32219,32222,1.27628462042622,Welfare state & family,Health
+32251,32256,1.2763374412320025,Energy & transport,Nature conservation
+32275,32286,1.2764874272720501,Values,Federal budget
+32227,32282,1.2765482736816105,Education,Federal budget
+32239,32288,1.2766949413793527,Finances & taxes,Federal budget
+32217,32271,1.2769809481671386,Welfare state & family,Foreign trade & foreign policy
+32228,32284,1.2775383289223963,Immigration & integration,Federal budget
+32249,32262,1.2778824816954937,Energy & transport,"Democracy, Media & Digitalization"
+32277,32285,1.2779350388528936,Values,Federal budget
+32214,32222,1.277958357763658,Welfare state & family,Health
+32276,32286,1.277973007928283,Values,Federal budget
+32229,32281,1.278017319538993,Immigration & integration,Federal budget
+32217,32275,1.2780237447118605,Welfare state & family,Values
+32247,32256,1.2782004771786177,Energy & transport,Nature conservation
+32218,32272,1.2783221200904995,Welfare state & family,Foreign trade & foreign policy
+32254,32275,1.2785799612615765,Nature conservation,Values
+32230,32277,1.2787134857015758,Immigration & integration,Values
+32225,32262,1.2790178656637685,Education,"Democracy, Media & Digitalization"
+32214,32240,1.279065025663847,Welfare state & family,Economy & labour
+32272,32280,1.2796673975433628,Foreign trade & foreign policy,Values
+32244,32247,1.2796898933932859,Economy & labour,Energy & transport
+32215,32284,1.2797327771768798,Welfare state & family,Federal budget
+32214,32281,1.2797728725497646,Welfare state & family,Federal budget
+32223,32261,1.28009815984649,Health,"Democracy, Media & Digitalization"
+32251,32255,1.2802440017507832,Energy & transport,Nature conservation
+32260,32273,1.280331557758479,"Democracy, Media & Digitalization",Foreign trade & foreign policy
+32218,32245,1.2804988721569033,Welfare state & family,Energy & transport
+32244,32279,1.2807241302870753,Economy & labour,Values
+32221,32247,1.280759024414746,Health,Energy & transport
+32235,32281,1.2808040365161906,Society & ethics,Federal budget
+32221,32257,1.2810968333523673,Health,Nature conservation
+32235,32285,1.2820182394434705,Society & ethics,Federal budget
+32231,32277,1.2820330004185865,Immigration & integration,Values
+32268,32287,1.2822339466192922,Security & military,Federal budget
+32246,32260,1.2833029285815816,Energy & transport,"Democracy, Media & Digitalization"
+32241,32245,1.2833219478161433,Economy & labour,Energy & transport
+32235,32273,1.284106029116959,Society & ethics,Foreign trade & foreign policy
+32268,32286,1.28411039173521,Security & military,Federal budget
+32219,32221,1.2842006151062257,Welfare state & family,Health
+32245,32269,1.2844066858111898,Energy & transport,Foreign trade & foreign policy
+32257,32288,1.2845223865967526,Nature conservation,Federal budget
+32252,32280,1.2845233650370678,Nature conservation,Values
+32236,32281,1.2845616824433992,Finances & taxes,Federal budget
+32218,32249,1.2848997944570586,Welfare state & family,Energy & transport
+32256,32276,1.284935209939108,Nature conservation,Values
+32239,32280,1.285205242000264,Finances & taxes,Values
+32236,32246,1.2852923510313534,Finances & taxes,Energy & transport
+32240,32247,1.2853152802505585,Economy & labour,Energy & transport
+32234,32256,1.2859997534179999,Society & ethics,Nature conservation
+32231,32247,1.2864561278277327,Immigration & integration,Energy & transport
+32261,32288,1.2865766158879204,"Democracy, Media & Digitalization",Federal budget
+32251,32253,1.28672386036361,Energy & transport,Nature conservation
+32249,32253,1.2871503548299006,Energy & transport,Nature conservation
+32269,32271,1.2874019929513403,Foreign trade & foreign policy,Foreign trade & foreign policy
+32247,32287,1.2874537143960465,Energy & transport,Federal budget
+32218,32268,1.2874694877391069,Welfare state & family,Security & military
+32219,32253,1.2875774010168766,Welfare state & family,Nature conservation
+32245,32254,1.2875927252856716,Energy & transport,Nature conservation
+32241,32246,1.2876194015522011,Economy & labour,Energy & transport
+32238,32253,1.2878065857434358,Finances & taxes,Nature conservation
+32256,32275,1.2878130664443648,Nature conservation,Values
+32281,32286,1.2879669184663558,Federal budget,Federal budget
+32238,32264,1.288283938616309,Finances & taxes,Security & military
+32221,32238,1.2882880354137143,Health,Finances & taxes
+32227,32229,1.288341638237909,Education,Immigration & integration
+32227,32272,1.288462083288239,Education,Foreign trade & foreign policy
+32238,32239,1.288522470836928,Finances & taxes,Finances & taxes
+32243,32275,1.2885568258853737,Economy & labour,Values
+32236,32238,1.2888620051976065,Finances & taxes,Finances & taxes
+32268,32276,1.2889232089734508,Security & military,Values
+32240,32264,1.28919282278948,Economy & labour,Security & military
+32219,32250,1.2892212593456285,Welfare state & family,Energy & transport
+32223,32272,1.2895877926175914,Health,Foreign trade & foreign policy
+32230,32235,1.289765796304903,Immigration & integration,Society & ethics
+32253,32288,1.2898085373691561,Nature conservation,Federal budget
+32238,32249,1.2899271871081763,Finances & taxes,Energy & transport
+32227,32268,1.2902382691135559,Education,Security & military
+32244,32284,1.2904655442168331,Economy & labour,Federal budget
+32262,32268,1.290481202581642,"Democracy, Media & Digitalization",Security & military
+32232,32234,1.2906308081589808,Society & ethics,Society & ethics
+32247,32272,1.2907454753088494,Energy & transport,Foreign trade & foreign policy
+32221,32276,1.2909286618975448,Health,Values
+32236,32273,1.2913396588229615,Finances & taxes,Foreign trade & foreign policy
+32232,32279,1.2916960522072165,Society & ethics,Values
+32228,32232,1.2919239510024192,Immigration & integration,Society & ethics
+32223,32247,1.292231061797115,Health,Energy & transport
+32228,32261,1.2923050619662741,Immigration & integration,"Democracy, Media & Digitalization"
+32245,32256,1.2925551377355726,Energy & transport,Nature conservation
+32245,32257,1.292559218304471,Energy & transport,Nature conservation
+32247,32251,1.292698818096584,Energy & transport,Energy & transport
+32272,32276,1.2928593319273562,Foreign trade & foreign policy,Values
+32251,32276,1.2931120011420483,Energy & transport,Values
+32240,32260,1.2932150619820832,Economy & labour,"Democracy, Media & Digitalization"
+32227,32249,1.2932281551368359,Education,Energy & transport
+32235,32287,1.293238445885619,Society & ethics,Federal budget
+32255,32262,1.2932584220464258,Nature conservation,"Democracy, Media & Digitalization"
+32219,32225,1.293310219410939,Welfare state & family,Education
+32273,32279,1.2938115017547795,Foreign trade & foreign policy,Values
+32222,32240,1.294077216386761,Health,Economy & labour
+32252,32254,1.2942807102678926,Nature conservation,Nature conservation
+32235,32262,1.2946347476860232,Society & ethics,"Democracy, Media & Digitalization"
+32218,32225,1.2949839925307733,Welfare state & family,Education
+32228,32253,1.2950464071266334,Immigration & integration,Nature conservation
+32230,32255,1.2951607117865394,Immigration & integration,Nature conservation
+32266,32283,1.2954682666003374,Security & military,Federal budget
+32247,32254,1.295631919460887,Energy & transport,Nature conservation
+32223,32268,1.2958073077689982,Health,Security & military
+32235,32264,1.2960506631806827,Society & ethics,Security & military
+32221,32260,1.296075771509033,Health,"Democracy, Media & Digitalization"
+32238,32284,1.2963921694486555,Finances & taxes,Federal budget
+32215,32285,1.2964898433238867,Welfare state & family,Federal budget
+32225,32287,1.2965876026553291,Education,Federal budget
+32238,32260,1.2967433350244533,Finances & taxes,"Democracy, Media & Digitalization"
+32247,32284,1.2967460872693064,Energy & transport,Federal budget
+32225,32227,1.2969274193731917,Education,Education
+32231,32254,1.2976888072977801,Immigration & integration,Nature conservation
+32236,32279,1.2977846755769082,Finances & taxes,Values
+32279,32284,1.2978277414785455,Values,Federal budget
+32215,32250,1.2982289070332143,Welfare state & family,Energy & transport
+32253,32262,1.2982673112030643,Nature conservation,"Democracy, Media & Digitalization"
+32240,32284,1.2989205307652696,Economy & labour,Federal budget
+32227,32239,1.2989346310216543,Education,Finances & taxes
+32262,32284,1.2990327331170484,"Democracy, Media & Digitalization",Federal budget
+32244,32245,1.2991012893480283,Economy & labour,Energy & transport
+32222,32244,1.299378633579909,Health,Economy & labour
+32223,32246,1.2994719286157796,Health,Energy & transport
+32247,32260,1.2995735082576991,Energy & transport,"Democracy, Media & Digitalization"
+32243,32248,1.2996147302934942,Economy & labour,Energy & transport
+32241,32247,1.2997755284230923,Economy & labour,Energy & transport
+32262,32272,1.2997987266832225,"Democracy, Media & Digitalization",Foreign trade & foreign policy
+32215,32264,1.299992047589276,Welfare state & family,Security & military
+32253,32257,1.3002583978072748,Nature conservation,Nature conservation
+32220,32258,1.3003141925007917,Health,"Democracy, Media & Digitalization"
+32262,32277,1.3004613453277776,"Democracy, Media & Digitalization",Values
+32255,32279,1.300507501412113,Nature conservation,Values
+32269,32284,1.3008708403149403,Foreign trade & foreign policy,Federal budget
+32227,32241,1.301002146219871,Education,Economy & labour
+32247,32268,1.3011726167560642,Energy & transport,Security & military
+32228,32254,1.301323824920903,Immigration & integration,Nature conservation
+32218,32282,1.301479814141401,Welfare state & family,Federal budget
+32255,32284,1.3015653176342008,Nature conservation,Federal budget
+32227,32264,1.3017383940070402,Education,Security & military
+32243,32255,1.3018420789630714,Economy & labour,Nature conservation
+32254,32287,1.3019058646640735,Nature conservation,Federal budget
+32228,32255,1.302479717903902,Immigration & integration,Nature conservation
+32253,32275,1.3027431415740536,Nature conservation,Values
+32244,32253,1.3030170280462856,Economy & labour,Nature conservation
+32225,32276,1.3031652169792387,Education,Values
+32264,32272,1.3033373385438984,Security & military,Foreign trade & foreign policy
+32247,32264,1.3033760449232588,Energy & transport,Security & military
+32240,32245,1.303556787623919,Economy & labour,Energy & transport
+32249,32260,1.3037466281616443,Energy & transport,"Democracy, Media & Digitalization"
+32244,32251,1.3037777545067906,Economy & labour,Energy & transport
+32239,32241,1.303850190798508,Finances & taxes,Economy & labour
+32247,32257,1.3039588289378834,Energy & transport,Nature conservation
+32257,32284,1.3040574533755802,Nature conservation,Federal budget
+32238,32254,1.3041062293641952,Finances & taxes,Nature conservation
+32236,32242,1.3041443471917054,Finances & taxes,Economy & labour
+32228,32239,1.3041955411358634,Immigration & integration,Finances & taxes
+32219,32272,1.3041957027773818,Welfare state & family,Foreign trade & foreign policy
+32221,32245,1.3042198839359385,Health,Energy & transport
+32234,32241,1.30444035639072,Society & ethics,Economy & labour
+32231,32256,1.304740273587381,Immigration & integration,Nature conservation
+32245,32273,1.3052563686855392,Energy & transport,Foreign trade & foreign policy
+32238,32261,1.305274230625678,Finances & taxes,"Democracy, Media & Digitalization"
+32241,32288,1.3054729232787077,Economy & labour,Federal budget
+32225,32244,1.3058203389500853,Education,Economy & labour
+32225,32271,1.305974227134117,Education,Foreign trade & foreign policy
+32255,32287,1.3060171827800267,Nature conservation,Federal budget
+32218,32277,1.306139320321359,Welfare state & family,Values
+32273,32281,1.306312446461411,Foreign trade & foreign policy,Federal budget
+32272,32287,1.3064694165123227,Foreign trade & foreign policy,Federal budget
+32231,32253,1.306617344088397,Immigration & integration,Nature conservation
+32218,32256,1.3069944659406538,Welfare state & family,Nature conservation
+32273,32276,1.3070798898006415,Foreign trade & foreign policy,Values
+32253,32273,1.3071436600143527,Nature conservation,Foreign trade & foreign policy
+32259,32273,1.3072752420382892,"Democracy, Media & Digitalization",Foreign trade & foreign policy
+32234,32257,1.3072784508186917,Society & ethics,Nature conservation
+32217,32241,1.307478915346418,Welfare state & family,Economy & labour
+32235,32254,1.3078140533259968,Society & ethics,Nature conservation
+32219,32251,1.3079279706193876,Welfare state & family,Energy & transport
+32267,32286,1.307951123923398,Security & military,Federal budget
+32241,32253,1.308217022724656,Economy & labour,Nature conservation
+32235,32276,1.308288196931686,Society & ethics,Values
+32218,32229,1.3089356207627214,Welfare state & family,Immigration & integration
+32230,32254,1.3090620980968184,Immigration & integration,Nature conservation
+32243,32270,1.3091745940767017,Economy & labour,Foreign trade & foreign policy
+32231,32284,1.3091876506300315,Immigration & integration,Federal budget
+32230,32236,1.3092928509669453,Immigration & integration,Finances & taxes
+32215,32225,1.309592105201116,Welfare state & family,Education
+32219,32268,1.3096389625500113,Welfare state & family,Security & military
+32275,32278,1.3098184599255895,Values,Values
+32251,32288,1.3098647903978637,Energy & transport,Federal budget
+32222,32276,1.3099630619471279,Health,Values
+32229,32235,1.309977647477242,Immigration & integration,Society & ethics
+32247,32277,1.3102489237475672,Energy & transport,Values
+32243,32271,1.310255322672399,Economy & labour,Foreign trade & foreign policy
+32228,32274,1.310645511310194,Immigration & integration,Values
+32218,32253,1.3106562333064484,Welfare state & family,Nature conservation
+32244,32269,1.3107273392342618,Economy & labour,Foreign trade & foreign policy
+32284,32287,1.3109931324027138,Federal budget,Federal budget
+32259,32260,1.3111613737383332,"Democracy, Media & Digitalization","Democracy, Media & Digitalization"
+32254,32262,1.3114304300550519,Nature conservation,"Democracy, Media & Digitalization"
+32223,32263,1.3115543511326944,Health,"Democracy, Media & Digitalization"
+32229,32277,1.311618939591248,Immigration & integration,Values
+32215,32254,1.311701694928838,Welfare state & family,Nature conservation
+32234,32239,1.3117611584871192,Society & ethics,Finances & taxes
+32240,32250,1.3117892581722888,Economy & labour,Energy & transport
+32250,32284,1.3118148606188447,Energy & transport,Federal budget
+32240,32253,1.3119047775921366,Economy & labour,Nature conservation
+32221,32254,1.311994842677559,Health,Nature conservation
+32215,32256,1.3123452824773092,Welfare state & family,Nature conservation
+32227,32247,1.3126841364233959,Education,Energy & transport
+32244,32277,1.312787317380319,Economy & labour,Values
+32254,32260,1.3131204692227225,Nature conservation,"Democracy, Media & Digitalization"
+32231,32239,1.313175126827944,Immigration & integration,Finances & taxes
+32232,32262,1.3133848126124874,Society & ethics,"Democracy, Media & Digitalization"
+32258,32270,1.3135485082739669,"Democracy, Media & Digitalization",Foreign trade & foreign policy
+32215,32246,1.3136151852889224,Welfare state & family,Energy & transport
+32270,32278,1.3136558077714413,Foreign trade & foreign policy,Values
+32251,32257,1.3140130931295593,Energy & transport,Nature conservation
+32229,32287,1.3141009653263713,Immigration & integration,Federal budget
+32219,32235,1.3141303193206464,Welfare state & family,Society & ethics
+32226,32281,1.3143507722701382,Education,Federal budget
+32214,32215,1.3149108204861708,Welfare state & family,Welfare state & family
+32236,32269,1.314945120813351,Finances & taxes,Foreign trade & foreign policy
+32228,32282,1.3153752776337229,Immigration & integration,Federal budget
+32230,32284,1.315622591631618,Immigration & integration,Federal budget
+32219,32282,1.315655594168598,Welfare state & family,Federal budget
+32273,32288,1.315790753536572,Foreign trade & foreign policy,Federal budget
+32227,32245,1.315817025862416,Education,Energy & transport
+32218,32222,1.3160258129740723,Welfare state & family,Health
+32243,32280,1.3161903311146403,Economy & labour,Values
+32253,32287,1.3162617123293048,Nature conservation,Federal budget
+32247,32286,1.3162796368303735,Energy & transport,Federal budget
+32229,32246,1.3164888840897393,Immigration & integration,Energy & transport
+32221,32275,1.317246667325121,Health,Values
+32221,32281,1.3174026612178686,Health,Federal budget
+32261,32277,1.3177555570138202,"Democracy, Media & Digitalization",Values
+32246,32259,1.317860927612497,Energy & transport,"Democracy, Media & Digitalization"
+32243,32245,1.3178823966309625,Economy & labour,Energy & transport
+32236,32271,1.3182132226947931,Finances & taxes,Foreign trade & foreign policy
+32270,32271,1.3184204468665495,Foreign trade & foreign policy,Foreign trade & foreign policy
+32263,32273,1.318449388152517,"Democracy, Media & Digitalization",Foreign trade & foreign policy
+32238,32256,1.3184649452604478,Finances & taxes,Nature conservation
+32218,32221,1.3185364678621005,Welfare state & family,Health
+32227,32260,1.3187149334083499,Education,"Democracy, Media & Digitalization"
+32231,32273,1.3189697792489985,Immigration & integration,Foreign trade & foreign policy
+32249,32279,1.3192093392966122,Energy & transport,Values
+32215,32282,1.3196122641045624,Welfare state & family,Federal budget
+32253,32260,1.3198231966972518,Nature conservation,"Democracy, Media & Digitalization"
+32253,32279,1.3199563733386415,Nature conservation,Values
+32252,32281,1.319967730166426,Nature conservation,Federal budget
+32235,32271,1.3201731636117204,Society & ethics,Foreign trade & foreign policy
+32252,32271,1.3201940529928964,Nature conservation,Foreign trade & foreign policy
+32250,32271,1.3203584942382973,Energy & transport,Foreign trade & foreign policy
+32244,32272,1.3204744444564505,Economy & labour,Foreign trade & foreign policy
+32250,32275,1.3205357192095932,Energy & transport,Values
+32238,32273,1.3205904412547398,Finances & taxes,Foreign trade & foreign policy
+32242,32261,1.3206419425797051,Economy & labour,"Democracy, Media & Digitalization"
+32221,32244,1.3207832044023757,Health,Economy & labour
+32230,32256,1.321816700715482,Immigration & integration,Nature conservation
+32229,32286,1.3218395909385605,Immigration & integration,Federal budget
+32277,32280,1.322100095773925,Values,Values
+32225,32280,1.3223214854772452,Education,Values
+32227,32253,1.322543448770519,Education,Nature conservation
+32229,32285,1.3226396715590176,Immigration & integration,Federal budget
+32262,32273,1.3227405754060593,"Democracy, Media & Digitalization",Foreign trade & foreign policy
+32251,32281,1.3229900872148932,Energy & transport,Federal budget
+32235,32288,1.3230496522370845,Society & ethics,Federal budget
+32234,32251,1.3231605688809096,Society & ethics,Energy & transport
+32218,32239,1.3232605688672618,Welfare state & family,Finances & taxes
+32251,32275,1.3234468079154758,Energy & transport,Values
+32269,32282,1.323849951368571,Foreign trade & foreign policy,Federal budget
+32261,32262,1.323980545372836,"Democracy, Media & Digitalization","Democracy, Media & Digitalization"
+32273,32283,1.3240878354958519,Foreign trade & foreign policy,Federal budget
+32220,32259,1.3244692860346332,Health,"Democracy, Media & Digitalization"
+32251,32254,1.324686387233439,Energy & transport,Nature conservation
+32261,32271,1.3250808635507905,"Democracy, Media & Digitalization",Foreign trade & foreign policy
+32252,32285,1.3252161673975684,Nature conservation,Federal budget
+32249,32269,1.3254234802193867,Energy & transport,Foreign trade & foreign policy
+32254,32264,1.3255280033664347,Nature conservation,Security & military
+32214,32244,1.3255691945897792,Welfare state & family,Economy & labour
+32231,32251,1.3255906457742597,Immigration & integration,Energy & transport
+32249,32257,1.3256974568411148,Energy & transport,Nature conservation
+32223,32280,1.325848119983921,Health,Values
+32239,32255,1.3258786619880865,Finances & taxes,Nature conservation
+32236,32268,1.3261381170085234,Finances & taxes,Security & military
+32280,32286,1.3262258921373011,Values,Federal budget
+32270,32281,1.3262416020990062,Foreign trade & foreign policy,Federal budget
+32223,32259,1.326658019176137,Health,"Democracy, Media & Digitalization"
+32260,32261,1.3267063715738878,"Democracy, Media & Digitalization","Democracy, Media & Digitalization"
+32222,32271,1.3268294039334223,Health,Foreign trade & foreign policy
+32235,32255,1.3268581649270186,Society & ethics,Nature conservation
+32245,32277,1.3271751479575615,Energy & transport,Values
+32220,32223,1.32740860870666,Health,Health
+32235,32253,1.3275739968142837,Society & ethics,Nature conservation
+32243,32244,1.3276890851392964,Economy & labour,Economy & labour
+32251,32260,1.3278967439985447,Energy & transport,"Democracy, Media & Digitalization"
+32260,32285,1.3280000228609163,"Democracy, Media & Digitalization",Federal budget
+32236,32272,1.3281428453485458,Finances & taxes,Foreign trade & foreign policy
+32272,32286,1.3283551354354708,Foreign trade & foreign policy,Federal budget
+32222,32288,1.328470029392583,Health,Federal budget
+32218,32286,1.3288647448356712,Welfare state & family,Federal budget
+32254,32279,1.328884864025458,Nature conservation,Values
+32232,32286,1.3290707954506789,Society & ethics,Federal budget
+32250,32276,1.329131437871829,Energy & transport,Values
+32277,32288,1.329412552901873,Values,Federal budget
+32219,32261,1.3297028812203344,Welfare state & family,"Democracy, Media & Digitalization"
+32277,32281,1.3297310460820433,Values,Federal budget
+32225,32240,1.3300970435253958,Education,Economy & labour
+32261,32263,1.3303827062560594,"Democracy, Media & Digitalization","Democracy, Media & Digitalization"
+32221,32241,1.3305402391053676,Health,Economy & labour
+32222,32230,1.3305936890976553,Health,Immigration & integration
+32215,32247,1.3307335325565794,Welfare state & family,Energy & transport
+32231,32232,1.3307563238438955,Immigration & integration,Society & ethics
+32245,32268,1.331060110883351,Energy & transport,Security & military
+32231,32257,1.3313026530354035,Immigration & integration,Nature conservation
+32264,32277,1.3314356556243536,Security & military,Values
+32225,32264,1.3317137766191056,Education,Security & military
+32253,32264,1.3317602417095495,Nature conservation,Security & military
+32221,32288,1.3318860206697518,Health,Federal budget
+32249,32261,1.3325630780680937,Energy & transport,"Democracy, Media & Digitalization"
+32232,32287,1.3331193947574058,Society & ethics,Federal budget
+32254,32269,1.333205399779276,Nature conservation,Foreign trade & foreign policy
+32234,32282,1.3332853723236693,Society & ethics,Federal budget
+32230,32239,1.3333098640908516,Immigration & integration,Finances & taxes
+32234,32260,1.3333418446355967,Society & ethics,"Democracy, Media & Digitalization"
+32257,32279,1.3334950094669278,Nature conservation,Values
+32221,32234,1.3336390734012074,Health,Society & ethics
+32229,32273,1.3336624453805355,Immigration & integration,Foreign trade & foreign policy
+32214,32270,1.3341046791263664,Welfare state & family,Foreign trade & foreign policy
+32214,32249,1.3341061027885777,Welfare state & family,Energy & transport
+32269,32287,1.334435406011296,Foreign trade & foreign policy,Federal budget
+32236,32288,1.3345527685377732,Finances & taxes,Federal budget
+32223,32236,1.3347008246321974,Health,Finances & taxes
+32214,32219,1.3347031447267657,Welfare state & family,Welfare state & family
+32230,32241,1.3348307459828659,Immigration & integration,Economy & labour
+32259,32278,1.334896987933899,"Democracy, Media & Digitalization",Values
+32246,32286,1.334920188444054,Energy & transport,Federal budget
+32223,32277,1.3349216250174034,Health,Values
+32239,32262,1.334961230178224,Finances & taxes,"Democracy, Media & Digitalization"
+32221,32227,1.3350371718960814,Health,Education
+32241,32287,1.3351938058986224,Economy & labour,Federal budget
+32240,32269,1.3352616095178216,Economy & labour,Foreign trade & foreign policy
+32242,32276,1.3355492303983933,Economy & labour,Values
+32244,32250,1.3356709693597797,Economy & labour,Energy & transport
+32256,32284,1.3356791020516867,Nature conservation,Federal budget
+32239,32249,1.3359839206876118,Finances & taxes,Energy & transport
+32261,32284,1.3359981366730733,"Democracy, Media & Digitalization",Federal budget
+32267,32279,1.3360880314334158,Security & military,Values
+32242,32245,1.3362579582750016,Economy & labour,Energy & transport
+32231,32282,1.3363185949342464,Immigration & integration,Federal budget
+32218,32241,1.3366312251552617,Welfare state & family,Economy & labour
+32221,32240,1.3366969942837494,Health,Economy & labour
+32242,32281,1.3366972494935991,Economy & labour,Federal budget
+32239,32287,1.3367357829448099,Finances & taxes,Federal budget
+32255,32264,1.33683959700005,Nature conservation,Security & military
+32277,32287,1.3370330082750563,Values,Federal budget
+32253,32283,1.3371963090658212,Nature conservation,Federal budget
+32253,32284,1.3371980411057929,Nature conservation,Federal budget
+32248,32258,1.3378701349764839,Energy & transport,"Democracy, Media & Digitalization"
+32228,32241,1.33806902490558,Immigration & integration,Economy & labour
+32259,32268,1.3381586893711706,"Democracy, Media & Digitalization",Security & military
+32223,32265,1.33826258725809,Health,Security & military
+32245,32270,1.338364947942859,Energy & transport,Foreign trade & foreign policy
+32230,32253,1.3386212832498714,Immigration & integration,Nature conservation
+32219,32236,1.338684171361408,Welfare state & family,Finances & taxes
+32271,32273,1.3387052099790842,Foreign trade & foreign policy,Foreign trade & foreign policy
+32225,32246,1.3388514213857288,Education,Energy & transport
+32272,32284,1.3390802391216006,Foreign trade & foreign policy,Federal budget
+32251,32269,1.339083649976085,Energy & transport,Foreign trade & foreign policy
+32267,32275,1.3391580945712342,Security & military,Values
+32249,32270,1.339233120028622,Energy & transport,Foreign trade & foreign policy
+32264,32284,1.3393926018397095,Security & military,Federal budget
+32223,32266,1.339484632854119,Health,Security & military
+32241,32251,1.3399485599453465,Economy & labour,Energy & transport
+32225,32285,1.33996050194084,Education,Federal budget
+32214,32271,1.3400226051928978,Welfare state & family,Foreign trade & foreign policy
+32255,32269,1.3402775337815118,Nature conservation,Foreign trade & foreign policy
+32235,32247,1.3405040977949805,Society & ethics,Energy & transport
+32221,32269,1.3405686907919836,Health,Foreign trade & foreign policy
+32270,32280,1.340796028066575,Foreign trade & foreign policy,Values
+32215,32245,1.3408361671976845,Welfare state & family,Energy & transport
+32227,32250,1.3408876901868065,Education,Energy & transport
+32228,32251,1.3409643290267963,Immigration & integration,Energy & transport
+32271,32272,1.340967654738368,Foreign trade & foreign policy,Foreign trade & foreign policy
+32225,32249,1.3410092415042894,Education,Energy & transport
+32239,32257,1.3411160636268307,Finances & taxes,Nature conservation
+32264,32269,1.3412323057076567,Security & military,Foreign trade & foreign policy
+32232,32281,1.3415750149320136,Society & ethics,Federal budget
+32235,32240,1.3417255393393999,Society & ethics,Economy & labour
+32240,32270,1.3417378996749136,Economy & labour,Foreign trade & foreign policy
+32229,32276,1.3417887501208392,Immigration & integration,Values
+32254,32284,1.3419776895854862,Nature conservation,Federal budget
+32241,32262,1.3427291588794932,Economy & labour,"Democracy, Media & Digitalization"
+32245,32272,1.3427897433793734,Energy & transport,Foreign trade & foreign policy
+32262,32282,1.3429936462316796,"Democracy, Media & Digitalization",Federal budget
+32257,32262,1.3431048288404395,Nature conservation,"Democracy, Media & Digitalization"
+32256,32262,1.3431755156175926,Nature conservation,"Democracy, Media & Digitalization"
+32218,32252,1.3431763808643375,Welfare state & family,Nature conservation
+32249,32251,1.3432230734859474,Energy & transport,Energy & transport
+32280,32282,1.343267677680343,Values,Federal budget
+32250,32257,1.343269033391676,Energy & transport,Nature conservation
+32232,32276,1.3432716154008146,Society & ethics,Values
+32228,32257,1.3438758389107386,Immigration & integration,Nature conservation
+32215,32260,1.3439891828098178,Welfare state & family,"Democracy, Media & Digitalization"
+32243,32285,1.344003945785452,Economy & labour,Federal budget
+32222,32287,1.3440248248247326,Health,Federal budget
+32269,32275,1.3440891785068718,Foreign trade & foreign policy,Values
+32243,32249,1.3442026413793826,Economy & labour,Energy & transport
+32238,32268,1.3446610230762095,Finances & taxes,Security & military
+32221,32284,1.34487783065432,Health,Federal budget
+32257,32287,1.3449040273215067,Nature conservation,Federal budget
+32249,32272,1.3449770811674346,Energy & transport,Foreign trade & foreign policy
+32253,32268,1.3450796653384636,Nature conservation,Security & military
+32253,32277,1.3451200925746967,Nature conservation,Values
+32234,32236,1.3453731511307143,Society & ethics,Finances & taxes
+32239,32285,1.3454253188762193,Finances & taxes,Federal budget
+32265,32287,1.3455402512904484,Security & military,Federal budget
+32241,32284,1.3463183187968255,Economy & labour,Federal budget
+32265,32270,1.3463396226164508,Security & military,Foreign trade & foreign policy
+32276,32282,1.3464131817978244,Values,Federal budget
+32238,32286,1.346928822475599,Finances & taxes,Federal budget
+32252,32287,1.3471722027295014,Nature conservation,Federal budget
+32229,32232,1.3471809479124568,Immigration & integration,Society & ethics
+32229,32264,1.3472400174138282,Immigration & integration,Security & military
+32225,32275,1.3474037924837874,Education,Values
+32256,32287,1.347486468949515,Nature conservation,Federal budget
+32219,32229,1.3478942079050769,Welfare state & family,Immigration & integration
+32251,32262,1.3479640940887774,Energy & transport,"Democracy, Media & Digitalization"
+32244,32282,1.3480471677598456,Economy & labour,Federal budget
+32249,32273,1.3481933770685155,Energy & transport,Foreign trade & foreign policy
+32215,32269,1.348216396098951,Welfare state & family,Foreign trade & foreign policy
+32231,32261,1.3483686037564866,Immigration & integration,"Democracy, Media & Digitalization"
+32259,32272,1.3484071263036146,"Democracy, Media & Digitalization",Foreign trade & foreign policy
+32268,32284,1.3484327152722406,Security & military,Federal budget
+32279,32282,1.3484536934651477,Values,Federal budget
+32265,32283,1.3485896788792349,Security & military,Federal budget
+32241,32270,1.348663082929349,Economy & labour,Foreign trade & foreign policy
+32245,32252,1.34885446384456,Energy & transport,Nature conservation
+32251,32287,1.3493557347762586,Energy & transport,Federal budget
+32226,32230,1.3493693313077124,Education,Immigration & integration
+32229,32282,1.3495393601028836,Immigration & integration,Federal budget
+32219,32270,1.34965247100403,Welfare state & family,Foreign trade & foreign policy
+32245,32274,1.3497364627283952,Energy & transport,Values
+32263,32266,1.3497437922095172,"Democracy, Media & Digitalization",Security & military
+32249,32277,1.349866654454888,Energy & transport,Values
+32252,32275,1.3498980988273632,Nature conservation,Values
+32246,32282,1.349964461653033,Energy & transport,Federal budget
+32225,32286,1.3500710219761642,Education,Federal budget
+32239,32246,1.3505332430355768,Finances & taxes,Energy & transport
+32249,32284,1.3506513418189523,Energy & transport,Federal budget
+32243,32281,1.3508888920563862,Economy & labour,Federal budget
+32230,32252,1.3509542616957662,Immigration & integration,Nature conservation
+32231,32241,1.3509975394750586,Immigration & integration,Economy & labour
+32244,32270,1.3513058695442706,Economy & labour,Foreign trade & foreign policy
+32270,32276,1.3513154746916878,Foreign trade & foreign policy,Values
+32274,32285,1.351346743999625,Values,Federal budget
+32230,32260,1.3513889258713447,Immigration & integration,"Democracy, Media & Digitalization"
+32232,32274,1.3513908243632136,Society & ethics,Values
+32241,32250,1.351428410220978,Economy & labour,Energy & transport
+32242,32270,1.3519889753427492,Economy & labour,Foreign trade & foreign policy
+32235,32284,1.3520897950650008,Society & ethics,Federal budget
+32222,32227,1.3522381620199808,Health,Education
+32221,32279,1.3524749753196315,Health,Values
+32223,32260,1.3525140355404641,Health,"Democracy, Media & Digitalization"
+32221,32262,1.3527784462420311,Health,"Democracy, Media & Digitalization"
+32235,32245,1.3530883712852249,Society & ethics,Energy & transport
+32218,32251,1.3532784941284939,Welfare state & family,Energy & transport
+32239,32260,1.3533294036028847,Finances & taxes,"Democracy, Media & Digitalization"
+32230,32257,1.3536836387255264,Immigration & integration,Nature conservation
+32220,32269,1.353728715562814,Health,Foreign trade & foreign policy
+32225,32255,1.3545084582088955,Education,Nature conservation
+32221,32231,1.3545707840571224,Health,Immigration & integration
+32270,32285,1.3547092013274018,Foreign trade & foreign policy,Federal budget
+32219,32232,1.354889456939337,Welfare state & family,Society & ethics
+32225,32245,1.354892064544449,Education,Energy & transport
+32236,32251,1.355138311448536,Finances & taxes,Energy & transport
+32217,32283,1.355207175231323,Welfare state & family,Federal budget
+32234,32252,1.3552759749217766,Society & ethics,Nature conservation
+32225,32238,1.3558816907539877,Education,Finances & taxes
+32256,32269,1.3560385471668461,Nature conservation,Foreign trade & foreign policy
+32223,32230,1.3561178992461993,Health,Immigration & integration
+32225,32269,1.3561366720841233,Education,Foreign trade & foreign policy
+32222,32234,1.3561523320367774,Health,Society & ethics
+32238,32272,1.3563614130175081,Finances & taxes,Foreign trade & foreign policy
+32276,32277,1.3564223966339186,Values,Values
+32225,32272,1.356971487327793,Education,Foreign trade & foreign policy
+32244,32268,1.3570461628097725,Economy & labour,Security & military
+32227,32251,1.3571592953847664,Education,Energy & transport
+32236,32241,1.357346202967194,Finances & taxes,Economy & labour
+32222,32250,1.3577367595222454,Health,Energy & transport
+32217,32249,1.3577876502737105,Welfare state & family,Energy & transport
+32237,32277,1.3578723046679848,Finances & taxes,Values
+32247,32252,1.3579154455713704,Energy & transport,Nature conservation
+32239,32250,1.3579674510336064,Finances & taxes,Energy & transport
+32250,32261,1.3580166319215934,Energy & transport,"Democracy, Media & Digitalization"
+32236,32263,1.3580278133118402,Finances & taxes,"Democracy, Media & Digitalization"
+32224,32246,1.3580979889645475,Health,Energy & transport
+32218,32260,1.3582056994748373,Welfare state & family,"Democracy, Media & Digitalization"
+32255,32282,1.3582267014794867,Nature conservation,Federal budget
+32239,32256,1.3582999495801376,Finances & taxes,Nature conservation
+32251,32279,1.3584551773839957,Energy & transport,Values
+32240,32251,1.358472326031144,Economy & labour,Energy & transport
+32265,32268,1.3587640452356742,Security & military,Security & military
+32256,32279,1.3588535793272984,Nature conservation,Values
+32217,32270,1.3588611465943052,Welfare state & family,Foreign trade & foreign policy
+32252,32253,1.3589049311822616,Nature conservation,Nature conservation
+32225,32268,1.358932760412141,Education,Security & military
+32223,32235,1.359010056816054,Health,Society & ethics
+32252,32288,1.3590343224840968,Nature conservation,Federal budget
+32265,32272,1.359053514786284,Security & military,Foreign trade & foreign policy
+32226,32234,1.3590777675318144,Education,Society & ethics
+32250,32280,1.3590884117333726,Energy & transport,Values
+32259,32265,1.3591133455326379,"Democracy, Media & Digitalization",Security & military
+32245,32260,1.359134880585,Energy & transport,"Democracy, Media & Digitalization"
+32222,32228,1.3591576821190678,Health,Immigration & integration
+32219,32273,1.3591969944451368,Welfare state & family,Foreign trade & foreign policy
+32250,32288,1.3596153765727157,Energy & transport,Federal budget
+32258,32266,1.3596868511760904,"Democracy, Media & Digitalization",Security & military
+32231,32260,1.359732129615711,Immigration & integration,"Democracy, Media & Digitalization"
+32225,32229,1.360059082210842,Education,Immigration & integration
+32268,32271,1.3600881406608525,Security & military,Foreign trade & foreign policy
+32223,32234,1.3600961543661767,Health,Society & ethics
+32249,32268,1.3601754806107038,Energy & transport,Security & military
+32248,32278,1.360452781349165,Energy & transport,Values
+32214,32241,1.3604957149095207,Welfare state & family,Economy & labour
+32251,32284,1.3605918611770291,Energy & transport,Federal budget
+32253,32259,1.360640822240545,Nature conservation,"Democracy, Media & Digitalization"
+32223,32281,1.3607083797964374,Health,Federal budget
+32232,32268,1.3609225346754799,Society & ethics,Security & military
+32228,32256,1.3609431428195442,Immigration & integration,Nature conservation
+32236,32260,1.3611729933241985,Finances & taxes,"Democracy, Media & Digitalization"
+32252,32264,1.361183941001277,Nature conservation,Security & military
+32220,32265,1.361318077256665,Health,Security & military
+32252,32279,1.3613910822165645,Nature conservation,Values
+32232,32269,1.3614008197771417,Society & ethics,Foreign trade & foreign policy
+32257,32270,1.3615114546387055,Nature conservation,Foreign trade & foreign policy
+32240,32282,1.3615637660436166,Economy & labour,Federal budget
+32217,32257,1.361635736614199,Welfare state & family,Nature conservation
+32246,32252,1.3616500285865862,Energy & transport,Nature conservation
+32229,32280,1.3617855377114527,Immigration & integration,Values
+32219,32286,1.3618932261112964,Welfare state & family,Federal budget
+32235,32238,1.3620435624737917,Society & ethics,Finances & taxes
+32226,32228,1.3621301064874398,Education,Immigration & integration
+32239,32284,1.3621443357328906,Finances & taxes,Federal budget
+32260,32284,1.3623892362957792,"Democracy, Media & Digitalization",Federal budget
+32221,32236,1.3624710623756604,Health,Finances & taxes
+32217,32255,1.3625426117051698,Welfare state & family,Nature conservation
+32259,32280,1.3625713070230958,"Democracy, Media & Digitalization",Values
+32253,32272,1.3625881437939358,Nature conservation,Foreign trade & foreign policy
+32270,32287,1.3626943118218164,Foreign trade & foreign policy,Federal budget
+32259,32282,1.3628565990854722,"Democracy, Media & Digitalization",Federal budget
+32251,32261,1.3629715541961895,Energy & transport,"Democracy, Media & Digitalization"
+32224,32269,1.3629909206698854,Health,Foreign trade & foreign policy
+32220,32266,1.3630825857705893,Health,Security & military
+32218,32232,1.3630998948167696,Welfare state & family,Society & ethics
+32219,32252,1.3632360179876715,Welfare state & family,Nature conservation
+32214,32287,1.363508731195503,Welfare state & family,Federal budget
+32239,32245,1.3636025643897067,Finances & taxes,Energy & transport
+32220,32273,1.3636335475674157,Health,Foreign trade & foreign policy
+32250,32255,1.3638484451108743,Energy & transport,Nature conservation
+32263,32265,1.3640433122224436,"Democracy, Media & Digitalization",Security & military
+32242,32247,1.3643121927959958,Economy & labour,Energy & transport
+32232,32264,1.3643313335133482,Society & ethics,Security & military
+32266,32268,1.3647401245222506,Security & military,Security & military
+32218,32261,1.364843351363526,Welfare state & family,"Democracy, Media & Digitalization"
+32234,32274,1.3648927603955199,Society & ethics,Values
+32226,32249,1.3649775219575762,Education,Energy & transport
+32286,32288,1.3649983930055283,Federal budget,Federal budget
+32222,32226,1.3653209342084522,Health,Education
+32230,32282,1.3653763070106064,Immigration & integration,Federal budget
+32242,32285,1.3655293335353902,Economy & labour,Federal budget
+32259,32276,1.3655363894031443,"Democracy, Media & Digitalization",Values
+32227,32232,1.3657939600181708,Education,Society & ethics
+32236,32277,1.3658836559566052,Finances & taxes,Values
+32229,32284,1.365885567770785,Immigration & integration,Federal budget
+32252,32276,1.3667622624630185,Nature conservation,Values
+32244,32252,1.3668466377202986,Economy & labour,Nature conservation
+32253,32261,1.3668801090193656,Nature conservation,"Democracy, Media & Digitalization"
+32220,32246,1.3674456038245588,Health,Energy & transport
+32234,32250,1.3675357809493913,Society & ethics,Energy & transport
+32261,32286,1.367642616264064,"Democracy, Media & Digitalization",Federal budget
+32271,32282,1.3676747883382978,Foreign trade & foreign policy,Federal budget
+32259,32281,1.3676826914360996,"Democracy, Media & Digitalization",Federal budget
+32243,32256,1.3676976372519338,Economy & labour,Nature conservation
+32273,32275,1.3678248794594874,Foreign trade & foreign policy,Values
+32219,32259,1.3678603467406454,Welfare state & family,"Democracy, Media & Digitalization"
+32228,32236,1.3679864103579762,Immigration & integration,Finances & taxes
+32257,32259,1.368034785437201,Nature conservation,"Democracy, Media & Digitalization"
+32241,32243,1.3681235122827693,Economy & labour,Economy & labour
+32249,32252,1.3682620157935574,Energy & transport,Nature conservation
+32236,32284,1.3683681041632547,Finances & taxes,Federal budget
+32216,32237,1.3683979746346997,Welfare state & family,Finances & taxes
+32235,32249,1.3684821581420263,Society & ethics,Energy & transport
+32222,32270,1.3684947816334132,Health,Foreign trade & foreign policy
+32236,32286,1.3685049449958266,Finances & taxes,Federal budget
+32259,32284,1.3686757335147195,"Democracy, Media & Digitalization",Federal budget
+32239,32279,1.3687186177112618,Finances & taxes,Values
+32258,32265,1.368925863025463,"Democracy, Media & Digitalization",Security & military
+32269,32286,1.3689810270506095,Foreign trade & foreign policy,Federal budget
+32214,32278,1.369110602437775,Welfare state & family,Values
+32239,32254,1.3691877867996856,Finances & taxes,Nature conservation
+32272,32282,1.369380864902768,Foreign trade & foreign policy,Federal budget
+32241,32264,1.369527284897555,Economy & labour,Security & military
+32217,32243,1.369781599617953,Welfare state & family,Economy & labour
+32260,32272,1.370102926224269,"Democracy, Media & Digitalization",Foreign trade & foreign policy
+32236,32262,1.370416289316727,Finances & taxes,"Democracy, Media & Digitalization"
+32227,32277,1.370754880224246,Education,Values
+32230,32251,1.371095974901252,Immigration & integration,Energy & transport
+32263,32272,1.3713244029024392,"Democracy, Media & Digitalization",Foreign trade & foreign policy
+32215,32270,1.3714273076054517,Welfare state & family,Foreign trade & foreign policy
+32227,32259,1.3717254701030357,Education,"Democracy, Media & Digitalization"
+32260,32262,1.3717845467855956,"Democracy, Media & Digitalization","Democracy, Media & Digitalization"
+32247,32259,1.3720768522443583,Energy & transport,"Democracy, Media & Digitalization"
+32228,32252,1.3721402064604125,Immigration & integration,Nature conservation
+32223,32285,1.3721758201015484,Health,Federal budget
+32226,32288,1.3722972083475666,Education,Federal budget
+32232,32285,1.3723911582848836,Society & ethics,Federal budget
+32241,32279,1.3725495704845627,Economy & labour,Values
+32226,32244,1.3726762358734022,Education,Economy & labour
+32235,32261,1.3727205173550154,Society & ethics,"Democracy, Media & Digitalization"
+32224,32280,1.3727427782051191,Health,Values
+32224,32238,1.3729009587466492,Health,Finances & taxes
+32269,32283,1.3729389151117748,Foreign trade & foreign policy,Federal budget
+32217,32287,1.3733018309552423,Welfare state & family,Federal budget
+32214,32243,1.3733240529567214,Welfare state & family,Economy & labour
+32218,32226,1.3733996768721977,Welfare state & family,Education
+32229,32244,1.3734091377897748,Immigration & integration,Economy & labour
+32241,32273,1.373628672284025,Economy & labour,Foreign trade & foreign policy
+32222,32249,1.3737993558358637,Health,Energy & transport
+32235,32282,1.3739212658949334,Society & ethics,Federal budget
+32261,32266,1.3740575904242365,"Democracy, Media & Digitalization",Security & military
+32254,32273,1.374164606178424,Nature conservation,Foreign trade & foreign policy
+32225,32235,1.3741826499716197,Education,Society & ethics
+32221,32249,1.3744414155444429,Health,Energy & transport
+32270,32283,1.3744483771599936,Foreign trade & foreign policy,Federal budget
+32215,32272,1.3746831504210681,Welfare state & family,Foreign trade & foreign policy
+32256,32264,1.3747307295247122,Nature conservation,Security & military
+32217,32250,1.374763788116192,Welfare state & family,Energy & transport
+32241,32269,1.3749788276817687,Economy & labour,Foreign trade & foreign policy
+32259,32266,1.3751118843937649,"Democracy, Media & Digitalization",Security & military
+32238,32259,1.375157050085434,Finances & taxes,"Democracy, Media & Digitalization"
+32228,32260,1.3752676808860602,Immigration & integration,"Democracy, Media & Digitalization"
+32218,32250,1.3754960417478452,Welfare state & family,Energy & transport
+32222,32279,1.3757952542915137,Health,Values
+32273,32284,1.375851609447166,Foreign trade & foreign policy,Federal budget
+32214,32276,1.3760844380390078,Welfare state & family,Values
+32219,32242,1.376373112671319,Welfare state & family,Economy & labour
+32218,32259,1.3763867834698431,Welfare state & family,"Democracy, Media & Digitalization"
+32254,32282,1.3765355324432758,Nature conservation,Federal budget
+32274,32281,1.3765942069651822,Values,Federal budget
+32242,32243,1.3769376677117575,Economy & labour,Economy & labour
+32251,32273,1.3769917740031845,Energy & transport,Foreign trade & foreign policy
+32235,32256,1.3774965634316718,Society & ethics,Nature conservation
+32226,32231,1.3776927018242346,Education,Immigration & integration
+32227,32273,1.3778524102046648,Education,Foreign trade & foreign policy
+32255,32261,1.3778729886761871,Nature conservation,"Democracy, Media & Digitalization"
+32223,32288,1.3779578645632693,Health,Federal budget
+32244,32273,1.3781192226013355,Economy & labour,Foreign trade & foreign policy
+32224,32273,1.378268532400346,Health,Foreign trade & foreign policy
+32217,32288,1.3783110882574472,Welfare state & family,Federal budget
+32222,32264,1.3783315032207397,Health,Security & military
+32222,32231,1.3784091072082219,Health,Immigration & integration
+32215,32235,1.3785575732976967,Welfare state & family,Society & ethics
+32222,32257,1.378592636306072,Health,Nature conservation
+32248,32273,1.3785954756768588,Energy & transport,Foreign trade & foreign policy
+32257,32269,1.3786686550357978,Nature conservation,Foreign trade & foreign policy
+32223,32276,1.3786801840518679,Health,Values
+32230,32250,1.378827178604992,Immigration & integration,Energy & transport
+32243,32258,1.3791057254806773,Economy & labour,"Democracy, Media & Digitalization"
+32219,32243,1.379109259169798,Welfare state & family,Economy & labour
+32282,32285,1.3792497665714993,Federal budget,Federal budget
+32266,32272,1.3794589545239337,Security & military,Foreign trade & foreign policy
+32217,32227,1.379503098897476,Welfare state & family,Education
+32217,32256,1.3795602266064104,Welfare state & family,Nature conservation
+32274,32276,1.3797225003772733,Values,Values
+32225,32277,1.3799305565590212,Education,Values
+32248,32266,1.3799777523791432,Energy & transport,Security & military
+32235,32259,1.380027968217557,Society & ethics,"Democracy, Media & Digitalization"
+32215,32229,1.380096643750756,Welfare state & family,Immigration & integration
+32253,32282,1.3801764319617016,Nature conservation,Federal budget
+32221,32228,1.3802510968349306,Health,Immigration & integration
+32232,32253,1.3804049644847054,Society & ethics,Nature conservation
+32255,32270,1.3804257317478563,Nature conservation,Foreign trade & foreign policy
+32225,32239,1.3805738887223111,Education,Finances & taxes
+32262,32274,1.3810263251192332,"Democracy, Media & Digitalization",Values
+32252,32256,1.381069811045948,Nature conservation,Nature conservation
+32224,32276,1.3812886057975522,Health,Values
+32225,32247,1.381386341720176,Education,Energy & transport
+32233,32234,1.3815355017069575,Society & ethics,Society & ethics
+32268,32282,1.3817227809018635,Security & military,Federal budget
+32241,32261,1.3818926514565628,Economy & labour,"Democracy, Media & Digitalization"
+32257,32264,1.3820662437850502,Nature conservation,Security & military
+32215,32226,1.3820869811177148,Welfare state & family,Education
+32239,32251,1.3824087481272886,Finances & taxes,Energy & transport
+32240,32252,1.3825358380186452,Economy & labour,Nature conservation
+32221,32287,1.3826032284335732,Health,Federal budget
+32232,32280,1.3826571138566235,Society & ethics,Values
+32225,32256,1.3827976738652406,Education,Nature conservation
+32250,32260,1.3830535950500924,Energy & transport,"Democracy, Media & Digitalization"
+32235,32237,1.3832839666180607,Society & ethics,Finances & taxes
+32221,32259,1.3833284281243245,Health,"Democracy, Media & Digitalization"
+32224,32260,1.383414082171445,Health,"Democracy, Media & Digitalization"
+32226,32262,1.3834144926630536,Education,"Democracy, Media & Digitalization"
+32251,32264,1.3836266083425437,Energy & transport,Security & military
+32257,32282,1.383632156815479,Nature conservation,Federal budget
+32221,32261,1.3836364841021365,Health,"Democracy, Media & Digitalization"
+32226,32240,1.3836421365969314,Education,Economy & labour
+32219,32226,1.3836546432643642,Welfare state & family,Education
+32278,32283,1.3838003859941685,Values,Federal budget
+32267,32281,1.3839279303369794,Security & military,Federal budget
+32222,32225,1.3840178523725046,Health,Education
+32239,32247,1.384072536143629,Finances & taxes,Energy & transport
+32238,32270,1.3841251022126135,Finances & taxes,Foreign trade & foreign policy
+32254,32277,1.3842360768621398,Nature conservation,Values
+32239,32269,1.3843158562151494,Finances & taxes,Foreign trade & foreign policy
+32263,32269,1.3849281011162917,"Democracy, Media & Digitalization",Foreign trade & foreign policy
+32259,32277,1.385113592628285,"Democracy, Media & Digitalization",Values
+32218,32273,1.3852046760563392,Welfare state & family,Foreign trade & foreign policy
+32236,32257,1.3852078373054162,Finances & taxes,Nature conservation
+32252,32257,1.385266061687112,Nature conservation,Nature conservation
+32271,32277,1.3852689328674188,Foreign trade & foreign policy,Values
+32260,32279,1.385342147596536,"Democracy, Media & Digitalization",Values
+32226,32264,1.3853975840764148,Education,Security & military
+32243,32247,1.3854663314226912,Economy & labour,Energy & transport
+32266,32270,1.3855386609982157,Security & military,Foreign trade & foreign policy
+32240,32243,1.385646901500453,Economy & labour,Economy & labour
+32239,32264,1.3857010608175613,Finances & taxes,Security & military
+32217,32278,1.385769898141746,Welfare state & family,Values
+32243,32254,1.385979643063301,Economy & labour,Nature conservation
+32234,32259,1.3860444512324026,Society & ethics,"Democracy, Media & Digitalization"
+32242,32280,1.3863583887289443,Economy & labour,Values
+32248,32259,1.3863936602968752,Energy & transport,"Democracy, Media & Digitalization"
+32230,32274,1.3864720998360285,Immigration & integration,Values
+32232,32277,1.3865054460055575,Society & ethics,Values
+32229,32245,1.3865773845354972,Immigration & integration,Energy & transport
+32227,32286,1.387128601127722,Education,Federal budget
+32248,32265,1.3875983195217658,Energy & transport,Security & military
+32226,32279,1.387606085039569,Education,Values
+32240,32272,1.3881034423145524,Economy & labour,Foreign trade & foreign policy
+32277,32286,1.3883142708502147,Values,Federal budget
+32227,32261,1.3884635666265859,Education,"Democracy, Media & Digitalization"
+32229,32247,1.3884879540622395,Immigration & integration,Energy & transport
+32257,32261,1.3885441476776554,Nature conservation,"Democracy, Media & Digitalization"
+32236,32253,1.3885745627969945,Finances & taxes,Nature conservation
+32223,32279,1.3886273570217278,Health,Values
+32232,32246,1.3886698557588486,Society & ethics,Energy & transport
+32224,32247,1.38910738762623,Health,Energy & transport
+32282,32287,1.3891130092148394,Federal budget,Federal budget
+32243,32276,1.3892540566350648,Economy & labour,Values
+32252,32262,1.3894688143484595,Nature conservation,"Democracy, Media & Digitalization"
+32225,32254,1.3896263448522237,Education,Nature conservation
+32243,32252,1.3896376341493448,Economy & labour,Nature conservation
+32259,32271,1.3896714441406817,"Democracy, Media & Digitalization",Foreign trade & foreign policy
+32231,32252,1.3897013083923444,Immigration & integration,Nature conservation
+32217,32276,1.3898593910899528,Welfare state & family,Values
+32260,32268,1.3898608442288882,"Democracy, Media & Digitalization",Security & military
+32222,32280,1.3898850089693964,Health,Values
+32214,32265,1.3899117270228472,Welfare state & family,Security & military
+32227,32252,1.39006113298462,Education,Nature conservation
+32228,32259,1.3901010839123524,Immigration & integration,"Democracy, Media & Digitalization"
+32256,32282,1.3901721808843082,Nature conservation,Federal budget
+32242,32279,1.390196967954742,Economy & labour,Values
+32222,32255,1.3902823934547313,Health,Nature conservation
+32238,32242,1.3902860666784917,Finances & taxes,Economy & labour
+32219,32224,1.3903631360877078,Welfare state & family,Health
+32235,32252,1.3905771463677112,Society & ethics,Nature conservation
+32222,32241,1.390618308539031,Health,Economy & labour
+32224,32253,1.3906836615264384,Health,Nature conservation
+32230,32242,1.3907205405105791,Immigration & integration,Economy & labour
+32214,32283,1.3911195395772855,Welfare state & family,Federal budget
+32229,32253,1.3913824360986768,Immigration & integration,Nature conservation
+32263,32268,1.3914691836506627,"Democracy, Media & Digitalization",Security & military
+32275,32282,1.3914779264066188,Values,Federal budget
+32272,32275,1.3914918869780692,Foreign trade & foreign policy,Values
+32260,32277,1.3915266509078983,"Democracy, Media & Digitalization",Values
+32256,32273,1.3915679674789798,Nature conservation,Foreign trade & foreign policy
+32235,32257,1.391656393396148,Society & ethics,Nature conservation
+32264,32270,1.3916921415140209,Security & military,Foreign trade & foreign policy
+32217,32239,1.391911594162082,Welfare state & family,Finances & taxes
+32277,32283,1.3919555029259063,Values,Federal budget
+32215,32221,1.3920010415734299,Welfare state & family,Health
+32232,32238,1.3920022216056387,Society & ethics,Finances & taxes
+32238,32277,1.3922535210814335,Finances & taxes,Values
+32268,32275,1.3923210818712253,Security & military,Values
+32215,32286,1.3925028379430522,Welfare state & family,Federal budget
+32267,32285,1.3927801098126575,Security & military,Federal budget
+32267,32276,1.3928767863366633,Security & military,Values
+32248,32270,1.3929182375634463,Energy & transport,Foreign trade & foreign policy
+32256,32272,1.3930644381529553,Nature conservation,Foreign trade & foreign policy
+32215,32251,1.3931534862386752,Welfare state & family,Energy & transport
+32245,32267,1.3931858880957442,Energy & transport,Security & military
+32214,32226,1.393259170382723,Welfare state & family,Education
+32215,32252,1.3932820094672689,Welfare state & family,Nature conservation
+32221,32224,1.393338761067394,Health,Health
+32236,32243,1.3933799465871797,Finances & taxes,Economy & labour
+32235,32286,1.39342431454215,Society & ethics,Federal budget
+32244,32261,1.3935442520440926,Economy & labour,"Democracy, Media & Digitalization"
+32214,32239,1.3936908656736806,Welfare state & family,Finances & taxes
+32223,32271,1.3938950760329736,Health,Foreign trade & foreign policy
+32241,32278,1.394342511954821,Economy & labour,Values
+32243,32257,1.394477484267997,Economy & labour,Nature conservation
+32264,32265,1.395113752183696,Security & military,Security & military
+32240,32268,1.395118413301356,Economy & labour,Security & military
+32261,32265,1.3951915492424327,"Democracy, Media & Digitalization",Security & military
+32229,32238,1.3953693693620106,Immigration & integration,Finances & taxes
+32217,32218,1.3954913054084184,Welfare state & family,Welfare state & family
+32226,32276,1.3958587680655978,Education,Values
+32259,32261,1.3958974485353268,"Democracy, Media & Digitalization","Democracy, Media & Digitalization"
+32258,32283,1.3959528262248257,"Democracy, Media & Digitalization",Federal budget
+32271,32286,1.3961682407498077,Foreign trade & foreign policy,Federal budget
+32221,32230,1.396246145456673,Health,Immigration & integration
+32248,32268,1.3964282538604145,Energy & transport,Security & military
+32232,32240,1.3964874377151422,Society & ethics,Economy & labour
+32219,32277,1.396598551766606,Welfare state & family,Values
+32215,32253,1.3966061083092804,Welfare state & family,Nature conservation
+32235,32275,1.3966063032910203,Society & ethics,Values
+32221,32273,1.3966978416505087,Health,Foreign trade & foreign policy
+32221,32264,1.3967489073512673,Health,Security & military
+32232,32272,1.3969251312552173,Society & ethics,Foreign trade & foreign policy
+32236,32255,1.397157950537759,Finances & taxes,Nature conservation
+32246,32266,1.397633938762097,Energy & transport,Security & military
+32258,32269,1.3977602915708929,"Democracy, Media & Digitalization",Foreign trade & foreign policy
+32259,32288,1.39777456821714,"Democracy, Media & Digitalization",Federal budget
+32230,32232,1.3979521449552024,Immigration & integration,Society & ethics
+32224,32257,1.3980484257471828,Health,Nature conservation
+32268,32283,1.3980594518187766,Security & military,Federal budget
+32260,32265,1.398160673442123,"Democracy, Media & Digitalization",Security & military
+32277,32284,1.398221916718313,Values,Federal budget
+32254,32272,1.398323354078317,Nature conservation,Foreign trade & foreign policy
+32222,32243,1.398476347935177,Health,Economy & labour
+32232,32288,1.3985062049132446,Society & ethics,Federal budget
+32247,32270,1.3990866537066196,Energy & transport,Foreign trade & foreign policy
+32217,32254,1.3992575151782942,Welfare state & family,Nature conservation
+32233,32277,1.3993239921912988,Society & ethics,Values
+32225,32284,1.3994376252828542,Education,Federal budget
+32231,32236,1.3996219444730733,Immigration & integration,Finances & taxes
+32240,32259,1.3997247541284217,Economy & labour,"Democracy, Media & Digitalization"
+32215,32268,1.399756435026472,Welfare state & family,Security & military
+32229,32261,1.3998884493738093,Immigration & integration,"Democracy, Media & Digitalization"
+32226,32287,1.4001150479711104,Education,Federal budget
+32221,32239,1.4001711792044542,Health,Finances & taxes
+32214,32257,1.4002885072289322,Welfare state & family,Nature conservation
+32274,32287,1.4004501628922519,Values,Federal budget
+32221,32282,1.4004578075949177,Health,Federal budget
+32223,32228,1.4005210058956656,Health,Immigration & integration
+32225,32252,1.4008653878052484,Education,Nature conservation
+32219,32267,1.4008770212370496,Welfare state & family,Security & military
+32260,32282,1.401009592354969,"Democracy, Media & Digitalization",Federal budget
+32238,32282,1.4010238057931983,Finances & taxes,Federal budget
+32230,32270,1.401150359830914,Immigration & integration,Foreign trade & foreign policy
+32252,32284,1.4012993777808,Nature conservation,Federal budget
+32214,32255,1.4018043720654816,Welfare state & family,Nature conservation
+32250,32279,1.4019210930475687,Energy & transport,Values
+32231,32274,1.4020872524994756,Immigration & integration,Values
+32222,32239,1.4025734973220652,Health,Finances & taxes
+32275,32277,1.4026797974481084,Values,Values
+32248,32269,1.4027711640294511,Energy & transport,Foreign trade & foreign policy
+32232,32284,1.402828186399012,Society & ethics,Federal budget
+32228,32250,1.4030417762469907,Immigration & integration,Energy & transport
+32218,32270,1.4033202141839611,Welfare state & family,Foreign trade & foreign policy
+32226,32275,1.4033475915603992,Education,Values
+32252,32272,1.4035037999307536,Nature conservation,Foreign trade & foreign policy
+32215,32232,1.403680205127699,Welfare state & family,Society & ethics
+32228,32267,1.4038531868095274,Immigration & integration,Security & military
+32215,32242,1.4039258722161763,Welfare state & family,Economy & labour
+32223,32238,1.4040515229554034,Health,Finances & taxes
+32220,32224,1.4042145767978607,Health,Health
+32240,32286,1.40424553821691,Economy & labour,Federal budget
+32236,32249,1.40432395320344,Finances & taxes,Energy & transport
+32234,32242,1.4045812410748397,Society & ethics,Economy & labour
+32267,32270,1.404597456891741,Security & military,Foreign trade & foreign policy
+32235,32260,1.4046243289924938,Society & ethics,"Democracy, Media & Digitalization"
+32223,32244,1.4047025891532108,Health,Economy & labour
+32218,32274,1.40491903422838,Welfare state & family,Values
+32235,32251,1.4052274492845993,Society & ethics,Energy & transport
+32231,32259,1.4054538895467288,Immigration & integration,"Democracy, Media & Digitalization"
+32250,32282,1.4056059890630999,Energy & transport,Federal budget
+32223,32245,1.4061420398626032,Health,Energy & transport
+32257,32267,1.4062571737570224,Nature conservation,Security & military
+32239,32253,1.406304243190759,Finances & taxes,Nature conservation
+32225,32261,1.4063919863728973,Education,"Democracy, Media & Digitalization"
+32222,32284,1.4065191546446436,Health,Federal budget
+32224,32271,1.4065986206691465,Health,Foreign trade & foreign policy
+32229,32259,1.406727916657068,Immigration & integration,"Democracy, Media & Digitalization"
+32243,32278,1.4068212261666528,Economy & labour,Values
+32259,32262,1.4070142135557027,"Democracy, Media & Digitalization","Democracy, Media & Digitalization"
+32246,32265,1.4072255181073061,Energy & transport,Security & military
+32224,32241,1.407308858365966,Health,Economy & labour
+32215,32243,1.4073807279938815,Welfare state & family,Economy & labour
+32266,32287,1.4074701846240278,Security & military,Federal budget
+32251,32277,1.407517043416989,Energy & transport,Values
+32238,32250,1.407844162376798,Finances & taxes,Energy & transport
+32225,32232,1.4087136425438882,Education,Society & ethics
+32266,32277,1.4087366426638634,Security & military,Values
+32222,32238,1.4088537574954607,Health,Finances & taxes
+32232,32254,1.408885168748736,Society & ethics,Nature conservation
+32230,32267,1.408892339796456,Immigration & integration,Security & military
+32253,32286,1.4089945365383627,Nature conservation,Federal budget
+32222,32242,1.4090098585397164,Health,Economy & labour
+32254,32268,1.4091036902868272,Nature conservation,Security & military
+32219,32274,1.4093961313682208,Welfare state & family,Values
+32240,32261,1.409608113159051,Economy & labour,"Democracy, Media & Digitalization"
+32256,32268,1.4097743607133262,Nature conservation,Security & military
+32225,32253,1.4099400848821961,Education,Nature conservation
+32220,32282,1.4101822271802436,Health,Federal budget
+32233,32259,1.4101945601913226,Society & ethics,"Democracy, Media & Digitalization"
+32251,32272,1.4102392106222115,Energy & transport,Foreign trade & foreign policy
+32214,32264,1.4103728715621404,Welfare state & family,Security & military
+32229,32240,1.4103741711763842,Immigration & integration,Economy & labour
+32214,32250,1.410463112088222,Welfare state & family,Energy & transport
+32214,32288,1.4104850402815317,Welfare state & family,Federal budget
+32242,32286,1.4104898698765733,Economy & labour,Federal budget
+32265,32277,1.4105278296313064,Security & military,Values
+32224,32266,1.4105971983320587,Health,Security & military
+32277,32282,1.4106386142913305,Values,Federal budget
+32217,32238,1.410840475191737,Welfare state & family,Finances & taxes
+32223,32249,1.4108680665527062,Health,Energy & transport
+32225,32226,1.4109940784254222,Education,Education
+32236,32240,1.4113931944955131,Finances & taxes,Economy & labour
+32230,32243,1.4115315978376974,Immigration & integration,Economy & labour
+32247,32282,1.411541290768232,Energy & transport,Federal budget
+32239,32270,1.4120072860246942,Finances & taxes,Foreign trade & foreign policy
+32219,32223,1.4120443131934743,Welfare state & family,Health
+32273,32282,1.4121818615463906,Foreign trade & foreign policy,Federal budget
+32238,32243,1.412211597795052,Finances & taxes,Economy & labour
+32226,32271,1.4122845146074225,Education,Foreign trade & foreign policy
+32255,32272,1.412441398903896,Nature conservation,Foreign trade & foreign policy
+32255,32277,1.4124615098351003,Nature conservation,Values
+32258,32268,1.4124918399693114,"Democracy, Media & Digitalization",Security & military
+32252,32268,1.4125329154163082,Nature conservation,Security & military
+32223,32248,1.4127873110221139,Health,Energy & transport
+32256,32259,1.4128027528674443,Nature conservation,"Democracy, Media & Digitalization"
+32255,32268,1.412824468879736,Nature conservation,Security & military
+32244,32259,1.4128347286602598,Economy & labour,"Democracy, Media & Digitalization"
+32251,32268,1.412886724206586,Energy & transport,Security & military
+32268,32278,1.413010842408595,Security & military,Values
+32238,32252,1.4130807253925868,Finances & taxes,Nature conservation
+32218,32236,1.4131389385457622,Welfare state & family,Finances & taxes
+32236,32270,1.41317257140349,Finances & taxes,Foreign trade & foreign policy
+32248,32272,1.4133089580024487,Energy & transport,Foreign trade & foreign policy
+32218,32267,1.4133158835734414,Welfare state & family,Security & military
+32264,32273,1.4133397936406116,Security & military,Foreign trade & foreign policy
+32228,32242,1.4134327903568376,Immigration & integration,Economy & labour
+32233,32269,1.4135500048962952,Society & ethics,Foreign trade & foreign policy
+32223,32224,1.4137288931231369,Health,Health
+32243,32288,1.413734039866491,Economy & labour,Federal budget
+32233,32262,1.4138497273221884,Society & ethics,"Democracy, Media & Digitalization"
+32249,32286,1.4139081127660376,Energy & transport,Federal budget
+32222,32262,1.413921415809985,Health,"Democracy, Media & Digitalization"
+32220,32278,1.4141499587841688,Health,Values
+32255,32259,1.4141644160770241,Nature conservation,"Democracy, Media & Digitalization"
+32224,32281,1.4142215077319926,Health,Federal budget
+32240,32242,1.414249076736387,Economy & labour,Economy & labour
+32254,32261,1.4142622026455145,Nature conservation,"Democracy, Media & Digitalization"
+32250,32283,1.4143718158029244,Energy & transport,Federal budget
+32258,32275,1.414566962515112,"Democracy, Media & Digitalization",Values
+32232,32275,1.4146601670727155,Society & ethics,Values
+32245,32250,1.4146826802175103,Energy & transport,Energy & transport
+32256,32261,1.4149139404855822,Nature conservation,"Democracy, Media & Digitalization"
+32223,32284,1.4149471065931467,Health,Federal budget
+32221,32235,1.415085965414106,Health,Society & ethics
+32250,32254,1.4152312812553336,Energy & transport,Nature conservation
+32254,32259,1.4152607136174868,Nature conservation,"Democracy, Media & Digitalization"
+32214,32266,1.415284318289079,Welfare state & family,Security & military
+32256,32270,1.4153224107688183,Nature conservation,Foreign trade & foreign policy
+32223,32258,1.4153897038911332,Health,"Democracy, Media & Digitalization"
+32225,32257,1.4154221404970804,Education,Nature conservation
+32217,32280,1.4157315230186518,Welfare state & family,Values
+32236,32259,1.4159584436058097,Finances & taxes,"Democracy, Media & Digitalization"
+32232,32255,1.416078310584696,Society & ethics,Nature conservation
+32232,32282,1.4161078547012236,Society & ethics,Federal budget
+32240,32273,1.416176534352976,Economy & labour,Foreign trade & foreign policy
+32224,32265,1.4164322191038305,Health,Security & military
+32243,32246,1.4164831840754155,Economy & labour,Energy & transport
+32215,32283,1.4167155921295518,Welfare state & family,Federal budget
+32222,32283,1.4168236163018986,Health,Federal budget
+32242,32271,1.4170108670116814,Economy & labour,Foreign trade & foreign policy
+32214,32258,1.4172322983964436,Welfare state & family,"Democracy, Media & Digitalization"
+32232,32245,1.4172625550364257,Society & ethics,Energy & transport
+32261,32287,1.4174324361148083,"Democracy, Media & Digitalization",Federal budget
+32221,32272,1.4174384687652186,Health,Foreign trade & foreign policy
+32265,32278,1.4175067463663935,Security & military,Values
+32224,32261,1.417665449205048,Health,"Democracy, Media & Digitalization"
+32243,32287,1.41801765290979,Economy & labour,Federal budget
+32249,32250,1.4180737490686737,Energy & transport,Energy & transport
+32231,32250,1.4182761643703228,Immigration & integration,Energy & transport
+32252,32286,1.4185090532811548,Nature conservation,Federal budget
+32233,32253,1.4185125067879933,Society & ethics,Nature conservation
+32217,32230,1.4185338251620976,Welfare state & family,Immigration & integration
+32260,32266,1.418589715297362,"Democracy, Media & Digitalization",Security & military
+32220,32247,1.418798647706227,Health,Energy & transport
+32242,32250,1.4188460373143987,Economy & labour,Energy & transport
+32249,32258,1.4190307616731614,Energy & transport,"Democracy, Media & Digitalization"
+32239,32282,1.4190457085265002,Finances & taxes,Federal budget
+32225,32241,1.4190740776329762,Education,Economy & labour
+32255,32273,1.419132743785654,Nature conservation,Foreign trade & foreign policy
+32267,32278,1.4192267917271773,Security & military,Values
+32223,32262,1.419691815942043,Health,"Democracy, Media & Digitalization"
+32222,32247,1.4197050844125187,Health,Energy & transport
+32266,32278,1.4197636932634021,Security & military,Values
+32220,32284,1.4198842968691316,Health,Federal budget
+32223,32275,1.4198908156442709,Health,Values
+32227,32236,1.419915899063721,Education,Finances & taxes
+32217,32264,1.420030110902551,Welfare state & family,Security & military
+32257,32273,1.4200627978477336,Nature conservation,Foreign trade & foreign policy
+32273,32286,1.4201502107212798,Foreign trade & foreign policy,Federal budget
+32247,32274,1.420187546700475,Energy & transport,Values
+32245,32282,1.4205484650193516,Energy & transport,Federal budget
+32243,32260,1.420754912230721,Economy & labour,"Democracy, Media & Digitalization"
+32236,32244,1.420768633177656,Finances & taxes,Economy & labour
+32229,32271,1.421013461233185,Immigration & integration,Foreign trade & foreign policy
+32221,32268,1.421134876655355,Health,Security & military
+32223,32253,1.4213928461370122,Health,Nature conservation
+32239,32261,1.4215584473881664,Finances & taxes,"Democracy, Media & Digitalization"
+32250,32256,1.4219334894725415,Energy & transport,Nature conservation
+32222,32252,1.4219970319860098,Health,Nature conservation
+32222,32285,1.4220111445668795,Health,Federal budget
+32215,32261,1.422107038941718,Welfare state & family,"Democracy, Media & Digitalization"
+32236,32264,1.4221350274729938,Finances & taxes,Security & military
+32224,32236,1.4221430753100726,Health,Finances & taxes
+32264,32282,1.4226783716126332,Security & military,Federal budget
+32258,32273,1.422720389906824,"Democracy, Media & Digitalization",Foreign trade & foreign policy
+32224,32228,1.4228872538564667,Health,Immigration & integration
+32261,32282,1.4229201870998782,"Democracy, Media & Digitalization",Federal budget
+32224,32240,1.4229593820838227,Health,Economy & labour
+32229,32233,1.4232921808026369,Immigration & integration,Society & ethics
+32215,32267,1.4234859526860646,Welfare state & family,Security & military
+32224,32275,1.4238551658057457,Health,Values
+32241,32242,1.423964122027367,Economy & labour,Economy & labour
+32264,32274,1.424102237086344,Security & military,Values
+32224,32285,1.4242140105598133,Health,Federal budget
+32220,32272,1.4242611204273872,Health,Foreign trade & foreign policy
+32250,32285,1.4242760513180377,Energy & transport,Federal budget
+32226,32227,1.4244149160460184,Education,Education
+32236,32287,1.424513887840823,Finances & taxes,Federal budget
+32270,32288,1.424906380974053,Foreign trade & foreign policy,Federal budget
+32222,32245,1.4249563461102566,Health,Energy & transport
+32269,32278,1.4252382799129095,Foreign trade & foreign policy,Values
+32257,32268,1.425479198001937,Nature conservation,Security & military
+32242,32249,1.4255701755822163,Economy & labour,Energy & transport
+32229,32254,1.42572546563843,Immigration & integration,Nature conservation
+32232,32259,1.4257670068057806,Society & ethics,"Democracy, Media & Digitalization"
+32218,32223,1.4258927032814475,Welfare state & family,Health
+32242,32284,1.4260430650839229,Economy & labour,Federal budget
+32226,32268,1.4262720439838754,Education,Security & military
+32217,32284,1.4264506962194687,Welfare state & family,Federal budget
+32232,32273,1.426476957526284,Society & ethics,Foreign trade & foreign policy
+32229,32251,1.4265968612265079,Immigration & integration,Energy & transport
+32217,32266,1.4266662714281617,Welfare state & family,Security & military
+32241,32259,1.4268895849158565,Economy & labour,"Democracy, Media & Digitalization"
+32259,32279,1.4271188727883903,"Democracy, Media & Digitalization",Values
+32222,32282,1.427240025394083,Health,Federal budget
+32238,32274,1.4273163551866945,Finances & taxes,Values
+32234,32237,1.4273228596994851,Society & ethics,Finances & taxes
+32243,32283,1.4274565380178081,Economy & labour,Federal budget
+32250,32270,1.4274894044957298,Energy & transport,Foreign trade & foreign policy
+32236,32266,1.427670358456572,Finances & taxes,Security & military
+32220,32268,1.427686683575712,Health,Security & military
+32255,32267,1.4277724930526492,Nature conservation,Security & military
+32223,32229,1.4279050767973065,Health,Immigration & integration
+32218,32243,1.4279145260641801,Welfare state & family,Economy & labour
+32226,32272,1.4279509149216307,Education,Foreign trade & foreign policy
+32217,32282,1.42796119131945,Welfare state & family,Federal budget
+32237,32273,1.4281447988057752,Finances & taxes,Foreign trade & foreign policy
+32270,32274,1.428377925872108,Foreign trade & foreign policy,Values
+32243,32251,1.4284049637459795,Economy & labour,Energy & transport
+32257,32272,1.4284737256279247,Nature conservation,Foreign trade & foreign policy
+32251,32259,1.4284963582347687,Energy & transport,"Democracy, Media & Digitalization"
+32254,32270,1.428725441535513,Nature conservation,Foreign trade & foreign policy
+32241,32267,1.4287452565521277,Economy & labour,Security & military
+32245,32258,1.4289630152165793,Energy & transport,"Democracy, Media & Digitalization"
+32217,32260,1.4290445973698764,Welfare state & family,"Democracy, Media & Digitalization"
+32217,32252,1.4292419979541684,Welfare state & family,Nature conservation
+32226,32280,1.4292485707388085,Education,Values
+32270,32286,1.4294545754816168,Foreign trade & foreign policy,Federal budget
+32229,32239,1.4294845279105528,Immigration & integration,Finances & taxes
+32242,32246,1.4299290910170503,Economy & labour,Energy & transport
+32229,32278,1.4300883605633874,Immigration & integration,Values
+32271,32278,1.4300921144560919,Foreign trade & foreign policy,Values
+32243,32250,1.4301495477231554,Economy & labour,Energy & transport
+32232,32271,1.4301503420726176,Society & ethics,Foreign trade & foreign policy
+32236,32256,1.4302353454234862,Finances & taxes,Nature conservation
+32222,32267,1.4302378321558753,Health,Security & military
+32236,32250,1.430286023593056,Finances & taxes,Energy & transport
+32261,32264,1.4304041706347546,"Democracy, Media & Digitalization",Security & military
+32214,32254,1.430810708435273,Welfare state & family,Nature conservation
+32223,32231,1.4308545707843223,Health,Immigration & integration
+32267,32287,1.431019778898118,Security & military,Federal budget
+32235,32236,1.4310705629022533,Society & ethics,Finances & taxes
+32223,32251,1.4312634234603938,Health,Energy & transport
+32229,32255,1.4313561557686614,Immigration & integration,Nature conservation
+32224,32227,1.431471507942039,Health,Education
+32246,32250,1.431591329959915,Energy & transport,Energy & transport
+32256,32277,1.4316850010422564,Nature conservation,Values
+32222,32286,1.4317932182073394,Health,Federal budget
+32249,32278,1.4317949888394024,Energy & transport,Values
+32220,32221,1.4318950238095902,Health,Health
+32220,32248,1.4320444322154573,Health,Energy & transport
+32241,32282,1.4320465402176006,Economy & labour,Federal budget
+32252,32282,1.4324241814019039,Nature conservation,Federal budget
+32229,32248,1.432430660475164,Immigration & integration,Energy & transport
+32228,32233,1.4324790540936874,Immigration & integration,Society & ethics
+32241,32252,1.4326077356394664,Economy & labour,Nature conservation
+32250,32262,1.4327367704651517,Energy & transport,"Democracy, Media & Digitalization"
+32225,32251,1.4328307623268748,Education,Energy & transport
+32224,32251,1.4329368504545255,Health,Energy & transport
+32222,32274,1.43294344316274,Health,Values
+32242,32287,1.4331091056876268,Economy & labour,Federal budget
+32214,32218,1.4331558117119156,Welfare state & family,Welfare state & family
+32217,32234,1.4331660052599968,Welfare state & family,Society & ethics
+32220,32260,1.4332035270428682,Health,"Democracy, Media & Digitalization"
+32259,32263,1.433209107004298,"Democracy, Media & Digitalization","Democracy, Media & Digitalization"
+32225,32260,1.4332771753893636,Education,"Democracy, Media & Digitalization"
+32247,32266,1.4333618542469413,Energy & transport,Security & military
+32244,32283,1.4335509637885513,Economy & labour,Federal budget
+32217,32265,1.4335829142588123,Welfare state & family,Security & military
+32240,32267,1.4337186178449322,Economy & labour,Security & military
+32242,32288,1.433891019489816,Economy & labour,Federal budget
+32239,32243,1.4339387283539846,Finances & taxes,Economy & labour
+32243,32264,1.43401551312556,Economy & labour,Security & military
+32231,32267,1.43419913563988,Immigration & integration,Security & military
+32220,32228,1.4344693545598743,Health,Immigration & integration
+32223,32256,1.4345704903447003,Health,Nature conservation
+32215,32259,1.4345836421002018,Welfare state & family,"Democracy, Media & Digitalization"
+32224,32268,1.434707953180307,Health,Security & military
+32263,32277,1.4347638431666967,"Democracy, Media & Digitalization",Values
+32233,32287,1.4348108300856424,Society & ethics,Federal budget
+32252,32269,1.4349381861568575,Nature conservation,Foreign trade & foreign policy
+32224,32272,1.4351903330299622,Health,Foreign trade & foreign policy
+32223,32227,1.4352350399723657,Health,Education
+32229,32274,1.4354055014106928,Immigration & integration,Values
+32235,32241,1.4354384101015625,Society & ethics,Economy & labour
+32221,32277,1.435582052949335,Health,Values
+32226,32277,1.43576600754284,Education,Values
+32240,32278,1.4360205265282155,Economy & labour,Values
+32214,32227,1.436060638604783,Welfare state & family,Education
+32236,32239,1.4361950431816988,Finances & taxes,Finances & taxes
+32222,32256,1.4362123406273386,Health,Nature conservation
+32232,32247,1.4363222093773709,Society & ethics,Energy & transport
+32224,32231,1.4363457750892619,Health,Immigration & integration
+32241,32272,1.4363702573828037,Economy & labour,Foreign trade & foreign policy
+32272,32283,1.436475090385462,Foreign trade & foreign policy,Federal budget
+32258,32263,1.4365705869859484,"Democracy, Media & Digitalization","Democracy, Media & Digitalization"
+32262,32267,1.4366608435940815,"Democracy, Media & Digitalization",Security & military
+32270,32279,1.4366716632795178,Foreign trade & foreign policy,Values
+32234,32243,1.4367744957207094,Society & ethics,Economy & labour
+32221,32229,1.4369098558058142,Health,Immigration & integration
+32267,32271,1.4370279848835141,Security & military,Foreign trade & foreign policy
+32248,32283,1.4370493801328,Energy & transport,Federal budget
+32236,32254,1.4370558221611978,Finances & taxes,Nature conservation
+32222,32254,1.4370720152381646,Health,Nature conservation
+32224,32262,1.4371523124780805,Health,"Democracy, Media & Digitalization"
+32233,32280,1.437199832406678,Society & ethics,Values
+32258,32272,1.4375421787285299,"Democracy, Media & Digitalization",Foreign trade & foreign policy
+32233,32258,1.4376308263284003,Society & ethics,"Democracy, Media & Digitalization"
+32233,32273,1.4376926437155384,Society & ethics,Foreign trade & foreign policy
+32226,32269,1.4377441025017232,Education,Foreign trade & foreign policy
+32227,32267,1.437757120288696,Education,Security & military
+32233,32237,1.4380001822848096,Society & ethics,Finances & taxes
+32225,32250,1.4380367567284016,Education,Energy & transport
+32227,32270,1.4381834467487662,Education,Foreign trade & foreign policy
+32221,32252,1.4382211612565468,Health,Nature conservation
+32214,32280,1.4382351721677042,Welfare state & family,Values
+32224,32255,1.4383027090079918,Health,Nature conservation
+32224,32284,1.4383117773913225,Health,Federal budget
+32242,32274,1.4384587994844322,Economy & labour,Values
+32229,32258,1.4387593424481435,Immigration & integration,"Democracy, Media & Digitalization"
+32226,32246,1.4387688072176643,Education,Energy & transport
+32251,32286,1.4391731082191783,Energy & transport,Federal budget
+32225,32273,1.4393234320590729,Education,Foreign trade & foreign policy
+32221,32243,1.4393847280639547,Health,Economy & labour
+32227,32274,1.4397566606391412,Education,Values
+32243,32261,1.4397975680282202,Economy & labour,"Democracy, Media & Digitalization"
+32226,32286,1.4400221770600714,Education,Federal budget
+32218,32224,1.4400414744878598,Welfare state & family,Health
+32217,32225,1.4400555957236396,Welfare state & family,Education
+32217,32226,1.4401074674546883,Welfare state & family,Education
+32251,32282,1.4401364845395586,Energy & transport,Federal budget
+32252,32270,1.4402158765411586,Nature conservation,Foreign trade & foreign policy
+32255,32286,1.4402347112070142,Nature conservation,Federal budget
+32220,32235,1.4403422410832338,Health,Society & ethics
+32214,32238,1.44083510764351,Welfare state & family,Finances & taxes
+32229,32256,1.4413160669508602,Immigration & integration,Nature conservation
+32224,32288,1.4414301016373081,Health,Federal budget
+32224,32254,1.4415472390804085,Health,Nature conservation
+32267,32280,1.4417701753321321,Security & military,Values
+32251,32252,1.4417869261106937,Energy & transport,Nature conservation
+32221,32270,1.4417940541372425,Health,Foreign trade & foreign policy
+32232,32267,1.4418753981362835,Society & ethics,Security & military
+32229,32249,1.4422865431417387,Immigration & integration,Energy & transport
+32244,32286,1.4424478495710922,Economy & labour,Federal budget
+32252,32261,1.4424510247960927,Nature conservation,"Democracy, Media & Digitalization"
+32233,32254,1.4425367673489407,Society & ethics,Nature conservation
+32235,32258,1.4425378461580383,Society & ethics,"Democracy, Media & Digitalization"
+32240,32277,1.4425633810521206,Economy & labour,Values
+32252,32277,1.4426689134284334,Nature conservation,Values
+32242,32260,1.44267013872449,Economy & labour,"Democracy, Media & Digitalization"
+32249,32282,1.4428799069815659,Energy & transport,Federal budget
+32232,32252,1.4429103814434772,Society & ethics,Nature conservation
+32233,32266,1.443179963146568,Society & ethics,Security & military
+32258,32282,1.443219098272679,"Democracy, Media & Digitalization",Federal budget
+32264,32267,1.4433160554637714,Security & military,Security & military
+32260,32287,1.4434683689720673,"Democracy, Media & Digitalization",Federal budget
+32218,32242,1.4435716818728008,Welfare state & family,Economy & labour
+32224,32234,1.4436164521205077,Health,Society & ethics
+32234,32267,1.443721333564051,Society & ethics,Security & military
+32232,32257,1.4438350794292867,Society & ethics,Nature conservation
+32253,32266,1.4439715166202332,Nature conservation,Security & military
+32236,32252,1.444027607376663,Finances & taxes,Nature conservation
+32244,32278,1.4442258011326026,Economy & labour,Values
+32241,32268,1.4444013615530251,Economy & labour,Security & military
+32277,32278,1.4445406504722156,Values,Values
+32224,32256,1.4445472486159092,Health,Nature conservation
+32220,32277,1.4446146876759585,Health,Values
+32220,32281,1.4447317878303974,Health,Federal budget
+32226,32247,1.445003717531458,Education,Energy & transport
+32220,32229,1.4451319821387019,Health,Immigration & integration
+32217,32231,1.4452821788976642,Welfare state & family,Immigration & integration
+32223,32282,1.4453403002864527,Health,Federal budget
+32224,32277,1.4454712227976063,Health,Values
+32239,32272,1.4455372944368494,Finances & taxes,Foreign trade & foreign policy
+32248,32263,1.4456637651548407,Energy & transport,"Democracy, Media & Digitalization"
+32272,32278,1.4457685554505242,Foreign trade & foreign policy,Values
+32225,32236,1.445796597619565,Education,Finances & taxes
+32241,32258,1.4459017452865535,Economy & labour,"Democracy, Media & Digitalization"
+32233,32246,1.4459305219355971,Society & ethics,Energy & transport
+32214,32242,1.4459518565306335,Welfare state & family,Economy & labour
+32220,32261,1.4459742176730654,Health,"Democracy, Media & Digitalization"
+32250,32267,1.4459909770237924,Energy & transport,Security & military
+32217,32258,1.446014596314884,Welfare state & family,"Democracy, Media & Digitalization"
+32214,32248,1.4467616291117453,Welfare state & family,Energy & transport
+32223,32242,1.446918513215194,Health,Economy & labour
+32250,32269,1.447061274488497,Energy & transport,Foreign trade & foreign policy
+32239,32286,1.4470925316430971,Finances & taxes,Federal budget
+32273,32287,1.4471188093922709,Foreign trade & foreign policy,Federal budget
+32225,32282,1.4472025284543302,Education,Federal budget
+32243,32266,1.44752305708794,Economy & labour,Security & military
+32252,32273,1.4476050143111365,Nature conservation,Foreign trade & foreign policy
+32259,32285,1.4476591234384062,"Democracy, Media & Digitalization",Federal budget
+32247,32250,1.4476718860850577,Energy & transport,Energy & transport
+32242,32268,1.4477459605845717,Economy & labour,Security & military
+32232,32244,1.4477689928877422,Society & ethics,Economy & labour
+32220,32263,1.447865985914157,Health,"Democracy, Media & Digitalization"
+32224,32283,1.4483593463848827,Health,Federal budget
+32214,32230,1.4484756772507046,Welfare state & family,Immigration & integration
+32243,32253,1.4485891457658568,Economy & labour,Nature conservation
+32268,32274,1.4486044942832164,Security & military,Values
+32231,32233,1.448614273999098,Immigration & integration,Society & ethics
+32241,32286,1.4487204640933344,Economy & labour,Federal budget
+32234,32270,1.4489382064222993,Society & ethics,Foreign trade & foreign policy
+32224,32245,1.449084209558879,Health,Energy & transport
+32238,32267,1.449105163401867,Finances & taxes,Security & military
+32220,32233,1.4491272579014298,Health,Society & ethics
+32220,32234,1.4492057410431756,Health,Society & ethics
+32224,32235,1.4495567954776858,Health,Society & ethics
+32235,32248,1.4496093808323194,Society & ethics,Energy & transport
+32222,32272,1.449859066078056,Health,Foreign trade & foreign policy
+32226,32285,1.4499310007164217,Education,Federal budget
+32221,32223,1.4500042326871414,Health,Health
+32258,32271,1.4500264635121685,"Democracy, Media & Digitalization",Foreign trade & foreign policy
+32239,32242,1.4500785289056528,Finances & taxes,Economy & labour
+32223,32257,1.4502552542445093,Health,Nature conservation
+32215,32274,1.4503641086866719,Welfare state & family,Values
+32221,32225,1.450379012343443,Health,Education
+32273,32278,1.450383415193535,Foreign trade & foreign policy,Values
+32217,32248,1.4506540782635988,Welfare state & family,Energy & transport
+32229,32275,1.4506590263193178,Immigration & integration,Values
+32230,32259,1.4506706319326392,Immigration & integration,"Democracy, Media & Digitalization"
+32227,32243,1.4507731720251371,Education,Economy & labour
+32257,32286,1.4508656786747465,Nature conservation,Federal budget
+32233,32238,1.4509359099024441,Society & ethics,Finances & taxes
+32216,32218,1.4509912733950454,Welfare state & family,Welfare state & family
+32260,32270,1.4510187614143577,"Democracy, Media & Digitalization",Foreign trade & foreign policy
+32235,32239,1.4512549184495516,Society & ethics,Finances & taxes
+32223,32240,1.4514481089837694,Health,Economy & labour
+32243,32284,1.4515130012726971,Economy & labour,Federal budget
+32235,32250,1.4515356669099093,Society & ethics,Energy & transport
+32247,32265,1.4516984759856202,Energy & transport,Security & military
+32236,32265,1.4518603864695558,Finances & taxes,Security & military
+32233,32268,1.4519262750741986,Society & ethics,Security & military
+32267,32288,1.4522184927690045,Security & military,Federal budget
+32224,32233,1.4524406336945943,Health,Society & ethics
+32224,32279,1.4524767661266176,Health,Values
+32232,32237,1.4525672295858159,Society & ethics,Finances & taxes
+32223,32254,1.4525933089245444,Health,Nature conservation
+32246,32248,1.4528161131200525,Energy & transport,Energy & transport
+32222,32278,1.4530545386146296,Health,Values
+32242,32244,1.453088110994306,Economy & labour,Economy & labour
+32237,32283,1.453111589897457,Finances & taxes,Federal budget
+32233,32264,1.4531329449031036,Society & ethics,Security & military
+32257,32278,1.45326188338195,Nature conservation,Values
+32225,32274,1.4535939798494146,Education,Values
+32247,32263,1.4536887395823506,Energy & transport,"Democracy, Media & Digitalization"
+32243,32279,1.4537215609770986,Economy & labour,Values
+32232,32258,1.4540675079880339,Society & ethics,"Democracy, Media & Digitalization"
+32224,32282,1.454342040508613,Health,Federal budget
+32215,32278,1.4543845479828128,Welfare state & family,Values
+32236,32274,1.4545147226388973,Finances & taxes,Values
+32223,32278,1.454580270277308,Health,Values
+32237,32269,1.454652832322879,Finances & taxes,Foreign trade & foreign policy
+32258,32277,1.4546719727790343,"Democracy, Media & Digitalization",Values
+32239,32252,1.454680052532721,Finances & taxes,Nature conservation
+32218,32237,1.4548312546214874,Welfare state & family,Finances & taxes
+32246,32274,1.4550732504761938,Energy & transport,Values
+32226,32245,1.455110820856586,Education,Energy & transport
+32228,32237,1.455187583118981,Immigration & integration,Finances & taxes
+32242,32257,1.455413384238655,Economy & labour,Nature conservation
+32215,32273,1.455474573731539,Welfare state & family,Foreign trade & foreign policy
+32237,32253,1.4555553152327467,Finances & taxes,Nature conservation
+32263,32283,1.455659660607104,"Democracy, Media & Digitalization",Federal budget
+32239,32283,1.4562048929012756,Finances & taxes,Federal budget
+32233,32282,1.4562168913760405,Society & ethics,Federal budget
+32223,32264,1.4562593404068522,Health,Security & military
+32226,32255,1.456404225503697,Education,Nature conservation
+32222,32260,1.456455969618887,Health,"Democracy, Media & Digitalization"
+32235,32265,1.4565470419450328,Society & ethics,Security & military
+32223,32241,1.4565663815616228,Health,Economy & labour
+32242,32263,1.4567129195544857,Economy & labour,"Democracy, Media & Digitalization"
+32223,32255,1.4567578501786997,Health,Nature conservation
+32214,32252,1.4572527426121422,Welfare state & family,Nature conservation
+32220,32231,1.4574793382857312,Health,Immigration & integration
+32214,32256,1.4577585781959401,Welfare state & family,Nature conservation
+32269,32274,1.4577796159814633,Foreign trade & foreign policy,Values
+32242,32262,1.4577937647057018,Economy & labour,"Democracy, Media & Digitalization"
+32235,32266,1.4578248997194994,Society & ethics,Security & military
+32239,32259,1.4579476021328293,Finances & taxes,"Democracy, Media & Digitalization"
+32220,32253,1.4582152440073484,Health,Nature conservation
+32218,32220,1.4582808785329566,Welfare state & family,Health
+32233,32248,1.458332454173969,Society & ethics,Energy & transport
+32224,32248,1.45852737795864,Health,Energy & transport
+32229,32236,1.4585526280937073,Immigration & integration,Finances & taxes
+32251,32270,1.4586123655959244,Energy & transport,Foreign trade & foreign policy
+32237,32254,1.4586381097673298,Finances & taxes,Nature conservation
+32264,32266,1.4587302066222971,Security & military,Security & military
+32240,32283,1.4587986504643733,Economy & labour,Federal budget
+32253,32265,1.458907220231355,Nature conservation,Security & military
+32235,32278,1.4589960617005264,Society & ethics,Values
+32222,32246,1.4590143556795325,Health,Energy & transport
+32220,32227,1.4590599067091672,Health,Education
+32240,32274,1.4592256739162914,Economy & labour,Values
+32231,32270,1.4592839030583544,Immigration & integration,Foreign trade & foreign policy
+32232,32251,1.4595309027289731,Society & ethics,Energy & transport
+32270,32284,1.4595830145947077,Foreign trade & foreign policy,Federal budget
+32237,32246,1.4596337067045333,Finances & taxes,Energy & transport
+32250,32272,1.4597279115426678,Energy & transport,Foreign trade & foreign policy
+32233,32278,1.459756872964309,Society & ethics,Values
+32233,32276,1.4598703679905571,Society & ethics,Values
+32221,32286,1.4599794642644786,Health,Federal budget
+32263,32287,1.460037369713303,"Democracy, Media & Digitalization",Federal budget
+32283,32285,1.4601274560359885,Federal budget,Federal budget
+32214,32225,1.4603972085125407,Welfare state & family,Education
+32256,32258,1.4604897804066184,Nature conservation,"Democracy, Media & Digitalization"
+32242,32264,1.460523374231637,Economy & labour,Security & military
+32265,32286,1.461021431387155,Security & military,Federal budget
+32242,32272,1.461302025882308,Economy & labour,Foreign trade & foreign policy
+32274,32277,1.4613137977164874,Values,Values
+32260,32264,1.4616250725146636,"Democracy, Media & Digitalization",Security & military
+32232,32261,1.4616881965872452,Society & ethics,"Democracy, Media & Digitalization"
+32239,32268,1.4617422346309017,Finances & taxes,Security & military
+32224,32244,1.461768232523187,Health,Economy & labour
+32215,32277,1.4618911213826722,Welfare state & family,Values
+32222,32265,1.4621633320607104,Health,Security & military
+32223,32283,1.462181309923938,Health,Federal budget
+32254,32286,1.462209553223465,Nature conservation,Federal budget
+32250,32259,1.4622438707729883,Energy & transport,"Democracy, Media & Digitalization"
+32261,32274,1.462300420634108,"Democracy, Media & Digitalization",Values
+32229,32266,1.4623257905161595,Immigration & integration,Security & military
+32232,32241,1.462454490604359,Society & ethics,Economy & labour
+32242,32255,1.462614539132881,Economy & labour,Nature conservation
+32259,32275,1.4627756825088631,"Democracy, Media & Digitalization",Values
+32260,32278,1.4627819447262302,"Democracy, Media & Digitalization",Values
+32233,32272,1.4627933122760677,Society & ethics,Foreign trade & foreign policy
+32241,32274,1.4628301045681698,Economy & labour,Values
+32250,32268,1.4629607775579558,Energy & transport,Security & military
+32281,32283,1.4630033852719961,Federal budget,Federal budget
+32233,32265,1.4636687154928765,Society & ethics,Security & military
+32252,32274,1.4637185775620631,Nature conservation,Values
+32252,32260,1.4640218860847658,Nature conservation,"Democracy, Media & Digitalization"
+32229,32265,1.4640441484615687,Immigration & integration,Security & military
+32214,32284,1.4641363364275646,Welfare state & family,Federal budget
+32237,32272,1.4641643309278831,Finances & taxes,Foreign trade & foreign policy
+32223,32225,1.4646015292800691,Health,Education
+32274,32280,1.4646437735816396,Values,Values
+32260,32263,1.4646621855568778,"Democracy, Media & Digitalization","Democracy, Media & Digitalization"
+32274,32282,1.4647161837584413,Values,Federal budget
+32214,32267,1.46494224746893,Welfare state & family,Security & military
+32217,32267,1.465342410745802,Welfare state & family,Security & military
+32237,32259,1.4655649321260769,Finances & taxes,"Democracy, Media & Digitalization"
+32263,32267,1.465594281700633,"Democracy, Media & Digitalization",Security & military
+32219,32283,1.465973720888662,Welfare state & family,Federal budget
+32232,32256,1.4659886343971673,Society & ethics,Nature conservation
+32219,32278,1.4663965900220386,Welfare state & family,Values
+32233,32284,1.4665644166325107,Society & ethics,Federal budget
+32225,32243,1.4665883652813287,Education,Economy & labour
+32233,32283,1.466819514119934,Society & ethics,Federal budget
+32229,32237,1.466947142647668,Immigration & integration,Finances & taxes
+32237,32268,1.4669472376900838,Finances & taxes,Security & military
+32226,32273,1.467124927383796,Education,Foreign trade & foreign policy
+32274,32284,1.4671625844815093,Values,Federal budget
+32220,32257,1.4671903349238449,Health,Nature conservation
+32283,32286,1.4674396358045838,Federal budget,Federal budget
+32253,32274,1.4674582426669946,Nature conservation,Values
+32224,32239,1.4675990234832081,Health,Finances & taxes
+32222,32235,1.4676972107079138,Health,Society & ethics
+32250,32251,1.4677874549423915,Energy & transport,Energy & transport
+32259,32287,1.4679081900900128,"Democracy, Media & Digitalization",Federal budget
+32226,32261,1.4679455318101762,Education,"Democracy, Media & Digitalization"
+32215,32236,1.467980809600114,Welfare state & family,Finances & taxes
+32239,32278,1.468058874119331,Finances & taxes,Values
+32237,32244,1.4680711266406454,Finances & taxes,Economy & labour
+32217,32228,1.4681230387850797,Welfare state & family,Immigration & integration
+32226,32235,1.4682504184188352,Education,Society & ethics
+32227,32242,1.4683829192161124,Education,Economy & labour
+32237,32280,1.4684096302126604,Finances & taxes,Values
+32220,32238,1.4686403304862923,Health,Finances & taxes
+32220,32276,1.4687407451690369,Health,Values
+32233,32285,1.4687490692310774,Society & ethics,Federal budget
+32229,32260,1.4688769510962323,Immigration & integration,"Democracy, Media & Digitalization"
+32246,32283,1.468888407479846,Energy & transport,Federal budget
+32226,32254,1.4692920067323054,Education,Nature conservation
+32233,32240,1.469356056091442,Society & ethics,Economy & labour
+32244,32258,1.4693596235146873,Economy & labour,"Democracy, Media & Digitalization"
+32224,32229,1.4693899762454596,Health,Immigration & integration
+32231,32242,1.4694195010835391,Immigration & integration,Economy & labour
+32252,32267,1.4694590792656923,Nature conservation,Security & military
+32226,32239,1.4694725917531875,Education,Finances & taxes
+32225,32267,1.46980538463783,Education,Security & military
+32242,32273,1.4698206472142403,Economy & labour,Foreign trade & foreign policy
+32215,32224,1.4699034923359884,Welfare state & family,Health
+32278,32282,1.4701220964438593,Values,Federal budget
+32219,32220,1.4702903485794678,Welfare state & family,Health
+32237,32285,1.4703116539852752,Finances & taxes,Federal budget
+32243,32265,1.4703270680853442,Economy & labour,Security & military
+32250,32287,1.4704396896224559,Energy & transport,Federal budget
+32248,32267,1.4707661879971452,Energy & transport,Security & military
+32255,32278,1.4708438310782574,Nature conservation,Values
+32223,32287,1.4709395854303093,Health,Federal budget
+32250,32253,1.4710887811948132,Energy & transport,Nature conservation
+32221,32232,1.4714446015281197,Health,Society & ethics
+32225,32270,1.4714451735280845,Education,Foreign trade & foreign policy
+32228,32270,1.471544790137519,Immigration & integration,Foreign trade & foreign policy
+32237,32279,1.4716891141985395,Finances & taxes,Values
+32226,32274,1.4717398794325474,Education,Values
+32237,32262,1.4717582993387162,Finances & taxes,"Democracy, Media & Digitalization"
+32272,32274,1.4717782545381928,Foreign trade & foreign policy,Values
+32259,32283,1.4717785574398081,"Democracy, Media & Digitalization",Federal budget
+32242,32278,1.4720690350662995,Economy & labour,Values
+32229,32252,1.4720998627605963,Immigration & integration,Nature conservation
+32258,32285,1.472141640861891,"Democracy, Media & Digitalization",Federal budget
+32265,32267,1.4721762267415148,Security & military,Security & military
+32284,32286,1.4722624951022183,Federal budget,Federal budget
+32248,32255,1.472276512414059,Energy & transport,Nature conservation
+32229,32257,1.4723144074065573,Immigration & integration,Nature conservation
+32222,32266,1.4723875365699415,Health,Security & military
+32236,32282,1.4726652117418921,Finances & taxes,Federal budget
+32217,32242,1.4729040655842551,Welfare state & family,Economy & labour
+32217,32262,1.473031115148473,Welfare state & family,"Democracy, Media & Digitalization"
+32262,32270,1.4733596872124588,"Democracy, Media & Digitalization",Foreign trade & foreign policy
+32250,32278,1.4734068908510078,Energy & transport,Values
+32255,32258,1.473459435000963,Nature conservation,"Democracy, Media & Digitalization"
+32226,32229,1.4734723345722613,Education,Immigration & integration
+32220,32283,1.4737729983377006,Health,Federal budget
+32248,32277,1.4738335936007643,Energy & transport,Values
+32256,32286,1.4738482863306077,Nature conservation,Federal budget
+32215,32223,1.4738892082564772,Welfare state & family,Health
+32225,32242,1.4739147999013575,Education,Economy & labour
+32232,32239,1.4741113772059806,Society & ethics,Finances & taxes
+32232,32278,1.474202657216439,Society & ethics,Values
+32224,32258,1.4746002350055918,Health,"Democracy, Media & Digitalization"
+32257,32277,1.4746249434544199,Nature conservation,Values
+32221,32250,1.4746644937172715,Health,Energy & transport
+32261,32283,1.4746990200558265,"Democracy, Media & Digitalization",Federal budget
+32258,32267,1.47471296115349,"Democracy, Media & Digitalization",Security & military
+32223,32252,1.4747947475731824,Health,Nature conservation
+32271,32283,1.4753422346344467,Foreign trade & foreign policy,Federal budget
+32226,32252,1.4755997571377317,Education,Nature conservation
+32278,32281,1.4756271385628803,Values,Federal budget
+32239,32273,1.4756396464336654,Finances & taxes,Foreign trade & foreign policy
+32274,32288,1.4760048406307842,Values,Federal budget
+32222,32268,1.4763740501091696,Health,Security & military
+32233,32247,1.4764887423470385,Society & ethics,Energy & transport
+32225,32259,1.4765078784186791,Education,"Democracy, Media & Digitalization"
+32220,32244,1.4766729628717803,Health,Economy & labour
+32248,32275,1.476677117830017,Energy & transport,Values
+32214,32234,1.4768593592485115,Welfare state & family,Society & ethics
+32220,32285,1.476981723314296,Health,Federal budget
+32220,32236,1.47701219885774,Health,Finances & taxes
+32241,32277,1.4770295467877974,Economy & labour,Values
+32247,32267,1.4771819253454486,Energy & transport,Security & military
+32267,32284,1.477342878388664,Security & military,Federal budget
+32243,32267,1.4773769940625778,Economy & labour,Security & military
+32254,32267,1.4774723131127219,Nature conservation,Security & military
+32259,32264,1.4775889987608246,"Democracy, Media & Digitalization",Security & military
+32257,32274,1.4776048515253415,Nature conservation,Values
+32246,32263,1.4776467420238686,Energy & transport,"Democracy, Media & Digitalization"
+32214,32274,1.4777606540205512,Welfare state & family,Values
+32243,32262,1.477858293573434,Economy & labour,"Democracy, Media & Digitalization"
+32235,32274,1.4779599413780449,Society & ethics,Values
+32250,32252,1.4783923847810325,Energy & transport,Nature conservation
+32223,32250,1.4785237006408443,Health,Energy & transport
+32232,32283,1.4785634146192577,Society & ethics,Federal budget
+32263,32278,1.4787205806245387,"Democracy, Media & Digitalization",Values
+32220,32280,1.4787772326803397,Health,Values
+32253,32267,1.4789453692699333,Nature conservation,Security & military
+32245,32278,1.479172332466255,Energy & transport,Values
+32261,32270,1.47926051315212,"Democracy, Media & Digitalization",Foreign trade & foreign policy
+32223,32233,1.479270274798148,Health,Society & ethics
+32227,32233,1.479309238271619,Education,Society & ethics
+32221,32265,1.479328722336853,Health,Security & military
+32236,32283,1.4793564116636082,Finances & taxes,Federal budget
+32220,32288,1.4796197097570705,Health,Federal budget
+32224,32249,1.4797123463492352,Health,Energy & transport
+32214,32228,1.4798135401746417,Welfare state & family,Immigration & integration
+32265,32280,1.4800126886942269,Security & military,Values
+32220,32262,1.4800327518182488,Health,"Democracy, Media & Digitalization"
+32229,32283,1.4802287616129735,Immigration & integration,Federal budget
+32233,32251,1.480306327152554,Society & ethics,Energy & transport
+32226,32256,1.4805080062367166,Education,Nature conservation
+32214,32263,1.4807474301139685,Welfare state & family,"Democracy, Media & Digitalization"
+32233,32255,1.4807825712186313,Society & ethics,Nature conservation
+32220,32251,1.4813986003843846,Health,Energy & transport
+32231,32237,1.4815207466509148,Immigration & integration,Finances & taxes
+32257,32283,1.4818017909986057,Nature conservation,Federal budget
+32274,32283,1.4818910532026828,Values,Federal budget
+32224,32232,1.4819606836491082,Health,Society & ethics
+32239,32267,1.4821332403908896,Finances & taxes,Security & military
+32242,32267,1.4822495372120381,Economy & labour,Security & military
+32226,32282,1.4823002861315648,Education,Federal budget
+32249,32259,1.4827643757375997,Energy & transport,"Democracy, Media & Digitalization"
+32242,32252,1.4829119421527732,Economy & labour,Nature conservation
+32256,32283,1.483021684951047,Nature conservation,Federal budget
+32237,32266,1.4833535268766869,Finances & taxes,Security & military
+32224,32287,1.483355981852828,Health,Federal budget
+32228,32266,1.4836293055880578,Immigration & integration,Security & military
+32224,32230,1.48377302379471,Health,Immigration & integration
+32224,32263,1.4839249467451958,Health,"Democracy, Media & Digitalization"
+32242,32269,1.4839928036902126,Economy & labour,Foreign trade & foreign policy
+32245,32259,1.4840049277217546,Energy & transport,"Democracy, Media & Digitalization"
+32246,32270,1.4840155531947457,Energy & transport,Foreign trade & foreign policy
+32227,32237,1.484074916436857,Education,Finances & taxes
+32235,32283,1.4843229149251347,Society & ethics,Federal budget
+32222,32269,1.484372592096877,Health,Foreign trade & foreign policy
+32232,32248,1.484443431474347,Society & ethics,Energy & transport
+32267,32282,1.4844738603047847,Security & military,Federal budget
+32237,32238,1.4845417668059595,Finances & taxes,Finances & taxes
+32229,32250,1.4846195249931937,Immigration & integration,Energy & transport
+32226,32260,1.4847026051358714,Education,"Democracy, Media & Digitalization"
+32266,32280,1.485080307717088,Security & military,Values
+32231,32243,1.4851186635471434,Immigration & integration,Economy & labour
+32226,32238,1.4851318562503992,Education,Finances & taxes
+32224,32237,1.4851616264635665,Health,Finances & taxes
+32233,32279,1.4854428511562214,Society & ethics,Values
+32214,32231,1.4855642937363482,Welfare state & family,Immigration & integration
+32217,32263,1.4857523772708965,Welfare state & family,"Democracy, Media & Digitalization"
+32239,32277,1.4859243289563246,Finances & taxes,Values
+32214,32262,1.486050418218897,Welfare state & family,"Democracy, Media & Digitalization"
+32250,32274,1.4860675917528825,Energy & transport,Values
+32226,32241,1.4860747905702503,Education,Economy & labour
+32247,32283,1.4861681989408524,Energy & transport,Federal budget
+32256,32278,1.4862172048149183,Nature conservation,Values
+32253,32270,1.4862576948371065,Nature conservation,Foreign trade & foreign policy
+32226,32270,1.4866126161604196,Education,Foreign trade & foreign policy
+32226,32243,1.4866962470846021,Education,Economy & labour
+32258,32280,1.4867034431630128,"Democracy, Media & Digitalization",Values
+32255,32274,1.486795065774358,Nature conservation,Values
+32226,32284,1.4869516879231575,Education,Federal budget
+32237,32247,1.4873779860434806,Finances & taxes,Energy & transport
+32217,32245,1.4873965609424986,Welfare state & family,Energy & transport
+32215,32220,1.4874938571625451,Welfare state & family,Health
+32214,32260,1.4875149844911681,Welfare state & family,"Democracy, Media & Digitalization"
+32244,32267,1.487556957343471,Economy & labour,Security & military
+32252,32259,1.487730484798053,Nature conservation,"Democracy, Media & Digitalization"
+32266,32267,1.4880662772604862,Security & military,Security & military
+32233,32286,1.4881831853375476,Society & ethics,Federal budget
+32220,32271,1.4883871371770996,Health,Foreign trade & foreign policy
+32221,32233,1.488437688280237,Health,Society & ethics
+32257,32258,1.4885215259992701,Nature conservation,"Democracy, Media & Digitalization"
+32233,32257,1.4887572437683008,Society & ethics,Nature conservation
+32254,32274,1.4888074987195632,Nature conservation,Values
+32237,32282,1.4888334706894777,Finances & taxes,Federal budget
+32251,32265,1.489435254024062,Energy & transport,Security & military
+32224,32264,1.489463113403398,Health,Security & military
+32226,32250,1.489783946955581,Education,Energy & transport
+32219,32233,1.4898192060672317,Welfare state & family,Society & ethics
+32220,32240,1.4904569888924128,Health,Economy & labour
+32220,32256,1.4905590590399596,Health,Nature conservation
+32237,32264,1.4908650047302558,Finances & taxes,Security & military
+32226,32242,1.490910282979525,Education,Economy & labour
+32214,32245,1.4909181371151459,Welfare state & family,Energy & transport
+32242,32251,1.49096420097644,Economy & labour,Energy & transport
+32248,32252,1.4909715110339645,Energy & transport,Nature conservation
+32220,32267,1.4909838962696842,Health,Security & military
+32237,32265,1.4910538298298184,Finances & taxes,Security & military
+32221,32237,1.4913307219230567,Health,Finances & taxes
+32237,32260,1.491700848839784,Finances & taxes,"Democracy, Media & Digitalization"
+32223,32267,1.4920287783840998,Health,Security & military
+32222,32232,1.492462312396769,Health,Society & ethics
+32250,32273,1.49289327764313,Energy & transport,Foreign trade & foreign policy
+32237,32261,1.4929667524546275,Finances & taxes,"Democracy, Media & Digitalization"
+32233,32281,1.4932884392250527,Society & ethics,Federal budget
+32237,32281,1.493340642790864,Finances & taxes,Federal budget
+32221,32242,1.493469644109964,Health,Economy & labour
+32265,32282,1.49354294330667,Security & military,Federal budget
+32237,32278,1.493546455967342,Finances & taxes,Values
+32223,32226,1.493630113806695,Health,Education
+32220,32279,1.493691604808001,Health,Values
+32242,32277,1.493822249462519,Economy & labour,Values
+32226,32236,1.493897224949371,Education,Finances & taxes
+32237,32276,1.4939786706513305,Finances & taxes,Values
+32223,32237,1.4940176618310876,Health,Finances & taxes
+32232,32236,1.4947617235913524,Society & ethics,Finances & taxes
+32237,32248,1.494882508691789,Finances & taxes,Energy & transport
+32255,32283,1.4949073834467086,Nature conservation,Federal budget
+32223,32239,1.4949428884132006,Health,Finances & taxes
+32269,32270,1.4950311924768986,Foreign trade & foreign policy,Foreign trade & foreign policy
+32224,32278,1.4952102234631273,Health,Values
+32249,32267,1.4952763421851378,Energy & transport,Security & military
+32229,32270,1.495312623238354,Immigration & integration,Foreign trade & foreign policy
+32240,32258,1.495761868994609,Economy & labour,"Democracy, Media & Digitalization"
+32214,32282,1.4958926402423507,Welfare state & family,Federal budget
+32239,32258,1.4959294193154236,Finances & taxes,"Democracy, Media & Digitalization"
+32237,32245,1.4959827069063065,Finances & taxes,Energy & transport
+32218,32233,1.4960292050360775,Welfare state & family,Society & ethics
+32217,32285,1.496071064336244,Welfare state & family,Federal budget
+32237,32271,1.4961652282423392,Finances & taxes,Foreign trade & foreign policy
+32283,32288,1.49621339912705,Federal budget,Federal budget
+32271,32274,1.4962600238409047,Foreign trade & foreign policy,Values
+32237,32258,1.4963599978589166,Finances & taxes,"Democracy, Media & Digitalization"
+32228,32248,1.496672948753836,Immigration & integration,Energy & transport
+32228,32265,1.4966917248684772,Immigration & integration,Security & military
+32263,32274,1.496730407111617,"Democracy, Media & Digitalization",Values
+32251,32258,1.4967618594712266,Energy & transport,"Democracy, Media & Digitalization"
+32238,32266,1.4968719080484147,Finances & taxes,Security & military
+32217,32247,1.4970074620790796,Welfare state & family,Energy & transport
+32266,32285,1.4971621320635,Security & military,Federal budget
+32228,32258,1.497172231758174,Immigration & integration,"Democracy, Media & Digitalization"
+32237,32255,1.4972130382647921,Finances & taxes,Nature conservation
+32233,32271,1.4972148843924924,Society & ethics,Foreign trade & foreign policy
+32228,32283,1.4972381984908985,Immigration & integration,Federal budget
+32251,32266,1.4974256473819307,Energy & transport,Security & military
+32216,32217,1.4975763073340689,Welfare state & family,Welfare state & family
+32226,32257,1.497754914055537,Education,Nature conservation
+32230,32263,1.4978536217157252,Immigration & integration,"Democracy, Media & Digitalization"
+32214,32285,1.4979573376681765,Welfare state & family,Federal budget
+32221,32266,1.4982581767589047,Health,Security & military
+32239,32274,1.4984021270159316,Finances & taxes,Values
+32233,32256,1.4986479458386694,Society & ethics,Nature conservation
+32246,32278,1.4988716118274394,Energy & transport,Values
+32233,32244,1.4988972530136948,Society & ethics,Economy & labour
+32217,32279,1.4990024247781153,Welfare state & family,Values
+32220,32270,1.4991245591489264,Health,Foreign trade & foreign policy
+32222,32236,1.4991281684022415,Health,Finances & taxes
+32246,32267,1.4992292927426214,Energy & transport,Security & military
+32232,32266,1.4993223358604217,Society & ethics,Security & military
+32222,32248,1.5000940666586997,Health,Energy & transport
+32274,32278,1.5002215163826695,Values,Values
+32242,32256,1.5002413562576238,Economy & labour,Nature conservation
+32273,32274,1.500624279307762,Foreign trade & foreign policy,Values
+32222,32229,1.5008350929461407,Health,Immigration & integration
+32223,32286,1.5009562394181097,Health,Federal budget
+32220,32232,1.5014461564489174,Health,Society & ethics
+32260,32267,1.501513410113114,"Democracy, Media & Digitalization",Security & military
+32246,32258,1.501746259365512,Energy & transport,"Democracy, Media & Digitalization"
+32237,32241,1.5020450520608244,Finances & taxes,Economy & labour
+32226,32253,1.5021063066463776,Education,Nature conservation
+32222,32261,1.5022548943155614,Health,"Democracy, Media & Digitalization"
+32237,32251,1.5023422793182668,Finances & taxes,Energy & transport
+32237,32252,1.5028511269412836,Finances & taxes,Nature conservation
+32220,32275,1.503434170363144,Health,Values
+32221,32267,1.5036353849618027,Health,Security & military
+32235,32263,1.503814979352036,Society & ethics,"Democracy, Media & Digitalization"
+32248,32274,1.5038450840968345,Energy & transport,Values
+32231,32265,1.5040877427473702,Immigration & integration,Security & military
+32225,32283,1.5041606868636967,Education,Federal budget
+32233,32275,1.504438024319857,Society & ethics,Values
+32220,32245,1.504511561223134,Health,Energy & transport
+32248,32262,1.5048014079986072,Energy & transport,"Democracy, Media & Digitalization"
+32256,32267,1.5049692035321385,Nature conservation,Security & military
+32279,32283,1.505102641143717,Values,Federal budget
+32229,32241,1.5051235463100432,Immigration & integration,Economy & labour
+32242,32254,1.5052705018195074,Economy & labour,Nature conservation
+32224,32252,1.5053258832426146,Health,Nature conservation
+32227,32283,1.5053651954480596,Education,Federal budget
+32217,32253,1.5053865337626509,Welfare state & family,Nature conservation
+32233,32260,1.5054418023148792,Society & ethics,"Democracy, Media & Digitalization"
+32219,32258,1.5054425282619415,Welfare state & family,"Democracy, Media & Digitalization"
+32214,32273,1.5054798346815994,Welfare state & family,Foreign trade & foreign policy
+32261,32267,1.5055249885757886,"Democracy, Media & Digitalization",Security & military
+32224,32225,1.5055449862206272,Health,Education
+32230,32237,1.5055603441111578,Immigration & integration,Finances & taxes
+32237,32256,1.505635140635743,Finances & taxes,Nature conservation
+32282,32286,1.50575036142887,Federal budget,Federal budget
+32216,32282,1.5058654764705917,Welfare state & family,Federal budget
+32250,32264,1.5059326614792585,Energy & transport,Security & military
+32233,32252,1.5062842153973084,Society & ethics,Nature conservation
+32214,32277,1.506337581687316,Welfare state & family,Values
+32258,32287,1.5064943799921564,"Democracy, Media & Digitalization",Federal budget
+32258,32284,1.5065050890077942,"Democracy, Media & Digitalization",Federal budget
+32232,32249,1.5066375725027725,Society & ethics,Energy & transport
+32237,32287,1.5067528189609556,Finances & taxes,Federal budget
+32222,32223,1.5068492787065937,Health,Health
+32248,32284,1.5071441204953528,Energy & transport,Federal budget
+32232,32250,1.5071694748298903,Society & ethics,Energy & transport
+32276,32278,1.507212794072368,Values,Values
+32220,32254,1.5074609214272616,Health,Nature conservation
+32248,32282,1.5075243613540863,Energy & transport,Federal budget
+32265,32274,1.507557311336824,Security & military,Values
+32217,32251,1.5081921082799283,Welfare state & family,Energy & transport
+32242,32283,1.5083449599927876,Economy & labour,Federal budget
+32236,32267,1.5084124525434883,Finances & taxes,Security & military
+32224,32286,1.5088599234407363,Health,Federal budget
+32258,32261,1.5090574628269044,"Democracy, Media & Digitalization","Democracy, Media & Digitalization"
+32267,32268,1.5091492400907314,Security & military,Security & military
+32216,32244,1.5092048809286658,Welfare state & family,Economy & labour
+32262,32266,1.5093897192295813,"Democracy, Media & Digitalization",Security & military
+32223,32232,1.5094403903835527,Health,Society & ethics
+32234,32265,1.5095974844388445,Society & ethics,Security & military
+32226,32232,1.5097693568233115,Education,Society & ethics
+32258,32264,1.5097712388311244,"Democracy, Media & Digitalization",Security & military
+32248,32261,1.5098439599642934,Energy & transport,"Democracy, Media & Digitalization"
+32233,32241,1.5099224780133518,Society & ethics,Economy & labour
+32237,32284,1.5100133516454415,Finances & taxes,Federal budget
+32233,32261,1.5100870348105795,Society & ethics,"Democracy, Media & Digitalization"
+32217,32221,1.5105363772201466,Welfare state & family,Health
+32220,32252,1.5105554289435477,Health,Nature conservation
+32245,32283,1.5105675255676827,Energy & transport,Federal budget
+32243,32286,1.5105782699200947,Economy & labour,Federal budget
+32242,32253,1.5106015946224634,Economy & labour,Nature conservation
+32226,32267,1.5106478553843925,Education,Security & military
+32238,32265,1.5107766981514852,Finances & taxes,Security & military
+32216,32281,1.5112920259071576,Welfare state & family,Federal budget
+32233,32243,1.5114958021065488,Society & ethics,Economy & labour
+32220,32242,1.5115662631765132,Health,Economy & labour
+32254,32278,1.5118175736798407,Nature conservation,Values
+32231,32266,1.5119203613300076,Immigration & integration,Security & military
+32242,32282,1.5120154309204779,Economy & labour,Federal budget
+32224,32242,1.5122003819429943,Health,Economy & labour
+32233,32239,1.512675672084555,Society & ethics,Finances & taxes
+32214,32286,1.5128123289329467,Welfare state & family,Federal budget
+32265,32288,1.5128340179742958,Security & military,Federal budget
+32223,32243,1.5129641177589899,Health,Economy & labour
+32262,32265,1.512965591055964,"Democracy, Media & Digitalization",Security & military
+32234,32266,1.5131063290691333,Society & ethics,Security & military
+32245,32248,1.5132510586848873,Energy & transport,Energy & transport
+32217,32235,1.5132867028409918,Welfare state & family,Society & ethics
+32214,32229,1.5133360106188332,Welfare state & family,Immigration & integration
+32275,32283,1.5136972205021677,Values,Federal budget
+32217,32246,1.5139243198078,Welfare state & family,Energy & transport
+32259,32270,1.513986866926567,"Democracy, Media & Digitalization",Foreign trade & foreign policy
+32235,32242,1.5140822873814546,Society & ethics,Economy & labour
+32222,32253,1.514108839798037,Health,Nature conservation
+32228,32243,1.5148437167911066,Immigration & integration,Economy & labour
+32216,32245,1.51520356029801,Welfare state & family,Energy & transport
+32231,32248,1.515230444354501,Immigration & integration,Energy & transport
+32259,32267,1.5153351565682114,"Democracy, Media & Digitalization",Security & military
+32223,32274,1.5154022364064281,Health,Values
+32218,32283,1.51548509283853,Welfare state & family,Federal budget
+32245,32266,1.515501772686645,Energy & transport,Security & military
+32263,32264,1.5155132638861937,"Democracy, Media & Digitalization",Security & military
+32219,32237,1.5155276313134591,Welfare state & family,Finances & taxes
+32229,32243,1.5157128449987336,Immigration & integration,Economy & labour
+32238,32278,1.5157540434960874,Finances & taxes,Values
+32215,32216,1.5158240138157908,Welfare state & family,Welfare state & family
+32221,32274,1.515840790164073,Health,Values
+32217,32274,1.5161286516206316,Welfare state & family,Values
+32266,32282,1.5162634910153312,Security & military,Federal budget
+32233,32274,1.5166032892712928,Society & ethics,Values
+32233,32245,1.5174032255257526,Society & ethics,Energy & transport
+32237,32257,1.5174865148343586,Finances & taxes,Nature conservation
+32234,32248,1.5174924522019235,Society & ethics,Energy & transport
+32216,32240,1.5175312649968014,Welfare state & family,Economy & labour
+32250,32286,1.5175412482450947,Energy & transport,Federal budget
+32222,32258,1.517595048845101,Health,"Democracy, Media & Digitalization"
+32265,32275,1.5176802736082449,Security & military,Values
+32243,32282,1.5178441866429377,Economy & labour,Federal budget
+32237,32249,1.5178881224034924,Finances & taxes,Energy & transport
+32214,32220,1.517955288304487,Welfare state & family,Health
+32237,32286,1.518477699024186,Finances & taxes,Federal budget
+32266,32284,1.518775456550301,Security & military,Federal budget
+32263,32279,1.5193576837632587,"Democracy, Media & Digitalization",Values
+32217,32273,1.519385523361723,Welfare state & family,Foreign trade & foreign policy
+32229,32267,1.51960703309262,Immigration & integration,Security & military
+32214,32247,1.5197870312689143,Welfare state & family,Energy & transport
+32251,32278,1.5198975226156393,Energy & transport,Values
+32263,32288,1.5200278365698698,"Democracy, Media & Digitalization",Federal budget
+32233,32288,1.5201262150806634,Society & ethics,Federal budget
+32220,32250,1.5201727830686556,Health,Energy & transport
+32242,32259,1.5211828540038526,Economy & labour,"Democracy, Media & Digitalization"
+32254,32265,1.5213077129585983,Nature conservation,Security & military
+32220,32255,1.5215324932212426,Health,Nature conservation
+32216,32271,1.5216023834930197,Welfare state & family,Foreign trade & foreign policy
+32220,32241,1.5221525664205726,Health,Economy & labour
+32265,32285,1.5222202663251672,Security & military,Federal budget
+32224,32250,1.5223435051015408,Health,Energy & transport
+32214,32216,1.5223634077806876,Welfare state & family,Welfare state & family
+32216,32236,1.5229442701493703,Welfare state & family,Finances & taxes
+32242,32265,1.5229453484349915,Economy & labour,Security & military
+32265,32284,1.523183473383305,Security & military,Federal budget
+32266,32276,1.5232505257619888,Security & military,Values
+32237,32274,1.5233630983352608,Finances & taxes,Values
+32267,32272,1.5236056247421386,Security & military,Foreign trade & foreign policy
+32254,32258,1.5236461333192706,Nature conservation,"Democracy, Media & Digitalization"
+32237,32288,1.5236970125835911,Finances & taxes,Federal budget
+32255,32263,1.5238151778484852,Nature conservation,"Democracy, Media & Digitalization"
+32243,32274,1.524034418584492,Economy & labour,Values
+32234,32258,1.5240426119491262,Society & ethics,"Democracy, Media & Digitalization"
+32215,32258,1.5241856193780585,Welfare state & family,"Democracy, Media & Digitalization"
+32265,32276,1.5244151157525814,Security & military,Values
+32247,32248,1.5244710955626795,Energy & transport,Energy & transport
+32232,32260,1.5244905041428338,Society & ethics,"Democracy, Media & Digitalization"
+32222,32259,1.524581298853232,Health,"Democracy, Media & Digitalization"
+32248,32279,1.5245815600779329,Energy & transport,Values
+32220,32237,1.524688341491334,Health,Finances & taxes
+32266,32279,1.5247499829334308,Security & military,Values
+32214,32268,1.5248152978607536,Welfare state & family,Security & military
+32230,32278,1.5248306681759702,Immigration & integration,Values
+32222,32277,1.5249526446585022,Health,Values
+32226,32258,1.5251203896340553,Education,"Democracy, Media & Digitalization"
+32237,32240,1.5257079621953706,Finances & taxes,Economy & labour
+32278,32285,1.5261239253909211,Values,Federal budget
+32216,32227,1.5262596811343538,Welfare state & family,Education
+32221,32258,1.52643535786363,Health,"Democracy, Media & Digitalization"
+32265,32279,1.5264926922464372,Security & military,Values
+32227,32248,1.5265609533585913,Education,Energy & transport
+32237,32275,1.5271361030739359,Finances & taxes,Values
+32216,32285,1.5271968570984762,Welfare state & family,Federal budget
+32263,32280,1.5274139022958002,"Democracy, Media & Digitalization",Values
+32226,32278,1.5274380215022596,Education,Values
+32214,32253,1.527579504038256,Welfare state & family,Nature conservation
+32256,32265,1.5279892246106574,Nature conservation,Security & military
+32270,32273,1.528286008231243,Foreign trade & foreign policy,Foreign trade & foreign policy
+32235,32243,1.5283136632842256,Society & ethics,Economy & labour
+32248,32260,1.5283171537152573,Energy & transport,"Democracy, Media & Digitalization"
+32220,32230,1.5284363212236272,Health,Immigration & integration
+32263,32270,1.5284481540706205,"Democracy, Media & Digitalization",Foreign trade & foreign policy
+32236,32278,1.5285541615853966,Finances & taxes,Values
+32242,32258,1.528874884395971,Economy & labour,"Democracy, Media & Digitalization"
+32215,32266,1.5288866243231718,Welfare state & family,Security & military
+32262,32283,1.5290258096395533,"Democracy, Media & Digitalization",Federal budget
+32215,32233,1.5293092219021562,Welfare state & family,Society & ethics
+32278,32288,1.5293575640014772,Values,Federal budget
+32214,32269,1.5294420362147145,Welfare state & family,Foreign trade & foreign policy
+32254,32263,1.5294946206878686,Nature conservation,"Democracy, Media & Digitalization"
+32233,32270,1.5297605353713588,Society & ethics,Foreign trade & foreign policy
+32216,32254,1.5297829350811263,Welfare state & family,Nature conservation
+32216,32277,1.529813515437893,Welfare state & family,Values
+32258,32288,1.5298555619464869,"Democracy, Media & Digitalization",Federal budget
+32267,32269,1.5299699642442852,Security & military,Foreign trade & foreign policy
+32263,32284,1.5306300940312394,"Democracy, Media & Digitalization",Federal budget
+32227,32265,1.5306767744399572,Education,Security & military
+32243,32272,1.5308314392105538,Economy & labour,Foreign trade & foreign policy
+32249,32274,1.5309363353115748,Energy & transport,Values
+32244,32266,1.5309716456443743,Economy & labour,Security & military
+32241,32283,1.5312078205845308,Economy & labour,Federal budget
+32248,32253,1.5314222003434645,Energy & transport,Nature conservation
+32221,32222,1.5315860526038354,Health,Health
+32216,32259,1.531700735448363,Welfare state & family,"Democracy, Media & Digitalization"
+32237,32270,1.5320288428229643,Finances & taxes,Foreign trade & foreign policy
+32258,32281,1.5322360965643695,"Democracy, Media & Digitalization",Federal budget
+32230,32233,1.5323931997761944,Immigration & integration,Society & ethics
+32248,32250,1.5327057506132789,Energy & transport,Energy & transport
+32259,32286,1.532744171055819,"Democracy, Media & Digitalization",Federal budget
+32238,32248,1.5327886534073518,Finances & taxes,Energy & transport
+32266,32288,1.5329471643439334,Security & military,Federal budget
+32250,32258,1.5329596807513393,Energy & transport,"Democracy, Media & Digitalization"
+32241,32263,1.532998849679387,Economy & labour,"Democracy, Media & Digitalization"
+32243,32277,1.5331036259069326,Economy & labour,Values
+32254,32266,1.5332396503052224,Nature conservation,Security & military
+32232,32265,1.5333035493891194,Society & ethics,Security & military
+32283,32284,1.5333610660802364,Federal budget,Federal budget
+32229,32263,1.5334262489680712,Immigration & integration,"Democracy, Media & Digitalization"
+32251,32267,1.5334319098035976,Energy & transport,Security & military
+32216,32257,1.5334621169216902,Welfare state & family,Nature conservation
+32214,32237,1.5337040938326278,Welfare state & family,Finances & taxes
+32250,32277,1.5338631458572571,Energy & transport,Values
+32217,32286,1.5341820859654174,Welfare state & family,Federal budget
+32262,32278,1.5342126058005299,"Democracy, Media & Digitalization",Values
+32240,32263,1.5342476528925024,Economy & labour,"Democracy, Media & Digitalization"
+32233,32236,1.5343417244637136,Society & ethics,Finances & taxes
+32278,32280,1.5344802212082294,Values,Values
+32218,32248,1.5346603431209584,Welfare state & family,Energy & transport
+32216,32222,1.5348738387981236,Welfare state & family,Health
+32241,32248,1.5349370974417824,Economy & labour,Energy & transport
+32217,32277,1.5350081803641693,Welfare state & family,Values
+32225,32233,1.535015511386938,Education,Society & ethics
+32248,32288,1.5351671246364402,Energy & transport,Federal budget
+32265,32271,1.535433213415374,Security & military,Foreign trade & foreign policy
+32248,32276,1.5354813621812837,Energy & transport,Values
+32238,32283,1.5355562283659612,Finances & taxes,Federal budget
+32226,32283,1.5356087350091245,Education,Federal budget
+32215,32265,1.5357082496576016,Welfare state & family,Security & military
+32237,32243,1.5357909421941573,Finances & taxes,Economy & labour
+32241,32266,1.535886688533141,Economy & labour,Security & military
+32244,32274,1.5360196587491628,Economy & labour,Values
+32215,32237,1.5361126525823343,Welfare state & family,Finances & taxes
+32225,32237,1.5361309317117164,Education,Finances & taxes
+32228,32278,1.5363246648673345,Immigration & integration,Values
+32237,32239,1.536481354730661,Finances & taxes,Finances & taxes
+32214,32232,1.5366093239276455,Welfare state & family,Society & ethics
+32226,32233,1.536621421061809,Education,Society & ethics
+32232,32243,1.5368360144218998,Society & ethics,Economy & labour
+32264,32283,1.536887223656959,Security & military,Federal budget
+32215,32263,1.5369812374408058,Welfare state & family,"Democracy, Media & Digitalization"
+32216,32250,1.536991297557482,Welfare state & family,Energy & transport
+32254,32283,1.5370291211644143,Nature conservation,Federal budget
+32257,32263,1.5372834451801534,Nature conservation,"Democracy, Media & Digitalization"
+32222,32273,1.5377339178775353,Health,Foreign trade & foreign policy
+32241,32265,1.537856109911675,Economy & labour,Security & military
+32217,32232,1.5380712521244264,Welfare state & family,Society & ethics
+32242,32248,1.5383741655591823,Economy & labour,Energy & transport
+32220,32287,1.5384222015964044,Health,Federal budget
+32237,32263,1.5384435181384473,Finances & taxes,"Democracy, Media & Digitalization"
+32233,32250,1.5384935387000394,Society & ethics,Energy & transport
+32232,32263,1.5386328298543792,Society & ethics,"Democracy, Media & Digitalization"
+32222,32263,1.5386869169829536,Health,"Democracy, Media & Digitalization"
+32229,32242,1.5387278922578862,Immigration & integration,Economy & labour
+32258,32262,1.5387326816128204,"Democracy, Media & Digitalization","Democracy, Media & Digitalization"
+32218,32278,1.538782132341848,Welfare state & family,Values
+32230,32258,1.5389927913606531,Immigration & integration,"Democracy, Media & Digitalization"
+32236,32237,1.5390150604261017,Finances & taxes,Finances & taxes
+32252,32283,1.5390827120275319,Nature conservation,Federal budget
+32258,32279,1.5391756358746436,"Democracy, Media & Digitalization",Values
+32220,32226,1.5391796271454228,Health,Education
+32226,32265,1.539731322166715,Education,Security & military
+32220,32249,1.539740920696032,Health,Energy & transport
+32216,32255,1.5399031012046802,Welfare state & family,Nature conservation
+32238,32258,1.5399880562546604,Finances & taxes,"Democracy, Media & Digitalization"
+32220,32239,1.5402554543231939,Health,Finances & taxes
+32234,32278,1.5402789027135322,Society & ethics,Values
+32214,32236,1.5403998507542833,Welfare state & family,Finances & taxes
+32263,32282,1.540506869824625,"Democracy, Media & Digitalization",Federal budget
+32235,32267,1.5406399611016857,Society & ethics,Security & military
+32216,32219,1.5407360917493882,Welfare state & family,Welfare state & family
+32249,32283,1.5407817174963936,Energy & transport,Federal budget
+32257,32265,1.540788347466307,Nature conservation,Security & military
+32216,32256,1.5407978648334621,Welfare state & family,Nature conservation
+32258,32276,1.5408321386276536,"Democracy, Media & Digitalization",Values
+32260,32286,1.5411500806202563,"Democracy, Media & Digitalization",Federal budget
+32270,32282,1.5412807916825495,Foreign trade & foreign policy,Federal budget
+32278,32284,1.541316500906987,Values,Federal budget
+32233,32242,1.5415225991829742,Society & ethics,Economy & labour
+32216,32241,1.5418228742297482,Welfare state & family,Economy & labour
+32228,32263,1.5418753274334511,Immigration & integration,"Democracy, Media & Digitalization"
+32216,32278,1.5423264367124148,Welfare state & family,Values
+32216,32242,1.5423389877885831,Welfare state & family,Economy & labour
+32214,32279,1.542476061200285,Welfare state & family,Values
+32251,32283,1.542574375859551,Energy & transport,Federal budget
+32267,32283,1.542596958362609,Security & military,Federal budget
+32232,32242,1.54301678631115,Society & ethics,Economy & labour
+32221,32248,1.5430328104841,Health,Energy & transport
+32263,32281,1.5431185373797969,"Democracy, Media & Digitalization",Federal budget
+32216,32251,1.5434732116983003,Welfare state & family,Energy & transport
+32216,32239,1.543542305057508,Welfare state & family,Finances & taxes
+32216,32258,1.5436163264642706,Welfare state & family,"Democracy, Media & Digitalization"
+32278,32279,1.543662494983225,Values,Values
+32248,32280,1.543715892544264,Energy & transport,Values
+32251,32274,1.543882654909321,Energy & transport,Values
+32235,32270,1.5439057256824835,Society & ethics,Foreign trade & foreign policy
+32216,32261,1.5439234437099747,Welfare state & family,"Democracy, Media & Digitalization"
+32216,32221,1.5439740119206997,Welfare state & family,Health
+32217,32268,1.544054061347588,Welfare state & family,Security & military
+32242,32266,1.5442103070370548,Economy & labour,Security & military
+32216,32280,1.5443053471880148,Welfare state & family,Values
+32262,32263,1.5445152579409385,"Democracy, Media & Digitalization","Democracy, Media & Digitalization"
+32216,32260,1.5445815122266164,Welfare state & family,"Democracy, Media & Digitalization"
+32248,32254,1.5446422748412159,Energy & transport,Nature conservation
+32256,32266,1.544742952620505,Nature conservation,Security & military
+32230,32265,1.5450095714607794,Immigration & integration,Security & military
+32217,32237,1.5451027244932463,Welfare state & family,Finances & taxes
+32239,32263,1.5451895916062777,Finances & taxes,"Democracy, Media & Digitalization"
+32230,32266,1.5452739809910527,Immigration & integration,Security & military
+32252,32258,1.5454740347528937,Nature conservation,"Democracy, Media & Digitalization"
+32222,32251,1.5457575990037584,Health,Energy & transport
+32214,32223,1.5459132493494598,Welfare state & family,Health
+32216,32286,1.5460052697400837,Welfare state & family,Federal budget
+32237,32267,1.5461415993798562,Finances & taxes,Security & military
+32266,32286,1.5462235326409424,Security & military,Federal budget
+32233,32267,1.5463212715070183,Society & ethics,Security & military
+32270,32272,1.5464881136834896,Foreign trade & foreign policy,Foreign trade & foreign policy
+32226,32259,1.5464945388024274,Education,"Democracy, Media & Digitalization"
+32216,32269,1.5464952547227309,Welfare state & family,Foreign trade & foreign policy
+32248,32271,1.5466289094481769,Energy & transport,Foreign trade & foreign policy
+32220,32222,1.5471596442807898,Health,Health
+32249,32263,1.5473127677736775,Energy & transport,"Democracy, Media & Digitalization"
+32236,32248,1.5474335164431736,Finances & taxes,Energy & transport
+32218,32258,1.5475909532122973,Welfare state & family,"Democracy, Media & Digitalization"
+32243,32268,1.5479378348786226,Economy & labour,Security & military
+32216,32284,1.548173455254347,Welfare state & family,Federal budget
+32258,32260,1.548698129028969,"Democracy, Media & Digitalization","Democracy, Media & Digitalization"
+32222,32233,1.5488550670313408,Health,Society & ethics
+32216,32234,1.5493046745937722,Welfare state & family,Society & ethics
+32225,32265,1.549347586009476,Education,Security & military
+32245,32263,1.5497946266237201,Energy & transport,"Democracy, Media & Digitalization"
+32248,32286,1.5500275774866468,Energy & transport,Federal budget
+32216,32272,1.5500701236961028,Welfare state & family,Foreign trade & foreign policy
+32216,32235,1.5500707737119848,Welfare state & family,Society & ethics
+32221,32263,1.5505904643646498,Health,"Democracy, Media & Digitalization"
+32214,32246,1.5506451784045858,Welfare state & family,Energy & transport
+32216,32253,1.5508076446743073,Welfare state & family,Nature conservation
+32243,32269,1.5508370709599235,Economy & labour,Foreign trade & foreign policy
+32227,32258,1.5509564446021948,Education,"Democracy, Media & Digitalization"
+32216,32265,1.5509639545926184,Welfare state & family,Security & military
+32220,32264,1.5510010628108823,Health,Security & military
+32253,32278,1.5514871466796385,Nature conservation,Values
+32224,32243,1.5515144020778124,Health,Economy & labour
+32216,32238,1.5515370809407667,Welfare state & family,Finances & taxes
+32248,32264,1.551676007433277,Energy & transport,Security & military
+32239,32266,1.5519877896363776,Finances & taxes,Security & military
+32216,32226,1.552020816958423,Welfare state & family,Education
+32257,32266,1.552097788218025,Nature conservation,Security & military
+32221,32283,1.5523344262154295,Health,Federal budget
+32233,32249,1.5524648095306277,Society & ethics,Energy & transport
+32252,32278,1.5525181148897726,Nature conservation,Values
+32263,32276,1.552529399839381,"Democracy, Media & Digitalization",Values
+32263,32271,1.5528406750869417,"Democracy, Media & Digitalization",Foreign trade & foreign policy
+32214,32221,1.5528414870171074,Welfare state & family,Health
+32283,32287,1.5531223251402393,Federal budget,Federal budget
+32282,32283,1.5531568813282628,Federal budget,Federal budget
+32216,32288,1.553369458188047,Welfare state & family,Federal budget
+32220,32225,1.5534120629445702,Health,Education
+32250,32263,1.5535853829616644,Energy & transport,"Democracy, Media & Digitalization"
+32267,32273,1.553629426003169,Security & military,Foreign trade & foreign policy
+32214,32272,1.5536703314352374,Welfare state & family,Foreign trade & foreign policy
+32231,32283,1.5537593324122705,Immigration & integration,Federal budget
+32259,32274,1.5538550414687535,"Democracy, Media & Digitalization",Values
+32216,32228,1.5538561402035977,Welfare state & family,Immigration & integration
+32225,32266,1.5539127563619133,Education,Security & military
+32214,32251,1.5540097959209536,Welfare state & family,Energy & transport
+32227,32278,1.5541877984003358,Education,Values
+32245,32265,1.5542432161279698,Energy & transport,Security & military
+32266,32275,1.5543608230518144,Security & military,Values
+32230,32248,1.5550142657624992,Immigration & integration,Energy & transport
+32216,32273,1.5550572940821943,Welfare state & family,Foreign trade & foreign policy
+32220,32243,1.5550784054082738,Health,Economy & labour
+32217,32259,1.555091496228383,Welfare state & family,"Democracy, Media & Digitalization"
+32216,32283,1.5552096010290815,Welfare state & family,Federal budget
+32217,32229,1.55549668747717,Welfare state & family,Immigration & integration
+32220,32286,1.555668203011394,Health,Federal budget
+32234,32263,1.5557201901780737,Society & ethics,"Democracy, Media & Digitalization"
+32226,32263,1.555990744862329,Education,"Democracy, Media & Digitalization"
+32233,32263,1.5560726224112302,Society & ethics,"Democracy, Media & Digitalization"
+32220,32274,1.55617659918656,Health,Values
+32216,32268,1.5561840431611857,Welfare state & family,Security & military
+32278,32287,1.5564418088873222,Values,Federal budget
+32237,32250,1.5565700887492102,Finances & taxes,Energy & transport
+32248,32251,1.5566655894633066,Energy & transport,Energy & transport
+32243,32273,1.5566913710089094,Economy & labour,Foreign trade & foreign policy
+32216,32243,1.556852744532805,Welfare state & family,Economy & labour
+32244,32248,1.5569945019108018,Economy & labour,Energy & transport
+32243,32259,1.5570632666167927,Economy & labour,"Democracy, Media & Digitalization"
+32221,32278,1.5571114383069584,Health,Values
+32224,32270,1.557202231469989,Health,Foreign trade & foreign policy
+32243,32263,1.5572734152501646,Economy & labour,"Democracy, Media & Digitalization"
+32255,32265,1.5575818766499248,Nature conservation,Security & military
+32224,32267,1.5575888338468848,Health,Security & military
+32214,32224,1.557592336261386,Welfare state & family,Health
+32222,32237,1.5576951782482522,Health,Finances & taxes
+32226,32251,1.5579032614317776,Education,Energy & transport
+32217,32223,1.5579318869118977,Welfare state & family,Health
+32239,32248,1.5579660385922747,Finances & taxes,Energy & transport
+32236,32258,1.5580071814953853,Finances & taxes,"Democracy, Media & Digitalization"
+32231,32258,1.558009840001336,Immigration & integration,"Democracy, Media & Digitalization"
+32226,32237,1.5581379323207887,Education,Finances & taxes
+32218,32266,1.5582235555285013,Welfare state & family,Security & military
+32225,32248,1.5585005740347764,Education,Energy & transport
+32216,32252,1.5585960991768497,Welfare state & family,Nature conservation
+32214,32235,1.5587054633412962,Welfare state & family,Society & ethics
+32237,32242,1.5587637072706462,Finances & taxes,Economy & labour
+32216,32230,1.5587768212551971,Welfare state & family,Immigration & integration
+32240,32266,1.559031789484683,Economy & labour,Security & military
+32255,32266,1.559064248892912,Nature conservation,Security & military
+32253,32263,1.5590689098296826,Nature conservation,"Democracy, Media & Digitalization"
+32214,32261,1.5590819132303027,Welfare state & family,"Democracy, Media & Digitalization"
+32217,32236,1.5590918101712232,Welfare state & family,Finances & taxes
+32249,32266,1.5592070403479301,Energy & transport,Security & military
+32219,32263,1.5592556910493216,Welfare state & family,"Democracy, Media & Digitalization"
+32258,32286,1.5592753645054045,"Democracy, Media & Digitalization",Federal budget
+32219,32248,1.5594394970799452,Welfare state & family,Energy & transport
+32217,32261,1.559462618989597,Welfare state & family,"Democracy, Media & Digitalization"
+32250,32266,1.5595324413663858,Energy & transport,Security & military
+32234,32283,1.5595356247201622,Society & ethics,Federal budget
+32223,32270,1.5596316821196132,Health,Foreign trade & foreign policy
+32216,32275,1.5599161707281826,Welfare state & family,Values
+32216,32264,1.5599830644537052,Welfare state & family,Security & military
+32225,32258,1.5600204443180532,Education,"Democracy, Media & Digitalization"
+32216,32274,1.5600270486174914,Welfare state & family,Values
+32248,32249,1.5601806698290726,Energy & transport,Energy & transport
+32214,32233,1.560181551411189,Welfare state & family,Society & ethics
+32252,32266,1.5602153060213053,Nature conservation,Security & military
+32247,32278,1.560241484411913,Energy & transport,Values
+32248,32281,1.5603676491140808,Energy & transport,Federal budget
+32226,32248,1.5605467770010928,Education,Energy & transport
+32248,32287,1.5606514660864854,Energy & transport,Federal budget
+32227,32263,1.5608100124235673,Education,"Democracy, Media & Digitalization"
+32216,32220,1.5608640250135577,Welfare state & family,Health
+32216,32248,1.560932667103297,Welfare state & family,Energy & transport
+32216,32262,1.5609666105903108,Welfare state & family,"Democracy, Media & Digitalization"
+32227,32266,1.5613579200232068,Education,Security & military
+32216,32263,1.5618461379027502,Welfare state & family,"Democracy, Media & Digitalization"
+32216,32276,1.5618635169536739,Welfare state & family,Values
+32217,32224,1.5620416805687607,Welfare state & family,Health
+32216,32249,1.5620703179029582,Welfare state & family,Energy & transport
+32221,32226,1.5620720577523144,Health,Education
+32217,32220,1.5622097395347703,Welfare state & family,Health
+32238,32263,1.5622404971659878,Finances & taxes,"Democracy, Media & Digitalization"
+32216,32267,1.562406015104239,Welfare state & family,Security & military
+32240,32265,1.5624092464798944,Economy & labour,Security & military
+32252,32265,1.5624801341532029,Nature conservation,Security & military
+32263,32286,1.562647206722396,"Democracy, Media & Digitalization",Federal budget
+32263,32285,1.5628136018323717,"Democracy, Media & Digitalization",Federal budget
+32244,32263,1.562866800816235,Economy & labour,"Democracy, Media & Digitalization"
+32276,32283,1.5628693175026311,Values,Federal budget
+32266,32271,1.5629507278884738,Security & military,Foreign trade & foreign policy
+32230,32283,1.563291121569771,Immigration & integration,Federal budget
+32247,32258,1.5635268748121633,Energy & transport,"Democracy, Media & Digitalization"
+32240,32248,1.5635433906093799,Economy & labour,Energy & transport
+32222,32224,1.5637266994316532,Health,Health
+32219,32266,1.5637576967640252,Welfare state & family,Security & military
+32216,32287,1.5637927751577176,Welfare state & family,Federal budget
+32256,32274,1.5638243560972067,Nature conservation,Values
+32268,32270,1.5638408501921963,Security & military,Foreign trade & foreign policy
+32216,32224,1.5638617465733082,Welfare state & family,Health
+32260,32274,1.5640786223399321,"Democracy, Media & Digitalization",Values
+32244,32265,1.5642008812821075,Economy & labour,Security & military
+32248,32257,1.5643238201166358,Energy & transport,Nature conservation
+32215,32248,1.564466247211142,Welfare state & family,Energy & transport
+32219,32265,1.5645333069492753,Welfare state & family,Security & military
+32239,32265,1.5646145403493321,Finances & taxes,Security & military
+32214,32259,1.5647530579162452,Welfare state & family,"Democracy, Media & Digitalization"
+32249,32265,1.564833244651812,Energy & transport,Security & military
+32270,32277,1.5651311256986695,Foreign trade & foreign policy,Values
+32266,32274,1.565190987472837,Security & military,Values
+32217,32269,1.5655451347875156,Welfare state & family,Foreign trade & foreign policy
+32216,32225,1.5657604836965604,Welfare state & family,Education
+32265,32281,1.566017893788657,Security & military,Federal budget
+32218,32265,1.5660451303611196,Welfare state & family,Security & military
+32231,32263,1.566250414962306,Immigration & integration,"Democracy, Media & Digitalization"
+32225,32263,1.5666278215311629,Education,"Democracy, Media & Digitalization"
+32250,32265,1.5668403599615424,Energy & transport,Security & military
+32231,32278,1.5668531817695222,Immigration & integration,Values
+32216,32247,1.567031420759545,Welfare state & family,Energy & transport
+32267,32277,1.5670544530525832,Security & military,Values
+32225,32278,1.5670676869166063,Education,Values
+32216,32231,1.5670773340398678,Welfare state & family,Immigration & integration
+32216,32229,1.5673673838443183,Welfare state & family,Immigration & integration
+32216,32279,1.5674819993360418,Welfare state & family,Values
+32224,32226,1.5675132108013234,Health,Education
+32260,32283,1.5677011229963629,"Democracy, Media & Digitalization",Federal budget
+32232,32270,1.5677091249092985,Society & ethics,Foreign trade & foreign policy
+32216,32270,1.5677242277608014,Welfare state & family,Foreign trade & foreign policy
+32263,32275,1.5678866507705513,"Democracy, Media & Digitalization",Values
+32216,32223,1.5679084028812016,Welfare state & family,Health
+32226,32266,1.5680014557705146,Education,Security & military
+32280,32283,1.5680227531279547,Values,Federal budget
+32218,32263,1.568579500322649,Welfare state & family,"Democracy, Media & Digitalization"
+32248,32285,1.568855128880312,Energy & transport,Federal budget
+32251,32263,1.5688658093389323,Energy & transport,"Democracy, Media & Digitalization"
+32252,32263,1.5689268165159642,Nature conservation,"Democracy, Media & Digitalization"
+32264,32278,1.5690442076006126,Security & military,Values
+32248,32256,1.5690743399066096,Energy & transport,Nature conservation
+32258,32274,1.569232440603097,"Democracy, Media & Digitalization",Values
+32261,32278,1.569402421717147,"Democracy, Media & Digitalization",Values
+32266,32281,1.5694289126745569,Security & military,Federal budget
+32256,32263,1.5696073229707224,Nature conservation,"Democracy, Media & Digitalization"
+32224,32274,1.5697155277074561,Health,Values
+32216,32233,1.5701624713154811,Welfare state & family,Society & ethics
+32253,32258,1.5702110839860028,Nature conservation,"Democracy, Media & Digitalization"
+32216,32246,1.5703214028699048,Welfare state & family,Energy & transport
+32216,32232,1.570328836995551,Welfare state & family,Society & ethics
+32217,32233,1.5703860514683565,Welfare state & family,Society & ethics
+32278,32286,1.5705124017570653,Values,Federal budget
+32216,32266,1.5705816962019663,Welfare state & family,Security & military
+32217,32272,1.5706928921143701,Welfare state & family,Foreign trade & foreign policy

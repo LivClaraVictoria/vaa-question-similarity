@@ -1,0 +1,55 @@
+===========================================================================
+MINI vs FULL-ONLY CORRELATION ANALYSIS
+  Mini (rapide=1): 30 questions
+  Full-only (rapide=0): 45 questions
+  Total pairs: 2775
+===========================================================================
+
+  Group                       N  Mean |r|   Med |r|   Max |r|  Mean dist   Med dist
+  --------------------------------------------------------------------------------
+  within-mini               435    0.2338    0.2260    0.6546     1.3332     1.3428
+  within-full-only          990    0.1614    0.1356    0.5911     1.4072     1.4348
+  cross                    1350    0.1970    0.1839    0.7754     1.3706     1.3859
+  all                      2775    0.1901    0.1771    0.7754     1.3778     1.3928
+
+===========================================================================
+TOP 30 MOST CORRELATED PAIRS (by |Pearson r|)
+===========================================================================
+
+  Rank      ID1      ID2     |r|    dist Group                Categories
+  -------------------------------------------------------------------------------------
+     1    32264    32287  0.7754  0.6834 cross                Security & military / Federal budget
+     2    32245    32285  0.7365  0.7429 cross                Energy & transport / Federal budget
+     3    32268    32272  0.6546  0.8571 within-mini          Security & military / Foreign trade & foreign policy
+     4    32219    32281  0.6047  0.9214 cross                Welfare state & family / Federal budget
+     5    32228    32231  0.6015  0.9254 within-mini          Immigration & integration / Immigration & integration
+     6    32276    32281  0.5911  0.9384 within-full-only     Values / Federal budget
+     7    32215    32281  0.5883  0.9418 cross                Welfare state & family / Federal budget
+     8    32265    32266  0.5405  0.9998 within-full-only     Security & military / Security & military
+     9    32271    32280  0.5382  1.0026 within-full-only     Foreign trade & foreign policy / Values
+    10    32238    32276  0.5374  1.0035 cross                Finances & taxes / Values
+    11    32219    32276  0.5315  1.0105 cross                Welfare state & family / Values
+    12    32281    32288  0.5263  1.0165 within-full-only     Federal budget / Federal budget
+    13    32266    32273  0.5249  1.0182 cross                Security & military / Foreign trade & foreign policy
+    14    32215    32219  0.5231  1.0203 within-mini          Welfare state & family / Welfare state & family
+    15    32240    32281  0.5231  1.0204 cross                Economy & labour / Federal budget
+    16    32280    32285  0.5231  1.0204 within-full-only     Values / Federal budget
+    17    32246    32280  0.5207  1.0232 cross                Energy & transport / Values
+    18    32228    32234  0.5185  1.0257 within-mini          Immigration & integration / Society & ethics
+    19    32244    32271  0.5155  1.0292 cross                Economy & labour / Foreign trade & foreign policy
+    20    32246    32285  0.5144  1.0305 cross                Energy & transport / Federal budget
+    21    32275    32281  0.5124  1.0328 within-full-only     Values / Federal budget
+    22    32228    32262  0.5093  1.0364 cross                Immigration & integration / Democracy, Media & Digitalization
+    23    32219    32240  0.5069  1.0392 within-mini          Welfare state & family / Economy & labour
+    24    32244    32281  0.5060  1.0403 cross                Economy & labour / Federal budget
+    25    32255    32280  0.5050  1.0414 within-full-only     Nature conservation / Values
+    26    32246    32247  0.5048  1.0416 cross                Energy & transport / Energy & transport
+    27    32268    32269  0.5034  1.0433 cross                Security & military / Foreign trade & foreign policy
+    28    32276    32280  0.5029  1.0439 within-full-only     Values / Values
+    29    32227    32281  0.5028  1.0440 cross                Education / Federal budget
+    30    32269    32272  0.5021  1.0447 cross                Foreign trade & foreign policy / Foreign trade & foreign policy
+
+  Top-30 group breakdown:
+    within-mini: 5
+    within-full-only: 8
+    cross: 17

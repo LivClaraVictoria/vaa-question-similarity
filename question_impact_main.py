@@ -72,7 +72,7 @@ from vqs.data_loader import load_dataset
 from vqs.recommendation_engine import RecommendationEngine
 from vqs.similarity_metrics import get_calculator
 
-N_CLONES = 10
+N_CLONES = 4
 RESULTS_DIR = default_config.RESULTS_DIR / "question_impact"
 
 # Clone types that require flipping voter/candidate answers
