@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 """
-Compile Experiment 1 alpha sweep results (v2): 3 clone conditions x 10 models.
+Compile Experiment 1 alpha sweep results (v2): 5 clone conditions x 10 models.
 
 Reads all top5impact_v2_n4 alpha sweep CSVs and produces:
-  - Per-metric comparison plots (9): all models on one axes per (clone, metric)
-  - Model ranking tables (4 CSVs): per-clone + aggregated
-  - Model ranking bar charts (4): grouped bars per model
+  - Per-metric comparison plots (15): all models on one axes per (clone, metric)
+  - Model ranking tables (6 CSVs): per-clone + aggregated
+  - Model ranking bar charts (6): grouped bars per model
   - Narrative report (1 txt): peaked vs stable analysis + benchmark correlation
 
 Usage:
@@ -55,11 +55,13 @@ MODEL_DISPLAY = {
     "qwen3": "Qwen3",
 }
 
-CLONE_ORDER = ["easy_paraphrase", "negation_easy", "mixed"]
+CLONE_ORDER = ["easy_paraphrase", "hard_paraphrase", "negation_easy", "negation_hard", "perfect_mix"]
 CLONE_DISPLAY = {
     "easy_paraphrase": "Easy Paraphrase",
-    "negation_easy": "Negation + Easy Paraphrase",
-    "mixed": "Mixed",
+    "hard_paraphrase": "Hard Paraphrase",
+    "negation_easy": "Negation (Easy)",
+    "negation_hard": "Negation (Hard)",
+    "perfect_mix": "Perfect Mix",
 }
 
 # ---------------------------------------------------------------------------
@@ -502,7 +504,7 @@ def generate_narrative_report(
         lines.append("-" * len(title))
 
     lines.append("Experiment 1 Analysis: Alpha Sweep Compilation")
-    lines.append("(top5impact_v2: top-5 from 4-clone impact sweep, 3 clone conditions x 10 models)")
+    lines.append("(top5impact_v2: top-5 from 4-clone impact sweep, 5 clone conditions x 10 models)")
     lines.append(f"Generated: {pd.Timestamp.now().strftime('%Y-%m-%d %H:%M')}")
 
     # --- Data overview ---
