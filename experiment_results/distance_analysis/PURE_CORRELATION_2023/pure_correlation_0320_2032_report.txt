@@ -1,0 +1,85 @@
+======================================================================
+PURE CORRELATION ANALYSIS
+======================================================================
+  Questions:  75
+  Pairs:      2775
+
+  Statistic                      Value
+  -------------------------------------
+  mean_r                        0.0254
+  median_r                      0.0282
+  std_r                         0.2246
+  min_r                        -0.5249
+  max_r                         0.7754
+  mean_abs_r                    0.1901
+  median_abs_r                  0.1771
+  max_abs_r                     0.7754
+
+  Positive correlations:  1510
+  Negative correlations:  1265
+  |r| > 0.3:             541
+  |r| > 0.5:             32
+
+======================================================================
+TOP 20 MOST CORRELATED PAIRS (by |r|)
+======================================================================
+     32264 —    32287  r=+0.7754  |r|=0.7754
+    Q1: Are you in favor of expanding the army's target nu
+    Q2: Should the federal government spend more or less i
+     32245 —    32285  r=+0.7365  |r|=0.7365
+    Q1: Should busy sections of highways be widened?
+    Q2: Should the federal government spend more or less i
+     32268 —    32272  r=+0.6546  |r|=0.6546
+    Q1: Should Switzerland terminate the Schengen agreemen
+    Q2: Should Switzerland terminate the Bilateral Agreeme
+     32219 —    32281  r=+0.6047  |r|=0.6047
+    Q1: Should the federal government provide more financi
+    Q2: Should the federal government spend more or less i
+     32228 —    32231  r=+0.6015  |r|=0.6015
+    Q1: Should the conditions for naturalization be relaxe
+    Q2: Should foreign nationals who have lived in Switzer
+     32276 —    32281  r=+0.5911  |r|=0.5911
+    Q1: What is your position the following statement: "It
+    Q2: Should the federal government spend more or less i
+     32215 —    32281  r=+0.5883  |r|=0.5883
+    Q1: Should the federal government allocate more fundin
+    Q2: Should the federal government spend more or less i
+     32265 —    32266  r=+0.5405  |r|=0.5405
+    Q1: Should the Swiss Armed Forces expand their coopera
+    Q2: Should the Federal Council be allowed to authorize
+     32271 —    32280  r=+0.5382  |r|=0.5382
+    Q1: Should Swiss companies be obliged to ensure that t
+    Q2: What is your position the following statement: "St
+     32238 —    32276  r=+0.5374  |r|=0.5374
+    Q1: Would you support the introduction of a national i
+    Q2: What is your position the following statement: "It
+     32219 —    32276  r=+0.5315  |r|=0.5315
+    Q1: Should the federal government provide more financi
+    Q2: What is your position the following statement: "It
+     32281 —    32288  r=+0.5263  |r|=0.5263
+    Q1: Should the federal government spend more or less i
+    Q2: Should the federal government spend more or less i
+     32266 —    32273  r=-0.5249  |r|=0.5249
+    Q1: Should the Federal Council be allowed to authorize
+    Q2: Should Switzerland return to a strict interpretati
+     32215 —    32219  r=+0.5231  |r|=0.5231
+    Q1: Should the federal government allocate more fundin
+    Q2: Should the federal government provide more financi
+     32240 —    32281  r=+0.5231  |r|=0.5231
+    Q1: Are you in favor of introducing a minimum wage of 
+    Q2: Should the federal government spend more or less i
+     32280 —    32285  r=-0.5231  |r|=0.5231
+    Q1: What is your position the following statement: "St
+    Q2: Should the federal government spend more or less i
+     32246 —    32280  r=+0.5207  |r|=0.5207
+    Q1: Should Switzerland ban the registration of new pas
+    Q2: What is your position the following statement: "St
+     32228 —    32234  r=+0.5185  |r|=0.5185
+    Q1: Should the conditions for naturalization be relaxe
+    Q2: Should a third official gender be introduced along
+     32244 —    32271  r=+0.5155  |r|=0.5155
+    Q1: Are you in favor of stricter controls on equal pay
+    Q2: Should Swiss companies be obliged to ensure that t
+     32246 —    32285  r=-0.5144  |r|=0.5144
+    Q1: Should Switzerland ban the registration of new pas
+    Q2: Should the federal government spend more or less i

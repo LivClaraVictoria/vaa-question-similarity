@@ -1,6 +1,6 @@
 Experiment 1 Analysis: Alpha Sweep Compilation
 (top5impact_v2: top-5 from 4-clone impact sweep, 5 clone conditions x 10 models)
-Generated: 2026-03-19 23:26
+Generated: 2026-03-20 00:19
 
 ================================================================================
 1. Data Overview

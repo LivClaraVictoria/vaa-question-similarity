@@ -885,6 +885,7 @@ def _save_phase2_outputs(
 
     # Save CSV (one row per party, columns = conditions)
     vis = results["visibility"]
+    q_ids_str = ";".join(str(q) for q in results["q_ids"])
     rows = []
     for p in MAJOR_PARTIES:
         o = vis["original"].get(p, 0)
@@ -898,6 +899,8 @@ def _save_phase2_outputs(
         da_r = rl - o
         dc_r = rl_crw - oc
         rows.append({
+            "target_party": target_party or "",
+            "cloned_questions": q_ids_str,
             "party": p,
             "original": o,
             "original_crw": oc,
@@ -1571,31 +1574,85 @@ def _run_compile(args, config):
 
     print(f"\n  Loaded {len(dfs)} party results, compiling...")
 
+    # Load Phase 1 CSV to recover cloned question IDs per target party
+    phase1_q_ids = {}
+    if args.phase1_csv:
+        phase1_path = Path(args.phase1_csv)
+    else:
+        phase1_csvs = sorted(
+            (RESULTS_DIR / "phase1").glob("**/party_impact_*.csv")
+        )
+        phase1_path = phase1_csvs[-1] if phase1_csvs else None
+
+    if phase1_path and phase1_path.exists():
+        phase1_df = pd.read_csv(phase1_path)
+        top_k = args.top_k
+        for party in MAJOR_PARTIES:
+            col = f"delta_{party}"
+            if col in phase1_df.columns:
+                top_qs = phase1_df.nlargest(top_k, col)["question_id"].astype(int).tolist()
+                phase1_q_ids[party] = ";".join(str(q) for q in top_qs)
+        print(f"  Phase 1 CSV: {phase1_path.name} (recovered question IDs)")
+    else:
+        print("  WARNING: No Phase 1 CSV found, cloned_questions will be empty")
+
     compiled_dir = phase2_dir / "compiled"
     compiled_dir.mkdir(parents=True, exist_ok=True)
 
-    # Save compiled CSV with drift and corrected reduction columns
+    # Save compiled CSV: all rows from all per-party CSVs with derived columns
     compiled_rows = []
     for target in MAJOR_PARTIES:
         if target not in dfs:
             continue
         df = dfs[target]
-        row = df[df["party"] == target].iloc[0]
-        o = row["original"]
-        oc = row["original_crw"]
-        r = {"party": target, "original": o, "original_crw": oc, "crw_drift": oc - o}
-        for scenario in ["worst_case", "realistic"]:
-            da = row[scenario] - o
-            dc = row[f"{scenario}_crw"] - oc
-            red = (1 - abs(dc) / abs(da)) * 100 if abs(da) > 1e-9 else 0
-            r[f"delta_attack_{scenario}"] = da
-            r[f"delta_crw_{scenario}"] = dc
-            r[f"reduction_{scenario}"] = red
-        compiled_rows.append(r)
+        # Get cloned question IDs from per-party CSV or Phase 1 fallback
+        q_ids_str = ""
+        if "cloned_questions" in df.columns and df["cloned_questions"].notna().any():
+            q_ids_str = df["cloned_questions"].dropna().iloc[0]
+        elif target in phase1_q_ids:
+            q_ids_str = phase1_q_ids[target]
+        for _, row in df.iterrows():
+            p = row["party"]
+            o = row["original"]
+            oc = row["original_crw"]
+            # Support both old (no absolute cols) and new CSV formats
+            has_abs = "worst_case" in df.columns
+            if has_abs:
+                wc = row["worst_case"]
+                wc_crw = row["worst_case_crw"]
+                rl = row["realistic"]
+                rl_crw = row["realistic_crw"]
+            else:
+                wc = wc_crw = rl = rl_crw = float("nan")
+            da_w = wc - o
+            dc_w = wc_crw - oc
+            da_r = rl - o
+            dc_r = rl_crw - oc
+            red_w = (1 - abs(dc_w) / abs(da_w)) * 100 if abs(da_w) > 1e-9 else 0
+            red_r = (1 - abs(dc_r) / abs(da_r)) * 100 if abs(da_r) > 1e-9 else 0
+            r = {
+                "target_party": target,
+                "cloned_questions": q_ids_str,
+                "party": p,
+                "original": o,
+                "original_crw": oc,
+                "crw_drift": oc - o,
+                "worst_case": wc,
+                "worst_case_crw": wc_crw,
+                "delta_attack_worst": da_w,
+                "delta_crw_worst": dc_w,
+                "reduction_worst": red_w,
+                "realistic": rl,
+                "realistic_crw": rl_crw,
+                "delta_attack_realistic": da_r,
+                "delta_crw_realistic": dc_r,
+                "reduction_realistic": red_r,
+            }
+            compiled_rows.append(r)
     compiled_csv = pd.DataFrame(compiled_rows)
     csv_path = compiled_dir / f"{base}.csv"
     compiled_csv.to_csv(csv_path, index=False)
-    print(f"  -> Compiled CSV: {csv_path.name}")
+    print(f"  -> Compiled CSV: {csv_path.name} ({len(compiled_csv)} rows)")
 
     sns.set_theme(style="whitegrid")
     _compile_report(dfs, compiled_dir, base)

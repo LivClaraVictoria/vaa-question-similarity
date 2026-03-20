@@ -625,13 +625,14 @@ def _save_collect_outputs(
     df_candidates = dataset["candidates"]
     question_ids = sorted(df["question_id"].unique().tolist())
 
-    voter_corr, cand_corr, voter_avg_corr, cand_avg_corr = _compute_answer_correlations(
+    voter_corr, cand_corr, redundancy = _compute_answer_correlations(
         df_voters, df_candidates, question_ids
     )
 
-    # Merge correlation features into main df
-    df["voter_avg_abs_corr"] = df["question_id"].map(voter_avg_corr)
-    df["candidate_avg_abs_corr"] = df["question_id"].map(cand_avg_corr)
+    # Merge redundancy metrics into main df
+    for metric in ["voter_r2", "candidate_r2", "voter_max_abs_corr", "candidate_max_abs_corr",
+                    "voter_sum_r2", "candidate_sum_r2", "voter_n_corr_neighbors", "candidate_n_corr_neighbors"]:
+        df[metric] = df["question_id"].map(lambda qid, m=metric: redundancy.get(qid, {}).get(m, np.nan))
 
     # Sort by composite rank
     df = df.sort_values("composite_rank").reset_index(drop=True)
@@ -651,7 +652,9 @@ def _save_collect_outputs(
         _plot_clone_type_ranking(df, output_dir, base, n_clones)
     else:
         _plot_ranking(df, output_dir, base, n_clones)
-        _plot_correlation_analysis(df, output_dir, base, n_clones)
+
+    _plot_correlation_analysis(df, output_dir, base, n_clones)
+    _plot_redundancy_analysis(df, output_dir, base, n_clones)
 
     _plot_corr_matrices(voter_corr, cand_corr, question_ids, output_dir, base)
     _save_report(df, output_dir, base, n, n_clones=n_clones)
@@ -661,33 +664,68 @@ def _compute_answer_correlations(
     df_voters: pd.DataFrame,
     df_candidates: pd.DataFrame,
     question_ids: list[int],
-) -> tuple[pd.DataFrame, pd.DataFrame, dict, dict]:
-    """Compute Pearson correlation matrices and per-question average |correlation|."""
+) -> tuple[pd.DataFrame, pd.DataFrame, dict]:
+    """Compute Pearson correlation matrices and per-question redundancy metrics.
+
+    Returns correlation matrices and a dict mapping question_id to a dict of
+    redundancy metrics: r2, max_abs_corr, sum_r2, n_corr_neighbors (for both
+    voter and candidate answers).
+    """
+    from sklearn.linear_model import LinearRegression
+
     voter_ans_cols = [f"answer_{q}" for q in question_ids if f"answer_{q}" in df_voters.columns]
     cand_ans_cols = [f"answer_{q}" for q in question_ids if f"answer_{q}" in df_candidates.columns]
 
     voter_corr = df_voters[voter_ans_cols].corr()
     cand_corr = df_candidates[cand_ans_cols].corr()
 
-    # Per-question average absolute correlation (excluding self-correlation on diagonal)
-    voter_avg_corr = {}
-    cand_avg_corr = {}
+    CORR_NEIGHBOR_THRESHOLD = 0.3
+
+    redundancy = {}
 
     for q_id in question_ids:
         col = f"answer_{q_id}"
-        if col in voter_corr.columns:
-            vals = voter_corr[col].drop(col, errors="ignore").abs()
-            voter_avg_corr[q_id] = vals.mean() if len(vals) > 0 else np.nan
-        else:
-            voter_avg_corr[q_id] = np.nan
+        metrics = {}
 
-        if col in cand_corr.columns:
-            vals = cand_corr[col].drop(col, errors="ignore").abs()
-            cand_avg_corr[q_id] = vals.mean() if len(vals) > 0 else np.nan
-        else:
-            cand_avg_corr[q_id] = np.nan
+        for prefix, corr_mat, df_ans, ans_cols in [
+            ("voter", voter_corr, df_voters, voter_ans_cols),
+            ("candidate", cand_corr, df_candidates, cand_ans_cols),
+        ]:
+            if col not in corr_mat.columns:
+                metrics[f"{prefix}_r2"] = np.nan
+                metrics[f"{prefix}_max_abs_corr"] = np.nan
+                metrics[f"{prefix}_sum_r2"] = np.nan
+                metrics[f"{prefix}_n_corr_neighbors"] = np.nan
+                continue
 
-    return voter_corr, cand_corr, voter_avg_corr, cand_avg_corr
+            abs_corrs = corr_mat[col].drop(col, errors="ignore").abs()
+
+            # Max |r|
+            metrics[f"{prefix}_max_abs_corr"] = abs_corrs.max() if len(abs_corrs) > 0 else np.nan
+
+            # Σr²
+            metrics[f"{prefix}_sum_r2"] = (abs_corrs**2).sum() if len(abs_corrs) > 0 else np.nan
+
+            # Count |r| > threshold
+            metrics[f"{prefix}_n_corr_neighbors"] = int((abs_corrs > CORR_NEIGHBOR_THRESHOLD).sum())
+
+            # R² from regressing this question on all others
+            other_cols = [c for c in ans_cols if c != col]
+            if other_cols:
+                subset = df_ans[[col] + other_cols].dropna()
+                if len(subset) > len(other_cols) + 1:
+                    y = subset[col].values
+                    X = subset[other_cols].values
+                    model = LinearRegression().fit(X, y)
+                    metrics[f"{prefix}_r2"] = model.score(X, y)
+                else:
+                    metrics[f"{prefix}_r2"] = np.nan
+            else:
+                metrics[f"{prefix}_r2"] = np.nan
+
+        redundancy[q_id] = metrics
+
+    return voter_corr, cand_corr, redundancy
 
 
 # ---------------------------------------------------------------------------
@@ -734,8 +772,42 @@ def _plot_ranking(df: pd.DataFrame, output_dir: Path, base: str, n_clones: int =
     print(f"  -> Ranking plot: {path.name}")
 
 
+def _scatter_panel(ax, df: pd.DataFrame, col: str, label: str):
+    """Draw a single scatter panel: col vs impact with Spearman annotation."""
+    if col not in df.columns or df[col].isna().all():
+        ax.set_visible(False)
+        return
+
+    x = df[col].values
+    y = df["impact"].values
+    mask = ~(np.isnan(x) | np.isnan(y))
+
+    ax.scatter(x[mask], y[mask], alpha=0.6, s=40, color="#1565C0")
+
+    if mask.sum() >= 3:
+        rho, p = spearmanr(x[mask], y[mask])
+        ax.set_title(f"{label}\n(Spearman r={rho:.3f}, p={p:.3f})", fontsize=10)
+    else:
+        ax.set_title(label, fontsize=10)
+
+    ax.set_xlabel(label)
+    ax.set_ylabel("Impact (1 - Jaccard mean)")
+
+    top3 = df.nlargest(3, "impact")
+    for _, row in top3.iterrows():
+        if pd.notna(row[col]):
+            ax.annotate(
+                f"Q{int(row['question_id'])}",
+                (row[col], row["impact"]),
+                fontsize=7, alpha=0.8,
+                xytext=(5, 5), textcoords="offset points",
+            )
+
+
 def _plot_correlation_analysis(df: pd.DataFrame, output_dir: Path, base: str, n_clones: int = N_CLONES):
-    """Multi-panel scatter: predictors vs impact."""
+    """Plot A: question property predictors vs impact (2x3 grid)."""
+    clone_type = df["clone_type"].iloc[0] if "clone_type" in df.columns else "identical"
+
     fig, axes = plt.subplots(2, 3, figsize=(18, 10))
 
     scatter_configs = [
@@ -744,45 +816,16 @@ def _plot_correlation_analysis(df: pd.DataFrame, output_dir: Path, base: str, n_
         ("candidate_var", "Candidate Variance", axes[0, 2]),
         ("voter_nan_pct", "Voter NaN %\n(fraction who skipped this question)", axes[1, 0]),
         ("question_order", "Question Position in Survey\n(1 = first question)", axes[1, 1]),
-        ("voter_avg_abs_corr", "Question Redundancy\n(mean |Pearson r| of voter answers vs all other questions)", axes[1, 2]),
     ]
 
     for col, label, ax in scatter_configs:
-        if col not in df.columns or df[col].isna().all():
-            ax.set_visible(False)
-            continue
+        _scatter_panel(ax, df, col, label)
 
-        x = df[col].values
-        y = df["impact"].values
-        mask = ~(np.isnan(x) | np.isnan(y))
+    axes[1, 2].set_visible(False)
 
-        ax.scatter(x[mask], y[mask], alpha=0.6, s=40, color="#1565C0")
-
-        # Add Spearman correlation
-        if mask.sum() >= 3:
-            rho, p = spearmanr(x[mask], y[mask])
-            ax.set_title(f"{label}\n(Spearman r={rho:.3f}, p={p:.3f})", fontsize=10)
-        else:
-            ax.set_title(label, fontsize=10)
-
-        ax.set_xlabel(label)
-        ax.set_ylabel("Impact (1 - Jaccard mean)")
-
-        # Annotate top-3 impact questions
-        top3 = df.nlargest(3, "impact")
-        for _, row in top3.iterrows():
-            if pd.notna(row[col]):
-                ax.annotate(
-                    f"Q{int(row['question_id'])}",
-                    (row[col], row["impact"]),
-                    fontsize=7, alpha=0.8,
-                    xytext=(5, 5), textcoords="offset points",
-                )
-
-    clone_type = df["clone_type"].iloc[0] if "clone_type" in df.columns else "identical"
     fig.suptitle(
         f"Predictors of Clone Impact ({n_clones} {clone_type} clones)\n"
-        f"Y-axis: impact = 1 - mean Jaccard (higher = more disruption to recommendations)",
+        f"Y-axis: impact = 1 − mean Jaccard (higher = more disruption to recommendations)",
         fontsize=12,
     )
     fig.tight_layout()
@@ -791,6 +834,35 @@ def _plot_correlation_analysis(df: pd.DataFrame, output_dir: Path, base: str, n_
     fig.savefig(path, dpi=300)
     plt.close(fig)
     print(f"  -> Correlation analysis: {path.name}")
+
+
+def _plot_redundancy_analysis(df: pd.DataFrame, output_dir: Path, base: str, n_clones: int = N_CLONES):
+    """Plot B: redundancy metrics vs impact (2x2 grid)."""
+    clone_type = df["clone_type"].iloc[0] if "clone_type" in df.columns else "identical"
+
+    fig, axes = plt.subplots(2, 2, figsize=(12, 10))
+
+    scatter_configs = [
+        ("voter_r2", "Voter R²\n(OLS on all other questions)", axes[0, 0]),
+        ("voter_max_abs_corr", "Voter Max |r|\n(nearest neighbor correlation)", axes[0, 1]),
+        ("voter_sum_r2", "Voter Σr²\n(total shared variance)", axes[1, 0]),
+        ("voter_n_corr_neighbors", "Voter Count |r| > 0.3\n(number of correlated neighbors)", axes[1, 1]),
+    ]
+
+    for col, label, ax in scatter_configs:
+        _scatter_panel(ax, df, col, label)
+
+    fig.suptitle(
+        f"Redundancy Metrics vs Clone Impact ({n_clones} {clone_type} clones)\n"
+        f"Y-axis: impact = 1 − mean Jaccard (higher = more disruption to recommendations)",
+        fontsize=12,
+    )
+    fig.tight_layout()
+
+    path = output_dir / f"{base}_redundancy_analysis.png"
+    fig.savefig(path, dpi=300)
+    plt.close(fig)
+    print(f"  -> Redundancy analysis: {path.name}")
 
 
 def _plot_corr_matrices(

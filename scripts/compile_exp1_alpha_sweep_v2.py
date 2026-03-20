@@ -781,6 +781,87 @@ def generate_narrative_report(
 
 
 # ---------------------------------------------------------------------------
+# Master CSV
+# ---------------------------------------------------------------------------
+
+def save_master_csv(
+    combined: pd.DataFrame,
+    per_clone_rankings: dict[str, pd.DataFrame],
+    aggregated_ranking: pd.DataFrame,
+    benchmark: pd.DataFrame | None,
+    outpath: Path,
+):
+    """Save a single master CSV with all raw + derived data.
+
+    One row per (model, clone_type, alpha) with ranking and benchmark columns
+    merged in.
+    """
+    master = combined.copy()
+
+    # Add display names
+    master["model_display"] = master["model"].map(MODEL_DISPLAY)
+    master["clone_type_display"] = master["clone_type"].map(CLONE_DISPLAY)
+
+    # Merge per-clone ranking columns
+    ranking_frames = []
+    for clone_type, ranking_df in per_clone_rankings.items():
+        r = ranking_df.copy()
+        r["clone_type_display"] = CLONE_DISPLAY[clone_type]
+        ranking_frames.append(r)
+    all_rankings = pd.concat(ranking_frames, ignore_index=True)
+
+    # Drop alpha_95_interval string column (we keep low/high/width)
+    ranking_cols = [
+        "model_display", "clone_type_display",
+        "max_jaccard", "max_spearman", "max_kendall",
+        "optimal_alpha_jaccard", "alpha_95_low", "alpha_95_high", "alpha_95_width",
+        "rank_jaccard", "rank_spearman", "rank_kendall", "composite_rank",
+    ]
+    # model column in ranking is "model_display" (display name)
+    # Rename "model" -> "model_display" for merge
+    all_rankings = all_rankings.rename(columns={"model": "model_display"})
+    all_rankings = all_rankings[ranking_cols]
+
+    master = master.merge(
+        all_rankings,
+        on=["model_display", "clone_type_display"],
+        how="left",
+    )
+
+    # Merge aggregated ranking columns
+    agg_cols = aggregated_ranking[["model", "avg_composite_rank", "rank"]].rename(
+        columns={"model": "model_display", "rank": "overall_rank"}
+    )
+    master = master.merge(agg_cols, on="model_display", how="left")
+
+    # Merge benchmark scores
+    if benchmark is not None:
+        bench_cols = benchmark[["model", "ordering_accuracy", "negation_invariance", "topic_coherence"]]
+        master = master.merge(bench_cols, on="model", how="left")
+
+    # Sort and order columns
+    master = master.sort_values(["model", "clone_type", "alpha"]).reset_index(drop=True)
+
+    col_order = [
+        "model", "model_display", "clone_type", "clone_type_display", "alpha",
+        "crw_jaccard_mean", "crw_jaccard_median", "crw_jaccard_p10",
+        "crw_spearman_mean", "crw_kendall_mean",
+        "max_jaccard", "max_spearman", "max_kendall",
+        "optimal_alpha_jaccard", "alpha_95_low", "alpha_95_high", "alpha_95_width",
+        "rank_jaccard", "rank_spearman", "rank_kendall", "composite_rank",
+        "avg_composite_rank", "overall_rank",
+    ]
+    if benchmark is not None:
+        col_order += ["ordering_accuracy", "negation_invariance", "topic_coherence"]
+    # Only keep columns that exist
+    col_order = [c for c in col_order if c in master.columns]
+    master = master[col_order]
+
+    master.to_csv(outpath, index=False)
+    print(f"  -> {outpath.name} ({len(master)} rows)")
+
+
+# ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
 
@@ -846,6 +927,13 @@ def main():
     generate_narrative_report(
         combined, per_clone_rankings, aggregated, baselines, benchmark,
         OUTPUT_DIR / "exp1_narrative_report.txt",
+    )
+
+    # --- Master CSV ---
+    print("\nSaving master CSV...")
+    save_master_csv(
+        combined, per_clone_rankings, aggregated, benchmark,
+        OUTPUT_DIR / "exp1_master.csv",
     )
 
     print(f"\nAll outputs saved to {OUTPUT_DIR}/")

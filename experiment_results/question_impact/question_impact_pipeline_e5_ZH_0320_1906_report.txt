@@ -1,0 +1,26 @@
+================================================================================
+QUESTION IMPACT SWEEP REPORT
+================================================================================
+Generated: 2026-03-20 19:07
+Clone types: identical
+Clones per question: 4
+Jaccard top-k (n): 36
+Questions tested: 75
+Total rows: 75
+CRW mode: yes
+
+CRW CORRECTION SUMMARY BY CLONE TYPE:
+--------------------------------------------------------------------------------
+            Clone Type  Base Jac   CRW Jac   Improve  Base Spe   CRW Spe
+             identical    0.8109    0.9986   +0.1876    0.9811    1.0000
+
+================================================================================
+FULL STATISTICS:
+  Mean Jaccard (baseline):   0.8109
+  Median Jaccard (baseline): 0.8079
+  Min Jaccard (baseline):    0.6573
+  Max Jaccard (baseline):    0.9278
+  Mean Jaccard (CRW):   0.9986
+  Median Jaccard (CRW): 0.9996
+  Mean improvement:     0.1876
+================================================================================
