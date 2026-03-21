@@ -1,0 +1,113 @@
+================================================================================
+PARTY VISIBILITY IMPACT — GLP REPORT
+================================================================================
+Generated: 2026-03-21 02:29
+Clone type: identical, n_clones: 4
+Top-k (n): 36
+Questions tested: 75
+
+TOP 10 QUESTIONS BENEFITING GLP:
+--------------------------------------------------------------------------------
+  1. Q32222 — Δ = +1.28pp
+     [Health] "Should insured persons contribute more to health care costs (e.g."
+     Other parties: SP: -0.28pp, Green: -0.19pp, Centre: -0.27pp, FDP: +0.08pp, SVP: +0.03pp
+
+  2. Q32242 — Δ = +1.25pp
+     [Economy & labour] "Should private households be free to choose their electricity sup"
+     Other parties: SP: -1.02pp, Green: -0.02pp, Centre: -0.04pp, FDP: +0.04pp
+
+  3. Q32233 — Δ = +1.19pp
+     [Society & ethics] "Would you be in favour of doctors being allowed to administer dir"
+     Other parties: SP: +0.25pp, Green: +0.25pp, Centre: +0.26pp, FDP: +0.15pp, SVP: +0.23pp
+
+  4. Q32214 — Δ = +0.93pp
+     [Welfare state & family] "Do you support an increase in the retirement age (e.g., to 67)?"
+     Other parties: SP: -0.73pp, Green: -0.08pp, Centre: +0.07pp, FDP: -0.17pp, SVP: -0.02pp
+
+  5. Q32237 — Δ = +0.85pp
+     [Finances & taxes] "Should married couples be taxed separately (individual taxation)?"
+     Other parties: SP: +0.15pp, Green: +0.26pp, Centre: -0.68pp, FDP: +0.20pp, SVP: +0.08pp
+
+  6. Q32215 — Δ = +0.75pp
+     [Welfare state & family] "Should the federal government allocate more funding for health in"
+     Other parties: SP: -0.23pp, Centre: -0.17pp, FDP: +0.18pp, SVP: -0.11pp
+
+  7. Q32264 — Δ = +0.64pp
+     [Security & military] "Are you in favor of expanding the army's target number of soldier"
+     Other parties: SP: +0.13pp, Green: +0.04pp, Centre: -0.25pp, FDP: -0.31pp, SVP: -0.32pp
+
+  8. Q32238 — Δ = +0.64pp
+     [Finances & taxes] "Would you support the introduction of a national inheritance tax "
+     Other parties: SP: -0.12pp, Green: -0.23pp, Centre: +0.22pp, FDP: -0.19pp, SVP: -0.09pp
+
+  9. Q32231 — Δ = +0.47pp
+     [Immigration & integration] "Should foreign nationals who have lived in Switzerland for at lea"
+     Other parties: SP: -0.10pp, Green: -0.17pp, Centre: +0.43pp, FDP: -0.15pp, SVP: -0.06pp
+
+  10. Q32236 — Δ = +0.46pp
+     [Finances & taxes] "Do you support tax cuts at the federal level over the next four y"
+     Other parties: SP: -0.92pp, Green: -0.40pp, Centre: +0.98pp, FDP: -0.02pp, SVP: -0.03pp
+
+BOTTOM 5 QUESTIONS (MOST HARMFUL TO GLP):
+--------------------------------------------------------------------------------
+  1. Q32262 — Δ = -1.33pp
+     [Democracy, Media & Digitalization] "Are you in favour of lowering the voting age to 16?"
+
+  2. Q32228 — Δ = -1.15pp
+     [Immigration & integration] "Should the conditions for naturalization be relaxed (e.g., shorte"
+
+  3. Q32240 — Δ = -0.88pp
+     [Economy & labour] "Are you in favor of introducing a minimum wage of CHF 4,000 for a"
+
+  4. Q32263 — Δ = -0.86pp
+     [Democracy, Media & Digitalization] "Should it be possible to hold a referendum on federal spending ab"
+
+  5. Q32220 — Δ = -0.83pp
+     [Health] "Should compulsory vaccination of children be introduced based on "
+
+================================================================================
+TOPIC BREAKDOWN FOR GLP:
+--------------------------------------------------------------------------------
+  Topic                                         Mean    Median       Std     N
+--------------------------------------------------------------------------------
+  Finances & taxes                            +0.60    +0.55     0.19     4
+  Society & ethics                            +0.25    +0.14     0.73     4
+  Values                                      +0.20    +0.15     0.12     7
+  Health                                      +0.16    +0.02     0.76     5
+  Welfare state & family                      +0.15    +0.17     0.66     6
+  Economy & labour                            +0.11    +0.23     0.79     5
+  Nature conservation                         +0.07    +0.09     0.13     6
+  Education                                   +0.04    +0.11     0.16     3
+  Federal budget                              +0.03    +0.02     0.10     8
+  Energy & transport                          -0.05    -0.01     0.33     7
+  Security & military                         -0.06    -0.28     0.41     5
+  Foreign trade & foreign policy              -0.07    -0.05     0.24     5
+  Immigration & integration                   -0.34    -0.33     0.66     4
+  Democracy, Media & Digitalization           -0.38    -0.22     0.62     6
+
+  Kruskal-Wallis test: H=16.54, p=0.2214 (n.s.)
+  Not significant: topic does not significantly predict visibility delta for GLP.
+
+================================================================================
+PREDICTOR CORRELATIONS (Spearman vs delta_GLP):
+--------------------------------------------------------------------------------
+  combined_var               r=-0.286  p=0.0129
+  voter_var                  r=-0.301  p=0.0087
+  candidate_var              r=-0.236  p=0.0420
+  voter_nan_pct              r=+0.021  p=0.8551
+  question_order             r=-0.055  p=0.6418
+  voter_avg_abs_corr         r=-0.136  p=0.2431
+  candidate_avg_abs_corr     r=-0.076  p=0.5170
+  voter_r2                   r=-0.190  p=0.1020
+  voter_max_abs_corr         r=-0.133  p=0.2539
+  voter_sum_r2               r=-0.144  p=0.2172
+  voter_n_corr_neighbors     r=-0.120  p=0.3062
+
+================================================================================
+SUMMARY STATISTICS (delta_GLP):
+  Mean:   +0.04pp
+  Median: +0.02pp
+  Std:    0.48pp
+  Max:    +1.28pp
+  Min:    -1.33pp
+================================================================================

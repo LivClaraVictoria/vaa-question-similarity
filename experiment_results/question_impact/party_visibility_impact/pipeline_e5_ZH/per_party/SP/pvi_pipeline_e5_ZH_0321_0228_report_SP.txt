@@ -1,0 +1,113 @@
+================================================================================
+PARTY VISIBILITY IMPACT — SP REPORT
+================================================================================
+Generated: 2026-03-21 02:29
+Clone type: identical, n_clones: 4
+Top-k (n): 36
+Questions tested: 75
+
+TOP 10 QUESTIONS BENEFITING SP:
+--------------------------------------------------------------------------------
+  1. Q32220 — Δ = +1.17pp
+     [Health] "Should compulsory vaccination of children be introduced based on "
+     Other parties: Green: -0.06pp, GLP: -0.83pp, Centre: -0.56pp, FDP: -0.19pp, SVP: +0.02pp
+
+  2. Q32248 — Δ = +1.08pp
+     [Energy & transport] "Do you think it's fair that environmental and landscape protectio"
+     Other parties: Green: -0.86pp, GLP: +0.08pp, Centre: -0.15pp, FDP: +0.04pp, SVP: -0.05pp
+
+  3. Q32240 — Δ = +0.85pp
+     [Economy & labour] "Are you in favor of introducing a minimum wage of CHF 4,000 for a"
+     Other parties: Green: +0.60pp, GLP: -0.88pp, Centre: -0.15pp, FDP: -0.30pp, SVP: -0.20pp
+
+  4. Q32217 — Δ = +0.73pp
+     [Welfare state & family] "As part of the reform of the BVG (occupational pension plan), pen"
+     Other parties: Green: +0.69pp, GLP: -0.69pp, Centre: -0.63pp, FDP: -0.25pp, SVP: +0.04pp
+
+  5. Q32270 — Δ = +0.65pp
+     [Foreign trade & foreign policy] "Should Switzerland strive for a comprehensive free trade agreemen"
+     Other parties: Green: -0.38pp, GLP: +0.28pp, Centre: +0.18pp, FDP: +0.03pp, SVP: -0.04pp
+
+  6. Q32216 — Δ = +0.52pp
+     [Welfare state & family] "For married couples, the pension is currently limited to 150% of "
+     Other parties: Green: -0.18pp, GLP: +0.45pp, Centre: -0.41pp, SVP: +0.04pp
+
+  7. Q32252 — Δ = +0.36pp
+     [Nature conservation] "Are you in favor of further relaxing the protection regulations f"
+     Other parties: GLP: -0.08pp, Centre: +0.17pp, FDP: -0.10pp, SVP: -0.09pp
+
+  8. Q32243 — Δ = +0.36pp
+     [Economy & labour] "Should housing construction regulations be relaxed (e.g., noise p"
+     Other parties: Green: +0.22pp, GLP: -0.34pp, Centre: -0.26pp, FDP: -0.08pp, SVP: -0.13pp
+
+  9. Q32219 — Δ = +0.36pp
+     [Welfare state & family] "Should the federal government provide more financial support for "
+     Other parties: Green: +0.25pp, GLP: -0.41pp, Centre: -0.54pp, FDP: -0.06pp, SVP: -0.02pp
+
+  10. Q32229 — Δ = +0.33pp
+     [Immigration & integration] "Should more qualified workers from non-EU/EFTA countries be allow"
+     Other parties: Green: -0.30pp, GLP: -0.38pp, Centre: +0.51pp, FDP: -0.06pp, SVP: +0.01pp
+
+BOTTOM 5 QUESTIONS (MOST HARMFUL TO SP):
+--------------------------------------------------------------------------------
+  1. Q32261 — Δ = -1.07pp
+     [Democracy, Media & Digitalization] "A popular initiative aims to reduce television and radio fees (CH"
+
+  2. Q32242 — Δ = -1.02pp
+     [Economy & labour] "Should private households be free to choose their electricity sup"
+
+  3. Q32236 — Δ = -0.92pp
+     [Finances & taxes] "Do you support tax cuts at the federal level over the next four y"
+
+  4. Q32214 — Δ = -0.73pp
+     [Welfare state & family] "Do you support an increase in the retirement age (e.g., to 67)?"
+
+  5. Q32228 — Δ = -0.67pp
+     [Immigration & integration] "Should the conditions for naturalization be relaxed (e.g., shorte"
+
+================================================================================
+TOPIC BREAKDOWN FOR SP:
+--------------------------------------------------------------------------------
+  Topic                                         Mean    Median       Std     N
+--------------------------------------------------------------------------------
+  Health                                      +0.22    +0.12     0.56     5
+  Welfare state & family                      +0.10    +0.15     0.54     6
+  Foreign trade & foreign policy              +0.09    -0.03     0.32     5
+  Security & military                         +0.05    +0.03     0.08     5
+  Economy & labour                            +0.05    +0.05     0.69     5
+  Federal budget                              +0.04    +0.07     0.08     8
+  Society & ethics                            +0.01    +0.01     0.23     4
+  Nature conservation                         +0.00    -0.02     0.22     6
+  Energy & transport                          -0.05    -0.26     0.54     7
+  Values                                      -0.07    -0.03     0.10     7
+  Immigration & integration                   -0.10    -0.03     0.42     4
+  Education                                   -0.14    -0.18     0.17     3
+  Democracy, Media & Digitalization           -0.31    -0.16     0.46     6
+  Finances & taxes                            -0.32    -0.25     0.46     4
+
+  Kruskal-Wallis test: H=10.93, p=0.6170 (n.s.)
+  Not significant: topic does not significantly predict visibility delta for SP.
+
+================================================================================
+PREDICTOR CORRELATIONS (Spearman vs delta_SP):
+--------------------------------------------------------------------------------
+  combined_var               r=-0.330  p=0.0039
+  voter_var                  r=-0.333  p=0.0035
+  candidate_var              r=-0.318  p=0.0054
+  voter_nan_pct              r=+0.174  p=0.1356
+  question_order             r=+0.011  p=0.9274
+  voter_avg_abs_corr         r=-0.213  p=0.0666
+  candidate_avg_abs_corr     r=-0.366  p=0.0012
+  voter_r2                   r=-0.150  p=0.1981
+  voter_max_abs_corr         r=-0.149  p=0.2011
+  voter_sum_r2               r=-0.204  p=0.0790
+  voter_n_corr_neighbors     r=-0.221  p=0.0565
+
+================================================================================
+SUMMARY STATISTICS (delta_SP):
+  Mean:   -0.02pp
+  Median: -0.01pp
+  Std:    0.39pp
+  Max:    +1.17pp
+  Min:    -1.07pp
+================================================================================

@@ -413,32 +413,69 @@ def _compute_answer_correlations(
     df_voters: pd.DataFrame,
     df_candidates: pd.DataFrame,
     question_ids: list[int],
-) -> tuple[pd.DataFrame, pd.DataFrame, dict, dict]:
-    """Compute Pearson correlation matrices and per-question average |correlation|."""
+) -> tuple[pd.DataFrame, pd.DataFrame, dict]:
+    """Compute Pearson correlation matrices and per-question redundancy metrics.
+
+    Returns correlation matrices and a dict mapping question_id to a dict of
+    redundancy metrics: r2, max_abs_corr, sum_r2, n_corr_neighbors, avg_abs_corr
+    (for both voter and candidate answers).
+    """
+    from sklearn.linear_model import LinearRegression
+
     voter_ans_cols = [f"answer_{q}" for q in question_ids if f"answer_{q}" in df_voters.columns]
     cand_ans_cols = [f"answer_{q}" for q in question_ids if f"answer_{q}" in df_candidates.columns]
 
     voter_corr = df_voters[voter_ans_cols].corr()
     cand_corr = df_candidates[cand_ans_cols].corr()
 
-    voter_avg_corr = {}
-    cand_avg_corr = {}
+    CORR_NEIGHBOR_THRESHOLD = 0.3
+
+    redundancy = {}
 
     for q_id in question_ids:
         col = f"answer_{q_id}"
-        if col in voter_corr.columns:
-            vals = voter_corr[col].drop(col, errors="ignore").abs()
-            voter_avg_corr[q_id] = vals.mean() if len(vals) > 0 else np.nan
-        else:
-            voter_avg_corr[q_id] = np.nan
+        metrics = {}
 
-        if col in cand_corr.columns:
-            vals = cand_corr[col].drop(col, errors="ignore").abs()
-            cand_avg_corr[q_id] = vals.mean() if len(vals) > 0 else np.nan
-        else:
-            cand_avg_corr[q_id] = np.nan
+        for prefix, corr_mat, df_ans, ans_cols in [
+            ("voter", voter_corr, df_voters, voter_ans_cols),
+            ("candidate", cand_corr, df_candidates, cand_ans_cols),
+        ]:
+            if col not in corr_mat.columns:
+                for suffix in ["_r2", "_max_abs_corr", "_sum_r2", "_n_corr_neighbors", "_avg_abs_corr"]:
+                    metrics[f"{prefix}{suffix}"] = np.nan
+                continue
 
-    return voter_corr, cand_corr, voter_avg_corr, cand_avg_corr
+            abs_corrs = corr_mat[col].drop(col, errors="ignore").abs()
+
+            # Mean |r| (legacy metric, kept for backward compatibility)
+            metrics[f"{prefix}_avg_abs_corr"] = abs_corrs.mean() if len(abs_corrs) > 0 else np.nan
+
+            # Max |r|
+            metrics[f"{prefix}_max_abs_corr"] = abs_corrs.max() if len(abs_corrs) > 0 else np.nan
+
+            # Σr²
+            metrics[f"{prefix}_sum_r2"] = (abs_corrs**2).sum() if len(abs_corrs) > 0 else np.nan
+
+            # Count |r| > threshold
+            metrics[f"{prefix}_n_corr_neighbors"] = int((abs_corrs > CORR_NEIGHBOR_THRESHOLD).sum())
+
+            # R² from regressing this question on all others
+            other_cols = [c for c in ans_cols if c != col]
+            if other_cols:
+                subset = df_ans[[col] + other_cols].dropna()
+                if len(subset) > len(other_cols) + 1:
+                    y = subset[col].values
+                    X = subset[other_cols].values
+                    model = LinearRegression().fit(X, y)
+                    metrics[f"{prefix}_r2"] = model.score(X, y)
+                else:
+                    metrics[f"{prefix}_r2"] = np.nan
+            else:
+                metrics[f"{prefix}_r2"] = np.nan
+
+        redundancy[q_id] = metrics
+
+    return voter_corr, cand_corr, redundancy
 
 
 # ---------------------------------------------------------------------------
@@ -465,12 +502,20 @@ def _save_all_outputs(
     df_candidates = dataset["candidates"]
     question_ids = sorted(df["question_id"].unique().tolist())
 
-    voter_corr, cand_corr, voter_avg_corr, cand_avg_corr = _compute_answer_correlations(
+    voter_corr, cand_corr, redundancy = _compute_answer_correlations(
         df_voters, df_candidates, question_ids
     )
 
-    df["voter_avg_abs_corr"] = df["question_id"].map(voter_avg_corr)
-    df["candidate_avg_abs_corr"] = df["question_id"].map(cand_avg_corr)
+    # Merge redundancy metrics into main df
+    redundancy_metrics = [
+        "voter_avg_abs_corr", "candidate_avg_abs_corr",
+        "voter_r2", "candidate_r2",
+        "voter_max_abs_corr", "candidate_max_abs_corr",
+        "voter_sum_r2", "candidate_sum_r2",
+        "voter_n_corr_neighbors", "candidate_n_corr_neighbors",
+    ]
+    for metric in redundancy_metrics:
+        df[metric] = df["question_id"].map(lambda qid, m=metric: redundancy.get(qid, {}).get(m, np.nan))
 
     # Sort by max absolute delta
     df = df.sort_values("max_abs_delta", ascending=False).reset_index(drop=True)
@@ -623,9 +668,9 @@ def _plot_predictor_analysis(
         ("combined_var", "Combined Variance", axes[0, 0]),
         ("voter_var", "Voter Variance", axes[0, 1]),
         ("candidate_var", "Candidate Variance", axes[0, 2]),
-        ("voter_nan_pct", "Voter NaN %", axes[1, 0]),
-        ("question_order", "Question Position", axes[1, 1]),
-        ("voter_avg_abs_corr", "Question Redundancy\n(mean |Pearson r|)", axes[1, 2]),
+        ("voter_r2", "Voter R² (redundancy)", axes[1, 0]),
+        ("voter_max_abs_corr", "Voter Max |r|", axes[1, 1]),
+        ("voter_sum_r2", "Voter Σr²", axes[1, 2]),
     ]
 
     for col, col_label, ax in scatter_configs:
@@ -1015,6 +1060,7 @@ def _save_compiled_report(
     predictors = [
         "combined_var", "voter_var", "candidate_var",
         "voter_nan_pct", "question_order", "voter_avg_abs_corr",
+        "voter_r2", "voter_max_abs_corr", "voter_sum_r2", "voter_n_corr_neighbors",
     ]
     for pred in predictors:
         if pred not in df.columns or df[pred].isna().all():
@@ -1146,6 +1192,7 @@ def _save_party_report(
     predictors = [
         "combined_var", "voter_var", "candidate_var",
         "voter_nan_pct", "question_order", "voter_avg_abs_corr", "candidate_avg_abs_corr",
+        "voter_r2", "voter_max_abs_corr", "voter_sum_r2", "voter_n_corr_neighbors",
     ]
     for pred in predictors:
         if pred not in df.columns or df[pred].isna().all():
