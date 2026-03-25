@@ -55,7 +55,7 @@ cd ${DIRECTORY}
 # Alpha sweep: base E5 ZH vs identical_q32214_n10 E5 ZH
 # Alphas default to 0.1 through 1.5 in 0.1 steps.
 # n defaults to 36 (ZH seat count, inferred from config).
-python -u -m alpha_sweep_main \
+python -u -m experiments.synthetic_clones.rec_change.alpha_sweep \
     --config_a configs/full_pipeline/base_data/pipeline_e5_ZH.py \
     --config_b configs/full_pipeline/cloned/identical_combinedvar_n10_e5_ZH.py
 

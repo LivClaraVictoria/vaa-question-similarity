@@ -43,7 +43,7 @@ export HF_HOME=/usr/itetnas04/data-scratch-01/${ETH_USERNAME}/data/.cache/huggin
 
 cd ${DIRECTORY}
 
-python -u scripts/evaluate_embedding_models.py
+python -u -m experiments.exploratory.analysis.evaluate_embedding_models
 
 echo "Finished at: $(date)"
 exit 0

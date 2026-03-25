@@ -39,7 +39,7 @@ echo "CLONE_TYPE: ${CLONE_TYPE}"
 conda activate ${CONDA_ENVIRONMENT}
 cd ${DIRECTORY}
 
-python -u -m question_alpha_sweep_main \
+python -u -m experiments.synthetic_clones.rec_change.question_alpha_sweep \
     --mode worker \
     --task-id "${SLURM_ARRAY_TASK_ID}" \
     --config "${PIPELINE_CONFIG}" \

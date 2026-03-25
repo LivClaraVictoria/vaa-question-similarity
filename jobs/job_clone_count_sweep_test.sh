@@ -37,7 +37,7 @@ echo "SLURM_JOB_ID: ${SLURM_JOB_ID}"
 conda activate ${CONDA_ENVIRONMENT}
 cd ${DIRECTORY}
 
-python -u -m clone_count_sweep_main \
+python -u -m experiments.synthetic_clones.rec_change.clone_count_sweep \
     --config configs/full_pipeline/base_data/pipeline_e5_ZH.py \
     --mode worker --task-id 0 --n-values 1,5,10 \
     --sweep-dir experiment_results/clone_count_sweep/test_workers

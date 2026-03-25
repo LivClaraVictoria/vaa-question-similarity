@@ -46,7 +46,7 @@ PHASE2_ARGS="--mode phase2 --config ${PIPELINE_CONFIG}"
 [[ -n "${TOP_K}" ]] && PHASE2_ARGS="${PHASE2_ARGS} --top-k ${TOP_K}"
 [[ -n "${TARGET_PARTY}" ]] && PHASE2_ARGS="${PHASE2_ARGS} --target-party ${TARGET_PARTY}"
 
-python -u -m party_impact_main ${PHASE2_ARGS}
+python -u -m experiments.synthetic_clones.party_impact.party_impact ${PHASE2_ARGS}
 
 echo "Finished at: $(date)"
 exit 0

@@ -39,7 +39,7 @@ echo "SLURM_JOB_ID: ${SLURM_JOB_ID}, SLURM_ARRAY_TASK_ID: ${SLURM_ARRAY_TASK_ID}
 conda activate ${CONDA_ENVIRONMENT}
 cd ${DIRECTORY}
 
-python -u -m question_impact_main \
+python -u -m experiments.synthetic_clones.rec_change.question_impact \
     --mode worker \
     --task-id "${SLURM_ARRAY_TASK_ID}" \
     --config "${PIPELINE_CONFIG}" \

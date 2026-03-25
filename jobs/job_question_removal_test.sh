@@ -44,7 +44,7 @@ export HF_HOME=/usr/itetnas04/data-scratch-01/${ETH_USERNAME}/data/.cache/huggin
 
 cd ${DIRECTORY}
 
-python -u -m alpha_sweep_main \
+python -u -m experiments.synthetic_clones.rec_change.alpha_sweep \
     --config_a configs/full_pipeline/base_data/pipeline_e5_instruct_ZH.py \
     --config_b configs/full_pipeline/removed/removed_health_3of5_e5_instruct_ZH.py \
     --output-dir experiment_results/exp2_question_removal

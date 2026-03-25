@@ -39,7 +39,7 @@ echo "SLURM_JOB_ID: ${SLURM_JOB_ID}"
 conda activate ${CONDA_ENVIRONMENT}
 cd ${DIRECTORY}
 
-python -u scripts/feasibility_corr_addition.py
+python -u -m experiments.natural_redundancy.feasibility_corr_addition
 
 echo "Finished at: $(date)"
 exit 0

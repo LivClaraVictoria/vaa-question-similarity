@@ -39,7 +39,7 @@ echo "SLURM_JOB_ID: ${SLURM_JOB_ID}"
 conda activate ${CONDA_ENVIRONMENT}
 cd ${DIRECTORY}
 
-python -u -m question_alpha_sweep_main \
+python -u -m experiments.synthetic_clones.rec_change.question_alpha_sweep \
     --mode collect \
     --config "${PIPELINE_CONFIG}" \
     --sweep-dir "${SWEEP_DIR}"
