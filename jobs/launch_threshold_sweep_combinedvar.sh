@@ -23,8 +23,8 @@ cd "${PROJECT_DIR}"
 conda activate bachelor-thesis
 
 N_ALPHAS=$(python -c "
-from threshold_alpha_sweep_main import compute_threshold_and_alphas
-from main import load_config
+from experiments.exploratory.analysis.threshold_alpha_sweep import compute_threshold_and_alphas
+from vqs.config_utils import load_config
 from pathlib import Path
 config_b = load_config(Path('${CONFIG_B}'))
 _, alphas = compute_threshold_and_alphas(config_b)
