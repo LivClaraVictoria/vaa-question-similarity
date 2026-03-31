@@ -76,8 +76,9 @@ RESULTS_DIR = default_config.RESULTS_DIR / "party_impact" / "mini_maxi"
 PHASE2_CONFIGS = [
     ("E5-INSTRUCT α=0.3", "configs/full_pipeline/base_data/pipeline_e5_instruct_ZH_a03.py"),
     ("E5-INSTRUCT α=0.4", "configs/full_pipeline/base_data/pipeline_e5_instruct_ZH_a04.py"),
-    ("ANSWER-CORR α=0.3", "configs/full_pipeline/base_data/pipeline_answer_corr_ZH_a03.py"),
-    ("ANSWER-CORR α=0.4", "configs/full_pipeline/base_data/pipeline_answer_corr_ZH_a04.py"),
+    ("ANSWER-CORR α=1.0", "configs/full_pipeline/base_data/pipeline_answer_corr_arccos_ZH_a10.py"),
+    ("ANSWER-CORR α=1.1", "configs/full_pipeline/base_data/pipeline_answer_corr_arccos_ZH_a11.py"),
+    ("ANSWER-CORR α=1.5", "configs/full_pipeline/base_data/pipeline_answer_corr_arccos_ZH_a15.py"),
     ("QWEN3 α=0.6", "configs/full_pipeline/base_data/pipeline_qwen3_ZH.py"),
 ]
 
@@ -1426,27 +1427,34 @@ def _run_compile(args, config):
             label = col[len("aug_crw_"):]
             metric_labels.append(label)
 
-    # Save compiled CSV with drift and corrected reduction columns
+    # Save compiled CSV: one row per (target_party, observed_party) pair
     compiled_rows = []
     for target in MAJOR_PARTIES:
         if target not in dfs:
             continue
         df = dfs[target]
-        row = df[df["party"] == target].iloc[0]
-        o = row["mini_baseline"]
-        a = row["aug_baseline"]
-        da = a - o
-        r = {"party": target, "mini_baseline": o, "aug_baseline": a, "delta_attack": da}
-        for ml in metric_labels:
-            mc = row[f"mini_crw_{ml}"]
-            ac = row[f"aug_crw_{ml}"]
-            dc = ac - mc
-            r[f"crw_drift_{ml}"] = mc - o
-            r[f"delta_crw_{ml}"] = dc
-            r[f"reduction_{ml}"] = (
-                (1 - abs(dc) / abs(da)) * 100 if abs(da) > 1e-9 else 0
-            )
-        compiled_rows.append(r)
+        for _, row in df.iterrows():
+            observed = row["party"]
+            o = row["mini_baseline"]
+            a = row["aug_baseline"]
+            da = a - o
+            r = {
+                "target_party": target,
+                "observed_party": observed,
+                "mini_baseline": o,
+                "aug_baseline": a,
+                "delta_attack": da,
+            }
+            for ml in metric_labels:
+                mc = row[f"mini_crw_{ml}"]
+                ac = row[f"aug_crw_{ml}"]
+                dc = ac - mc
+                r[f"crw_drift_{ml}"] = mc - o
+                r[f"delta_crw_{ml}"] = dc
+                r[f"reduction_{ml}"] = (
+                    (1 - abs(dc) / abs(da)) * 100 if abs(da) > 1e-9 else 0
+                )
+            compiled_rows.append(r)
     compiled_csv = pd.DataFrame(compiled_rows)
     csv_path = compiled_dir / f"{base}.csv"
     compiled_csv.to_csv(csv_path, index=False)

@@ -1,0 +1,76 @@
+question_id,question_text,category,group,mds_x,mds_y
+32214,"Do you support an increase in the retirement age (e.g., to 67)?",Welfare state & family,mini,-0.19789803313298837,0.2884428616180445
+32215,Should the federal government allocate more funding for health insurance premium subsidies?,Welfare state & family,mini,-0.1953817263436884,0.11571416936031012
+32216,"For married couples, the pension is currently limited to 150% of the maximum individual AHV pension (capping). Should this limit be eliminated?",Welfare state & family,maxi,-0.018595390924429946,0.18803356872345547
+32217,"As part of the reform of the BVG (occupational pension plan), pensions are to be reduced (lowering the minimum conversion rate from 6.8% to 6%). Are you in favor of this measure?",Welfare state & family,maxi,0.048629071015042186,0.21842596575933254
+32218,Should paid parental leave be increased beyond today's 14 weeks of maternity leave and two weeks of paternity leave? [BePart question],Welfare state & family,maxi,-0.2598493564347117,0.18192871426159501
+32219,Should the federal government provide more financial support for public housing construction? [BePart question],Welfare state & family,mini,-0.2400723948628299,-0.05659205632263795
+32220,Should compulsory vaccination of children be introduced based on the Swiss vaccination plan?,Health,maxi,0.22470010831379114,0.23612289888036914
+32221,Are you in favor of the introduction of a tax on foods containing sugar (sugar tax)?,Health,maxi,-0.2296267812402539,-0.1810495853795739
+32222,"Should insured persons contribute more to health care costs (e.g., increase the minimum deductible)?",Health,mini,-0.20801286616492778,0.23464857096516417
+32223,Should the Federal Council's ability to restrict private and economic life in the event of a pandemic be more limited?,Health,mini,0.2045013062985726,0.16948912628120605
+32224,Should the federal government be given the authority to determine the hospital offering (national hospital planning with regard to locations and range of services)?,Health,maxi,-0.12914102475033246,0.22195083742218677
+32225,"According to the Swiss integrated schooling concept, children with learning difficulties or disabilities should be taught in regular classes. Do you approve of this concept?",Education,maxi,-0.03420565909582493,0.16249256231085593
+32226,Should the federal government raise the requirements for the gymnasiale matura?,Education,maxi,-0.07755516806357121,0.07877916709294189
+32227,"Should the state be more committed to equal educational opportunities (e.g., through subsidized remedial courses for students from low-income families)?",Education,mini,-0.36755124870794936,0.07136609664003929
+32228,"Should the conditions for naturalization be relaxed (e.g., shorter residence period)?",Immigration & integration,mini,-0.032038113788068666,0.2954086284817757
+32229,Should more qualified workers from non-EU/EFTA countries be allowed to work in Switzerland (increase third-country quota)?,Immigration & integration,maxi,0.15825460253734489,0.10773623299740688
+32230,Do you support efforts to house asylum seekers in centers outside Europe during the asylum procedure?,Immigration & integration,mini,0.07915425450947039,0.30732674301530805
+32231,Should foreign nationals who have lived in Switzerland for at least ten years be granted the right to vote and stand for election at the municipal level?,Immigration & integration,mini,0.15928773836417148,0.2541652461317562
+32232,Should cannabis use be legalized? [BePart question],Society & ethics,mini,-0.3556221522561043,-0.02358579617715575
+32233,Would you be in favour of doctors being allowed to administer direct active euthanasia in Switzerland?,Society & ethics,maxi,0.20334204618675328,0.29863105584520594
+32234,"Should a third official gender be introduced alongside ""female"" and ""male""?",Society & ethics,mini,-0.3321672576513528,0.1765773316026241
+32235,Do you think it's right for same-sex couples to have the same rights as heterosexual couples in all areas?,Society & ethics,maxi,-0.37299644108224944,-0.04522949911077219
+32236,Do you support tax cuts at the federal level over the next four years?,Finances & taxes,mini,-0.24580368987055742,-0.11518050855719453
+32237,Should married couples be taxed separately (individual taxation)? [BePart question],Finances & taxes,maxi,-0.32788861517353757,-0.06683002096348749
+32238,Would you support the introduction of a national inheritance tax on all inheritances over one million Swiss francs? [BePart question],Finances & taxes,mini,0.06129099859470127,0.11440767269550707
+32239,Should the differences between cantons with high and low financial capacity be further reduced through fiscal equalization?,Finances & taxes,maxi,0.038702168789237025,0.03896469360333593
+32240,"Are you in favor of introducing a minimum wage of CHF 4,000 for all full-time employees?",Economy & labour,mini,0.10712611508180679,0.16377672900643003
+32241,"Do you support stricter regulations for the financial sector (e.g., stricter capital requirements for banks, ban on bonuses)?",Economy & labour,mini,-0.029848481400199762,-0.36066452903089385
+32242,Should private households be free to choose their electricity supplier (complete liberalization of the electricity market)?,Economy & labour,maxi,0.11871020941038744,-0.30041174415795147
+32243,"Should housing construction regulations be relaxed (e.g., noise protection, occupancy rates)?",Economy & labour,maxi,0.279466358360465,0.19489245881130154
+32244,Are you in favor of stricter controls on equal pay for women and men?,Economy & labour,mini,-0.31394668025738015,0.10658937982033134
+32245,Should busy sections of highways be widened?,Energy & transport,mini,0.382185295223029,0.04930479952975766
+32246,Should Switzerland ban the registration of new passenger cars with internal combustion engines starting in 2035?,Energy & transport,mini,0.21820088055863646,-0.10763879061719436
+32247,"To achieve climate targets, should incentives and target agreements be relied on exclusively, rather than bans and restrictions?",Energy & transport,maxi,0.19034713689493366,-0.27727364603827287
+32248,Do you think it's fair that environmental and landscape protection rules are being relaxed to allow for the development of renewable energy?,Energy & transport,maxi,0.13137533221267064,-0.24953249128157043
+32249,Should the construction of new nuclear power plants in Switzerland be allowed again?,Energy & transport,mini,0.29341166108614986,-0.13025132798566724
+32250,Should the state guarantee a comprehensive public service offering also in rural regions?,Energy & transport,maxi,-0.16045868904499316,0.14754236675605992
+32251,Would you be in favor of the introduction of increasing electricity tariffs when consumption is higher (progressive electricity tariffs)?,Energy & transport,maxi,0.06760200859251461,-0.3159954501265872
+32252,"Are you in favor of further relaxing the protection regulations for large predators (lynx, wolf, bear)?",Nature conservation,mini,-0.07548000186402362,-0.3593801422029535
+32253,Should direct payments only be granted to farmers with proof of ecological performance?,Nature conservation,mini,-0.007188290425616651,-0.14347944511003172
+32254,Are you in favour of stricter animal welfare regulations for livestock (e.g. permanent access to outdoor areas)?,Nature conservation,maxi,0.15585862318064544,0.35320373710352676
+32255,Should 30% of Switzerland's land area be dedicated to preserving biodiversity? [BePart question],Nature conservation,maxi,0.3028176388697337,0.022463019776268696
+32256,Would you support a ban on single-use plastic and non-recyclable plastics? [BePart question],Nature conservation,mini,0.34186116353970225,0.13120707096699752
+32257,"Are you in favour of government measures to make the use of electronic devices more sustainable (e.g., right to repair, extension of warranty period, minimum guaranteed period for software updates)? [BePart question]",Nature conservation,maxi,0.13034942686266235,-0.36538703878911066
+32258,Should the Swiss mobile network be equipped throughout the country with the latest technology (currently 5G standard)?,"Democracy, Media & Digitalization",maxi,0.24705571057896683,-0.2138848807867956
+32259,Should the federal government be given additional powers in the area of digitization of government services in order to be able to impose binding directives and standards on the cantons?,"Democracy, Media & Digitalization",maxi,0.04202104069075228,-0.04079497419251401
+32260,"Are you in favor of stronger regulation of the major Internet platforms (i.e., transparency rules on algorithms, increased liability for content, combating disinformation)?","Democracy, Media & Digitalization",mini,-0.1609443593311709,-0.3393517895122229
+32261,"A popular initiative aims to reduce television and radio fees (CHF 200 per household, exemption for businesses). Do you support this initiative?","Democracy, Media & Digitalization",mini,0.08224153632974526,-0.08928601427829032
+32262,Are you in favour of lowering the voting age to 16?,"Democracy, Media & Digitalization",maxi,-0.2737703104297311,0.06580623675870256
+32263,Should it be possible to hold a referendum on federal spending above a certain amount (optional financial referendum)?,"Democracy, Media & Digitalization",maxi,-0.14714680094428167,-0.07192785318188993
+32264,"Are you in favor of expanding the army's target number of soldiers to at least 120,000?",Security & military,mini,-0.1107857420258101,0.29427996524776734
+32265,Should the Swiss Armed Forces expand their cooperation with NATO?,Security & military,maxi,0.37186078662155286,-0.06781356479367767
+32266,"Should the Federal Council be allowed to authorize other states to re-export Swiss weapons in cases of a war of aggression in violation of international law (e.g., the attack on Ukraine)? [BePart question]",Security & military,corr_maxi,0.3174739475577413,-0.023428238482531286
+32267,Should automatic facial recognition be banned in public spaces?,Security & military,mini,-0.13857432837322536,-0.2867197348733923
+32268,Should Switzerland terminate the Schengen agreement with the EU and reintroduce more security checks directly on the border? [BePart question],Security & military,mini,0.25569564714611936,0.08823039016711164
+32269,Are you in favor of closer relations with the European Union (EU)?,Foreign trade & foreign policy,maxi,0.30473045180739533,-0.16350421509240848
+32270,Should Switzerland strive for a comprehensive free trade agreement (including agriculture) with the USA?,Foreign trade & foreign policy,mini,0.16836807882449384,-0.046469303972781824
+32271,Should Swiss companies be obliged to ensure that their subsidiaries and suppliers operating abroad comply with social and environmental standards?,Foreign trade & foreign policy,maxi,0.20604370499092908,-0.011879508619303498
+32272,Should Switzerland terminate the Bilateral Agreements with the EU and seek a free trade agreement without the free movement of persons?,Foreign trade & foreign policy,mini,0.21886494704526552,0.04031939049845583
+32273,Should Switzerland return to a strict interpretation of neutrality (renounce economic sanctions to a large extent)? [BePart question],Foreign trade & foreign policy,mini,0.26092707042777463,-0.01219712359257968
+32274,"What is your position the following statement: ""Someone who is not guilty, has nothing to fear from state security measures.""",Values,maxi,-0.0009188367308009786,0.35611133665324646
+32275,"What is your position the following statement: ""In the long term, everyone benefits from a free market economy in the long term.""",Values,maxi,-0.07854783723344584,-0.09208504552049977
+32276,"What is your position the following statement: ""It is necessary for the State to balance out differences in income and wealth through redistribution"".",Values,corr_maxi,-0.2025432973289208,0.04488062733964841
+32277,"What is your position the following statement: ""It is best for a child, when one parent stays home full-time for childcare.""",Values,maxi,-0.2587808766944361,0.2230679695017257
+32278,"What is your position the following statement: ""The ongoing digitalization offers significantly more opportunities than risks.""",Values,maxi,0.019942300694559587,-0.21617170793450874
+32279,"What is your position the following statement: ""Punishing criminals is more important than reintegrating them into society.""",Values,maxi,-0.05275309679919467,0.3815497653752121
+32280,"What is your position the following statement: ""Stronger environmental protection is necessary, even if its application limits economic growth.""",Values,maxi,0.0995677389914636,-0.1961340151592809
+32281,"Should the federal government spend more or less in the area of ""Social services""?",Federal budget,corr_maxi,-0.15815683712712797,0.009530111842861136
+32282,"Should the federal government spend more or less in the area of ""Education and research""?",Federal budget,maxi,-0.27787988770005606,-0.1812817599603989
+32283,"Should the federal government spend more or less in the area of ""Agriculture""?",Federal budget,maxi,-0.21863937384464224,-0.24151779936312823
+32284,"Should the federal government spend more or less in the area of ""Public transport""?",Federal budget,maxi,-0.11591635357120496,-0.1978887470065122
+32285,"Should the federal government spend more or less in the area of ""Road traffic (motorised individual transport)""?",Federal budget,corr_maxi,-0.057467634085371984,-0.2253624604525784
+32286,"Should the federal government spend more or less in the area of ""Public security""?",Federal budget,maxi,0.17268333599320504,-0.19731445838334116
+32287,"Should the federal government spend more or less in the area of ""National defence""?",Federal budget,corr_maxi,-0.039640620894278625,-0.28656709163991495
+32288,"Should the federal government spend more or less in the area of ""Development assistance""?",Federal budget,maxi,-0.1608561865330952,-0.13330514019421968

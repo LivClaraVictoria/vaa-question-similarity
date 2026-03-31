@@ -1,0 +1,57 @@
+================================================================================
+MINI VS MAXI PARTY IMPACT — PHASE 2 REPORT
+================================================================================
+Generated: 2026-03-31 14:18
+Target party: Centre
+Questions added: 5
+Top-k (n): 36
+
+SELECTED QUESTIONS:
+--------------------------------------------------------------------------------
+  Q32235: "Do you think it's right for same-sex couples to have the sam"
+    Category: Society & ethics, mean_abs_r: 0.222, max_abs_r: 0.404
+    Δ(Centre): +0.48pp
+  Q32262: "Are you in favour of lowering the voting age to 16?"
+    Category: Democracy, Media & Digitalization, mean_abs_r: 0.279, max_abs_r: 0.509
+    Δ(Centre): +0.48pp
+  Q32239: "Should the differences between cantons with high and low fin"
+    Category: Finances & taxes, mean_abs_r: 0.199, max_abs_r: 0.330
+    Δ(Centre): +0.29pp
+  Q32233: "Would you be in favour of doctors being allowed to administe"
+    Category: Society & ethics, mean_abs_r: 0.089, max_abs_r: 0.297
+    Δ(Centre): +0.29pp
+  Q32275: "What is your position the following statement: "In the long "
+    Category: Values, mean_abs_r: 0.319, max_abs_r: 0.476
+    Δ(Centre): +0.25pp
+
+PARTY VISIBILITY TABLE (%):
+--------------------------------------------------------------------------------
+     Party |  Mini base |  + Additions | E5-INSTRUCT α=0.3 | E5-INSTRUCT α=0.4 | ANSWER-CORR α=1.0 | ANSWER-CORR α=1.1 | ANSWER-CORR α=1.5 |      QWEN3 α=0.6
+--------------------------------------------------------------------------------
+        SP |      12.50 |        12.57 |            12.51 |            12.58 |            12.54 |            12.50 |            12.54 |            12.40
+     Green |      12.62 |        12.95 |            12.95 |            12.95 |            12.96 |            12.95 |            12.91 |            12.93
+       GLP |      14.51 |        15.31 |            15.21 |            15.23 |            15.31 |            15.36 |            15.44 |            15.32
+    Centre |      18.09 |        19.84 |            19.89 |            19.86 |            19.83 |            19.84 |            19.91 |            19.87
+       FDP |       4.42 |         4.76 |             4.74 |             4.72 |             4.73 |             4.72 |             4.70 |             4.70
+       SVP |       4.87 |         5.07 |             5.08 |             5.08 |             5.09 |             5.10 |             5.09 |             5.14
+
+CRW REDUCTION FOR Centre:
+--------------------------------------------------------------------------------
+  Attack delta (no CRW): +1.74pp
+  E5-INSTRUCT α=0.3: +1.72pp (1% reduced)
+  E5-INSTRUCT α=0.4: +1.70pp (2% reduced)
+  ANSWER-CORR α=1.0: +1.75pp (-0% reduced)
+  ANSWER-CORR α=1.1: +1.76pp (-1% reduced)
+  ANSWER-CORR α=1.5: +1.80pp (-3% reduced)
+  QWEN3 α=0.6: +1.75pp (-0% reduced)
+
+CRW WEIGHTS FOR ADDED QUESTIONS:
+--------------------------------------------------------------------------------
+  Question | E5-INSTRUCT α=0.3 | E5-INSTRUCT α=0.4 | ANSWER-CORR α=1.0 | ANSWER-CORR α=1.1 | ANSWER-CORR α=1.5 |      QWEN3 α=0.6
+Q    32235 |           1.0145 |           0.9434 |           1.0065 |           1.0107 |           1.0052 |           1.0256
+Q    32262 |           1.0145 |           0.9835 |           1.0065 |           1.0018 |           0.9789 |           1.0256
+Q    32239 |           1.0145 |           0.9892 |           1.0065 |           1.0107 |           1.0355 |           1.0256
+Q    32233 |           1.0145 |           1.0390 |           1.0065 |           1.0107 |           1.0343 |           1.0256
+Q    32275 |           1.0145 |           1.0390 |           1.0065 |           1.0107 |           0.9818 |           1.0256
+  Avg mini |           0.9976 |           1.0002 |           0.9989 |           0.9985 |           0.9988 |           0.9957
+================================================================================

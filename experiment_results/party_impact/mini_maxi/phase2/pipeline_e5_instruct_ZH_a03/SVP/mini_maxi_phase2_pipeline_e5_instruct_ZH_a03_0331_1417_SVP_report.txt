@@ -1,0 +1,57 @@
+================================================================================
+MINI VS MAXI PARTY IMPACT — PHASE 2 REPORT
+================================================================================
+Generated: 2026-03-31 14:17
+Target party: SVP
+Questions added: 5
+Top-k (n): 36
+
+SELECTED QUESTIONS:
+--------------------------------------------------------------------------------
+  Q32233: "Would you be in favour of doctors being allowed to administe"
+    Category: Society & ethics, mean_abs_r: 0.089, max_abs_r: 0.297
+    Δ(SVP): +0.15pp
+  Q32262: "Are you in favour of lowering the voting age to 16?"
+    Category: Democracy, Media & Digitalization, mean_abs_r: 0.279, max_abs_r: 0.509
+    Δ(SVP): +0.11pp
+  Q32274: "What is your position the following statement: "Someone who "
+    Category: Values, mean_abs_r: 0.130, max_abs_r: 0.383
+    Δ(SVP): +0.08pp
+  Q32250: "Should the state guarantee a comprehensive public service of"
+    Category: Energy & transport, mean_abs_r: 0.161, max_abs_r: 0.278
+    Δ(SVP): +0.08pp
+  Q32277: "What is your position the following statement: "It is best f"
+    Category: Values, mean_abs_r: 0.202, max_abs_r: 0.357
+    Δ(SVP): +0.08pp
+
+PARTY VISIBILITY TABLE (%):
+--------------------------------------------------------------------------------
+     Party |  Mini base |  + Additions | E5-INSTRUCT α=0.3 | E5-INSTRUCT α=0.4 | ANSWER-CORR α=1.0 | ANSWER-CORR α=1.1 | ANSWER-CORR α=1.5 |      QWEN3 α=0.6
+--------------------------------------------------------------------------------
+        SP |      12.50 |        12.51 |            12.47 |            12.52 |            12.49 |            12.45 |            12.49 |            12.34
+     Green |      12.62 |        13.05 |            13.06 |            13.07 |            13.06 |            13.06 |            13.04 |            13.06
+       GLP |      14.51 |        15.14 |            15.04 |            15.06 |            15.15 |            15.19 |            15.28 |            15.13
+    Centre |      18.09 |        19.16 |            19.19 |            19.16 |            19.15 |            19.16 |            19.17 |            19.17
+       FDP |       4.42 |         4.42 |             4.39 |             4.37 |             4.39 |             4.38 |             4.37 |             4.35
+       SVP |       4.87 |         5.39 |             5.41 |             5.42 |             5.41 |             5.42 |             5.41 |             5.47
+
+CRW REDUCTION FOR SVP:
+--------------------------------------------------------------------------------
+  Attack delta (no CRW): +0.52pp
+  E5-INSTRUCT α=0.3: +0.53pp (-1% reduced)
+  E5-INSTRUCT α=0.4: +0.55pp (-5% reduced)
+  ANSWER-CORR α=1.0: +0.50pp (3% reduced)
+  ANSWER-CORR α=1.1: +0.50pp (5% reduced)
+  ANSWER-CORR α=1.5: +0.50pp (4% reduced)
+  QWEN3 α=0.6: +0.55pp (-6% reduced)
+
+CRW WEIGHTS FOR ADDED QUESTIONS:
+--------------------------------------------------------------------------------
+  Question | E5-INSTRUCT α=0.3 | E5-INSTRUCT α=0.4 | ANSWER-CORR α=1.0 | ANSWER-CORR α=1.1 | ANSWER-CORR α=1.5 |      QWEN3 α=0.6
+Q    32233 |           1.0145 |           1.0303 |           1.0065 |           1.0107 |           1.0255 |           1.0256
+Q    32262 |           1.0145 |           0.9775 |           1.0065 |           1.0018 |           0.9863 |           1.0256
+Q    32274 |           1.0145 |           1.0303 |           1.0065 |           1.0107 |           0.9866 |           1.0256
+Q    32250 |           1.0145 |           1.0303 |           1.0065 |           1.0107 |           1.0330 |           1.0256
+Q    32277 |           1.0145 |           1.0303 |           1.0065 |           1.0107 |           1.0330 |           1.0256
+  Avg mini |           0.9976 |           0.9967 |           0.9989 |           0.9985 |           0.9979 |           0.9957
+================================================================================
