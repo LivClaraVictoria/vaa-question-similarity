@@ -1,0 +1,57 @@
+================================================================================
+MINI VS MAXI PARTY IMPACT — PHASE 2 REPORT
+================================================================================
+Generated: 2026-03-31 17:11
+Target party: GLP
+Questions added: 5
+Top-k (n): 36
+
+SELECTED QUESTIONS:
+--------------------------------------------------------------------------------
+  Q32233: "Would you be in favour of doctors being allowed to administe"
+    Category: Society & ethics, mean_abs_r: 0.089, max_abs_r: 0.297
+    Δ(GLP): +0.94pp
+  Q32235: "Do you think it's right for same-sex couples to have the sam"
+    Category: Society & ethics, mean_abs_r: 0.222, max_abs_r: 0.404
+    Δ(GLP): +0.42pp
+  Q32237: "Should married couples be taxed separately (individual taxat"
+    Category: Finances & taxes, mean_abs_r: 0.077, max_abs_r: 0.143
+    Δ(GLP): +1.18pp
+  Q32242: "Should private households be free to choose their electricit"
+    Category: Economy & labour, mean_abs_r: 0.141, max_abs_r: 0.264
+    Δ(GLP): +0.61pp
+  Q32254: "Are you in favour of stricter animal welfare regulations for"
+    Category: Nature conservation, mean_abs_r: 0.247, max_abs_r: 0.463
+    Δ(GLP): +0.29pp
+
+PARTY VISIBILITY TABLE (%):
+--------------------------------------------------------------------------------
+     Party |  Mini base |  + Additions | E5-INSTRUCT α=0.3 | E5-INSTRUCT α=0.4 | ANSWER-CORR α=1.0 | ANSWER-CORR α=1.1 | ANSWER-CORR α=1.5 |      QWEN3 α=0.6
+--------------------------------------------------------------------------------
+        SP |      12.50 |        12.63 |            12.53 |            12.48 |            12.58 |            12.51 |            12.57 |            12.34
+     Green |      12.62 |        14.15 |            14.17 |            14.19 |            14.17 |            14.17 |            14.14 |            14.16
+       GLP |      14.51 |        17.68 |            17.58 |            17.59 |            17.68 |            17.75 |            17.80 |            17.71
+    Centre |      18.09 |        17.09 |            17.17 |            17.14 |            17.10 |            17.11 |            17.13 |            17.16
+       FDP |       4.42 |         4.88 |             4.86 |             4.84 |             4.86 |             4.85 |             4.83 |             4.84
+       SVP |       4.87 |         4.87 |             4.89 |             4.90 |             4.88 |             4.89 |             4.88 |             4.95
+
+CRW REDUCTION FOR GLP:
+--------------------------------------------------------------------------------
+  Attack delta (no CRW): +3.17pp
+  E5-INSTRUCT α=0.3: +3.15pp (1% reduced)
+  E5-INSTRUCT α=0.4: +3.11pp (2% reduced)
+  ANSWER-CORR α=1.0: +3.15pp (0% reduced)
+  ANSWER-CORR α=1.1: +3.23pp (-2% reduced)
+  ANSWER-CORR α=1.5: +3.31pp (-5% reduced)
+  QWEN3 α=0.6: +3.19pp (-1% reduced)
+
+CRW WEIGHTS FOR ADDED QUESTIONS:
+--------------------------------------------------------------------------------
+  Question | E5-INSTRUCT α=0.3 | E5-INSTRUCT α=0.4 | ANSWER-CORR α=1.0 | ANSWER-CORR α=1.1 | ANSWER-CORR α=1.5 |      QWEN3 α=0.6
+Q    32233 |           1.0145 |           1.0288 |           1.0065 |           1.0105 |           1.0223 |           1.0323
+Q    32235 |           1.0145 |           0.9826 |           1.0065 |           1.0105 |           1.0231 |           1.0323
+Q    32237 |           1.0145 |           1.0288 |           1.0065 |           1.0105 |           1.0295 |           1.0323
+Q    32242 |           1.0145 |           1.0288 |           1.0065 |           1.0105 |           1.0295 |           1.0323
+Q    32254 |           1.0145 |           1.0164 |           1.0065 |           1.0050 |           0.9979 |           0.9292
+  Avg mini |           0.9976 |           0.9972 |           0.9989 |           0.9984 |           0.9966 |           0.9981
+================================================================================

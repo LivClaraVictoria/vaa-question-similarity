@@ -407,7 +407,7 @@ def run_metric_analysis(
                 eff_m = effective_usable_measure(merged, d_xy, a)
                 adj_window = max(0.0, a - d_xy)
                 row[_eff_measure_col(a)] = eff_m
-                row[_eff_col(a)] = (eff_m / adj_window) if adj_window > 0.0 else 0.0
+                row[_eff_col(a)] = eff_m / a if a > 0.0 else 0.0
             row["metric"] = metric_name
             coverage_rows.append(row)
 
@@ -475,7 +475,7 @@ def _print_verification(
         cov = closest.get(_alpha_col(a), float("nan"))
         eff = closest.get(_eff_col(a), 0.0)
         adj = max(0.0, a - d_xy)
-        print(f"    α={a:.1f}: coverage={cov:.3f}  eff_usable_frac={eff:.3f}  "
+        print(f"    α={a:.1f}: coverage={cov:.3f}  eff_usable_frac(of α)={eff:.3f}  "
               f"adj_window={adj:.3f}")
     print(f"  -----------------------------------")
 

@@ -111,7 +111,7 @@ at every α value in the grid (0.1, 0.2, ..., 1.5, 1.6, 1.8, ..., 3.0).
 | `covered_measure_{α}` | Absolute measure of forbidden intervals ∩ [0, α] |
 | `coverage_{α}` | Fraction of [0, α] that is forbidden = `covered_measure / α` |
 | `eff_usable_measure_{α}` | Absolute measure of [d_xy, α] that is NOT forbidden |
-| `eff_usable_frac_{α}` | Fraction of [d_xy, α] that is usable = `eff_usable_measure / (α − d_xy)`. **0.0 when d_xy ≥ α** (pair never adjacent — CRW cannot detect them) |
+| `eff_usable_frac_{α}` | Fraction of [0, α] that is both adjacent and usable = `eff_usable_measure / α`. **0.0 when d_xy ≥ α** (pair never adjacent — CRW cannot detect them) |
 
 **Interpretation guide:**
 - `coverage_{α}` close to 1 → nearly all of [0, α] is forbidden (pair has very different
