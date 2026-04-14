@@ -230,6 +230,7 @@ subset_n = None  # for quick testing: set to an integer to subset the data, or N
 
 # Method Choice for clone robust weighting
 crw_paper_choice = "P2"  # Options: "P1", "P2"
+weighting_func_name = "class_uniform"  # Options: "class_uniform", "smoothed"
 
 # Keep track of CLI overrides
 overrides: list = []
@@ -366,6 +367,6 @@ p_rbo = 0.9  # RBO parameter: how steeply to discount lower ranks (0.9 means top
 # Layered constants: each stage extends the previous.
 # embedding_instruction/embedding_task included from distance stage — None hashes as null, non-None as its value.
 DISTANCE_HASH_PARAMS = ["data_year", "dist", "data_choice", "clone_id", "embedding_instruction", "embedding_task"]
-CRW_HASH_PARAMS = DISTANCE_HASH_PARAMS + ["alpha", "crw_paper_choice"]
+CRW_HASH_PARAMS = DISTANCE_HASH_PARAMS + ["alpha", "crw_paper_choice", "weighting_func_name"]
 REC_HASH_PARAMS = CRW_HASH_PARAMS + ["rec_dist_method", "n_recommendations", "subset_n", "use_OG_weights", "district"]
 COMPARATOR_HASH_PARAMS = REC_HASH_PARAMS

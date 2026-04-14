@@ -14,9 +14,10 @@ class CloneRobustReweighter:
     def __init__(self, config: Any):
         self.alpha = getattr(config, "alpha", 1.0)
         self.v_func = getattr(config, "v_func", lambda r, alpha: 1.0 / alpha)
-        self.weighting_func = getattr(
-            config, "weighting_func", self._class_uniform_weighting_fn
-        )
+        if getattr(config, "weighting_func_name", "class_uniform") == "smoothed":
+            self.weighting_func = self._smoothed_class_uniform_weighting_fn
+        else:
+            self.weighting_func = self._class_uniform_weighting_fn
         self.important_params_list = list(config.CRW_HASH_PARAMS)
 
         print(
@@ -35,6 +36,10 @@ class CloneRobustReweighter:
             [1.0 / (num_classes * class_counts[row]) for row in adj_rows]
         )
         return weights
+
+    def _smoothed_class_uniform_weighting_fn(self, adj: np.ndarray) -> np.ndarray:
+        w_hat = self._class_uniform_weighting_fn(adj)
+        return adj @ (w_hat / adj.sum(axis=1))
 
     def _get_distance_matrix(
         self, df: pd.DataFrame

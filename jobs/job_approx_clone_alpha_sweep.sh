@@ -4,7 +4,7 @@
 #SBATCH --error=/itet-stor/liweiss/net_scratch/vaa-question-similarity/jobs/out/%j.err
 #SBATCH --mem=32G
 #SBATCH --nodes=1
-#SBATCH --time=04:00:00
+#SBATCH --time=08:00:00
 #SBATCH --cpus-per-task=8
 #SBATCH --gres=gpu:0
 #SBATCH --exclude=tikgpu10,tikgpu[06-09]

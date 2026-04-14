@@ -65,9 +65,8 @@ RESULTS_DIR = Path("experiment_results/exp1/approx_clone_alpha_sweep")
 # (label, config_path, alpha_or_list)
 # None → full alpha sweep with DEFAULT_ALPHAS
 METRIC_CONFIGS = [
-    ("ANSWER-CORR-ARCCOS", "configs/full_pipeline/base_data/pipeline_answer_corr_arccos_ZH.py", None),
-    ("E5-INSTRUCT", "configs/full_pipeline/base_data/pipeline_e5_instruct_ZH_a03.py", [0.4]),
-    ("QWEN3", "configs/full_pipeline/base_data/pipeline_qwen3_ZH.py", [0.6]),
+    ("ANSWER-CORR-ARCCOS-SMOOTHED", "configs/full_pipeline/base_data/pipeline_answer_corr_arccos_ZH_smoothed.py", None),
+    ("E5-INSTRUCT-SMOOTHED", "configs/full_pipeline/base_data/pipeline_e5_instruct_ZH_a03_smoothed.py", [0.4]),
 ]
 
 
