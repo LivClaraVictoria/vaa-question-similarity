@@ -67,6 +67,7 @@ RESULTS_DIR = Path("experiment_results/exp1/approx_clone_alpha_sweep")
 METRIC_CONFIGS = [
     ("ANSWER-CORR-ARCCOS-SMOOTHED", "configs/full_pipeline/base_data/pipeline_answer_corr_arccos_ZH_smoothed.py", None),
     ("E5-INSTRUCT-SMOOTHED", "configs/full_pipeline/base_data/pipeline_e5_instruct_ZH_a03_smoothed.py", [0.4]),
+    ("QWEN3-SMOOTHED", "configs/full_pipeline/base_data/pipeline_qwen3_ZH_smoothed.py", [0.6]),
 ]
 
 
@@ -641,10 +642,10 @@ def _plot_metrics(
     df = pd.DataFrame(all_rows)
 
     # Separate sweep metric from single-point metrics
-    sweep_df = df[df["metric"] == "ANSWER-CORR-ARCCOS"].sort_values("alpha")
+    sweep_df = df[df["metric"] == "ANSWER-CORR-ARCCOS-SMOOTHED"].sort_values("alpha")
     point_dfs = {
         label: df[df["metric"] == label]
-        for label in ["E5-INSTRUCT", "QWEN3"]
+        for label in ["E5-INSTRUCT-SMOOTHED", "QWEN3-SMOOTHED"]
         if label in df["metric"].values
     }
 
@@ -655,8 +656,8 @@ def _plot_metrics(
     ]
 
     fig, axes = plt.subplots(1, 3, figsize=(18, 5))
-    point_colors = {"E5-INSTRUCT": "#2196F3", "QWEN3": "#FF9800"}
-    point_markers = {"E5-INSTRUCT": "D", "QWEN3": "s"}
+    point_colors = {"E5-INSTRUCT-SMOOTHED": "#2196F3", "QWEN3-SMOOTHED": "#FF9800"}
+    point_markers = {"E5-INSTRUCT-SMOOTHED": "D", "QWEN3-SMOOTHED": "s"}
 
     for ax, (crw_col, label, base_col) in zip(axes, metrics):
         # Sweep curve
@@ -664,7 +665,7 @@ def _plot_metrics(
             ax.plot(
                 sweep_df["alpha"], sweep_df[crw_col],
                 "o-", color="#4CAF50", markersize=4, linewidth=1.5,
-                label="ANSWER-CORR-ARCCOS (CRW)",
+                label="ANSWER-CORR-ARCCOS-SMOOTHED (CRW)",
             )
 
             # Baseline as dashed line
