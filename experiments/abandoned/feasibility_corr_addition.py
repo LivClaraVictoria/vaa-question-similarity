@@ -25,7 +25,7 @@ sys.path.insert(
 from vqs.config_utils import load_config
 from vqs.data_loader import load_dataset
 from vqs.recommendation_engine import RecommendationEngine
-from experiments.natural_redundancy.mini_maxi_party_impact import (
+from experiments.approximate_clones.partisan_distortion import (
     filter_to_mini,
     add_question_to_mini,
     add_questions_to_mini,

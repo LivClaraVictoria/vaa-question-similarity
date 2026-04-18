@@ -38,7 +38,7 @@ echo "SLURM_JOB_ID: ${SLURM_JOB_ID}"
 conda activate ${CONDA_ENVIRONMENT}
 cd ${DIRECTORY}
 
-python -u -m experiments.synthetic_clones.party_impact.party_impact --mode compile --config ${PIPELINE_CONFIG}
+python -u -m experiments.perfect_clones.partisan_distortion --mode compile --config ${PIPELINE_CONFIG}
 
 echo "Finished at: $(date)"
 exit 0

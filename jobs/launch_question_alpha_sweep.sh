@@ -29,7 +29,7 @@ cd "${PROJECT_DIR}"
 [[ -f /itet-stor/liweiss/net_scratch/conda/bin/conda ]] && eval "$(/itet-stor/liweiss/net_scratch/conda/bin/conda shell.bash hook)"
 conda activate bachelor-thesis
 
-python -u -m experiments.synthetic_clones.rec_change.question_alpha_sweep \
+python -u -m experiments.perfect_clones.recommendation_distortion \
     --config "${PIPELINE_CONFIG}" \
     --mode prepare
 

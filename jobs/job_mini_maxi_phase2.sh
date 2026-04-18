@@ -47,7 +47,7 @@ PHASE2_ARGS="--mode phase2 --config ${PIPELINE_CONFIG}"
 [[ -n "${TARGET_PARTY}" ]] && PHASE2_ARGS="${PHASE2_ARGS} --target-party ${TARGET_PARTY}"
 [[ -n "${SELECTION_MODE}" ]] && PHASE2_ARGS="${PHASE2_ARGS} --selection-mode ${SELECTION_MODE}"
 
-python -u -m experiments.natural_redundancy.mini_maxi_party_impact ${PHASE2_ARGS}
+python -u -m experiments.approximate_clones.partisan_distortion ${PHASE2_ARGS}
 
 echo "Finished at: $(date)"
 exit 0

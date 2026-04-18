@@ -43,11 +43,11 @@ import seaborn as sns
 from scipy.stats import pearsonr
 from sklearn.manifold import MDS
 
-from experiments.synthetic_clones.rec_change.alpha_sweep import DEFAULT_ALPHAS
+from experiments.perfect_clones.model_selection import DEFAULT_ALPHAS
 from experiments._common import _get_clean_name, _get_question_text_col, _resolve_n
 from cross_run_analysis.analyzer import CrossRunAnalyzer
 from vqs.config_utils import load_config
-from experiments.natural_redundancy.mini_maxi_party_impact import (
+from experiments.approximate_clones.partisan_distortion import (
     add_questions_to_mini,
     compute_redundancy_scores,
     filter_to_mini,

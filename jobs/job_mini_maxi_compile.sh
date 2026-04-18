@@ -42,7 +42,7 @@ cd ${DIRECTORY}
 COMPILE_ARGS="--mode compile --config ${PIPELINE_CONFIG}"
 [[ -n "${SELECTION_MODE}" ]] && COMPILE_ARGS="${COMPILE_ARGS} --selection-mode ${SELECTION_MODE}"
 
-python -u -m experiments.natural_redundancy.mini_maxi_party_impact ${COMPILE_ARGS}
+python -u -m experiments.approximate_clones.partisan_distortion ${COMPILE_ARGS}
 
 echo "Finished at: $(date)"
 exit 0

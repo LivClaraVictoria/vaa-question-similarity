@@ -42,7 +42,7 @@ export HF_HOME=/usr/itetnas04/data-scratch-01/${ETH_USERNAME}/data/.cache/huggin
 
 cd ${DIRECTORY}
 
-python -u -m experiments.natural_redundancy.approx_clone_alpha_sweep \
+python -u -m experiments.approximate_clones.recommendation_distortion \
     --config configs/full_pipeline/base_data/pipeline_e5_instruct_ZH_a03.py \
     --top-k 5
 

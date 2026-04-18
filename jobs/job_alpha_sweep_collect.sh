@@ -43,7 +43,7 @@ cd ${DIRECTORY}
 OUTPUT_DIR_FLAG=""
 [[ -n "${OUTPUT_DIR}" ]] && OUTPUT_DIR_FLAG="--output-dir ${OUTPUT_DIR}"
 
-python -u -m experiments.synthetic_clones.rec_change.alpha_sweep \
+python -u -m experiments.perfect_clones.model_selection \
     --mode collect \
     --config_a "${CONFIG_A}" \
     --config_b "${CONFIG_B}" \

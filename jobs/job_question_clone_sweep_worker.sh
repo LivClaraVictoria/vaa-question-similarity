@@ -45,7 +45,7 @@ export HF_HOME=/usr/itetnas04/data-scratch-01/${ETH_USERNAME}/data/.cache/huggin
 
 cd ${DIRECTORY}
 
-python -u -m experiments.synthetic_clones.rec_change.question_impact \
+python -u -m experiments.explanatory.question_impact \
     --mode worker \
     --task-id "${SLURM_ARRAY_TASK_ID}" \
     --config "${PIPELINE_CONFIG}" \

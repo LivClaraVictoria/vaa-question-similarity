@@ -51,7 +51,7 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 
-from experiments.synthetic_clones.rec_change.alpha_sweep import _compute_alpha, _get_or_compute_analysis, _setup_pipeline
+from experiments.perfect_clones.model_selection import _compute_alpha, _get_or_compute_analysis, _setup_pipeline
 from experiments._common import _get_clean_name, _resolve_n
 from configs import base_constants as default_config
 from cross_run_analysis.analyzer import CrossRunAnalyzer

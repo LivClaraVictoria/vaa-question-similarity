@@ -43,7 +43,7 @@ PRE_ARGS="--mode pre-paraphrases --config ${PIPELINE_CONFIG}"
 [[ -n "${PHASE1_CSV}" ]] && PRE_ARGS="${PRE_ARGS} --phase1-csv ${PHASE1_CSV}"
 [[ -n "${TOP_K}" ]] && PRE_ARGS="${PRE_ARGS} --top-k ${TOP_K}"
 
-python -u -m experiments.synthetic_clones.party_impact.party_impact ${PRE_ARGS}
+python -u -m experiments.perfect_clones.partisan_distortion ${PRE_ARGS}
 
 echo "Finished at: $(date)"
 exit 0

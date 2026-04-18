@@ -9,7 +9,7 @@ Supports three modes:
 
 Clone types and CRW mode:
     --clone-types: Comma-separated clone types (default: identical).
-    --n-clones:    Number of clones per question (default: 10).
+    --n-clones:    Number of clones per question (default: 4).
 
     When the config specifies alpha > 0 AND a distance metric (e.g. E5-INSTRUCT),
     the script automatically runs in CRW mode: computes embedding distances, CRW

@@ -133,7 +133,7 @@ def _compute_corr_maxi_from_config(
 ) -> list:
     from vqs.config_utils import load_config
     from vqs.data_loader import load_dataset
-    from experiments.natural_redundancy.mini_maxi_party_impact import compute_redundancy_scores
+    from experiments.approximate_clones.partisan_distortion import compute_redundancy_scores
 
     config = load_config(config_path)
     dataset = load_dataset(config)

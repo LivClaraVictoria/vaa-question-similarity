@@ -44,7 +44,7 @@ export HF_HOME=/usr/itetnas04/data-scratch-01/${ETH_USERNAME}/data/.cache/huggin
 
 cd ${DIRECTORY}
 
-python -u -m experiments.synthetic_clones.rec_change.alpha_sweep \
+python -u -m experiments.perfect_clones.model_selection \
     --config_a "${CONFIG_A}" \
     --config_b "${CONFIG_B}" \
     --alphas 0.3

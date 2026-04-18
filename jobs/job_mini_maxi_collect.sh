@@ -40,7 +40,7 @@ echo "SLURM_JOB_ID: ${SLURM_JOB_ID}"
 conda activate ${CONDA_ENVIRONMENT}
 cd ${DIRECTORY}
 
-python -u -m experiments.natural_redundancy.mini_maxi_party_impact \
+python -u -m experiments.approximate_clones.partisan_distortion \
     --mode collect \
     --config "${PIPELINE_CONFIG}" \
     --sweep-dir "${SWEEP_DIR}"

@@ -55,7 +55,7 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 
-from experiments.synthetic_clones.rec_change.alpha_sweep import DEFAULT_ALPHAS, _setup_side
+from experiments.perfect_clones.model_selection import DEFAULT_ALPHAS, _setup_side
 from experiments._common import _get_clean_name, _resolve_n, _get_question_text_col
 from clone_pipeline.applicator import apply_specs
 from clone_pipeline.paraphrase_generator import ensure_paraphrases
