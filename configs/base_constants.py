@@ -43,20 +43,21 @@ DATA_2019_DIR = RAW_DIR / "smart vote data"
 
 # experiment results path
 RESULTS_DIR = PROJECT_ROOT / "experiment_results"
-DIST_RESULTS_DIR = RESULTS_DIR / "distance_metric"
+PIPELINE_OUTPUTS_DIR = RESULTS_DIR / "pipeline_outputs"
+DIST_RESULTS_DIR = PIPELINE_OUTPUTS_DIR / "distance_metrics"
 FAKE_RESULTS_DIR = DIST_RESULTS_DIR / "fake_results"
 CLEANED_RESULTS_DIR = DIST_RESULTS_DIR / "cleaned_results"
 CLONED_RESULTS_DIR = DIST_RESULTS_DIR / "cloned_results"
 
-QU_WEIGHT_DIR = RESULTS_DIR / "question_weighting_results"
+QU_WEIGHT_DIR = PIPELINE_OUTPUTS_DIR / "question_weights"
 P1_WEIGHT_DIR = QU_WEIGHT_DIR / "P1"
 P2_WEIGHT_DIR = QU_WEIGHT_DIR / "P2"
 CLONED_QU_WEIGHT_DIR = QU_WEIGHT_DIR / "cloned"
-RECOMMENDATION_RESULTS_DIR = RESULTS_DIR / "recommendation_results"
+RECOMMENDATION_RESULTS_DIR = PIPELINE_OUTPUTS_DIR / "recommendations"
 COMPARISON_RESULTS_DIR = RESULTS_DIR / "comparator_results"
-ALPHA_SWEEP_RESULTS_DIR = RESULTS_DIR / "alpha_sweep_results"
-QUESTION_REMOVAL_RESULTS_DIR = RESULTS_DIR / "question_removal_results"
-THRESHOLD_SWEEP_RESULTS_DIR = RESULTS_DIR / "threshold_alpha_sweep_results"
+ALPHA_SWEEP_RESULTS_DIR = RESULTS_DIR / "exp1" / "model_alpha_sweep"
+QUESTION_REMOVAL_RESULTS_DIR = RESULTS_DIR / "exp2_question_removal"
+THRESHOLD_SWEEP_RESULTS_DIR = RESULTS_DIR / "exp1" / "threshold_alpha_sweep"
 
 
 # Specific data files
