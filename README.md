@@ -27,6 +27,7 @@ conda activate vqs-env
 
 # 3. Install the required dependencies
 pip install -r requirements.txt
+```
 
 ## Repository Structure
 
