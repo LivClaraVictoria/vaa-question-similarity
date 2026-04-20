@@ -21,7 +21,7 @@ echo "  Parties: ${PARTIES[*]}"
 echo ""
 
 # --- Alpha = 1.5 ---
-export PIPELINE_CONFIG="configs/full_pipeline/base_data/pipeline_answer_corr_arccos_ZH_a15.py"
+export PIPELINE_CONFIG="configs/base_pipeline/pipeline_answer_corr_arccos_ZH_a15.py"
 
 echo "--- Alpha=1.5: Pre-generating paraphrases ---"
 PRE_JOB=$(sbatch --parsable --export=ALL "${SCRIPT_DIR}/job_party_impact_pre_paraphrases.sh")

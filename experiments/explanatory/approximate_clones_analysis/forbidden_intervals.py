@@ -47,11 +47,11 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[3] / "dependencies" / "r
 
 METRIC_CONFIGS = {
     "E5-INSTRUCT": {
-        "config_path": "configs/full_pipeline/base_data/pipeline_e5_instruct_ZH.py",
+        "config_path": "configs/base_pipeline/pipeline_e5_instruct_ZH.py",
         "key_alphas": [0.3, 0.4],
     },
     "ANSWER-CORRELATION-ARCCOS": {
-        "config_path": "configs/full_pipeline/base_data/pipeline_answer_corr_arccos_ZH.py",
+        "config_path": "configs/base_pipeline/pipeline_answer_corr_arccos_ZH.py",
         "key_alphas": [1.1, 1.5],
     },
 }

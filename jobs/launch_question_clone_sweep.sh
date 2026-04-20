@@ -11,7 +11,7 @@ PROJECT_DIR="/itet-stor/liweiss/net_scratch/vaa-question-similarity"
 SWEEP_DIR="${PROJECT_DIR}/experiment_results/question_impact/clone_sweep_$(date +%Y%m%d_%H%M%S)"
 mkdir -p "${SWEEP_DIR}"
 
-export PIPELINE_CONFIG="configs/full_pipeline/base_data/pipeline_e5_instruct_ZH_a03.py"
+export PIPELINE_CONFIG="configs/base_pipeline/pipeline_e5_instruct_ZH_a03.py"
 export CLONE_TYPES="easy_paraphrase,hard_paraphrase,negation_easy,negation_hard,perfect_mix"
 export N_CLONES=4
 export SWEEP_DIR

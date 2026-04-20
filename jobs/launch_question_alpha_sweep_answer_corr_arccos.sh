@@ -15,7 +15,7 @@ PROJECT_DIR="/itet-stor/liweiss/net_scratch/vaa-question-similarity"
 SWEEP_DIR="${PROJECT_DIR}/experiment_results/exp1/question_alpha_sweep/answer_corr_arccos_$(date +%Y%m%d_%H%M%S)"
 mkdir -p "${SWEEP_DIR}"
 
-export PIPELINE_CONFIG="configs/full_pipeline/base_data/pipeline_answer_corr_arccos_ZH.py"
+export PIPELINE_CONFIG="configs/base_pipeline/pipeline_answer_corr_arccos_ZH.py"
 export SWEEP_DIR
 export CLONE_TYPE="identical"
 export N_CLONES=4

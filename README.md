@@ -63,9 +63,9 @@ All scripts should be executed as Python modules (e.g., `python -m <module>`) fr
 
 | Script | Purpose | Example Execution |
 | :--- | :--- | :--- |
-| `main.py` | Runs the full pipeline: distances -> CRW weights -> recommendations. | `python -m main --config configs/full_pipeline/base_data/pipeline_e5_ZH.py` |
-| `clone_main.py` | Generates synthetic cloned question datasets. | `python -m clone_main --config configs/create_clones/identical_q32214_n10.py` |
-| `comparator_main.py` | Compares two pipeline runs and generates metrics. | `python -m comparator_main <run_a.parquet> <run_b.parquet>` |
+| `main.py` | Unified CLI: dispatches all subcommands (pipeline, compare, generate-clones, experiments). | `python -m main pipeline --config configs/base_pipeline/pipeline_e5_ZH.py` |
+| `main.py generate-clones` | Generates cloned question datasets. | `python -m main generate-clones --config configs/create_clones/identical_q32214_n10.py` |
+| `main.py compare` | Compares two pipeline runs and generates metrics. | `python -m main compare <run_a.parquet> <run_b.parquet>` |
 
 ---
 
@@ -81,8 +81,8 @@ Determines the optimal embedding model for all subsequent experiments by running
 
 ```bash
 python -m experiments.perfect_clones.model_selection \
-    --config_a configs/full_pipeline/base_data/pipeline_e5_ZH.py \
-    --config_b configs/full_pipeline/cloned/identical_combinedvar_n10_e5_ZH.py
+    --config_a configs/base_pipeline/pipeline_e5_ZH.py \
+    --config_b configs/experiments/verification/identical_combinedvar_n10_e5_ZH.py
 ```
 
 ---
@@ -103,8 +103,8 @@ Key scripts:
 
 ```bash
 python -m experiments.perfect_clones.model_selection \
-    --config_a configs/full_pipeline/base_data/pipeline_e5_ZH.py \
-    --config_b configs/full_pipeline/cloned/identical_combinedvar_n10_e5_ZH.py
+    --config_a configs/base_pipeline/pipeline_e5_ZH.py \
+    --config_b configs/experiments/verification/identical_combinedvar_n10_e5_ZH.py
 ```
 
 #### Partisan Distortion
@@ -120,7 +120,7 @@ bash jobs/launch_party_impact.sh
 # Phase 2 (requires existing Phase 1 CSV):
 python -m experiments.perfect_clones.partisan_distortion \
     --mode phase2 \
-    --config configs/full_pipeline/base_data/pipeline_e5_instruct_ZH_a03.py \
+    --config configs/base_pipeline/pipeline_e5_instruct_ZH_a03.py \
     --target-party Centre \
     --phase1-csv <path-to-phase1-csv>
 ```
@@ -157,8 +157,8 @@ Key scripts:
 * `model_benchmark.py`: evaluates 10 embedding models on a synthetic benchmark dataset, providing an explanation of why certain models perform better in the alpha sweep.
   ```bash
   # Run each model on the fake benchmark dataset first (one config per model):
-  python -m main --config configs/distance_method/fake/fake_e5_instruct.py
-  # Repeat for each config in configs/distance_method/fake/, then evaluate:
+  python -m main --config configs/distance_only/fake/fake_e5_instruct.py
+  # Repeat for each config in configs/distance_only/fake/, then evaluate:
   python -m experiments.explanatory.model_benchmark
   ```
 * `distances/distance_structure_analysis.py`: analyzes the correlation structure of pairwise question distances, validates embedding models against voter-answer correlation ground truth, and compares within-topic vs. cross-topic distance distributions.
@@ -168,7 +168,7 @@ Key scripts:
 * `question_impact.py`: sweeps all 75 questions, measuring how much each one distorts recommendations when cloned. Used to identify the top-5 most impactful questions for Experiment 1.
   ```bash
   python -m experiments.explanatory.question_impact \
-      --config configs/full_pipeline/base_data/pipeline_e5_ZH.py
+      --config configs/base_pipeline/pipeline_e5_ZH.py
   ```
 * `approximate_clones_analysis/`: distance-level analyses for the approximate clone setup (distance distributions, forbidden intervals).
 * Additional scripts: `category_analysis.py`, `recommendation_metric_agreement.py`, `compare_recommendation_and_party_distortion.py`, etc.
@@ -199,7 +199,7 @@ The pipeline uses a Python-based inheritance system for configuration.
 * Base defaults are defined in `configs/base_constants.py`.
 * Specific runs inherit from the base and override parameters (e.g., `data_year`, `alpha`, `dist`, `embedding_instruction`).
 * You can pass CLI overrides to `main.py` directly:
-    `python -m main --config configs/full_pipeline/base_data/pipeline_e5_ZH.py alpha=0.8 data_year=2019`
+    `python -m main --config configs/base_pipeline/pipeline_e5_ZH.py alpha=0.8 data_year=2019`
 
 ---
 

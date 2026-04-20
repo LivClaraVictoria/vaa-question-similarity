@@ -12,7 +12,7 @@ Two metrics: ANSWER-CORRELATION-ARCCOS and E5-INSTRUCT.
 Usage:
     # Recompute corr_maxi from voter data (top-k by max |Pearson r| to any mini question)
     python -m experiments.exploratory.analysis.mini_maxi_distance_map \\
-        --config configs/full_pipeline/base_data/pipeline_answer_corr_ZH.py
+        --config configs/base_pipeline/pipeline_answer_corr_ZH.py
 
     # Explicit corr_maxi IDs (e.g. for party impact analysis with a custom selection)
     python -m experiments.exploratory.analysis.mini_maxi_distance_map \\
@@ -20,7 +20,7 @@ Usage:
 
     # Different top-k
     python -m experiments.exploratory.analysis.mini_maxi_distance_map \\
-        --config configs/full_pipeline/base_data/pipeline_answer_corr_ZH.py --top-k 10
+        --config configs/base_pipeline/pipeline_answer_corr_ZH.py --top-k 10
 
 Outputs (saved to experiment_results/distance_analysis/mini_maxi_map/):
     - {metric}_map_{ts}.png           -- 2D MDS scatter plot

@@ -8,8 +8,8 @@ and the integral evaluates uniformly to N for all N questions. CRW then produces
 recommendations to the unweighted baseline → Jaccard = Spearman = Kendall = 1.0.
 
 Usage:
-    python -m scripts.verify_crw_pipeline --config configs/full_pipeline/base_data/pipeline_e5_ZH.py
-    python -m scripts.verify_crw_pipeline --config configs/full_pipeline/base_data/pipeline_e5_ZH.py -n 35
+    python -m scripts.verify_crw_pipeline --config configs/base_pipeline/pipeline_e5_ZH.py
+    python -m scripts.verify_crw_pipeline --config configs/base_pipeline/pipeline_e5_ZH.py -n 35
 """
 
 import argparse

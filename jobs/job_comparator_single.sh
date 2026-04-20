@@ -38,7 +38,7 @@ echo "Comparing: ${REC_A} vs ${REC_B}"
 conda activate ${CONDA_ENVIRONMENT}
 cd ${DIRECTORY}
 
-python -u -m comparator_main "${REC_A}" "${REC_B}"
+python -u -m main compare "${REC_A}" "${REC_B}"
 
 echo "Finished at: $(date)"
 exit 0

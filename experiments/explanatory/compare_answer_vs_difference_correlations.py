@@ -25,7 +25,7 @@ import seaborn as sns
 from vqs.config_utils import load_config
 from vqs.data_loader import load_dataset
 
-CONFIG_PATH = "configs/full_pipeline/base_data/pipeline_e5_ZH.py"
+CONFIG_PATH = "configs/base_pipeline/pipeline_e5_ZH.py"
 OUTPUT_DIR = Path("experiment_results/question_impact/difference_space_analysis")
 N_SAMPLE_VOTERS = 1000
 SEED = 42

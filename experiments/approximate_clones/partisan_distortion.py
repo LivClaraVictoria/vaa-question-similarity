@@ -13,35 +13,35 @@ Phase 2 (phase2): For top-K questions benefiting a target party, add them all
 Usage:
     # Phase 1 — Sequential:
     python -m mini_maxi_party_impact_main \\
-        --config configs/full_pipeline/base_data/pipeline_e5_instruct_ZH_a03.py
+        --config configs/base_pipeline/pipeline_e5_instruct_ZH_a03.py
 
     # Phase 1 — Worker (one question, for SLURM array):
     python -m mini_maxi_party_impact_main --mode worker --task-id 3 \\
-        --config configs/full_pipeline/base_data/pipeline_e5_instruct_ZH_a03.py \\
+        --config configs/base_pipeline/pipeline_e5_instruct_ZH_a03.py \\
         --sweep-dir /path/to/sweep_dir
 
     # Phase 1 — Collect (aggregate workers + plot):
     python -m mini_maxi_party_impact_main --mode collect \\
-        --config configs/full_pipeline/base_data/pipeline_e5_instruct_ZH_a03.py \\
+        --config configs/base_pipeline/pipeline_e5_instruct_ZH_a03.py \\
         --sweep-dir /path/to/sweep_dir
 
     # Phase 2 — CRW correction for top-K (by party delta):
     python -m mini_maxi_party_impact_main --mode phase2 \\
-        --config configs/full_pipeline/base_data/pipeline_e5_instruct_ZH_a03.py \\
+        --config configs/base_pipeline/pipeline_e5_instruct_ZH_a03.py \\
         --target-party Centre --top-k 5
 
     # Phase 2 — Corr-weighted selection (delta * max_abs_r):
     python -m mini_maxi_party_impact_main --mode phase2 --selection-mode corr_weighted \\
-        --config configs/full_pipeline/base_data/pipeline_e5_instruct_ZH_a03.py \\
+        --config configs/base_pipeline/pipeline_e5_instruct_ZH_a03.py \\
         --target-party Centre --top-k 5
 
     # Compile — aggregate all 6 per-party Phase 2 results:
     python -m mini_maxi_party_impact_main --mode compile \\
-        --config configs/full_pipeline/base_data/pipeline_e5_instruct_ZH_a03.py
+        --config configs/base_pipeline/pipeline_e5_instruct_ZH_a03.py
 
     # Compile — corr-weighted results:
     python -m mini_maxi_party_impact_main --mode compile --selection-mode corr_weighted \\
-        --config configs/full_pipeline/base_data/pipeline_e5_instruct_ZH_a03.py
+        --config configs/base_pipeline/pipeline_e5_instruct_ZH_a03.py
 """
 
 import argparse
@@ -74,12 +74,12 @@ RESULTS_DIR = default_config.RESULTS_DIR / "party_impact" / "mini_maxi"
 
 # Phase 2 metric configs: (display_name, config_path)
 PHASE2_CONFIGS = [
-    ("E5-INSTRUCT α=0.3", "configs/full_pipeline/base_data/pipeline_e5_instruct_ZH_a03.py"),
-    ("E5-INSTRUCT α=0.4", "configs/full_pipeline/base_data/pipeline_e5_instruct_ZH_a04.py"),
-    ("ANSWER-CORR α=1.0", "configs/full_pipeline/base_data/pipeline_answer_corr_arccos_ZH_a10.py"),
-    ("ANSWER-CORR α=1.1", "configs/full_pipeline/base_data/pipeline_answer_corr_arccos_ZH_a11.py"),
-    ("ANSWER-CORR α=1.5", "configs/full_pipeline/base_data/pipeline_answer_corr_arccos_ZH_a15.py"),
-    ("QWEN3 α=0.6", "configs/full_pipeline/base_data/pipeline_qwen3_ZH.py"),
+    ("E5-INSTRUCT α=0.3", "configs/base_pipeline/pipeline_e5_instruct_ZH_a03.py"),
+    ("E5-INSTRUCT α=0.4", "configs/base_pipeline/pipeline_e5_instruct_ZH_a04.py"),
+    ("ANSWER-CORR α=1.0", "configs/base_pipeline/pipeline_answer_corr_arccos_ZH_a10.py"),
+    ("ANSWER-CORR α=1.1", "configs/base_pipeline/pipeline_answer_corr_arccos_ZH_a11.py"),
+    ("ANSWER-CORR α=1.5", "configs/base_pipeline/pipeline_answer_corr_arccos_ZH_a15.py"),
+    ("QWEN3 α=0.6", "configs/base_pipeline/pipeline_qwen3_ZH.py"),
 ]
 
 
@@ -88,14 +88,14 @@ PHASE2_CONFIGS = [
 # ---------------------------------------------------------------------------
 
 
-def _parse_args():
+def _parse_args(argv=None):
     parser = argparse.ArgumentParser(
         description="Mini vs Maxi party impact: measure effect of adding "
         "full-only questions to the mini questionnaire"
     )
     parser.add_argument(
         "--config", type=str, required=True,
-        help="Base pipeline config (e.g. configs/full_pipeline/base_data/pipeline_e5_instruct_ZH_a03.py)",
+        help="Base pipeline config (e.g. configs/base_pipeline/pipeline_e5_instruct_ZH_a03.py)",
     )
     parser.add_argument(
         "--mode", type=str,
@@ -134,7 +134,7 @@ def _parse_args():
         help="Phase 2 question selection: 'delta' = rank by party delta only, "
         "'corr_weighted' = rank by delta * max_abs_r (favours CRW-detectable questions)",
     )
-    return parser.parse_args()
+    return parser.parse_args(argv)
 
 
 # ---------------------------------------------------------------------------
@@ -1812,8 +1812,8 @@ def _compile_crw_comparison(
 # ---------------------------------------------------------------------------
 
 
-def main():
-    args = _parse_args()
+def main(argv=None):
+    args = _parse_args(argv)
     config = load_config(Path(args.config))
     n = _resolve_n(config, args.n)
     name = _get_clean_name(config)

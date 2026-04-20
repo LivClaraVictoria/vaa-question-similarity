@@ -21,10 +21,10 @@ CLONE_ID_BASE = 9_000_000
 
 CONFIGS = {
     "easy_paraphrase": Path(
-        "configs/full_pipeline/cloned/easy_paraphrase_top5impact_n4_answer_corr_ZH.py"
+        "configs/experiments/verification/easy_paraphrase_top5impact_n4_answer_corr_ZH.py"
     ),
     "negation_easy": Path(
-        "configs/full_pipeline/cloned/negation_easy_top5impact_n4_answer_corr_ZH.py"
+        "configs/experiments/verification/negation_easy_top5impact_n4_answer_corr_ZH.py"
     ),
 }
 

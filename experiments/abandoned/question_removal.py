@@ -9,7 +9,7 @@ Also auto-generates a pipeline config for the reduced dataset.
 
 Usage:
     python -m question_removal_main \
-        --config configs/full_pipeline/base_data/pipeline_e5_instruct_ZH.py \
+        --config configs/base_pipeline/pipeline_e5_instruct_ZH.py \
         --category "Health" \
         --n-remove 3
 """
@@ -135,7 +135,7 @@ def _generate_pipeline_config(
     lines = [
         f'# Auto-generated config for reduced dataset: {clone_id}',
         f'# Generated: {datetime.now().isoformat()}',
-        f'from configs.full_pipeline.cloned.base_cloned import *',
+        f'from configs.base_pipeline.base_cloned import *',
         f'',
         f'clone_id = "{clone_id}"',
         f'',
@@ -167,7 +167,7 @@ def _parse_args():
     )
     parser.add_argument(
         "--config", type=str, required=True,
-        help="Base pipeline config (e.g. configs/full_pipeline/base_data/pipeline_e5_instruct_ZH.py)",
+        help="Base pipeline config (e.g. configs/base_pipeline/pipeline_e5_instruct_ZH.py)",
     )
     parser.add_argument(
         "--category", type=str, default=None,
@@ -293,7 +293,7 @@ def main():
 
     # Auto-generate pipeline config
     config_name = f"{clone_id}_{config.dist.lower().replace('-', '_')}_{config.district}.py"
-    config_dir = Path("configs/full_pipeline/removed")
+    config_dir = Path("configs/experiments/question_removal")
     print(f"\n--- Generating pipeline config ---")
     config_path = _generate_pipeline_config(
         config=config,

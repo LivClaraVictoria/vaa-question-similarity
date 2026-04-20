@@ -10,17 +10,17 @@ echo ""
 
 # All fake benchmark configs
 CONFIGS=(
-    "configs/distance_method/fake/fake_sbert_cosine_sim.py"
-    "configs/distance_method/fake/fake_sbert_euclidean.py"
-    "configs/distance_method/fake/fake_e5.py"
-    "configs/distance_method/fake/fake_e5_asymmetric.py"
-    "configs/distance_method/fake/fake_e5_instruct.py"
-    "configs/distance_method/fake/fake_e5_asymmetric_instruct.py"
-    "configs/distance_method/fake/fake_jina_v3.py"
-    "configs/distance_method/fake/fake_bge_m3.py"
-    "configs/distance_method/fake/fake_gte.py"
-    "configs/distance_method/fake/fake_nomic_v2.py"
-    "configs/distance_method/fake/fake_qwen3.py"
+    "configs/distance_only/fake/fake_sbert_cosine_sim.py"
+    "configs/distance_only/fake/fake_sbert_euclidean.py"
+    "configs/distance_only/fake/fake_e5.py"
+    "configs/distance_only/fake/fake_e5_asymmetric.py"
+    "configs/distance_only/fake/fake_e5_instruct.py"
+    "configs/distance_only/fake/fake_e5_asymmetric_instruct.py"
+    "configs/distance_only/fake/fake_jina_v3.py"
+    "configs/distance_only/fake/fake_bge_m3.py"
+    "configs/distance_only/fake/fake_gte.py"
+    "configs/distance_only/fake/fake_nomic_v2.py"
+    "configs/distance_only/fake/fake_qwen3.py"
 )
 
 JOB_IDS=()

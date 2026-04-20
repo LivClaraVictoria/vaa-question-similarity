@@ -6,8 +6,8 @@ showing how the two metrics agree or diverge on question-pair distances.
 
 Usage:
     python -m scripts.compare_distance_metrics \
-        --config_a configs/full_pipeline/base_data/pipeline_answer_corr_ZH.py \
-        --config_b configs/full_pipeline/base_data/pipeline_e5_instruct_ZH.py
+        --config_a configs/base_pipeline/pipeline_answer_corr_ZH.py \
+        --config_b configs/base_pipeline/pipeline_e5_instruct_ZH.py
 
     # Or with direct distance files (skip pipeline computation):
     python -m scripts.compare_distance_metrics \

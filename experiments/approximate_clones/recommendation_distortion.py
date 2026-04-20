@@ -14,10 +14,10 @@ Metrics tested:
 
 Usage:
     python -m approx_clone_alpha_sweep_main \
-        --config configs/full_pipeline/base_data/pipeline_e5_instruct_ZH_a03.py
+        --config configs/base_pipeline/pipeline_e5_instruct_ZH_a03.py
 
     python -m approx_clone_alpha_sweep_main \
-        --config configs/full_pipeline/base_data/pipeline_e5_instruct_ZH_a03.py \
+        --config configs/base_pipeline/pipeline_e5_instruct_ZH_a03.py \
         --top-k 5 -n 36
 
 Outputs (saved to experiment_results/exp1/approx_clone_alpha_sweep/):
@@ -43,8 +43,7 @@ import seaborn as sns
 from scipy.stats import pearsonr
 from sklearn.manifold import MDS
 
-from experiments.perfect_clones.model_selection import DEFAULT_ALPHAS
-from experiments._common import _get_clean_name, _get_question_text_col, _resolve_n
+from experiments._common import _get_clean_name, _get_question_text_col, _resolve_n, DEFAULT_ALPHAS
 from cross_run_analysis.analyzer import CrossRunAnalyzer
 from vqs.config_utils import load_config
 from experiments.approximate_clones.partisan_distortion import (
@@ -65,9 +64,9 @@ RESULTS_DIR = Path("experiment_results/exp1/approx_clone_alpha_sweep")
 # (label, config_path, alpha_or_list)
 # None → full alpha sweep with DEFAULT_ALPHAS
 METRIC_CONFIGS = [
-    ("ANSWER-CORR-ARCCOS-SMOOTHED", "configs/full_pipeline/base_data/pipeline_answer_corr_arccos_ZH_smoothed.py", None),
-    ("E5-INSTRUCT-SMOOTHED", "configs/full_pipeline/base_data/pipeline_e5_instruct_ZH_a03_smoothed.py", [0.4]),
-    ("QWEN3-SMOOTHED", "configs/full_pipeline/base_data/pipeline_qwen3_ZH_smoothed.py", [0.6]),
+    ("ANSWER-CORR-ARCCOS-SMOOTHED", "configs/base_pipeline/pipeline_answer_corr_arccos_ZH_smoothed.py", None),
+    ("E5-INSTRUCT-SMOOTHED", "configs/base_pipeline/pipeline_e5_instruct_ZH_a03_smoothed.py", [0.4]),
+    ("QWEN3-SMOOTHED", "configs/base_pipeline/pipeline_qwen3_ZH_smoothed.py", [0.6]),
 ]
 
 
@@ -76,7 +75,7 @@ METRIC_CONFIGS = [
 # ---------------------------------------------------------------------------
 
 
-def _parse_args():
+def _parse_args(argv=None):
     parser = argparse.ArgumentParser(
         description="Approximate clone alpha sweep: add high-correlation "
         "full-only questions to mini questionnaire and test CRW correction"
@@ -93,7 +92,7 @@ def _parse_args():
         "-n", type=int, default=None,
         help="Override top-k for Jaccard (default: derived from config)",
     )
-    return parser.parse_args()
+    return parser.parse_args(argv)
 
 
 # ---------------------------------------------------------------------------
@@ -795,8 +794,8 @@ def _save_report(
 # ---------------------------------------------------------------------------
 
 
-def main():
-    args = _parse_args()
+def main(argv=None):
+    args = _parse_args(argv)
     config = load_config(Path(args.config))
     n_jaccard = _resolve_n(config, args.n)
     top_k = args.top_k

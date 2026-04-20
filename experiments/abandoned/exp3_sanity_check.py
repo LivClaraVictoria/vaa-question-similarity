@@ -26,7 +26,7 @@ from vqs.recommendation_engine import RecommendationEngine
 from cross_run_analysis.analyzer import CrossRunAnalyzer
 from dependencies import add_candidate_voting_recommendations, SVDataFrame
 
-CONFIG_PATH = Path("configs/full_pipeline/base_data/pipeline_e5_instruct_ZH.py")
+CONFIG_PATH = Path("configs/base_pipeline/pipeline_e5_instruct_ZH.py")
 ALPHA = 0.3
 N_JACCARD = 36  # ZH seats in 2023
 OUTPUT_DIR = Path("experiment_results/exp3_sanity_check")

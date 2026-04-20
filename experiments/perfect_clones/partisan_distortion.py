@@ -12,21 +12,21 @@ Phase 2 (phase2): For top-K questions from Phase 1, run full CRW pipeline
 Usage:
     # Phase 1 — Sequential:
     python -m party_impact_main \\
-        --config configs/full_pipeline/base_data/pipeline_e5_ZH.py
+        --config configs/base_pipeline/pipeline_e5_ZH.py
 
     # Phase 1 — Worker (one question, for SLURM array):
     python -m party_impact_main --mode worker --task-id 3 \\
-        --config configs/full_pipeline/base_data/pipeline_e5_ZH.py \\
+        --config configs/base_pipeline/pipeline_e5_ZH.py \\
         --sweep-dir /path/to/sweep_dir
 
     # Phase 1 — Collect (aggregate workers + plot):
     python -m party_impact_main --mode collect \\
-        --config configs/full_pipeline/base_data/pipeline_e5_ZH.py \\
+        --config configs/base_pipeline/pipeline_e5_ZH.py \\
         --sweep-dir /path/to/sweep_dir
 
     # Phase 2 — CRW correction for top-K:
     python -m party_impact_main --mode phase2 \\
-        --config configs/full_pipeline/base_data/pipeline_e5_ZH.py \\
+        --config configs/base_pipeline/pipeline_e5_ZH.py \\
         --phase1-csv experiment_results/party_impact/party_impact_*.csv \\
         --top-k 5
 """
@@ -65,7 +65,7 @@ RESULTS_DIR = default_config.RESULTS_DIR / "party_impact" / "high_impact"
 # ---------------------------------------------------------------------------
 
 
-def _parse_args():
+def _parse_args(argv=None):
     parser = argparse.ArgumentParser(
         description="Party impact analysis: find questions that shift party visibility"
     )
@@ -73,7 +73,7 @@ def _parse_args():
         "--config",
         type=str,
         required=True,
-        help="Base pipeline config (e.g. configs/full_pipeline/base_data/pipeline_e5_ZH.py)",
+        help="Base pipeline config (e.g. configs/base_pipeline/pipeline_e5_ZH.py)",
     )
     parser.add_argument(
         "--mode",
@@ -119,7 +119,7 @@ def _parse_args():
         default=None,
         help="Target party for Phase 2 (select questions that benefit this party most)",
     )
-    return parser.parse_args()
+    return parser.parse_args(argv)
 
 
 # ---------------------------------------------------------------------------
@@ -2013,8 +2013,8 @@ def _compile_effect_size_chart(dfs: dict, output_dir: Path, base: str):
 # ---------------------------------------------------------------------------
 
 
-def main():
-    args = _parse_args()
+def main(argv=None):
+    args = _parse_args(argv)
     config = load_config(Path(args.config))
     n = _resolve_n(config, args.n)
     name = _get_clean_name(config)

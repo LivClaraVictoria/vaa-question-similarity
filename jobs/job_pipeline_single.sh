@@ -42,7 +42,7 @@ export HF_HOME=/usr/itetnas04/data-scratch-01/${ETH_USERNAME}/data/.cache/huggin
 
 cd ${DIRECTORY}
 
-python -u -m main --config "${PIPELINE_CONFIG}" ${PIPELINE_OVERRIDES:-}
+python -u -m main pipeline --config "${PIPELINE_CONFIG}" ${PIPELINE_OVERRIDES:-}
 
 echo "Finished at: $(date)"
 exit 0

@@ -21,7 +21,7 @@ echo "  Parties: ${PARTIES[*]}"
 echo ""
 
 # --- Alpha = 0.3 ---
-export PIPELINE_CONFIG="configs/full_pipeline/base_data/pipeline_answer_corr_ZH_a03.py"
+export PIPELINE_CONFIG="configs/base_pipeline/pipeline_answer_corr_ZH_a03.py"
 
 echo "--- Alpha=0.3: Pre-generating paraphrases ---"
 PRE_JOB_A03=$(sbatch --parsable --export=ALL "${SCRIPT_DIR}/job_party_impact_pre_paraphrases.sh")
@@ -50,7 +50,7 @@ COMPILE_JOB_A03=$(sbatch --parsable \
 echo "  Compile: job ${COMPILE_JOB_A03}"
 
 # --- Alpha = 0.4 ---
-export PIPELINE_CONFIG="configs/full_pipeline/base_data/pipeline_answer_corr_ZH_a04.py"
+export PIPELINE_CONFIG="configs/base_pipeline/pipeline_answer_corr_ZH_a04.py"
 
 echo ""
 echo "--- Alpha=0.4: Submitting Phase 2 jobs (parallel, depend on ${PRE_JOB_A03}) ---"

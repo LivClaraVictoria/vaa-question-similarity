@@ -12,16 +12,16 @@ Supports three modes:
 Usage:
     # Sequential (all questions):
     python -m clone_count_sweep_main \\
-        --config configs/full_pipeline/base_data/pipeline_e5_ZH.py
+        --config configs/base_pipeline/pipeline_e5_ZH.py
 
     # Worker (one question, for SLURM array):
     python -m clone_count_sweep_main --mode worker --task-id 3 \\
-        --config configs/full_pipeline/base_data/pipeline_e5_ZH.py \\
+        --config configs/base_pipeline/pipeline_e5_ZH.py \\
         --sweep-dir /path/to/sweep_dir
 
     # Collect (aggregate workers + plot):
     python -m clone_count_sweep_main --mode collect \\
-        --config configs/full_pipeline/base_data/pipeline_e5_ZH.py \\
+        --config configs/base_pipeline/pipeline_e5_ZH.py \\
         --sweep-dir /path/to/sweep_dir
 
 Outputs (saved to experiment_results/clone_count_sweep/):
@@ -61,13 +61,13 @@ RESULTS_DIR = Path("experiment_results/clone_count_sweep")
 # ---------------------------------------------------------------------------
 
 
-def _parse_args():
+def _parse_args(argv=None):
     parser = argparse.ArgumentParser(
         description="Clone count sweep (all questions): 2D sweep over question_id × n_clones"
     )
     parser.add_argument(
         "--config", type=str, required=True,
-        help="Base pipeline config (e.g. configs/full_pipeline/base_data/pipeline_e5_ZH.py)",
+        help="Base pipeline config (e.g. configs/base_pipeline/pipeline_e5_ZH.py)",
     )
     parser.add_argument(
         "--mode", type=str, choices=["sweep", "worker", "collect"], default="sweep",
@@ -89,7 +89,7 @@ def _parse_args():
         "-n", type=int, default=None,
         help="Override top-k for Jaccard (default: derived from config)",
     )
-    return parser.parse_args()
+    return parser.parse_args(argv)
 
 
 # ---------------------------------------------------------------------------
@@ -645,8 +645,8 @@ def _save_report(
 # ---------------------------------------------------------------------------
 
 
-def main():
-    args = _parse_args()
+def main(argv=None):
+    args = _parse_args(argv)
     config = load_config(Path(args.config))
 
     if args.n_values:

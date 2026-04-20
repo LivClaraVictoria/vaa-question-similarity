@@ -18,8 +18,8 @@ Supports three modes: sweep, worker, collect (same as alpha_sweep_main.py).
 Usage:
     # Sequential:
     python -m threshold_alpha_sweep_main \\
-        --config_a configs/full_pipeline/base_data/pipeline_e5_ZH.py \\
-        --config_b configs/full_pipeline/cloned/identical_combinedvar_n10_e5_ZH.py
+        --config_a configs/base_pipeline/pipeline_e5_ZH.py \\
+        --config_b configs/experiments/verification/identical_combinedvar_n10_e5_ZH.py
 
     # Worker (one alpha, for SLURM array):
     python -m threshold_alpha_sweep_main --mode worker --task-id 3 \\

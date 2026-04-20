@@ -98,7 +98,7 @@ def compare_recs(recs_a: pd.DataFrame, recs_b: pd.DataFrame, n: int) -> dict:
 
 
 def main():
-    config_path = Path("configs/full_pipeline/base_data/pipeline_e5_ZH.py")
+    config_path = Path("configs/base_pipeline/pipeline_e5_ZH.py")
     config = load_config(config_path)
     N_TOP = 36  # ZH canton seats
 

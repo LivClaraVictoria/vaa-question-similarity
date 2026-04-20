@@ -6,6 +6,11 @@ from pathlib import Path
 
 import pandas as pd
 
+_alphas_low = [round(0.1 * i, 1) for i in range(1, 16)]   # 0.1 to 1.5
+_alphas_high = [round(1.5 + (0.3 * i), 1) for i in range(1, 6)]  # 1.8 to 3.0
+DEFAULT_ALPHAS = [0.01] + _alphas_low + _alphas_high
+DEFAULT_ALPHA_REFERENCE = 0.6
+
 
 def _get_clean_name(config) -> str:
     """Readable run name (matches CrossRunSaver._clean_name logic)."""

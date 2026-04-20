@@ -11,7 +11,7 @@ Usage:
     python -m scripts.analyze_distances experiment_results/pipeline_outputs/distance_metrics/cleaned_results/ANSWER-CORRELATION_2023_ZH_*.parquet
 
     # With question metadata (adds category labels):
-    python -m scripts.analyze_distances <path> --config configs/full_pipeline/base_data/pipeline_answer_corr_ZH.py
+    python -m scripts.analyze_distances <path> --config configs/base_pipeline/pipeline_answer_corr_ZH.py
 
     # Top-N closest pairs (default 20):
     python -m scripts.analyze_distances <path> --top 30

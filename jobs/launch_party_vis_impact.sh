@@ -10,7 +10,7 @@ PROJECT_DIR="/itet-stor/liweiss/net_scratch/vaa-question-similarity"
 SWEEP_DIR="${PROJECT_DIR}/experiment_results/question_impact/party_visibility_impact/workers_$(date +%Y%m%d_%H%M%S)"
 mkdir -p "${SWEEP_DIR}"
 
-export PIPELINE_CONFIG="configs/full_pipeline/base_data/pipeline_e5_ZH.py"
+export PIPELINE_CONFIG="configs/base_pipeline/pipeline_e5_ZH.py"
 export SWEEP_DIR
 
 # Determine question count

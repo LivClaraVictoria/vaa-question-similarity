@@ -10,8 +10,8 @@ Supports three modes:
 Usage:
     # Sequential (original behavior):
     python -m alpha_sweep_main \\
-        --config_a configs/full_pipeline/base_data/pipeline_e5_ZH.py \\
-        --config_b configs/full_pipeline/cloned/identical_highcandvar_n10_e5_ZH.py
+        --config_a configs/base_pipeline/pipeline_e5_ZH.py \\
+        --config_b configs/experiments/perfect_clones_model_selection/identical_highcandvar_n10_e5_ZH.py
 
     # Worker (one alpha, for SLURM array):
     python -m alpha_sweep_main --mode worker --task-id 3 \\
@@ -44,18 +44,13 @@ import seaborn as sns
 
 from configs import base_constants as default_config
 from cross_run_analysis.analyzer import CrossRunAnalyzer
-from experiments._common import _get_clean_name, _resolve_n
+from experiments._common import _get_clean_name, _resolve_n, DEFAULT_ALPHAS, DEFAULT_ALPHA_REFERENCE
 from vqs.config_utils import load_config
 from vqs.clone_robust_weighting import CloneRobustReweighter
 from vqs.data_loader import load_dataset
 from vqs.recommendation_engine import RecommendationEngine
 from vqs.result_management import ResultManager
 from vqs.similarity_metrics import get_calculator
-
-alphas_low = [round(0.1 * i, 1) for i in range(1,16)]  # 0.1 to 1.5
-alphas_high = [round(1.5 + (0.3 * i), 1) for i in range(1, 6)]  # 1.8 to 3.0
-DEFAULT_ALPHAS = [0.01] + alphas_low + alphas_high
-DEFAULT_ALPHA_REFERENCE = 0.6
 
 ANALYSIS_CACHE_DIR = default_config.CACHE_DIR / "alpha_sweep_analysis"
 
@@ -65,7 +60,7 @@ ANALYSIS_CACHE_DIR = default_config.CACHE_DIR / "alpha_sweep_analysis"
 # ---------------------------------------------------------------------------
 
 
-def _parse_args():
+def _parse_args(argv=None):
     parser = argparse.ArgumentParser(
         description="Alpha sweep for CRW robustness evaluation"
     )
@@ -113,7 +108,7 @@ def _parse_args():
         default=None,
         help="Override output directory for results (default: ALPHA_SWEEP_RESULTS_DIR)",
     )
-    return parser.parse_args()
+    return parser.parse_args(argv)
 
 
 # ---------------------------------------------------------------------------
@@ -613,8 +608,8 @@ def _run_collect(args, config_a, config_b, alphas: list[float], n: int):
 # ---------------------------------------------------------------------------
 
 
-def main():
-    args = _parse_args()
+def main(argv=None):
+    args = _parse_args(argv)
 
     # Parse alpha values
     if args.alphas:

@@ -15,16 +15,16 @@ Supports three modes:
 Usage:
     # Sequential sweep:
     python -m party_visibility_impact_main \\
-        --config configs/full_pipeline/base_data/pipeline_e5_ZH.py
+        --config configs/base_pipeline/pipeline_e5_ZH.py
 
     # Worker (one question, for SLURM array):
     python -m party_visibility_impact_main --mode worker --task-id 3 \\
-        --config configs/full_pipeline/base_data/pipeline_e5_ZH.py \\
+        --config configs/base_pipeline/pipeline_e5_ZH.py \\
         --sweep-dir /path/to/sweep_dir
 
     # Collect (aggregate workers + all plots):
     python -m party_visibility_impact_main --mode collect \\
-        --config configs/full_pipeline/base_data/pipeline_e5_ZH.py \\
+        --config configs/base_pipeline/pipeline_e5_ZH.py \\
         --sweep-dir /path/to/sweep_dir
 
 Outputs (saved to experiment_results/question_impact/party_visibility_impact/):
@@ -93,7 +93,7 @@ def _parse_args():
     )
     parser.add_argument(
         "--config", type=str, required=True,
-        help="Base pipeline config (e.g. configs/full_pipeline/base_data/pipeline_e5_ZH.py)",
+        help="Base pipeline config (e.g. configs/base_pipeline/pipeline_e5_ZH.py)",
     )
     parser.add_argument(
         "--mode", type=str, choices=["sweep", "worker", "collect"], default="sweep",

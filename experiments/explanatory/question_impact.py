@@ -19,23 +19,23 @@ Clone types and CRW mode:
 Usage:
     # Baseline-only, identical clones (original behavior):
     python -m question_impact_main \\
-        --config configs/full_pipeline/base_data/pipeline_e5_ZH.py
+        --config configs/base_pipeline/pipeline_e5_ZH.py
 
     # CRW mode, 5 clone types, 4 clones each:
     python -m question_impact_main \\
-        --config configs/full_pipeline/base_data/pipeline_e5_instruct_ZH_a03.py \\
+        --config configs/base_pipeline/pipeline_e5_instruct_ZH_a03.py \\
         --clone-types easy_paraphrase,hard_paraphrase,negation_easy,negation_hard,perfect_mix \\
         --n-clones 4
 
     # Worker (one question, for SLURM array):
     python -m question_impact_main --mode worker --task-id 3 \\
-        --config configs/full_pipeline/base_data/pipeline_e5_instruct_ZH_a03.py \\
+        --config configs/base_pipeline/pipeline_e5_instruct_ZH_a03.py \\
         --sweep-dir /path/to/sweep_dir \\
         --clone-types easy_paraphrase,hard_paraphrase --n-clones 4
 
     # Collect (aggregate workers + plot):
     python -m question_impact_main --mode collect \\
-        --config configs/full_pipeline/base_data/pipeline_e5_instruct_ZH_a03.py \\
+        --config configs/base_pipeline/pipeline_e5_instruct_ZH_a03.py \\
         --sweep-dir /path/to/sweep_dir
 
 Outputs (saved to experiment_results/question_impact/):
@@ -94,7 +94,7 @@ def _parse_args():
     )
     parser.add_argument(
         "--config", type=str, required=True,
-        help="Base pipeline config (e.g. configs/full_pipeline/base_data/pipeline_e5_ZH.py)",
+        help="Base pipeline config (e.g. configs/base_pipeline/pipeline_e5_ZH.py)",
     )
     parser.add_argument(
         "--mode", type=str, choices=["sweep", "worker", "collect"], default="sweep",

@@ -6,12 +6,12 @@ Baseline-only comparison: no CRW involved. Measures raw distortion from cloning.
 
 Usage:
     python scripts/clone_count_sweep.py \\
-        --config configs/full_pipeline/base_data/pipeline_e5_ZH.py \\
+        --config configs/base_pipeline/pipeline_e5_ZH.py \\
         --question-id 32214
 
     # Custom n values:
     python scripts/clone_count_sweep.py \\
-        --config configs/full_pipeline/base_data/pipeline_e5_ZH.py \\
+        --config configs/base_pipeline/pipeline_e5_ZH.py \\
         --question-id 32214 --n-values 1,2,3,5,10,20,50
 
 Outputs (saved to experiment_results/clone_count_sweep/):
@@ -57,7 +57,7 @@ def _parse_args():
     )
     parser.add_argument(
         "--config", type=str, required=True,
-        help="Base pipeline config (e.g. configs/full_pipeline/base_data/pipeline_e5_ZH.py)",
+        help="Base pipeline config (e.g. configs/base_pipeline/pipeline_e5_ZH.py)",
     )
     parser.add_argument(
         "--question-id", type=int, required=True,

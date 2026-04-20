@@ -14,21 +14,21 @@ Supports four modes:
 Usage:
     # Generate paraphrases (interactive, requires OPENAI_API_KEY):
     python -m question_alpha_sweep_main \\
-        --config configs/full_pipeline/base_data/pipeline_e5_instruct_ZH_a03.py \\
+        --config configs/base_pipeline/pipeline_e5_instruct_ZH_a03.py \\
         --mode prepare
 
     # Sequential (all questions):
     python -m question_alpha_sweep_main \\
-        --config configs/full_pipeline/base_data/pipeline_e5_instruct_ZH_a03.py
+        --config configs/base_pipeline/pipeline_e5_instruct_ZH_a03.py
 
     # Worker (one question, for SLURM array):
     python -m question_alpha_sweep_main --mode worker --task-id 3 \\
-        --config configs/full_pipeline/base_data/pipeline_e5_instruct_ZH_a03.py \\
+        --config configs/base_pipeline/pipeline_e5_instruct_ZH_a03.py \\
         --sweep-dir /path/to/sweep_dir
 
     # Collect (aggregate workers + plot):
     python -m question_alpha_sweep_main --mode collect \\
-        --config configs/full_pipeline/base_data/pipeline_e5_instruct_ZH_a03.py \\
+        --config configs/base_pipeline/pipeline_e5_instruct_ZH_a03.py \\
         --sweep-dir /path/to/sweep_dir
 
 Outputs (saved to experiment_results/exp1/question_alpha_sweep/):
@@ -55,8 +55,8 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 
-from experiments.perfect_clones.model_selection import DEFAULT_ALPHAS, _setup_side
-from experiments._common import _get_clean_name, _resolve_n, _get_question_text_col
+from experiments._common import _get_clean_name, _resolve_n, _get_question_text_col, DEFAULT_ALPHAS
+from experiments.perfect_clones.model_selection import _setup_side
 from clone_pipeline.applicator import apply_specs
 from clone_pipeline.paraphrase_generator import ensure_paraphrases
 from clone_pipeline.spec import CloneSpec
@@ -80,13 +80,13 @@ ALL_CLONE_TYPES = ["easy_paraphrase", "hard_paraphrase", "negation_easy", "negat
 # ---------------------------------------------------------------------------
 
 
-def _parse_args():
+def _parse_args(argv=None):
     parser = argparse.ArgumentParser(
         description="Per-question alpha sweep with easy paraphrase clones"
     )
     parser.add_argument(
         "--config", type=str, required=True,
-        help="Base pipeline config (e.g. configs/full_pipeline/base_data/pipeline_e5_instruct_ZH_a03.py)",
+        help="Base pipeline config (e.g. configs/base_pipeline/pipeline_e5_instruct_ZH_a03.py)",
     )
     parser.add_argument(
         "--mode", type=str, choices=["prepare", "sweep", "worker", "collect"],
@@ -118,7 +118,7 @@ def _parse_args():
         "-n", type=int, default=None,
         help="Override top-k for Jaccard (default: derived from config)",
     )
-    return parser.parse_args()
+    return parser.parse_args(argv)
 
 
 # ---------------------------------------------------------------------------
@@ -979,8 +979,8 @@ def _save_report(
 # ---------------------------------------------------------------------------
 
 
-def main():
-    args = _parse_args()
+def main(argv=None):
+    args = _parse_args(argv)
     config = load_config(Path(args.config))
 
     if args.alphas:

@@ -38,7 +38,7 @@ conda activate ${CONDA_ENVIRONMENT}
 cd ${DIRECTORY}
 
 python -u -m experiments.perfect_clones.clone_count_sweep \
-    --config configs/full_pipeline/base_data/pipeline_e5_ZH.py \
+    --config configs/base_pipeline/pipeline_e5_ZH.py \
     --mode worker --task-id 0 --n-values 1,5,10 \
     --sweep-dir experiment_results/clone_count_sweep/test_workers
 

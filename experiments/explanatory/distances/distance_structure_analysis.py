@@ -28,7 +28,7 @@ Four sections, each telling one part of the story:
 Usage:
     # Run all sections (§1 and §4 require --config)
     python -m experiments.exploratory.analysis.distance_correlation_analysis \\
-        --config configs/full_pipeline/base_data/pipeline_answer_corr_ZH.py
+        --config configs/base_pipeline/pipeline_answer_corr_ZH.py
 
     # Run only §2 and §3 (no config needed)
     python -m experiments.exploratory.analysis.distance_correlation_analysis \\
@@ -36,7 +36,7 @@ Usage:
 
     # Run §1 with 30 top pairs
     python -m experiments.exploratory.analysis.distance_correlation_analysis \\
-        --section 1 --config configs/full_pipeline/base_data/pipeline_answer_corr_ZH.py \\
+        --section 1 --config configs/base_pipeline/pipeline_answer_corr_ZH.py \\
         --top 30
 """
 
@@ -68,18 +68,18 @@ _SEC4_OUTPUT_DIR = Path("experiment_results/correlation_metric_results/correlati
 
 # §2 — one base config per embedding model
 _MODEL_CONFIGS = {
-    "SBERT": "configs/full_pipeline/base_data/pipeline_sbert_ZH.py",
-    "E5": "configs/full_pipeline/base_data/pipeline_e5_ZH.py",
-    "E5-ASYMMETRIC": "configs/full_pipeline/base_data/pipeline_e5_asym_ZH.py",
-    "E5-INSTRUCT": "configs/full_pipeline/base_data/pipeline_e5_instruct_ZH.py",
-    "E5-ASYMMETRIC-INSTRUCT": "configs/full_pipeline/base_data/pipeline_e5_asym_instruct_ZH.py",
-    "JINA-V3": "configs/full_pipeline/base_data/pipeline_jina_v3_ZH.py",
-    "BGE-M3": "configs/full_pipeline/base_data/pipeline_bge_m3_ZH.py",
-    "GTE": "configs/full_pipeline/base_data/pipeline_gte_ZH.py",
-    "NOMIC-V2": "configs/full_pipeline/base_data/pipeline_nomic_v2_ZH.py",
-    "QWEN3": "configs/full_pipeline/base_data/pipeline_qwen3_ZH.py",
+    "SBERT": "configs/base_pipeline/pipeline_sbert_ZH.py",
+    "E5": "configs/base_pipeline/pipeline_e5_ZH.py",
+    "E5-ASYMMETRIC": "configs/base_pipeline/pipeline_e5_asym_ZH.py",
+    "E5-INSTRUCT": "configs/base_pipeline/pipeline_e5_instruct_ZH.py",
+    "E5-ASYMMETRIC-INSTRUCT": "configs/base_pipeline/pipeline_e5_asym_instruct_ZH.py",
+    "JINA-V3": "configs/base_pipeline/pipeline_jina_v3_ZH.py",
+    "BGE-M3": "configs/base_pipeline/pipeline_bge_m3_ZH.py",
+    "GTE": "configs/base_pipeline/pipeline_gte_ZH.py",
+    "NOMIC-V2": "configs/base_pipeline/pipeline_nomic_v2_ZH.py",
+    "QWEN3": "configs/base_pipeline/pipeline_qwen3_ZH.py",
 }
-_CORR_CONFIG = "configs/full_pipeline/base_data/pipeline_answer_corr_ZH.py"
+_CORR_CONFIG = "configs/base_pipeline/pipeline_answer_corr_ZH.py"
 
 # §3 — specific cached distance files
 _SEC3_METRICS = {

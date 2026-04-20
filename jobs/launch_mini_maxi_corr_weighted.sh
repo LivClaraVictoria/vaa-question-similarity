@@ -8,7 +8,7 @@ set -o errexit
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 
-export PIPELINE_CONFIG="configs/full_pipeline/base_data/pipeline_e5_instruct_ZH_a03.py"
+export PIPELINE_CONFIG="configs/base_pipeline/pipeline_e5_instruct_ZH_a03.py"
 export TOP_K=5
 export SELECTION_MODE="corr_weighted"
 

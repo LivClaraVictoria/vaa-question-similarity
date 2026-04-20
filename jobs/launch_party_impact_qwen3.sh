@@ -9,7 +9,7 @@ set -o errexit
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 
-export PIPELINE_CONFIG="configs/full_pipeline/base_data/pipeline_qwen3_ZH.py"
+export PIPELINE_CONFIG="configs/base_pipeline/pipeline_qwen3_ZH.py"
 export TOP_K=5
 export PHASE1_CSV="experiment_results/party_impact/high_impact/phase1/pipeline_e5_ZH/party_impact_pipeline_e5_ZH_0302_0057.csv"
 
