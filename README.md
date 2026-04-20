@@ -1,93 +1,131 @@
-# vaa-question-similarity
+# VAA Question Similarity & Clone-Robust Weighting
 
+This repository contains the codebase for my Bachelor Thesis analyzing semantic similarity between political questions in the Swiss Voting Advice Application (VAA), SmartVote. 
 
+**Core Research Question:** How do voter-candidate recommendations change when identical or near-identical questions are added to the VAA questionnaire, and can Clone-Robust Weighting (CRW) correct this distortion?
 
-## Getting started
+## Tech Stack
+* **Language:** Python 3.12 
+* **Embeddings:** `sentence-transformers` (SBERT, E5 multilingual, Jina v3, etc.)
+* **Paraphrase Generation:** `openai` (GPT-4o for approximate clones)
+* **Data Processing:** `pandas`, `numpy`, `scipy`, `scikit-learn`
+* **Visualization:** `matplotlib`, `seaborn`, `plotly`
+* **External Dependency:** `dependencies/rsfp/` (git submodule for VAA recommender systems)
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+---
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+## Installation & Setup
 
-## Add your files
+To run this project locally, it is recommended to use Conda to manage your Python environment and dependencies.
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+```bash
+# 1. Create a new conda environment (you can replace `vqs-env` with your preferred name)
+conda create --name vqs-env python=3.12 -y
 
-```
-cd existing_repo
-git remote add origin https://gitlab.ethz.ch/disco-students/hs25/vaa-question-similarity.git
-git branch -M main
-git push -uf origin main
-```
+# 2. Activate the environment
+conda activate vqs-env
 
-## Integrate with your tools
+# 3. Install the required dependencies
+pip install -r requirements.txt
 
-- [ ] [Set up project integrations](https://gitlab.ethz.ch/disco-students/hs25/vaa-question-similarity/-/settings/integrations)
+## Repository Structure
 
-## Collaborate with your team
+The codebase is organized into core infrastructure, experiment scripts, and configuration:
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+* `vqs/`: Core library (distance metrics, CRW algorithm, recommendation engine).
+* `clone_pipeline/`: Synthetic clone generation and LLM paraphrase caching.
+* `cross_run_analysis/`: Tools to compare baseline vs. CRW-weighted pipeline runs.
+* `experiments/`: Executable scripts for thesis experiments (divided by narrative chapters).
+* `configs/`: Python-based inheritance configuration files.
+* `jobs/`: SLURM batch scripts for cluster execution.
+* `cache/`: Hash-based caching for expensive computations.
+* `experiment_results/`: Human-readable outputs, plots, and summaries.
 
-## Test and Deploy
+---
 
-Use the built-in continuous integration in GitLab.
+## Core Infrastructure & Entry Points
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+All scripts should be executed as Python modules (e.g., `python -m <module>`) from the project root to ensure local imports resolve correctly.
 
-***
+| Script | Purpose | Example Execution |
+| :--- | :--- | :--- |
+| `main.py` | Runs the full pipeline: distances → CRW weights → recommendations. | `python -m main --config configs/full_pipeline/base_data/pipeline_e5_ZH.py` |
+| `clone_main.py` | Generates synthetic cloned question datasets. | `python -m clone_main --config configs/create_clones/identical_q32214_n10.py` |
+| `comparator_main.py` | Compares two pipeline runs and generates metrics. | `python -m comparator_main <run_a.parquet> <run_b.parquet>` |
 
-# Editing this README
+---
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
+## The Experiments
 
-## Suggestions for a good README
+The thesis narrative is built on three primary experiments and subsequent analyses. Below is a guide on where to find them and how to execute them.
 
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+### Experiment 1: Clone Detection (Primary Result)
+Tests whether CRW can detect and correct for synthetic clones (identical, paraphrased, and negated). This involves sweeping the CRW `alpha` parameter across 10 embedding models.
 
-## Name
-Choose a self-explaining name for your project.
+* **Location:** `experiments/perfect_clones/rec_change/`
+* **Key Script:** `alpha_sweep.py` evaluates CRW robustness by running the full comparison pipeline across a range of alpha values.
+* **Execution:**
+    `python -m experiments.perfect_clones.model_selection --config_a configs/full_pipeline/base_data/pipeline_e5_ZH.py --config_b configs/full_pipeline/cloned/identical_combinedvar_n10_e5_ZH.py`
+* **Outputs:** CSVs and plots showing Jaccard/Spearman metrics vs. alpha, saved to `experiment_results/exp1/model_alpha_sweep/`.
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+### Experiment 2: Question Removal (Negative Result)
+Tests whether CRW compensates for missing/removed questions (underrepresentation). 
+* **Location:** `experiments/question_removal/`
+* **Key Script:** `question_removal.py`
+* **Result:** Demonstrates that CRW downweights dense clusters but does not effectively upweight sparse ones. Defines the scope limitation of the algorithm.
+* **Execution:**
+    `python -m experiments.abandoned.question_removal`
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+### Experiment 3: Natural Redundancy (Approximate Clones)
+Tests whether CRW helps when naturally correlated (but textually distinct) questions are added from the full questionnaire to a mini questionnaire.
+* **Location:** `experiments/approximate_clones/`
+* **Key Script:** `recommendation_distortion.py` and `partisan_distortion.py`
+* **Result:** Shows CRW is built for "clone detection" (near-identical distance) and cannot correct for natural topic overrepresentation without textual similarity.
+* **Execution:**
+    `python -m experiments.approximate_clones.recommendation_distortion`
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+### Party Impact Analysis
+Analyzes which political parties gain or lose visibility when specific questions are cloned, and simulates strategic VAA attacks.
+* **Location:** `experiments/perfect_clones/party_impact/`
+* **Key Script:** `party_impact.py` (Phase 1 evaluates single-question impact; Phase 2 tests cumulative CRW correction).
+* **Execution (Phase 2):**
+    `python -m experiments.perfect_clones.partisan_distortion --mode phase2 --config configs/full_pipeline/base_data/pipeline_e5_instruct_ZH_a03.py --target-party Centre`
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+### Distance & Correlation Metric Analysis
+Validates embedding models against actual voter answer correlations to prove that while CRW works for textual similarity, embedding distances do not inherently capture functional redundancy.
+* **Location:** `experiments/explanatory/distances/`
+* **Key Script:** `distance_structure_analysis.py`
+* **Execution:**
+    `python -m experiments.explanatory.distances.distance_structure_analysis --config configs/full_pipeline/base_data/pipeline_answer_corr_ZH.py`
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+---
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+## Configuration System
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+The pipeline uses a Python-based inheritance system for configuration. 
+* Base defaults are defined in `configs/base_constants.py`.
+* Specific runs inherit from the base and override parameters (e.g., `data_year`, `alpha`, `dist`, `embedding_instruction`).
+* You can pass CLI overrides to `main.py` directly:
+    `python -m main --config configs/full_pipeline/base_data/pipeline_e5_ZH.py alpha=0.8 data_year=2019`
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+---
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+## Executing on SLURM Cluster
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+For heavy workloads (alpha sweeps, parallel pipeline runs), use the provided `sbatch` scripts in the `jobs/` directory. The architecture uses a launcher + generic worker pattern to maximize parallelism.
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+**Common SLURM Workflows:**
+* **Question Impact Sweep (Parallel):**
+    `bash jobs/launch_question_impact.sh`
+* **Party Impact Analysis (Phase 1 -> Phase 2):**
+    `bash jobs/launch_party_impact.sh`
+* **Alpha Sweep:**
+    `bash jobs/launch_alpha_sweep_combinedvar.sh`
 
-## License
-For open source projects, say how it is licensed.
+**Note on Shared File System:** Cache files (`cache/`) are written to a shared NFS. To prevent race conditions during paraphrase generation via the OpenAI API, clone creation jobs must be run in series.
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+---
+
+## Data Confidentiality
+
+**IMPORTANT:** Any data containing voter IDs, candidate IDs, or data linked to individual voters/candidates is strictly confidential. Only question data (texts, IDs) is tracked in version control. Do not push raw `SmartVote` voter parquets to this repository.
