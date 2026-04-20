@@ -1,16 +1,22 @@
 # VAA Question Similarity & Clone-Robust Weighting
 
-This repository contains the codebase for my Bachelor Thesis analyzing semantic similarity between political questions in the Swiss Voting Advice Application (VAA), SmartVote. 
+This repository contains the codebase for my Bachelor Thesis analyzing semantic similarity between political questions in the Swiss Voting Advice Application (VAA), SmartVote.
 
 **Core Research Question:** How do voter-candidate recommendations change when identical or near-identical questions are added to the VAA questionnaire, and can Clone-Robust Weighting (CRW) correct this distortion?
 
 ## Tech Stack
-* **Language:** Python 3.12 
+* **Language:** Python 3.12
 * **Embeddings:** `sentence-transformers` (SBERT, E5 multilingual, Jina v3, etc.)
 * **Paraphrase Generation:** `openai` (GPT-4o for approximate clones)
 * **Data Processing:** `pandas`, `numpy`, `scipy`, `scikit-learn`
 * **Visualization:** `matplotlib`, `seaborn`, `plotly`
-* **External Dependency:** `dependencies/rsfp/` (git submodule for VAA recommender systems)
+* **External Dependency:** `dependencies/rsfp/` (see below)
+
+---
+
+## External Dependency
+
+`dependencies/rsfp/` is based on the code from Dustin Brunner's master thesis ["Toward Robust Voting Advice Applications: Lessons from Smartvote"](https://gitlab.ethz.ch/disco-students/fs24/recommender-systems-for-politics). The code was incorporated as a full subfolder rather than a git submodule. Minor compatibility changes were applied (no structural changes): imports were converted to relative imports. See `dependencies/README.md` for details.
 
 ---
 
@@ -19,7 +25,7 @@ This repository contains the codebase for my Bachelor Thesis analyzing semantic 
 To run this project locally, it is recommended to use Conda to manage your Python environment and dependencies.
 
 ```bash
-# 1. Create a new conda environment (you can replace `vqs-env` with your preferred name)
+# 1. Create a new conda environment
 conda create --name vqs-env python=3.12 -y
 
 # 2. Activate the environment
@@ -29,6 +35,8 @@ conda activate vqs-env
 pip install -r requirements.txt
 ```
 
+---
+
 ## Repository Structure
 
 The codebase is organized into core infrastructure, experiment scripts, and configuration:
@@ -36,7 +44,12 @@ The codebase is organized into core infrastructure, experiment scripts, and conf
 * `vqs/`: Core library (distance metrics, CRW algorithm, recommendation engine).
 * `clone_pipeline/`: Synthetic clone generation and LLM paraphrase caching.
 * `cross_run_analysis/`: Tools to compare baseline vs. CRW-weighted pipeline runs.
-* `experiments/`: Executable scripts for thesis experiments (divided by narrative chapters).
+* `experiments/`: Executable scripts for thesis experiments, organized by narrative:
+  * `perfect_clones/`: Recommendation and partisan distortion experiments using synthetic clones.
+  * `approximate_clones/`: Recommendation and partisan distortion experiments using correlated but textually distinct questions.
+  * `explanatory/`: Supporting analyses (distance structure, question impact, model benchmark, etc.).
+  * `abandoned/`: Experiments producing null or negative results.
+  * `verification/`: One-off correctness checks and unit tests.
 * `configs/`: Python-based inheritance configuration files.
 * `jobs/`: SLURM batch scripts for cluster execution.
 * `cache/`: Hash-based caching for expensive computations.
@@ -50,7 +63,7 @@ All scripts should be executed as Python modules (e.g., `python -m <module>`) fr
 
 | Script | Purpose | Example Execution |
 | :--- | :--- | :--- |
-| `main.py` | Runs the full pipeline: distances → CRW weights → recommendations. | `python -m main --config configs/full_pipeline/base_data/pipeline_e5_ZH.py` |
+| `main.py` | Runs the full pipeline: distances -> CRW weights -> recommendations. | `python -m main --config configs/full_pipeline/base_data/pipeline_e5_ZH.py` |
 | `clone_main.py` | Generates synthetic cloned question datasets. | `python -m clone_main --config configs/create_clones/identical_q32214_n10.py` |
 | `comparator_main.py` | Compares two pipeline runs and generates metrics. | `python -m comparator_main <run_a.parquet> <run_b.parquet>` |
 
@@ -58,52 +71,126 @@ All scripts should be executed as Python modules (e.g., `python -m <module>`) fr
 
 ## The Experiments
 
-The thesis narrative is built on three primary experiments and subsequent analyses. Below is a guide on where to find them and how to execute them.
+The thesis narrative is built on two primary experiments and subsequent analyses. Below is a guide on where to find them and how to execute them.
 
-### Experiment 1: Clone Detection (Primary Result)
-Tests whether CRW can detect and correct for synthetic clones (identical, paraphrased, and negated). This involves sweeping the CRW `alpha` parameter across 10 embedding models.
+### Step 0: Finding the Optimal Embedding Model
 
-* **Location:** `experiments/perfect_clones/rec_change/`
-* **Key Script:** `alpha_sweep.py` evaluates CRW robustness by running the full comparison pipeline across a range of alpha values.
-* **Execution:**
-    `python -m experiments.perfect_clones.model_selection --config_a configs/full_pipeline/base_data/pipeline_e5_ZH.py --config_b configs/full_pipeline/cloned/identical_combinedvar_n10_e5_ZH.py`
-* **Outputs:** CSVs and plots showing Jaccard/Spearman metrics vs. alpha, saved to `experiment_results/exp1/model_alpha_sweep/`.
+**Location:** `experiments/explanatory/model_benchmark.py`
 
-### Experiment 2: Question Removal (Negative Result)
-Tests whether CRW compensates for missing/removed questions (underrepresentation). 
-* **Location:** `experiments/question_removal/`
-* **Key Script:** `question_removal.py`
-* **Result:** Demonstrates that CRW downweights dense clusters but does not effectively upweight sparse ones. Defines the scope limitation of the algorithm.
-* **Execution:**
-    `python -m experiments.abandoned.question_removal`
+Evaluates 10 embedding models on a synthetic benchmark dataset to identify which model best captures topic similarity between questions. Requires running the pipeline with each model's distance config first.
 
-### Experiment 3: Natural Redundancy (Approximate Clones)
-Tests whether CRW helps when naturally correlated (but textually distinct) questions are added from the full questionnaire to a mini questionnaire.
-* **Location:** `experiments/approximate_clones/`
-* **Key Script:** `recommendation_distortion.py` and `partisan_distortion.py`
-* **Result:** Shows CRW is built for "clone detection" (near-identical distance) and cannot correct for natural topic overrepresentation without textual similarity.
-* **Execution:**
-    `python -m experiments.approximate_clones.recommendation_distortion`
+```bash
+# Run each model on the fake benchmark dataset (one config per model in configs/distance_method/fake/)
+python -m main --config configs/distance_method/fake/fake_e5_instruct.py
+# Repeat for each config, then evaluate:
+python -m experiments.explanatory.model_benchmark
+```
 
-### Party Impact Analysis
-Analyzes which political parties gain or lose visibility when specific questions are cloned, and simulates strategic VAA attacks.
-* **Location:** `experiments/perfect_clones/party_impact/`
-* **Key Script:** `party_impact.py` (Phase 1 evaluates single-question impact; Phase 2 tests cumulative CRW correction).
-* **Execution (Phase 2):**
-    `python -m experiments.perfect_clones.partisan_distortion --mode phase2 --config configs/full_pipeline/base_data/pipeline_e5_instruct_ZH_a03.py --target-party Centre`
+---
 
-### Distance & Correlation Metric Analysis
-Validates embedding models against actual voter answer correlations to prove that while CRW works for textual similarity, embedding distances do not inherently capture functional redundancy.
-* **Location:** `experiments/explanatory/distances/`
-* **Key Script:** `distance_structure_analysis.py`
-* **Execution:**
-    `python -m experiments.explanatory.distances.distance_structure_analysis --config configs/full_pipeline/base_data/pipeline_answer_corr_ZH.py`
+### Experiment 1: Perfect Clone Experiments
+
+Tests CRW's ability to detect and correct synthetic clones (identical copies, paraphrases, negations) of questionnaire questions.
+
+#### Recommendation Distortion
+
+Measures how cloning the top-5 most impactful questions affects per-voter candidate recommendations (Jaccard, Spearman, Kendall similarity between original and cloned-run rankings). Sweeps CRW alpha across 10 embedding models.
+
+**Location:** `experiments/perfect_clones/`
+
+Key scripts:
+* `model_selection.py`: main alpha sweep across models and clone conditions.
+* `recommendation_distortion.py`: 75-question x alpha sweep.
+* `clone_count_sweep.py`: alpha x clone-count sweep for a single question.
+
+```bash
+python -m experiments.perfect_clones.model_selection \
+    --config_a configs/full_pipeline/base_data/pipeline_e5_ZH.py \
+    --config_b configs/full_pipeline/cloned/identical_combinedvar_n10_e5_ZH.py
+```
+
+#### Partisan Distortion
+
+Measures how cloning specific questions shifts party visibility across voter recommendations. Phase 1 sweeps all 75 questions individually to identify which questions most benefit which parties. Phase 2 applies cumulative CRW correction for the top-k questions benefiting a target party.
+
+**Location:** `experiments/perfect_clones/partisan_distortion.py`
+
+```bash
+# Phase 1 (full SLURM sweep):
+bash jobs/launch_party_impact.sh
+
+# Phase 2 (requires existing Phase 1 CSV):
+python -m experiments.perfect_clones.partisan_distortion \
+    --mode phase2 \
+    --config configs/full_pipeline/base_data/pipeline_e5_instruct_ZH_a03.py \
+    --target-party Centre \
+    --phase1-csv <path-to-phase1-csv>
+```
+
+---
+
+### Experiment 2: Approximate Clone Experiments
+
+Tests CRW on questions that are correlated by voter answer patterns but textually distinct. Adds the top-5 most answer-correlated full-questionnaire questions to the mini (rapide) questionnaire and measures the resulting recommendation and party-visibility distortion across CRW alpha values.
+
+**Location:** `experiments/approximate_clones/`
+
+#### Recommendation Distortion
+
+```bash
+python -m experiments.approximate_clones.recommendation_distortion
+```
+
+#### Partisan Distortion
+
+```bash
+python -m experiments.approximate_clones.partisan_distortion
+```
+
+---
+
+### Explanatory Experiments
+
+Supporting analyses that contextualize the primary results.
+
+**Location:** `experiments/explanatory/`
+
+Key scripts:
+* `distances/distance_structure_analysis.py`: analyzes the correlation structure of pairwise question distances, validates embedding models against voter-answer correlation ground truth, and compares within-topic vs. cross-topic distance distributions.
+  ```bash
+  python -m experiments.explanatory.distances.distance_structure_analysis --section 2,3
+  ```
+* `question_impact.py`: sweeps all 75 questions, measuring how much each one distorts recommendations when cloned. Used to identify the top-5 most impactful questions for Experiment 1.
+  ```bash
+  python -m experiments.explanatory.question_impact \
+      --config configs/full_pipeline/base_data/pipeline_e5_ZH.py
+  ```
+* `approximate_clones_analysis/`: distance-level analyses for the approximate clone setup (distance distributions, forbidden intervals).
+* Additional scripts: `category_analysis.py`, `recommendation_metric_agreement.py`, `compare_recommendation_and_party_distortion.py`, etc.
+
+---
+
+### Abandoned Experiments
+
+**Location:** `experiments/abandoned/`
+
+Experiments retained for completeness but not part of the thesis narrative.
+
+* `question_removal.py`: tested whether CRW can compensate for removed questions (underrepresentation of a topic). CRW's mechanism is downweighting dense clusters; meaningfully upweighting sparse topics is beyond its design.
+
+---
+
+### Verification
+
+**Location:** `experiments/verification/`
+
+One-off scripts verifying correct behavior of individual pipeline components: `verify_clone_identity.py`, `verify_crw_pipeline.py`, `test_result_manager.py`, etc.
 
 ---
 
 ## Configuration System
 
-The pipeline uses a Python-based inheritance system for configuration. 
+The pipeline uses a Python-based inheritance system for configuration.
 * Base defaults are defined in `configs/base_constants.py`.
 * Specific runs inherit from the base and override parameters (e.g., `data_year`, `alpha`, `dist`, `embedding_instruction`).
 * You can pass CLI overrides to `main.py` directly:
@@ -129,4 +216,4 @@ For heavy workloads (alpha sweeps, parallel pipeline runs), use the provided `sb
 
 ## Data Confidentiality
 
-**IMPORTANT:** Any data containing voter IDs, candidate IDs, or data linked to individual voters/candidates is strictly confidential. Only question data (texts, IDs) is tracked in version control. Do not push raw `SmartVote` voter parquets to this repository.
+**IMPORTANT:** Any data containing voter IDs, candidate IDs, or data linked to individual voters/candidates is strictly confidential. Only question data (texts, IDs) is tracked in version control. Do not push raw SmartVote voter parquets to this repository.
