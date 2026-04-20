@@ -73,17 +73,16 @@ All scripts should be executed as Python modules (e.g., `python -m <module>`) fr
 
 The thesis narrative is built on two primary experiments and subsequent analyses. Below is a guide on where to find them and how to execute them.
 
-### Step 0: Finding the Optimal Embedding Model
+### Step 0: Model Selection
 
-**Location:** `experiments/explanatory/model_benchmark.py`
+Determines the optimal embedding model for all subsequent experiments by running the full alpha sweep across all 10 embedding models and 5 clone types. The selected model is then used as the fixed distance metric for Experiments 1 and 2.
 
-Evaluates 10 embedding models on a synthetic benchmark dataset to identify which model best captures topic similarity between questions. Requires running the pipeline with each model's distance config first.
+**Location:** `experiments/perfect_clones/model_selection.py`
 
 ```bash
-# Run each model on the fake benchmark dataset (one config per model in configs/distance_method/fake/)
-python -m main --config configs/distance_method/fake/fake_e5_instruct.py
-# Repeat for each config, then evaluate:
-python -m experiments.explanatory.model_benchmark
+python -m experiments.perfect_clones.model_selection \
+    --config_a configs/full_pipeline/base_data/pipeline_e5_ZH.py \
+    --config_b configs/full_pipeline/cloned/identical_combinedvar_n10_e5_ZH.py
 ```
 
 ---
@@ -94,13 +93,12 @@ Tests CRW's ability to detect and correct synthetic clones (identical copies, pa
 
 #### Recommendation Distortion
 
-Measures how cloning the top-5 most impactful questions affects per-voter candidate recommendations (Jaccard, Spearman, Kendall similarity between original and cloned-run rankings). Sweeps CRW alpha across 10 embedding models.
+Clones each of the 75 questions under 5 different clone conditions (identical, easy/hard paraphrase, negation variants), yielding 375 cloned datasets. For each, runs a CRW alpha sweep using the optimal embedding model (E5-INSTRUCT) and measures per-voter recommendation change (Jaccard, Spearman, Kendall).
 
 **Location:** `experiments/perfect_clones/`
 
 Key scripts:
-* `model_selection.py`: main alpha sweep across models and clone conditions.
-* `recommendation_distortion.py`: 75-question x alpha sweep.
+* `recommendation_distortion.py`: 75-question x 5-clone-type x alpha sweep.
 * `clone_count_sweep.py`: alpha x clone-count sweep for a single question.
 
 ```bash
@@ -156,6 +154,13 @@ Supporting analyses that contextualize the primary results.
 **Location:** `experiments/explanatory/`
 
 Key scripts:
+* `model_benchmark.py`: evaluates 10 embedding models on a synthetic benchmark dataset, providing an explanation of why certain models perform better in the alpha sweep.
+  ```bash
+  # Run each model on the fake benchmark dataset first (one config per model):
+  python -m main --config configs/distance_method/fake/fake_e5_instruct.py
+  # Repeat for each config in configs/distance_method/fake/, then evaluate:
+  python -m experiments.explanatory.model_benchmark
+  ```
 * `distances/distance_structure_analysis.py`: analyzes the correlation structure of pairwise question distances, validates embedding models against voter-answer correlation ground truth, and compares within-topic vs. cross-topic distance distributions.
   ```bash
   python -m experiments.explanatory.distances.distance_structure_analysis --section 2,3
