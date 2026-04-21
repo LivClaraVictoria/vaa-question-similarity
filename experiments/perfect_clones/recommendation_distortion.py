@@ -55,7 +55,14 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 
-from experiments._common import _get_clean_name, _resolve_n, _get_question_text_col, DEFAULT_ALPHAS
+from experiments._common import (
+    _get_clean_name,
+    _resolve_n,
+    _get_question_text_col,
+    DEFAULT_ALPHAS,
+    FLIP_TYPES,
+    PERFECT_MIX_COMPONENTS,
+)
 from experiments.perfect_clones.model_selection import _setup_side
 from clone_pipeline.applicator import apply_specs
 from clone_pipeline.paraphrase_generator import ensure_paraphrases
@@ -70,8 +77,6 @@ from vqs.similarity_metrics import get_calculator
 DEFAULT_N_CLONES = 5
 DEFAULT_ALPHA_REFERENCE = 0.4
 RESULTS_DIR = Path("experiment_results/exp1/question_alpha_sweep")
-FLIP_TYPES = {"negation", "negation_easy", "negation_hard"}
-PERFECT_MIX_COMPONENTS = ["easy_paraphrase", "hard_paraphrase", "negation_easy", "negation_hard"]
 ALL_CLONE_TYPES = ["easy_paraphrase", "hard_paraphrase", "negation_easy", "negation_hard", "perfect_mix"]
 
 

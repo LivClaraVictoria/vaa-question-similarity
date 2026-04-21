@@ -11,6 +11,18 @@ _alphas_high = [round(1.5 + (0.3 * i), 1) for i in range(1, 6)]  # 1.8 to 3.0
 DEFAULT_ALPHAS = [0.01] + _alphas_low + _alphas_high
 DEFAULT_ALPHA_REFERENCE = 0.6
 
+# Clone-type mix used by the "perfect_mix" clone-type: one of each of the 4 non-identical
+# perfect-clone paraphrase/negation variants. Referenced from multiple experiment modules
+# (perfect_clones.recommendation_distortion, noise_slider.robustness), so kept here.
+PERFECT_MIX_COMPONENTS = [
+    "easy_paraphrase",
+    "hard_paraphrase",
+    "negation_easy",
+    "negation_hard",
+]
+# Clone types whose CloneSpec should be built with flip_answers=True (answers flip in the clone).
+FLIP_TYPES = {"negation", "negation_easy", "negation_hard"}
+
 
 def _get_clean_name(config) -> str:
     """Readable run name (matches CrossRunSaver._clean_name logic)."""

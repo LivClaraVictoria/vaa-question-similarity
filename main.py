@@ -14,6 +14,7 @@ Subcommands:
   partisan-distortion   Party visibility impact from cloning
   approx-rec-distortion Alpha sweep on approximate (mini→full) questions
   approx-partisan       Mini vs full questionnaire party visibility
+  noise-slider          Robustness sweep: λ-controlled perturbation of clone answers
 
 All subcommand-specific flags are passed through to the underlying module unchanged.
 Run `python -m main <subcommand> --help` for per-subcommand help.
@@ -32,6 +33,7 @@ COMMANDS = {
     "partisan-distortion":    ("experiments.perfect_clones.partisan_distortion",        "main"),
     "approx-rec-distortion":  ("experiments.approximate_clones.recommendation_distortion", "main"),
     "approx-partisan":        ("experiments.approximate_clones.partisan_distortion",    "main"),
+    "noise-slider":           ("experiments.noise_slider.robustness",                   "main"),
 }
 
 
