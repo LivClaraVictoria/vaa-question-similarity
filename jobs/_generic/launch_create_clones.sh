@@ -1,6 +1,6 @@
 #!/bin/bash
 # Launcher: create 3 identical cloned datasets in parallel.
-# Run with: bash jobs/launch_create_clones.sh
+# Run with: bash jobs/_generic/launch_create_clones.sh
 
 set -o errexit
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"

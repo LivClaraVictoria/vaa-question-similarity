@@ -1,3 +1,8 @@
+"""
+Clone dataset writer: saves cloned question/voter/candidate DataFrames to data/cloned/ as
+parquet files alongside a JSON metadata sidecar describing clone specs and source config.
+"""
+
 import json
 from datetime import datetime
 from pathlib import Path

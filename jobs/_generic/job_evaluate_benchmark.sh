@@ -1,4 +1,6 @@
 #!/bin/bash
+# Worker: run the model benchmark evaluation on fake benchmark distance CSVs.
+# Env vars: DIST_CONFIG (path to distance-only config for fake data).
 #SBATCH --mail-type=NONE
 #SBATCH --output=/itet-stor/liweiss/net_scratch/vaa-question-similarity/jobs/out/%j.out
 #SBATCH --error=/itet-stor/liweiss/net_scratch/vaa-question-similarity/jobs/out/%j.err

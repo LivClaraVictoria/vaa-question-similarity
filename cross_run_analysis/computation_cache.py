@@ -1,3 +1,8 @@
+"""
+Computation cache for cross-run analysis: stores per-alpha comparison results keyed by
+(config_a, config_b, alpha, n) hash so alpha sweeps can skip recomputation on reruns.
+"""
+
 import json
 import hashlib
 import pandas as pd

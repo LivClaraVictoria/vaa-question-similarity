@@ -1,7 +1,7 @@
 #!/bin/bash
 # Launcher: question impact sweep for base E5 ZH.
 # Submits one job per question (array) + a dependent collect job.
-# Run with: bash jobs/launch_question_impact.sh
+# Run with: bash jobs/perfect_clones/launch_question_impact.sh
 
 set -o errexit
 

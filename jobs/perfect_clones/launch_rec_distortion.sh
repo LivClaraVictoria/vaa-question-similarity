@@ -3,7 +3,7 @@
 # Submits 5 SLURM job arrays (one per clone type, 75 workers each)
 # into a shared sweep directory, then a single collect job.
 #
-# Run with: bash jobs/launch_question_alpha_sweep_all_ct.sh
+# Run with: bash jobs/perfect_clones/launch_rec_distortion.sh
 
 set -o errexit
 

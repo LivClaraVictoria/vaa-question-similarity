@@ -1,3 +1,8 @@
+"""
+Recommendation engine: generates baseline and CRW-weighted voter-candidate match rankings
+using the rsfp library. Results are cached by config hash to avoid redundant computation.
+"""
+
 import pandas as pd
 from dependencies import add_candidate_voting_recommendations
 from vqs.result_management import ResultManager

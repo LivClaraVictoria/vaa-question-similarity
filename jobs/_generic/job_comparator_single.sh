@@ -1,4 +1,6 @@
 #!/bin/bash
+# Worker: compare two recommendation parquets and write a Jaccard/Spearman/rank-shift report.
+# Env vars: REC_A (baseline parquet path), REC_B (cloned/modified parquet path).
 #SBATCH --mail-type=NONE
 #SBATCH --output=/itet-stor/liweiss/net_scratch/vaa-question-similarity/jobs/out/%j.out
 #SBATCH --error=/itet-stor/liweiss/net_scratch/vaa-question-similarity/jobs/out/%j.err

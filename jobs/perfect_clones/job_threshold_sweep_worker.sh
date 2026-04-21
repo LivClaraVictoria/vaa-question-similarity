@@ -1,4 +1,6 @@
 #!/bin/bash
+# Worker (SLURM array): run threshold-based CRW for one alpha value (verification experiment).
+# Env vars: CONFIG_A, CONFIG_B, SWEEP_DIR. Array index selects the alpha.
 #SBATCH --mail-type=NONE
 #SBATCH --output=/itet-stor/liweiss/net_scratch/vaa-question-similarity/jobs/out/%A_%a.out
 #SBATCH --error=/itet-stor/liweiss/net_scratch/vaa-question-similarity/jobs/out/%A_%a.err

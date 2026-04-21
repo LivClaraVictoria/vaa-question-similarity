@@ -1,4 +1,6 @@
 #!/bin/bash
+# Worker (SLURM array): run CRW + recommendations for one alpha value in the model selection sweep.
+# Env vars: CONFIG_A, CONFIG_B, SWEEP_DIR. Array index selects the alpha.
 #SBATCH --mail-type=NONE
 #SBATCH --output=/itet-stor/liweiss/net_scratch/vaa-question-similarity/jobs/out/%A_%a.out
 #SBATCH --error=/itet-stor/liweiss/net_scratch/vaa-question-similarity/jobs/out/%A_%a.err
@@ -9,10 +11,10 @@
 #SBATCH --gres=gpu:0
 #SBATCH --exclude=tikgpu10,tikgpu[06-09],arton[10-11]
 
-# Alpha sweep worker — processes a single alpha value.
-# Launched as a SLURM job array by launch_alpha_sweep.sh.
+# Model selection worker — processes a single alpha value.
+# Launched as a SLURM job array by launch_model_selection.sh.
 # Expects: SLURM_ARRAY_TASK_ID, SWEEP_DIR, CONFIG_A, CONFIG_B (via --export).
-# Optional: OUTPUT_DIR — if set, passes --output-dir to alpha_sweep_main.py.
+# Optional: OUTPUT_DIR — if set, passes --output-dir to model_selection.
 
 ETH_USERNAME=liweiss
 PROJECT_NAME="vaa-question-similarity"

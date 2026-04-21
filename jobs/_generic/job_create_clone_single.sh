@@ -1,4 +1,6 @@
 #!/bin/bash
+# Worker: generate a single cloned dataset from a clone config and write it to data/cloned/.
+# Env vars: CLONE_CONFIG (path to clone config .py file).
 #SBATCH --mail-type=NONE
 #SBATCH --output=/itet-stor/liweiss/net_scratch/vaa-question-similarity/jobs/out/%j.out
 #SBATCH --error=/itet-stor/liweiss/net_scratch/vaa-question-similarity/jobs/out/%j.err
@@ -38,7 +40,7 @@ echo "Config: ${CLONE_CONFIG}"
 conda activate ${CONDA_ENVIRONMENT}
 cd ${DIRECTORY}
 
-python -u clone_main.py --config "${CLONE_CONFIG}"
+python -u -m main generate-clones --config "${CLONE_CONFIG}"
 
 echo "Finished at: $(date)"
 exit 0

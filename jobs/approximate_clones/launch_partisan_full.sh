@@ -2,7 +2,7 @@
 # Launcher: mini vs maxi party impact analysis.
 # Phase 1: one job per full-only question (array 0-44) + collect
 # Phase 2: CRW correction for each major party (depends on collect)
-# Run with: bash jobs/launch_mini_maxi_party_impact.sh
+# Run with: bash jobs/approximate_clones/launch_partisan_full.sh
 
 set -o errexit
 

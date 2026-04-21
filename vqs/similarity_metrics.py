@@ -1,3 +1,10 @@
+"""
+Embedding distance calculators for all registered models (SBERT, E5, E5-INSTRUCT, Jina v3,
+BGE-M3, GTE, Nomic v2, Qwen3, answer-correlation variants). Each subclass of
+BaseDistanceCalculator handles model loading, input formatting, and distance computation.
+METRIC_REGISTRY maps config `dist` keys to calculator instances.
+"""
+
 from abc import ABC, abstractmethod
 from typing import Any
 from itertools import combinations

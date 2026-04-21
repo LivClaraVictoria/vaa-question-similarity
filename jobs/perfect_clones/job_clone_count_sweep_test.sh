@@ -1,4 +1,6 @@
 #!/bin/bash
+# Test run: smoke-test a single clone count sweep worker with a small subset to verify setup.
+# Env vars: PIPELINE_CONFIG, SWEEP_DIR.
 #SBATCH --mail-type=NONE
 #SBATCH --output=/itet-stor/liweiss/net_scratch/vaa-question-similarity/jobs/out/%j.out
 #SBATCH --error=/itet-stor/liweiss/net_scratch/vaa-question-similarity/jobs/out/%j.err

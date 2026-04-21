@@ -1,4 +1,6 @@
 #!/bin/bash
+# Approximate clone alpha sweep: tests CRW on top-5 correlated full-only questions added to mini.
+# Env vars: PIPELINE_CONFIG (mini config), SWEEP_DIR.
 #SBATCH --mail-type=NONE
 #SBATCH --output=/itet-stor/liweiss/net_scratch/vaa-question-similarity/jobs/out/%j.out
 #SBATCH --error=/itet-stor/liweiss/net_scratch/vaa-question-similarity/jobs/out/%j.err

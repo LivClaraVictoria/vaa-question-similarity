@@ -1,4 +1,6 @@
 #!/bin/bash
+# Phase 2: cumulative CRW correction for mini vs maxi party visibility analysis.
+# Env vars: PIPELINE_CONFIG, TARGET_PARTY, TOP_K, PHASE1_CSV, SELECTION_MODE.
 #SBATCH --mail-type=NONE
 #SBATCH --output=/itet-stor/liweiss/net_scratch/vaa-question-similarity/jobs/out/%j.out
 #SBATCH --error=/itet-stor/liweiss/net_scratch/vaa-question-similarity/jobs/out/%j.err
@@ -11,7 +13,7 @@
 
 # Mini-maxi Phase 2 — CRW correction with multiple distance metrics.
 # Runs 5 (metric, alpha) combinations sequentially.
-# Launched with --dependency by launch_mini_maxi_party_impact.sh.
+# Launched with --dependency by launch_partisan_full.sh.
 # Expects: PIPELINE_CONFIG, TOP_K (via --export).
 # Optional: PHASE1_CSV, TARGET_PARTY.
 

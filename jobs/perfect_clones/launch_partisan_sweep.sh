@@ -6,7 +6,7 @@
 #   1. Pre-generate paraphrases for ALL parties' top-K questions (serial, safe)
 #   2. Submit 6 Phase 2 jobs in parallel (one per party, each depends on step 1)
 #
-# Usage: bash jobs/launch_party_sweep.sh
+# Run with: bash jobs/perfect_clones/launch_partisan_sweep.sh
 
 set -o errexit
 

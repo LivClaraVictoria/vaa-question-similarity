@@ -2,7 +2,7 @@
 # Launcher: per-question clone type sweep with CRW (E5-INSTRUCT, alpha=0.3).
 # Submits one job per question (75 workers) + a dependent collect job.
 # Each worker processes all 5 clone types for one question.
-# Run with: bash jobs/launch_question_clone_sweep.sh
+# Run with: bash jobs/perfect_clones/launch_question_clone_sweep.sh
 
 set -o errexit
 

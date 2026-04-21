@@ -1,4 +1,6 @@
 #!/bin/bash
+# Worker (SLURM array): run all 5 clone types for one question with CRW (E5-INSTRUCT, alpha=0.3).
+# Env vars: PIPELINE_CONFIG, SWEEP_DIR. Array index selects the question.
 #SBATCH --mail-type=NONE
 #SBATCH --output=/itet-stor/liweiss/net_scratch/vaa-question-similarity/jobs/out/%A_%a.out
 #SBATCH --error=/itet-stor/liweiss/net_scratch/vaa-question-similarity/jobs/out/%A_%a.err

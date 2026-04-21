@@ -1,4 +1,6 @@
 #!/bin/bash
+# Worker (SLURM array): Phase 1 — compute party visibility delta when one question is cloned 4×.
+# Env vars: PIPELINE_CONFIG, SWEEP_DIR. Array index selects the question.
 #SBATCH --mail-type=NONE
 #SBATCH --output=/itet-stor/liweiss/net_scratch/vaa-question-similarity/jobs/out/%A_%a.out
 #SBATCH --error=/itet-stor/liweiss/net_scratch/vaa-question-similarity/jobs/out/%A_%a.err
@@ -10,7 +12,7 @@
 #SBATCH --exclude=tikgpu10,tikgpu[06-09]
 
 # Party impact worker — processes a single question (Phase 1).
-# Launched as a SLURM job array by launch_party_impact.sh.
+# Launched as a SLURM job array by launch_partisan.sh.
 # Expects: SLURM_ARRAY_TASK_ID, SWEEP_DIR, PIPELINE_CONFIG (via --export).
 
 ETH_USERNAME=liweiss

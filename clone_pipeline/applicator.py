@@ -1,3 +1,9 @@
+"""
+Clone applicator: injects synthetic question clones into SmartVote DataFrames in-memory.
+Handles identical clones (verbatim copy) and paraphrase/negation clones (text replacement +
+optional answer flipping). Used by all experiment scripts to avoid writing cloned datasets to disk.
+"""
+
 import pandas as pd
 from clone_pipeline.spec import CloneSpec
 

@@ -1,3 +1,8 @@
+"""
+Cross-run comparison plots: generates three figures per comparison — KDE distributions of
+per-voter Jaccard/Spearman/Kendall (2×2), metric bar chart, and per-voter CRW−baseline delta distributions.
+"""
+
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt

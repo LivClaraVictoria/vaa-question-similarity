@@ -1,3 +1,9 @@
+"""
+ResultManager: content-addressable storage for pipeline outputs. Deduplicates by MD5 hash
+of content, supports parquet/CSV/JSON/PNG formats, and provides human-readable filenames
+with timestamp prefix for experiment_results/ and hash-based names for cache/.
+"""
+
 import json
 import hashlib
 import pandas as pd

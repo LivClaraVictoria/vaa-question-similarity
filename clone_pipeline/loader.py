@@ -1,3 +1,8 @@
+"""
+Clone pipeline data loader: reads preprocessed SmartVote parquets from data/cleaned/ as the
+clean source for clone generation (separate from the main pipeline's data_loader.py).
+"""
+
 import pandas as pd
 from pathlib import Path
 

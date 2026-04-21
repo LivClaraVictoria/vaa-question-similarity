@@ -1,6 +1,6 @@
 #!/bin/bash
 # Launcher: run all embedding models on the fake benchmark, then evaluate.
-# Run with: bash jobs/launch_model_benchmark.sh
+# Run with: bash jobs/_generic/launch_model_benchmark.sh
 
 set -o errexit
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"

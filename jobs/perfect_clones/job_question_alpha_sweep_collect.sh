@@ -1,4 +1,6 @@
 #!/bin/bash
+# Collect: aggregate per-question alpha sweep worker CSVs into compiled results with plots.
+# Env vars: PIPELINE_CONFIG, SWEEP_DIR.
 #SBATCH --mail-type=NONE
 #SBATCH --output=/itet-stor/liweiss/net_scratch/vaa-question-similarity/jobs/out/%j.out
 #SBATCH --error=/itet-stor/liweiss/net_scratch/vaa-question-similarity/jobs/out/%j.err

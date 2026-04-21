@@ -1,3 +1,8 @@
+"""
+Distance result storage and reporting: saves pairwise question distance matrices as parquet,
+writes human-readable summary tables, and generates distance distribution plots.
+"""
+
 import textwrap
 import pandas as pd
 import matplotlib

@@ -1,4 +1,6 @@
 #!/bin/bash
+# Phase 2: cumulative CRW correction — clone top-K questions simultaneously, compare visibility.
+# Env vars: PIPELINE_CONFIG, TARGET_PARTY, TOP_K, PHASE1_CSV.
 #SBATCH --mail-type=NONE
 #SBATCH --output=/itet-stor/liweiss/net_scratch/vaa-question-similarity/jobs/out/%j.out
 #SBATCH --error=/itet-stor/liweiss/net_scratch/vaa-question-similarity/jobs/out/%j.err
@@ -11,7 +13,7 @@
 
 # Party impact Phase 2 — CRW correction analysis for top-K questions.
 # Requires embedding model + full CRW pipeline for each question.
-# Launched with --dependency by launch_party_impact.sh.
+# Launched with --dependency by launch_partisan.sh.
 # Expects: PIPELINE_CONFIG, TOP_K (via --export).
 # Optional: PHASE1_CSV, TARGET_PARTY (auto-detected/omitted if not set).
 

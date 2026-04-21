@@ -1,3 +1,8 @@
+"""
+Cross-run comparison report saver: writes Jaccard/Spearman/rank-shift analysis results to
+a timestamped subfolder under experiment_results/comparator_results/.
+"""
+
 import pandas as pd
 from pathlib import Path
 from datetime import datetime

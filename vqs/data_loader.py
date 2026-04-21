@@ -1,3 +1,8 @@
+"""
+Dataset loading for SmartVote 2019/2023 data. Handles canton/year filtering, column
+normalization across election years, and wrapping in SVDataFrame for rsfp compatibility.
+"""
+
 from pathlib import Path
 import pandas as pd
 from dependencies import SVDataFrame

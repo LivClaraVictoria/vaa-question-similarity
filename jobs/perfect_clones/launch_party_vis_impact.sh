@@ -1,7 +1,7 @@
 #!/bin/bash
 # Launcher: party visibility impact analysis.
 # Array of workers (one per question) + dependent collect job.
-# Run with: bash jobs/launch_party_vis_impact.sh
+# Run with: bash jobs/perfect_clones/launch_party_vis_impact.sh
 
 set -o errexit
 

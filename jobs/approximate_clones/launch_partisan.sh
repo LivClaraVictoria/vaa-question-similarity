@@ -2,7 +2,7 @@
 # Launcher: mini vs maxi party impact with corr-weighted question selection.
 # Reuses existing Phase 1 results (no re-computation needed).
 # Phase 2: one job per party (corr_weighted selection) + compile.
-# Run with: bash jobs/launch_mini_maxi_corr_weighted.sh
+# Run with: bash jobs/approximate_clones/launch_partisan.sh
 
 set -o errexit
 

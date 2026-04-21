@@ -1,3 +1,9 @@
+"""
+Question selection strategies for clone generation: manual (specific IDs), random, high-variance
+(by candidate or combined variance), and top-impact. Each strategy returns a list of question IDs
+to clone, consumed by the clone applicator.
+"""
+
 from abc import ABC, abstractmethod
 import pandas as pd
 

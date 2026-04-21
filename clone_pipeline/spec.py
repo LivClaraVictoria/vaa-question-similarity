@@ -1,3 +1,9 @@
+"""
+CloneSpec dataclass: specifies one batch of clones (source question ID, clone type, count).
+Generates clone question IDs deterministically: 9_000_000 + source_id*1000 + type_offset*100 + index.
+CLONE_TYPE_OFFSETS maps each clone type string to its numeric offset.
+"""
+
 from dataclasses import dataclass, field
 
 

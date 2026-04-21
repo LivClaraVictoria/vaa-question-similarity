@@ -1,3 +1,9 @@
+"""
+Clone-robust weighting (CRW) algorithm: integrates question importance weights over distance
+thresholds [0, alpha]. Questions that cluster densely with others receive lower weights.
+Implements both P1 and P2 paper variants.
+"""
+
 import pandas as pd
 import numpy as np
 import warnings

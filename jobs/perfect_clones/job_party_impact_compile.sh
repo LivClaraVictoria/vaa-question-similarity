@@ -1,4 +1,6 @@
 #!/bin/bash
+# Compile: merge party impact Phase 2 results across multiple models/conditions into one report.
+# No env vars required; reads from experiment_results/party_impact/high_impact/.
 #SBATCH --mail-type=NONE
 #SBATCH --output=/itet-stor/liweiss/net_scratch/vaa-question-similarity/jobs/out/%j.out
 #SBATCH --error=/itet-stor/liweiss/net_scratch/vaa-question-similarity/jobs/out/%j.err

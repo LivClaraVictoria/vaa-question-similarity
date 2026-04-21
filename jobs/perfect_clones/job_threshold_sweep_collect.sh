@@ -1,4 +1,6 @@
 #!/bin/bash
+# Collect: aggregate per-alpha threshold CRW sweep CSVs into combined result with plots.
+# Env vars: CONFIG_A, CONFIG_B, SWEEP_DIR.
 #SBATCH --mail-type=NONE
 #SBATCH --output=/itet-stor/liweiss/net_scratch/vaa-question-similarity/jobs/out/%j.out
 #SBATCH --error=/itet-stor/liweiss/net_scratch/vaa-question-similarity/jobs/out/%j.err

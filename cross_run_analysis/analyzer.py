@@ -1,3 +1,9 @@
+"""
+Cross-run recommendation analyzer: compares two voter-candidate ranking DataFrames and computes
+per-voter Jaccard similarity, Spearman rank correlation, and rank-shift distributions.
+CrossRunAnalyzer.from_n(n) for file-based construction; analyze_from_dfs(df_a, df_b) for in-memory.
+"""
+
 import pandas as pd
 import numpy as np
 import re

@@ -1,4 +1,6 @@
 #!/bin/bash
+# Compile: enrich mini/maxi Phase 1 CSV with corr-weighted scores and selection indicators.
+# No env vars required; reads from experiment_results/party_impact/mini_maxi/.
 #SBATCH --mail-type=NONE
 #SBATCH --output=/itet-stor/liweiss/net_scratch/vaa-question-similarity/jobs/out/%j.out
 #SBATCH --error=/itet-stor/liweiss/net_scratch/vaa-question-similarity/jobs/out/%j.err
@@ -10,7 +12,7 @@
 #SBATCH --exclude=tikgpu10,tikgpu[06-09]
 
 # Mini-maxi compile — aggregate all per-party Phase 2 CSVs into compiled outputs.
-# Launched with --dependency by launch_mini_maxi_party_impact.sh.
+# Launched with --dependency by launch_partisan_full.sh.
 # Expects: PIPELINE_CONFIG (via --export).
 
 ETH_USERNAME=liweiss

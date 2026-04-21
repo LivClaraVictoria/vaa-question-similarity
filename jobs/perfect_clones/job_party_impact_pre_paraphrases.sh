@@ -1,4 +1,6 @@
 #!/bin/bash
+# Pre-generate paraphrases for the top-K party impact questions before Phase 2 starts.
+# Env vars: PIPELINE_CONFIG, TARGET_PARTY, TOP_K, PHASE1_CSV.
 #SBATCH --mail-type=NONE
 #SBATCH --output=/itet-stor/liweiss/net_scratch/vaa-question-similarity/jobs/out/%j.out
 #SBATCH --error=/itet-stor/liweiss/net_scratch/vaa-question-similarity/jobs/out/%j.err

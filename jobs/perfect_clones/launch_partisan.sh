@@ -2,7 +2,7 @@
 # Launcher: party impact analysis for base E5 ZH.
 # Phase 1: one job per question (array) + collect
 # Phase 2: CRW for top-5 (depends on collect)
-# Run with: bash jobs/launch_party_impact.sh
+# Run with: bash jobs/perfect_clones/launch_partisan.sh
 
 set -o errexit
 

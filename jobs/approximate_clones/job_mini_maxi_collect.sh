@@ -1,4 +1,6 @@
 #!/bin/bash
+# Collect: aggregate mini/maxi Phase 1 per-question CSVs into a summary with heatmap and per-party plots.
+# Env vars: PIPELINE_CONFIG, SWEEP_DIR, TOP_K, TARGET_PARTY.
 #SBATCH --mail-type=NONE
 #SBATCH --output=/itet-stor/liweiss/net_scratch/vaa-question-similarity/jobs/out/%j.out
 #SBATCH --error=/itet-stor/liweiss/net_scratch/vaa-question-similarity/jobs/out/%j.err
@@ -11,7 +13,7 @@
 
 # Mini-maxi collect — aggregates per-question worker CSVs and generates
 # Phase 1 plots (heatmap, per-party ranking, scatter, report).
-# Launched with --dependency by launch_mini_maxi_party_impact.sh.
+# Launched with --dependency by launch_partisan_full.sh.
 # Expects: SWEEP_DIR, PIPELINE_CONFIG (via --export).
 
 ETH_USERNAME=liweiss

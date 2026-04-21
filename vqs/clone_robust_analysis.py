@@ -1,3 +1,8 @@
+"""
+CRW weight distribution analysis: loads saved weight files, produces plots and summary stats
+showing how clone-robust weighting redistributes question importance across the questionnaire.
+"""
+
 import pandas as pd
 import matplotlib
 import json

@@ -1,6 +1,6 @@
 #!/bin/bash
 # Launcher: Create all allq (all 75 questions) cloned datasets (serial — paraphrase cache race condition).
-# Run with: bash jobs/launch_create_clones_allq.sh
+# Run with: bash jobs/_generic/launch_create_clones_allq.sh
 
 set -o errexit
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"

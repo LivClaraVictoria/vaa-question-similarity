@@ -1,7 +1,7 @@
 #!/bin/bash
 # Launcher: clone count sweep for all questions (base E5 ZH).
 # Submits one job per question (array) + a dependent collect job.
-# Run with: bash jobs/launch_clone_count_sweep.sh
+# Run with: bash jobs/perfect_clones/launch_clone_count_sweep.sh
 
 set -o errexit
 

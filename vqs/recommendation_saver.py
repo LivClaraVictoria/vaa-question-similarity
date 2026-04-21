@@ -1,3 +1,8 @@
+"""
+Recommendation output: saves voter-candidate rankings to parquet + JSON metadata, computes
+cross-run Jaccard/Spearman/Kendall metrics, and writes human-readable .txt summaries.
+"""
+
 import pandas as pd
 import numpy as np
 import json

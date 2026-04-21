@@ -1,4 +1,6 @@
 #!/bin/bash
+# Worker: run a single full pipeline (distances → CRW → recommendations) for one config.
+# Env vars: PIPELINE_CONFIG (path to pipeline config), PIPELINE_OVERRIDES (optional key=value args).
 #SBATCH --mail-type=NONE
 #SBATCH --output=/itet-stor/liweiss/net_scratch/vaa-question-similarity/jobs/out/%j.out
 #SBATCH --error=/itet-stor/liweiss/net_scratch/vaa-question-similarity/jobs/out/%j.err
