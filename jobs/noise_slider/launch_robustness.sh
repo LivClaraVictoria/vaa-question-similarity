@@ -8,6 +8,7 @@
 #   ALPHA             — CRW alpha (default: 0.4)
 #   N_SEEDS           — seeds per λ (default: 20)
 #   LAMBDAS           — comma-separated λ values (default: plan grid)
+#   SUBSET_N          — subsample voters to N for speed (default: 5000; use "" to disable)
 
 set -o errexit
 
@@ -20,13 +21,15 @@ export PIPELINE_CONFIG="${PIPELINE_CONFIG:-configs/base_pipeline/pipeline_e5_ins
 export ALPHA="${ALPHA:-0.4}"
 export N_SEEDS="${N_SEEDS:-20}"
 export LAMBDAS="${LAMBDAS:-}"
+export SUBSET_N="${SUBSET_N:-5000}"
 export SWEEP_DIR
 
 # Determine question count directly from the questions parquet.
-N_QUESTIONS=$(python -c "
+CONDA_PYTHON=/itet-stor/liweiss/net_scratch/conda_envs/bachelor-thesis/bin/python
+N_QUESTIONS=$(${CONDA_PYTHON} -c "
 import pandas as pd
 df = pd.read_parquet('${PROJECT_DIR}/data/cleaned/df_questions.parquet')
-print(len(df[df['ID_question'] < 9_000_000]))
+print(len(df[df['ID_question'] < 9000000]))
 ")
 MAX_IDX=$((N_QUESTIONS - 1))
 
@@ -35,6 +38,7 @@ echo "  Config    : ${PIPELINE_CONFIG}"
 echo "  Alpha     : ${ALPHA}"
 echo "  Seeds/λ   : ${N_SEEDS}"
 echo "  Lambdas   : ${LAMBDAS:-<plan default>}"
+echo "  Subset_n  : ${SUBSET_N:-<all voters>}"
 echo "  Sweep dir : ${SWEEP_DIR}"
 echo "  Questions : ${N_QUESTIONS} (array 0-${MAX_IDX})"
 

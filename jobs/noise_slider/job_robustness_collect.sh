@@ -4,9 +4,9 @@
 #SBATCH --mail-type=NONE
 #SBATCH --output=/itet-stor/liweiss/net_scratch/vaa-question-similarity/jobs/out/%j.out
 #SBATCH --error=/itet-stor/liweiss/net_scratch/vaa-question-similarity/jobs/out/%j.err
-#SBATCH --mem=8G
+#SBATCH --mem=32G
 #SBATCH --nodes=1
-#SBATCH --time=00:15:00
+#SBATCH --time=02:00:00
 #SBATCH --cpus-per-task=2
 #SBATCH --gres=gpu:0
 #SBATCH --exclude=tikgpu10,tikgpu[06-09]

@@ -106,6 +106,10 @@ def _parse_args(argv=None):
         "--subset-questions", type=int, default=None,
         help="Limit to the first N questions (smoke-test helper)",
     )
+    parser.add_argument(
+        "--subset-n", type=int, default=None,
+        help="Subsample voters to N (sets config.subset_n; speeds up SLURM workers)",
+    )
     return parser.parse_args(argv)
 
 
@@ -288,17 +292,38 @@ def _run_single_question(
     rows = []
 
     for lam in lambda_grid:
+        # λ=0 is fully deterministic (no perturbation, no RNG) — compute once,
+        # broadcast the same rows to all n_seeds rather than re-running identically.
+        lam_zero_results: pd.DataFrame | None = None
+
         for seed_idx in range(n_seeds):
             seed_v = _derive_seed(q_id, lam, seed_idx, "voters")
             seed_c = _derive_seed(q_id, lam, seed_idx, "candidates")
-            rng_v = np.random.default_rng(seed_v)
-            rng_c = np.random.default_rng(seed_c)
 
-            # λ=0 short-circuit: no perturbation, no RNG draws.
             if lam == 0.0:
-                perturbed_voters = cloned_voters_base
-                perturbed_candidates = cloned_candidates_base
+                if lam_zero_results is None:
+                    # First (and only) actual compute for λ=0.
+                    cloned_rec_engine = RecommendationEngine(
+                        config=cloned_config,
+                        data_map={
+                            "candidates": cloned_candidates_base,
+                            "voters": cloned_voters_base,
+                            "questions": cloned_questions,
+                        },
+                    )
+                    cloned_baseline = cloned_rec_engine.run_baseline()
+                    cloned_crw = cloned_rec_engine.run_crw(cloned_weights)
+                    cloned_match_cols = [
+                        c for c in cloned_crw.columns if "match" in c or "Dist" in c
+                    ]
+                    cloned_combined = cloned_baseline.join(
+                        cloned_crw[cloned_match_cols].add_prefix("CRW_")
+                    )
+                    lam_zero_results = analyzer.analyze_from_dfs(base_combined, cloned_combined)
+                results = lam_zero_results
             else:
+                rng_v = np.random.default_rng(seed_v)
+                rng_c = np.random.default_rng(seed_c)
                 perturbed_voters = cloned_voters_base.copy()
                 perturbed_candidates = cloned_candidates_base.copy()
                 for clone_id in clone_ids_all:
@@ -316,26 +341,23 @@ def _run_single_question(
                         )
                         perturbed_candidates[col] = c_new
 
-            # Fresh rec engine on perturbed data, run baseline + CRW.
-            cloned_rec_engine = RecommendationEngine(
-                config=cloned_config,
-                data_map={
-                    "candidates": perturbed_candidates,
-                    "voters": perturbed_voters,
-                    "questions": cloned_questions,
-                },
-            )
-            cloned_baseline = cloned_rec_engine.run_baseline()
-            cloned_crw = cloned_rec_engine.run_crw(cloned_weights)
-
-            cloned_match_cols = [
-                c for c in cloned_crw.columns if "match" in c or "Dist" in c
-            ]
-            cloned_combined = cloned_baseline.join(
-                cloned_crw[cloned_match_cols].add_prefix("CRW_")
-            )
-
-            results = analyzer.analyze_from_dfs(base_combined, cloned_combined)
+                cloned_rec_engine = RecommendationEngine(
+                    config=cloned_config,
+                    data_map={
+                        "candidates": perturbed_candidates,
+                        "voters": perturbed_voters,
+                        "questions": cloned_questions,
+                    },
+                )
+                cloned_baseline = cloned_rec_engine.run_baseline()
+                cloned_crw = cloned_rec_engine.run_crw(cloned_weights)
+                cloned_match_cols = [
+                    c for c in cloned_crw.columns if "match" in c or "Dist" in c
+                ]
+                cloned_combined = cloned_baseline.join(
+                    cloned_crw[cloned_match_cols].add_prefix("CRW_")
+                )
+                results = analyzer.analyze_from_dfs(base_combined, cloned_combined)
 
             # One row per voter.
             for _, r in results.iterrows():
@@ -360,6 +382,7 @@ def _run_single_question(
             print(
                 f"  λ={lam:.2f} seed={seed_idx:02d}  "
                 f"base_jac={mean_base_jac:.4f}  crw_jac={mean_crw_jac:.4f}"
+                + ("  [cached]" if lam == 0.0 and seed_idx > 0 else "")
             )
 
     return rows
@@ -708,6 +731,9 @@ def main(argv=None):
     args = _parse_args(argv)
     config = load_config(Path(args.config))
 
+    if args.subset_n is not None:
+        config.subset_n = args.subset_n
+
     if args.lambdas:
         lambda_grid = sorted([float(s.strip()) for s in args.lambdas.split(",")])
     else:
@@ -719,11 +745,12 @@ def main(argv=None):
     name = _get_clean_name(config)
 
     print(f"\n=== Noise Slider ({args.mode} mode) ===")
-    print(f"  Config : {name}")
-    print(f"  λ grid : {lambda_grid}")
-    print(f"  Seeds  : {n_seeds}")
-    print(f"  Alpha  : {alpha}")
-    print(f"  Top-k  : {n_jaccard}")
+    print(f"  Config   : {name}")
+    print(f"  λ grid   : {lambda_grid}")
+    print(f"  Seeds    : {n_seeds}")
+    print(f"  Alpha    : {alpha}")
+    print(f"  Top-k    : {n_jaccard}")
+    print(f"  subset_n : {config.subset_n}")
 
     if args.mode == "prepare":
         _run_prepare(config)

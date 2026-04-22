@@ -1,0 +1,21 @@
+{
+    "config_name": "pipeline_e5_ZH",
+    "overrides": [
+        "subset_n~50"
+    ],
+    "n_jaccard": 36,
+    "data_year": 2023,
+    "dist": "E5",
+    "data_choice": "cleaned",
+    "clone_id": "cleaned",
+    "embedding_instruction": null,
+    "embedding_task": null,
+    "alpha": 0.6,
+    "crw_paper_choice": "P2",
+    "weighting_func_name": "class_uniform",
+    "rec_dist_method": "L2",
+    "n_recommendations": "all",
+    "subset_n": 50,
+    "use_OG_weights": false,
+    "district": "ZH"
+}
