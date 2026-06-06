@@ -1,0 +1,36 @@
+=== Behavioral-metric deployment simulation — deployment_pipeline_behavioral_l1_ZH_0606_0810 ===
+
+Pilot fraction: 5%   Seeds: [0, 1, 2, 3, 4]   Jaccard top-k: 36
+Distance distribution (off-diagonal): min=0.099 median=0.326 p75=0.375 max=0.469
+  (α below the min distance 0.099 leaves all weights at 1 → no effect)
+
+--- Per-alpha held-out distortion + stability (across-seed mean) ---
+  alpha  Jac.dist  Spe.dist  Ken.dist   w-stab  rec-stab
+  0.010    0.0000    0.0000    0.0000      nan     1.000
+  0.034    0.0000    0.0000    0.0000      nan     1.000
+  0.059    0.0000    0.0000    0.0000      nan     1.000
+  0.083    0.0000    0.0000    0.0000      nan     1.000
+  0.107    0.0110    0.0000    0.0022    1.000     0.993
+  0.132    0.0171    0.0001    0.0044    1.000     0.994
+  0.156    0.0242    0.0002    0.0061    0.931     0.992
+  0.181    0.0332    0.0003    0.0085    0.888     0.991
+  0.205    0.0369    0.0004    0.0093    0.900     0.990
+  0.229    0.0372    0.0003    0.0093    0.879     0.988
+  0.254    0.0387    0.0003    0.0093    0.870     0.984
+  0.278    0.0420    0.0003    0.0099    0.922     0.986
+  0.302    0.0426    0.0003    0.0097    0.911     0.986
+  0.327    0.0411    0.0003    0.0092    0.906     0.987
+  0.351    0.0399    0.0002    0.0089    0.881     0.986
+  0.375    0.0395    0.0002    0.0088    0.866     0.985
+
+--- Most-downweighted questions at reference α=0.375 (seed 0) ---
+  w=0.827  Q32272: Should Switzerland terminate the Bilateral Agreements with the EU and seek a fre
+  w=0.830  Q32268: Should Switzerland terminate the Schengen agreement with the EU and reintroduce 
+  w=0.950  Q32262: Are you in favour of lowering the voting age to 16?
+  w=0.966  Q32282: Should the federal government spend more or less in the area of "Education and r
+  w=0.966  Q32284: Should the federal government spend more or less in the area of "Public transpor
+  w=0.969  Q32228: Should the conditions for naturalization be relaxed (e.g., shorter residence per
+  w=0.974  Q32273: Should Switzerland return to a strict interpretation of neutrality (renounce eco
+  w=0.982  Q32232: Should cannabis use be legalized? [BePart question]
+  w=0.982  Q32233: Would you be in favour of doctors being allowed to administer direct active euth
+  w=0.986  Q32281: Should the federal government spend more or less in the area of "Social services

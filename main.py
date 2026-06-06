@@ -39,6 +39,9 @@ COMMANDS = {
     "noise-slider":           ("experiments.noise_slider.robustness",                   "main"),
     "behavioral-compare":     ("experiments.behavioral_metric.metric_comparison",       "main"),
     "behavioral-deploy":      ("experiments.behavioral_metric.deployment_simulation",   "main"),
+    "behavioral-weight-stability": ("experiments.behavioral_metric.weight_stability",   "main"),
+    "behavioral-seed-spread":  ("experiments.behavioral_metric.seed_spread",            "main"),
+    "behavioral-rec-stability": ("experiments.behavioral_metric.rec_stability",         "main"),
 }
 
 
