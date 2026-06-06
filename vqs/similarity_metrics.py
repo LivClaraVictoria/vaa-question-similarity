@@ -360,45 +360,50 @@ class Qwen3Calculator(BaseDistanceCalculator):
         return {}
 
 
-# --- 2b. Answer-Correlation Distance (no embedding model) ---
+# --- 2b. Answer-based distance metrics (no embedding model) ---
 
 
-class CorrelationDistanceCalculator:
-    """Distance metric based on answer correlations: distance(i,j) = 1 - |Pearson_r(answers_i, answers_j)|.
+class AnswerBasedDistanceCalculator(ABC):
+    """Base class for distance metrics computed directly from respondent answer data
+    (voters and/or candidates) rather than from question-text embeddings.
 
-    Unlike embedding-based metrics, this uses respondent answer data directly.
-    Requires load_voters=True and/or load_candidates=True in the config.
+    Subclasses implement only `_distance_matrix`, the metric-specific step. All shared
+    scaffolding — respondent selection, caching, and result assembly — lives here.
 
-    NOTE: This is NOT a proper metric (violates triangle inequality).
-    Use ArcCosCorrelationDistanceCalculator for a proper metric.
+    Requires load_voters=True and/or load_candidates=True. The respondent set is selected
+    via `correlation_answer_source` ("voters" | "candidates" | "both").
     """
 
     def __init__(self, config: Any, **kwargs):
         self.config = config
         self.value_name = "Distance"
-        self.important_params_list = list(config.DISTANCE_HASH_PARAMS)
+
+        # Answer-based metrics additionally depend on WHICH respondents are used: the
+        # source, any voter subset (subset_n), and the out-of-sample voter split. These are
+        # deliberately NOT in the global DISTANCE_HASH_PARAMS (that would invalidate every
+        # embedding cache, which is text-only), so we append them here. Params missing from
+        # the config resolve to None in the hash.
+        extra = ["correlation_answer_source", "subset_n", "train_voter_fraction", "split_seed"]
+        base = list(config.DISTANCE_HASH_PARAMS)
+        self.important_params_list = base + [p for p in extra if p not in base]
 
         source = getattr(config, "correlation_answer_source", None) or "voters"
         print(
-            f"Initialized Answer-Correlation Calculator. "
-            f"Source: {source}. "
+            f"Initialized {type(self).__name__}. Source: {source}. "
             f"Important parameters for caching: {self.important_params_list}"
         )
 
-    def _correlation_to_distance(self, r: float) -> float:
-        """Convert Pearson r to distance. Override in subclasses for different transforms."""
-        return 1.0 - abs(r) if not np.isnan(r) else 1.0
+    @abstractmethod
+    def _distance_matrix(
+        self, respondents: pd.DataFrame, answer_cols: list[str]
+    ) -> np.ndarray:
+        """Return the symmetric NxN distance matrix (N = len(answer_cols)), indexed in
+        the same order as answer_cols."""
+        ...
 
-    def calculate_distance(self, dataset: dict, config: Any) -> pd.DataFrame:
-        if config.data_choice == "fake":
-            raise ValueError(
-                "ANSWER-CORRELATION metric requires real answer data. "
-                "Cannot be used with data_choice='fake'."
-            )
+    def _select_respondents(self, dataset: dict, answer_cols: list[str]) -> pd.DataFrame:
+        source = getattr(self.config, "correlation_answer_source", None) or "voters"
 
-        source = getattr(config, "correlation_answer_source", None) or "voters"
-
-        # Validate that required data is loaded
         if source in ("voters", "both") and "voters" not in dataset:
             raise ValueError(
                 f"correlation_answer_source='{source}' requires load_voters=True in config."
@@ -406,6 +411,22 @@ class CorrelationDistanceCalculator:
         if source in ("candidates", "both") and "candidates" not in dataset:
             raise ValueError(
                 f"correlation_answer_source='{source}' requires load_candidates=True in config."
+            )
+
+        if source == "voters":
+            return dataset["voters"][answer_cols]
+        if source == "candidates":
+            return dataset["candidates"][answer_cols]
+        return pd.concat(
+            [dataset["voters"][answer_cols], dataset["candidates"][answer_cols]],
+            ignore_index=True,
+        )
+
+    def calculate_distance(self, dataset: dict, config: Any) -> pd.DataFrame:
+        if config.data_choice == "fake":
+            raise ValueError(
+                f"{type(self).__name__} requires real answer data. "
+                "Cannot be used with data_choice='fake'."
             )
 
         # Check cache
@@ -420,66 +441,101 @@ class CorrelationDistanceCalculator:
         if cached_df is not None:
             return cached_df  # type: ignore
 
-        print("No cache found. Computing answer-correlation distances...")
+        print(f"No cache found. Computing {config.dist} distances...")
 
-        # Get question metadata
+        # Question metadata + answer columns
         questions_df = dataset["questions"]
         question_ids = questions_df["ID_question"].tolist()
-        questions_text = (
-            questions_df.rename(columns=str.lower)["question_en"].tolist()
-        )
-
-        # Build answer column names
+        questions_text = questions_df.rename(columns=str.lower)["question_en"].tolist()
         answer_cols = [f"answer_{qid}" for qid in question_ids]
 
-        # Select respondent data
-        if source == "voters":
-            respondents = dataset["voters"][answer_cols]
-        elif source == "candidates":
-            respondents = dataset["candidates"][answer_cols]
-        else:  # "both"
-            respondents = pd.concat(
-                [dataset["voters"][answer_cols], dataset["candidates"][answer_cols]],
-                ignore_index=True,
-            )
+        respondents = self._select_respondents(dataset, answer_cols)
+        mat = self._distance_matrix(respondents, answer_cols)
 
-        # Compute Pearson correlation matrix (pairwise deletion for NaNs)
-        corr_matrix = respondents.corr()
-
-        # Convert correlation to distance
-        results = []
-        for i, j in combinations(range(len(question_ids)), 2):
-            col_i = answer_cols[i]
-            col_j = answer_cols[j]
-            r = corr_matrix.loc[col_i, col_j]
-            distance = self._correlation_to_distance(r)
-            results.append(
-                {
-                    "Qu1": questions_text[i],
-                    "Qu2": questions_text[j],
-                    "ID1": question_ids[i],
-                    "ID2": question_ids[j],
-                    "Distance": distance,
-                    "Type": "Real-Symmetric",
-                }
-            )
+        results = [
+            {
+                "Qu1": questions_text[i],
+                "Qu2": questions_text[j],
+                "ID1": question_ids[i],
+                "ID2": question_ids[j],
+                "Distance": float(mat[i, j]),
+                "Type": "Real-Symmetric",
+            }
+            for i, j in combinations(range(len(question_ids)), 2)
+        ]
 
         results_df = pd.DataFrame(results)
         rm.save(results_df)
         return results_df
 
 
-class ArcCosCorrelationDistanceCalculator(CorrelationDistanceCalculator):
-    """Proper metric based on answer correlations: distance(i,j) = arccos(|Pearson_r(answers_i, answers_j)|).
+class CorrelationDistanceCalculator(AnswerBasedDistanceCalculator):
+    """distance(i,j) = 1 - |Pearson_r(answers_i, answers_j)|.
 
-    Angular distance in projective space. Satisfies the triangle inequality.
-    Range: [0, pi/2]. Numerically stable via np.clip.
+    NOTE: NOT a proper metric (violates triangle inequality). Use the ArcCos variant
+    for a proper metric.
     """
 
     def _correlation_to_distance(self, r: float) -> float:
+        """Convert Pearson r to distance. Override in subclasses for different transforms."""
+        return 1.0 - abs(r) if not np.isnan(r) else 1.0
+
+    def _distance_matrix(
+        self, respondents: pd.DataFrame, answer_cols: list[str]
+    ) -> np.ndarray:
+        # pandas .corr() uses pairwise deletion for NaNs; column order == answer_cols order
+        corr = respondents.corr().to_numpy()
+        n = len(answer_cols)
+        mat = np.zeros((n, n))
+        for i, j in combinations(range(n), 2):
+            d = self._correlation_to_distance(corr[i, j])
+            mat[i, j] = mat[j, i] = d
+        return mat
+
+
+class ArcCosCorrelationDistanceCalculator(CorrelationDistanceCalculator):
+    """distance(i,j) = arccos(|Pearson_r|). Proper metric (angular distance in projective
+    space), range [0, pi/2], numerically stable via np.clip."""
+
+    def _correlation_to_distance(self, r: float) -> float:
         if np.isnan(r):
-            return np.pi / 2
+            return float(np.pi / 2)
         return float(np.arccos(np.clip(abs(r), 0.0, 1.0)))
+
+
+class BehavioralL1DistanceCalculator(AnswerBasedDistanceCalculator):
+    """Behavioral L1 (taxicab) distance between answer vectors, up to negation:
+
+        d(q, q') = min( mean|x_q - x_q'|, mean|x_q - (100 - x_q')| ) / 100
+
+    averaged over respondents who answered BOTH questions (pairwise deletion). The min
+    over negation (sigma(x) = 100 - x, the SmartVote answer flip) makes a question and its
+    negation close — the L1 analogue of using |r| instead of r. Normalized to [0, 1] so
+    alpha reads as a population-agreement threshold. It is the squared-error-optimal
+    predictor of answer gaps, and a proper pseudometric (l1 distance; negation is an
+    isometry, so the min is a clean quotient metric).
+    """
+
+    MIN_OVERLAP = 30  # pairs with fewer co-respondents are treated as non-redundant (d=1)
+
+    def _distance_matrix(
+        self, respondents: pd.DataFrame, answer_cols: list[str]
+    ) -> np.ndarray:
+        A = respondents[answer_cols].to_numpy(dtype=float)
+        n = len(answer_cols)
+        mat = np.zeros((n, n))
+        for i, j in combinations(range(n), 2):
+            a, b = A[:, i], A[:, j]
+            mask = ~np.isnan(a) & ~np.isnan(b)
+            if int(mask.sum()) < self.MIN_OVERLAP:
+                d = 1.0
+            else:
+                ai, bj = a[mask], b[mask]
+                d_id = np.abs(ai - bj).mean()
+                d_neg = np.abs(ai - (100.0 - bj)).mean()
+                d = float(min(d_id, d_neg) / 100.0)
+            mat[i, j] = mat[j, i] = d
+        return mat
 
 
 # --- 3. The Registry (Configuration) ---
@@ -502,6 +558,7 @@ METRIC_REGISTRY = {
     "QWEN3": {"class": Qwen3Calculator, "kwargs": {}},
     "ANSWER-CORRELATION": {"class": CorrelationDistanceCalculator, "kwargs": {}},
     "ANSWER-CORRELATION-ARCCOS": {"class": ArcCosCorrelationDistanceCalculator, "kwargs": {}},
+    "BEHAVIORAL-L1": {"class": BehavioralL1DistanceCalculator, "kwargs": {}},
 }
 
 

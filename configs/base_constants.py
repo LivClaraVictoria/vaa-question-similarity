@@ -58,6 +58,7 @@ COMPARISON_RESULTS_DIR = RESULTS_DIR / "comparator_results"
 ALPHA_SWEEP_RESULTS_DIR = RESULTS_DIR / "exp1" / "model_alpha_sweep"
 QUESTION_REMOVAL_RESULTS_DIR = RESULTS_DIR / "exp2_question_removal"
 THRESHOLD_SWEEP_RESULTS_DIR = RESULTS_DIR / "exp1" / "threshold_alpha_sweep"
+BEHAVIORAL_METRIC_RESULTS_DIR = RESULTS_DIR / "behavioral_metric"
 
 
 # Specific data files
@@ -271,6 +272,17 @@ bge_model_name = "BAAI/bge-m3"
 gte_model_name = "Alibaba-NLP/gte-multilingual-base"
 nomic_model_name = "nomic-ai/nomic-embed-text-v2-moe"
 qwen3_model_name = "Qwen/Qwen3-Embedding-0.6B"
+
+# --- ANSWER-BASED METRIC PARAMETERS (ANSWER-CORRELATION*, BEHAVIORAL-L1) ---
+# Which respondents' answers define the distance: "voters" | "candidates" | "both".
+correlation_answer_source = "voters"
+
+# Out-of-sample deployment split (experiments.behavioral_metric.deployment_simulation).
+# None = no split (use all voters). When set, the answer-based distance is estimated from a
+# `train_voter_fraction` random sample of voters (seeded by `split_seed`); both fields are part
+# of the answer-metric cache hash so different splits never collide.
+train_voter_fraction: float | None = None
+split_seed: int | None = None
 
 
 # --- CLONE-ROBUST WEIGHTING PARAMETERS ---

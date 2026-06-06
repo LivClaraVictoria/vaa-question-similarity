@@ -1,0 +1,35 @@
+=== Behavioral L1  vs  ArcCos answer-correlation  (V∪C) ===
+
+Pairs compared: 2775
+Spearman(rank d_beh, rank d_arc) = 0.5896
+  (weak/moderate ρ is expected: L1 measures absolute answer agreement, while
+   arccos|r| measures co-movement and is blind to constant shifts/scaling.)
+
+--- Top 5 closest pairs by BEHAVIORAL-L1 ---
+  d_beh=0.109 (arc=0.846)  [32268↔32272]  Should Switzerland terminate the Schengen agreement wit  ||  Should Switzerland terminate the Bilateral Agreements w
+  d_beh=0.144 (arc=1.176)  [32282↔32284]  Should the federal government spend more or less in the  ||  Should the federal government spend more or less in the
+  d_beh=0.172 (arc=1.001)  [32281↔32288]  Should the federal government spend more or less in the  ||  Should the federal government spend more or less in the
+  d_beh=0.174 (arc=0.683)  [32264↔32287]  Are you in favor of expanding the army's target number   ||  Should the federal government spend more or less in the
+  d_beh=0.175 (arc=1.217)  [32235↔32268]  Do you think it's right for same-sex couples to have th  ||  Should Switzerland terminate the Schengen agreement wit
+
+--- Top 5 closest pairs by ARCCOS|r| ---
+  d_arc=0.683 (beh=0.174)  [32264↔32287]  Are you in favor of expanding the army's target number   ||  Should the federal government spend more or less in the
+  d_arc=0.743 (beh=0.204)  [32245↔32285]  Should busy sections of highways be widened?  ||  Should the federal government spend more or less in the
+  d_arc=0.846 (beh=0.109)  [32268↔32272]  Should Switzerland terminate the Schengen agreement wit  ||  Should Switzerland terminate the Bilateral Agreements w
+  d_arc=0.911 (beh=0.224)  [32219↔32281]  Should the federal government provide more financial su  ||  Should the federal government spend more or less in the
+  d_arc=0.920 (beh=0.254)  [32228↔32231]  Should the conditions for naturalization be relaxed (e.  ||  Should foreign nationals who have lived in Switzerland 
+
+Top-5 overlap between the two metrics: 2/5 pairs
+
+--- 10 biggest rank disagreements ---
+  (close under one metric, far under the other — the shift/scale-invariance cases)
+  rank_beh= 232  rank_arc=2597  d_beh=0.255  d_arc=1.550  [32278↔32284]  What is your position the following statement: "The ong  ||  Should the federal government spend more or less in the
+  rank_beh=2726  rank_arc= 443  d_beh=0.441  d_arc=1.233  [32227↔32262]  Should the state be more committed to equal educational  ||  Are you in favour of lowering the voting age to 16?
+  rank_beh=2513  rank_arc= 232  d_beh=0.415  d_arc=1.176  [32228↔32268]  Should the conditions for naturalization be relaxed (e.  ||  Should Switzerland terminate the Schengen agreement wit
+  rank_beh=2693  rank_arc= 428  d_beh=0.435  d_arc=1.231  [32262↔32271]  Are you in favour of lowering the voting age to 16?  ||  Should Swiss companies be obliged to ensure that their 
+  rank_beh=2419  rank_arc= 165  d_beh=0.407  d_arc=1.149  [32234↔32235]  Should a third official gender be introduced alongside   ||  Do you think it's right for same-sex couples to have th
+  rank_beh=2606  rank_arc= 354  d_beh=0.424  d_arc=1.211  [32228↔32272]  Should the conditions for naturalization be relaxed (e.  ||  Should Switzerland terminate the Bilateral Agreements w
+  rank_beh=2753  rank_arc= 519  d_beh=0.451  d_arc=1.250  [32228↔32235]  Should the conditions for naturalization be relaxed (e.  ||  Do you think it's right for same-sex couples to have th
+  rank_beh=2467  rank_arc= 256  d_beh=0.411  d_arc=1.183  [32262↔32280]  Are you in favour of lowering the voting age to 16?  ||  What is your position the following statement: "Stronge
+  rank_beh= 552  rank_arc=2763  d_beh=0.289  d_arc=1.569  [32278↔32286]  What is your position the following statement: "The ong  ||  Should the federal government spend more or less in the
+  rank_beh= 200  rank_arc=2389  d_beh=0.250  d_arc=1.517  [32237↔32257]  Should married couples be taxed separately (individual   ||  Are you in favour of government measures to make the us

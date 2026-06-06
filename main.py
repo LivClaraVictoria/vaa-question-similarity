@@ -15,6 +15,9 @@ Subcommands:
   approx-rec-distortion Alpha sweep on approximate (mini→full) questions
   approx-partisan       Mini vs full questionnaire party visibility
   noise-slider          Robustness sweep: λ-controlled perturbation of clone answers
+  behavioral-compare    Compare BEHAVIORAL-L1 vs ANSWER-CORRELATION-ARCCOS on V∪C
+  behavioral-deploy     Out-of-sample deployment sim: estimate metric from 5% of voters,
+                          measure held-out recommendation impact + cross-seed stability
 
 All subcommand-specific flags are passed through to the underlying module unchanged.
 Run `python -m main <subcommand> --help` for per-subcommand help.
@@ -34,6 +37,8 @@ COMMANDS = {
     "approx-rec-distortion":  ("experiments.approximate_clones.recommendation_distortion", "main"),
     "approx-partisan":        ("experiments.approximate_clones.partisan_distortion",    "main"),
     "noise-slider":           ("experiments.noise_slider.robustness",                   "main"),
+    "behavioral-compare":     ("experiments.behavioral_metric.metric_comparison",       "main"),
+    "behavioral-deploy":      ("experiments.behavioral_metric.deployment_simulation",   "main"),
 }
 
 
