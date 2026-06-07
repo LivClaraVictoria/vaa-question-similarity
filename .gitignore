@@ -3,6 +3,7 @@ data/raw/*
 data/cleaned/*
 !data/cleaned/README.md
 data/cloned/*/*.parquet
+data/removed/**/*.parquet
 .vscode/
 __pycache__/
 scripts/tests.py
@@ -12,6 +13,12 @@ experiment_results/pipeline_outputs/recommendations/**/*.parquet
 experiment_results/pipeline_outputs/recommendations/**/*.csv
 experiment_results/comparator_results/**/*.parquet
 experiment_results/comparator_results/**/*.csv
+experiment_results/**/*_per_voter*.csv
+experiment_results/exp3_sanity_check/*.csv
+experiment_results/noise_slider/robustness/master_*.csv
+dependencies/rsfp/data/cache/
+dependencies/rsfp/data/NRW2023-kandidierende.json
+*.png
 jobs/out/*
 worker*
 CLAUDE.md
