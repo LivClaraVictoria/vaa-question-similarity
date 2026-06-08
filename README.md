@@ -1,6 +1,6 @@
 # VAA Question Similarity & Clone-Robust Weighting
 
-This repository contains the codebase for my Bachelor Thesis analyzing semantic similarity between political questions in the Swiss Voting Advice Application (VAA), SmartVote.
+This repository contains the codebase for my Bachelor Thesis analyzing semantic similarity between political questions in the Swiss Voting Advice Application (VAA), SmartVote. The resulting full-version paper can be found in `paper/Clone_robust_VAAs_full_paper.pdf'.
 
 **Core Research Question:** How do voter-candidate recommendations change when identical or near-identical questions are added to the VAA questionnaire, and can Clone-Robust Weighting (CRW) correct this distortion?
 
