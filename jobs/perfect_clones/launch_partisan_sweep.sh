@@ -11,24 +11,30 @@
 set -o errexit
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "${SCRIPT_DIR}/../_lib/common.sh"
+cd "${PROJECT_DIR}"
 
 # --- Configuration ---
 export PIPELINE_CONFIG="configs/base_pipeline/pipeline_e5_instruct_ZH_a03.py"
-export PHASE1_CSV="experiment_results/party_impact/high_impact/phase1/pipeline_e5_ZH/party_impact_pipeline_e5_ZH_0302_0057.csv"
+# Phase 1 CSV that picks each party's top-K questions. Defaults to the ZH (validation) Phase 1,
+# also for test cantons (VQS_DISTRICT): the question selection is then transferred from ZH.
+# Set PHASE1_CSV= (empty) to auto-detect the canton's own latest Phase 1 instead.
+export PHASE1_CSV="${PHASE1_CSV-experiment_results/party_impact/high_impact/phase1/pipeline_e5_ZH/party_impact_pipeline_e5_ZH_0302_0057.csv}"
 export TOP_K=5
 
 PARTIES=("SP" "Green" "GLP" "Centre" "FDP" "SVP")
 
 echo "=== Party Sweep: Phase 2 for all ${#PARTIES[@]} parties ==="
 echo "  Config:    ${PIPELINE_CONFIG}"
-echo "  Phase1 CSV: ${PHASE1_CSV}"
+echo "  Canton:    ${VQS_DISTRICT:-as in config}"
+echo "  Phase1 CSV: ${PHASE1_CSV:-auto-detect latest for this canton}"
 echo "  Top-K:     ${TOP_K}"
 echo "  Parties:   ${PARTIES[*]}"
 echo ""
 
 # Step 1: Pre-generate paraphrases (serial)
 echo "--- Step 1: Pre-generating paraphrases ---"
-PRE_JOB=$(sbatch --parsable --export=ALL "${SCRIPT_DIR}/job_party_impact_pre_paraphrases.sh")
+PRE_JOB=$(submit "${SCRIPT_DIR}/job_party_impact_pre_paraphrases.sh")
 echo "  Submitted pre-paraphrase job: ${PRE_JOB}"
 
 # Step 2: Submit 6 Phase 2 jobs in parallel (each depends on pre-paraphrase)
@@ -36,7 +42,7 @@ echo ""
 echo "--- Step 2: Submitting Phase 2 jobs (parallel, depend on ${PRE_JOB}) ---"
 PHASE2_JOBS=()
 for PARTY in "${PARTIES[@]}"; do
-    JOB_ID=$(sbatch --parsable \
+    JOB_ID=$(submit \
         --export=ALL,TARGET_PARTY="${PARTY}" \
         --dependency=afterok:${PRE_JOB} \
         "${SCRIPT_DIR}/job_party_impact_phase2.sh")

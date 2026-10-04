@@ -115,7 +115,7 @@ Measures how cloning specific questions shifts party visibility across voter rec
 
 ```bash
 # Phase 1 (full SLURM sweep):
-bash jobs/launch_party_impact.sh
+bash jobs/perfect_clones/launch_partisan.sh
 
 # Phase 2 (requires existing Phase 1 CSV):
 python -m experiments.perfect_clones.partisan_distortion \
@@ -205,15 +205,26 @@ The pipeline uses a Python-based inheritance system for configuration.
 
 ## Executing on SLURM Cluster
 
-For heavy workloads (alpha sweeps, parallel pipeline runs), use the provided `sbatch` scripts in the `jobs/` directory. The architecture uses a launcher + generic worker pattern to maximize parallelism.
+For heavy workloads (alpha sweeps, parallel pipeline runs), use the scripts in `jobs/`. The architecture uses a launcher + generic worker pattern to maximize parallelism: launchers (`launch_*.sh`) run on the login node with plain `bash` and submit the workers (`job_*.sh`).
+
+**Cluster profiles.** The scripts are cluster-agnostic: `#SBATCH` headers only request portable resources (`--time`, `--cpus-per-task`, `--mem-per-cpu`). Everything cluster-specific (conda location, log directory, HuggingFace cache, extra `sbatch` flags such as node exclusions, modules to load) lives in one profile per cluster:
+
+* `jobs/cluster.conf` — selects the active profile (`CLUSTER=euler` or `CLUSTER=tik`). Override per call: `CLUSTER=tik bash jobs/...`.
+* `jobs/clusters/euler.sh`, `jobs/clusters/tik.sh` — the profiles. To add a cluster, copy one and adjust it.
+* `jobs/_lib/common.sh` — shared helpers: `submit` (sbatch wrapper adding logs/profile flags), `activate_env`, `job_preamble`.
+
+The project root is derived from the checkout location, so jobs run from wherever the repository is cloned. Environment variables of the submitting shell (e.g. `OPENAI_API_KEY`) are forwarded to the jobs.
 
 **Common SLURM Workflows:**
 * **Question Impact Sweep (Parallel):**
-    `bash jobs/launch_question_impact.sh`
+    `bash jobs/perfect_clones/launch_question_impact.sh`
 * **Party Impact Analysis (Phase 1 -> Phase 2):**
-    `bash jobs/launch_party_impact.sh`
-* **Alpha Sweep:**
-    `bash jobs/launch_alpha_sweep_combinedvar.sh`
+    `bash jobs/perfect_clones/launch_partisan.sh`
+* **Question Alpha Sweep (all clone types):**
+    `bash jobs/perfect_clones/launch_rec_distortion.sh`
+* **Single job script:**
+    `PIPELINE_CONFIG=configs/base_pipeline/pipeline_e5_ZH.py bash jobs/submit.sh jobs/_generic/job_pipeline_single.sh`
+    (prefix any launcher/submit call with `SUBMIT_DRY_RUN=1` to print the `sbatch` commands without submitting)
 
 **Note on Shared File System:** Cache files (`cache/`) are written to a shared NFS. To prevent race conditions during paraphrase generation via the OpenAI API, clone creation jobs must be run in series.
 

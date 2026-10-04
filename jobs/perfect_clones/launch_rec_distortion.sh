@@ -8,7 +8,8 @@
 set -o errexit
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-PROJECT_DIR="/itet-stor/liweiss/net_scratch/vaa-question-similarity"
+source "${SCRIPT_DIR}/../_lib/common.sh"
+cd "${PROJECT_DIR}"
 SWEEP_DIR="${PROJECT_DIR}/experiment_results/exp1/question_alpha_sweep/workers_allct_$(date +%Y%m%d_%H%M%S)"
 mkdir -p "${SWEEP_DIR}"
 
@@ -25,9 +26,7 @@ echo "  Clone types: ${CLONE_TYPES[*]}"
 echo "  N clones: ${N_CLONES}"
 
 # Step 1: Determine question count
-cd "${PROJECT_DIR}"
-[[ -f /itet-stor/liweiss/net_scratch/conda/bin/conda ]] && eval "$(/itet-stor/liweiss/net_scratch/conda/bin/conda shell.bash hook)"
-conda activate bachelor-thesis
+activate_env
 
 N_QUESTIONS=$(python -c "
 import pandas as pd
@@ -46,7 +45,7 @@ ALL_JOB_IDS=""
 
 for CT in "${CLONE_TYPES[@]}"; do
     export CLONE_TYPE="${CT}"
-    JOB_ID=$(sbatch --parsable --export=ALL --array=0-${MAX_IDX} \
+    JOB_ID=$(submit --array=0-${MAX_IDX} \
         --job-name="qa_sweep_${CT}" \
         "${SCRIPT_DIR}/job_question_alpha_sweep_worker_ct.sh")
     echo "  ${CT}: job array ${JOB_ID} (${N_QUESTIONS} tasks)"
@@ -61,7 +60,7 @@ done
 # Step 3: Submit collect job (depends on all worker arrays)
 echo ""
 echo "--- Submitting collect job ---"
-COLLECT_JOB=$(sbatch --parsable --export=ALL \
+COLLECT_JOB=$(submit \
     --dependency=afterok:${ALL_JOB_IDS} \
     "${SCRIPT_DIR}/job_question_alpha_sweep_collect.sh")
 echo "  Collect submitted: job ${COLLECT_JOB} (depends on ${ALL_JOB_IDS})"

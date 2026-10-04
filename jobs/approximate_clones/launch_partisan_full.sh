@@ -7,7 +7,8 @@
 set -o errexit
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-PROJECT_DIR="/itet-stor/liweiss/net_scratch/vaa-question-similarity"
+source "${SCRIPT_DIR}/../_lib/common.sh"
+cd "${PROJECT_DIR}"
 SWEEP_DIR="${PROJECT_DIR}/experiment_results/party_impact/mini_maxi/phase1/workers/sweep_$(date +%Y%m%d_%H%M%S)"
 mkdir -p "${SWEEP_DIR}"
 
@@ -18,6 +19,7 @@ export TOP_K=5
 PARTIES=("SP" "Green" "GLP" "Centre" "FDP" "SVP")
 
 # Determine full-only question count (total - mini)
+activate_env
 N_FULL_ONLY=$(python -c "
 import pandas as pd
 df = pd.read_parquet('${PROJECT_DIR}/data/cleaned/df_questions.parquet')
@@ -34,11 +36,11 @@ echo "  Phase 2 top-k: ${TOP_K}"
 echo "  Parties: ${PARTIES[*]}"
 
 # Phase 1: worker array
-SWEEP_JOB=$(sbatch --parsable --export=ALL --array=0-${MAX_IDX} "${SCRIPT_DIR}/job_mini_maxi_worker.sh")
+SWEEP_JOB=$(submit --array=0-${MAX_IDX} "${SCRIPT_DIR}/job_mini_maxi_worker.sh")
 echo "  Workers submitted: job array ${SWEEP_JOB} (${N_FULL_ONLY} tasks)"
 
 # Phase 1: collect (depends on all workers)
-COLLECT_JOB=$(sbatch --parsable --export=ALL --dependency=afterok:${SWEEP_JOB} "${SCRIPT_DIR}/job_mini_maxi_collect.sh")
+COLLECT_JOB=$(submit --dependency=afterok:${SWEEP_JOB} "${SCRIPT_DIR}/job_mini_maxi_collect.sh")
 echo "  Collect submitted:  job ${COLLECT_JOB} (depends on ${SWEEP_JOB})"
 
 # Phase 2: one job per party (all depend on collect, run in parallel)
@@ -46,7 +48,7 @@ echo ""
 echo "--- Phase 2: submitting one job per party (depend on collect ${COLLECT_JOB}) ---"
 PHASE2_JOBS=()
 for PARTY in "${PARTIES[@]}"; do
-    JOB_ID=$(sbatch --parsable \
+    JOB_ID=$(submit \
         --export=ALL,TARGET_PARTY="${PARTY}" \
         --dependency=afterok:${COLLECT_JOB} \
         "${SCRIPT_DIR}/job_mini_maxi_phase2.sh")
@@ -58,7 +60,7 @@ DEP_STR=$(IFS=:; echo "${PHASE2_JOBS[*]}")
 
 echo ""
 echo "--- Compile: aggregate all Phase 2 results (depends on all Phase 2 jobs) ---"
-COMPILE_JOB=$(sbatch --parsable \
+COMPILE_JOB=$(submit \
     --export=ALL \
     --dependency=afterok:${DEP_STR} \
     "${SCRIPT_DIR}/job_mini_maxi_compile.sh")

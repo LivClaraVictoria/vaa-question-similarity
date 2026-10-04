@@ -7,6 +7,8 @@
 set -o errexit
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+source "${SCRIPT_DIR}/../_lib/common.sh"
+cd "${PROJECT_DIR}"
 
 export PIPELINE_CONFIG="configs/base_pipeline/pipeline_e5_instruct_ZH_a03.py"
 export TOP_K=5
@@ -27,7 +29,7 @@ echo ""
 echo "--- Phase 2: submitting one job per party ---"
 PHASE2_JOBS=()
 for PARTY in "${PARTIES[@]}"; do
-    JOB_ID=$(sbatch --parsable \
+    JOB_ID=$(submit \
         --export=ALL,TARGET_PARTY="${PARTY}" \
         "${SCRIPT_DIR}/job_mini_maxi_phase2.sh")
     PHASE2_JOBS+=("${JOB_ID}")
@@ -38,7 +40,7 @@ DEP_STR=$(IFS=:; echo "${PHASE2_JOBS[*]}")
 
 echo ""
 echo "--- Compile: aggregate all Phase 2 results (depends on all Phase 2 jobs) ---"
-COMPILE_JOB=$(sbatch --parsable \
+COMPILE_JOB=$(submit \
     --export=ALL \
     --dependency=afterok:${DEP_STR} \
     "${SCRIPT_DIR}/job_mini_maxi_compile.sh")

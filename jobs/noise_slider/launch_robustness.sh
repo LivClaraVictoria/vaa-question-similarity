@@ -13,7 +13,8 @@
 set -o errexit
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-PROJECT_DIR="/itet-stor/liweiss/net_scratch/vaa-question-similarity"
+source "${SCRIPT_DIR}/../_lib/common.sh"
+cd "${PROJECT_DIR}"
 SWEEP_DIR="${PROJECT_DIR}/experiment_results/noise_slider/robustness/workers_$(date +%Y%m%d_%H%M%S)"
 mkdir -p "${SWEEP_DIR}"
 
@@ -25,8 +26,8 @@ export SUBSET_N="${SUBSET_N:-5000}"
 export SWEEP_DIR
 
 # Determine question count directly from the questions parquet.
-CONDA_PYTHON=/itet-stor/liweiss/net_scratch/conda_envs/bachelor-thesis/bin/python
-N_QUESTIONS=$(${CONDA_PYTHON} -c "
+activate_env
+N_QUESTIONS=$(python -c "
 import pandas as pd
 df = pd.read_parquet('${PROJECT_DIR}/data/cleaned/df_questions.parquet')
 print(len(df[df['ID_question'] < 9000000]))
@@ -43,16 +44,16 @@ echo "  Sweep dir : ${SWEEP_DIR}"
 echo "  Questions : ${N_QUESTIONS} (array 0-${MAX_IDX})"
 
 # Step 1: pre-generate paraphrases serially (paraphrase cache has a write race).
-PREP_JOB=$(sbatch --parsable --export=ALL "${SCRIPT_DIR}/job_robustness_prepare.sh")
+PREP_JOB=$(submit "${SCRIPT_DIR}/job_robustness_prepare.sh")
 echo "  Prepare submitted : job ${PREP_JOB}"
 
 # Step 2: worker array depends on prepare.
-SWEEP_JOB=$(sbatch --parsable --export=ALL --dependency=afterok:${PREP_JOB} \
+SWEEP_JOB=$(submit --dependency=afterok:${PREP_JOB} \
     --array=0-${MAX_IDX} "${SCRIPT_DIR}/job_robustness_worker.sh")
 echo "  Workers submitted : job array ${SWEEP_JOB} (${N_QUESTIONS} tasks)"
 
 # Step 3: collect depends on all workers.
-COLLECT_JOB=$(sbatch --parsable --export=ALL --dependency=afterok:${SWEEP_JOB} \
+COLLECT_JOB=$(submit --dependency=afterok:${SWEEP_JOB} \
     "${SCRIPT_DIR}/job_robustness_collect.sh")
 echo "  Collect submitted : job ${COLLECT_JOB} (depends on ${SWEEP_JOB})"
 

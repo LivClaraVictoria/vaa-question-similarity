@@ -8,7 +8,8 @@
 set -o errexit
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-PROJECT_DIR="/itet-stor/liweiss/net_scratch/vaa-question-similarity"
+source "${SCRIPT_DIR}/../_lib/common.sh"
+cd "${PROJECT_DIR}"
 SWEEP_DIR="${PROJECT_DIR}/experiment_results/exp1/model_alpha_sweep/sweep_$(date +%Y%m%d_%H%M%S)"
 mkdir -p "${SWEEP_DIR}"
 
@@ -27,13 +28,13 @@ echo "  Sweep dir: ${SWEEP_DIR}"
 echo "  Alphas: ${N_ALPHAS} (array 0-${MAX_IDX})"
 
 # Workers: one per alpha value
-SWEEP_JOB=$(sbatch --parsable --export=ALL --array=0-${MAX_IDX} \
+SWEEP_JOB=$(submit --array=0-${MAX_IDX} \
     --job-name="model_sel_sweep" \
     "${SCRIPT_DIR}/job_model_selection_worker.sh")
 echo "  Workers submitted: job array ${SWEEP_JOB} (${N_ALPHAS} tasks)"
 
 # Collect: aggregates per-alpha CSVs + plots (depends on all workers)
-COLLECT_JOB=$(sbatch --parsable --export=ALL \
+COLLECT_JOB=$(submit \
     --dependency=afterok:${SWEEP_JOB} \
     "${SCRIPT_DIR}/job_model_selection_collect.sh")
 echo "  Collect submitted:  job ${COLLECT_JOB} (depends on ${SWEEP_JOB})"
