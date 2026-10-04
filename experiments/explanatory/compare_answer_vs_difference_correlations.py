@@ -22,7 +22,7 @@ from pathlib import Path
 from scipy.stats import spearmanr
 import seaborn as sns
 
-from vqs.config_utils import load_config
+from vqs.config_utils import load_config, canton_results_path
 from vqs.data_loader import load_dataset
 
 CONFIG_PATH = "configs/base_pipeline/pipeline_e5_ZH.py"
@@ -32,9 +32,9 @@ SEED = 42
 
 
 def main():
-    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-
     config = load_config(Path(CONFIG_PATH))
+    output_dir = canton_results_path(OUTPUT_DIR, config)
+    output_dir.mkdir(parents=True, exist_ok=True)
     dataset = load_dataset(config)
     df_voters = dataset["voters"]
     df_candidates = dataset["candidates"]
@@ -113,9 +113,9 @@ def main():
         fontsize=13,
     )
     fig.tight_layout()
-    fig.savefig(OUTPUT_DIR / "answer_vs_difference_scatter.png", dpi=300)
+    fig.savefig(output_dir / "answer_vs_difference_scatter.png", dpi=300)
     plt.close(fig)
-    print(f"\n  -> Scatter: {OUTPUT_DIR / 'answer_vs_difference_scatter.png'}")
+    print(f"\n  -> Scatter: {output_dir / 'answer_vs_difference_scatter.png'}")
 
     # --- Plot 2: Side-by-side heatmaps ---
     fig, axes = plt.subplots(1, 3, figsize=(22, 7))
@@ -134,9 +134,9 @@ def main():
 
     fig.suptitle("Absolute Correlation Matrices: Answer-Space vs Difference-Space", fontsize=13)
     fig.tight_layout()
-    fig.savefig(OUTPUT_DIR / "correlation_heatmaps.png", dpi=300)
+    fig.savefig(output_dir / "correlation_heatmaps.png", dpi=300)
     plt.close(fig)
-    print(f"  -> Heatmaps: {OUTPUT_DIR / 'correlation_heatmaps.png'}")
+    print(f"  -> Heatmaps: {output_dir / 'correlation_heatmaps.png'}")
 
     # --- Plot 3: Distribution comparison ---
     fig, ax = plt.subplots(figsize=(8, 5))
@@ -149,9 +149,9 @@ def main():
     ax.set_title("Distribution of Pairwise |r| Across Correlation Spaces")
     ax.legend()
     fig.tight_layout()
-    fig.savefig(OUTPUT_DIR / "correlation_distributions.png", dpi=300)
+    fig.savefig(output_dir / "correlation_distributions.png", dpi=300)
     plt.close(fig)
-    print(f"  -> Distributions: {OUTPUT_DIR / 'correlation_distributions.png'}")
+    print(f"  -> Distributions: {output_dir / 'correlation_distributions.png'}")
 
     # --- Save CSV ---
     pairs = []
@@ -163,8 +163,8 @@ def main():
             "candidate_abs_r": cand_abs_r[len(pairs)],
             "difference_abs_r": diff_abs_r[len(pairs)],
         })
-    pd.DataFrame(pairs).to_csv(OUTPUT_DIR / "pairwise_correlations.csv", index=False)
-    print(f"  -> CSV: {OUTPUT_DIR / 'pairwise_correlations.csv'}")
+    pd.DataFrame(pairs).to_csv(output_dir / "pairwise_correlations.csv", index=False)
+    print(f"  -> CSV: {output_dir / 'pairwise_correlations.csv'}")
 
 
 if __name__ == "__main__":

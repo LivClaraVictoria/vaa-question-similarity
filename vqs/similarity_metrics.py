@@ -12,6 +12,7 @@ import numpy as np
 import pandas as pd
 from sentence_transformers import SentenceTransformer  # type: ignore
 from vqs.result_management import ResultManager
+from vqs.config_utils import respondent_hash_params
 
 
 # --- 1. Base Class ---
@@ -379,13 +380,13 @@ class AnswerBasedDistanceCalculator(ABC):
         self.value_name = "Distance"
 
         # Answer-based metrics additionally depend on WHICH respondents are used: the
-        # source, any voter subset (subset_n), and the out-of-sample voter split. These are
-        # deliberately NOT in the global DISTANCE_HASH_PARAMS (that would invalidate every
-        # embedding cache, which is text-only), so we append them here. Params missing from
-        # the config resolve to None in the hash.
-        extra = ["correlation_answer_source", "subset_n", "train_voter_fraction", "split_seed"]
+        # source, any voter subset (subset_n), the out-of-sample voter split, and the canton
+        # (voters are filtered by district before this runs). These are deliberately NOT in
+        # the global DISTANCE_HASH_PARAMS (that would invalidate every embedding cache, which
+        # is text-only), so we append them here. Params missing from the config resolve to
+        # None in the hash.
         base = list(config.DISTANCE_HASH_PARAMS)
-        self.important_params_list = base + [p for p in extra if p not in base]
+        self.important_params_list = base + [p for p in respondent_hash_params(config) if p not in base]
 
         source = getattr(config, "correlation_answer_source", None) or "voters"
         print(

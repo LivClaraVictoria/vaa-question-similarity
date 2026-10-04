@@ -68,7 +68,7 @@ from clone_pipeline.applicator import apply_specs
 from clone_pipeline.paraphrase_generator import ensure_paraphrases
 from clone_pipeline.spec import CloneSpec
 from cross_run_analysis.analyzer import CrossRunAnalyzer
-from vqs.config_utils import load_config
+from vqs.config_utils import load_config, canton_results_path
 from vqs.clone_robust_weighting import CloneRobustReweighter
 from vqs.data_loader import load_dataset
 from vqs.recommendation_engine import RecommendationEngine
@@ -437,7 +437,7 @@ def _run_sweep(args, config, alphas: list[float], n_clones: int, n_jaccard: int,
 
     sweep_df = pd.DataFrame(all_rows)
 
-    output_dir = RESULTS_DIR
+    output_dir = canton_results_path(RESULTS_DIR, config)
     output_dir.mkdir(parents=True, exist_ok=True)
     _save_collect_outputs(sweep_df, config, alphas, n_clones, n_jaccard, output_dir)
 
@@ -456,7 +456,7 @@ def _run_worker(args, config, alphas: list[float], n_clones: int, n_jaccard: int
         print("ERROR: --task-id is required in worker mode", file=sys.stderr)
         sys.exit(1)
 
-    sweep_dir = Path(args.sweep_dir) if args.sweep_dir else RESULTS_DIR / "workers"
+    sweep_dir = Path(args.sweep_dir) if args.sweep_dir else canton_results_path(RESULTS_DIR, config) / "workers"
     sweep_dir.mkdir(parents=True, exist_ok=True)
 
     pipeline = _setup_pipeline(config, n_clones, clone_type=clone_type)
@@ -518,7 +518,7 @@ def _get_base_min_distance(config) -> float | None:
 
 
 def _run_collect(args, config, alphas: list[float], n_clones: int, n_jaccard: int):
-    sweep_dir = Path(args.sweep_dir) if args.sweep_dir else RESULTS_DIR / "workers"
+    sweep_dir = Path(args.sweep_dir) if args.sweep_dir else canton_results_path(RESULTS_DIR, config) / "workers"
 
     worker_files = sorted(sweep_dir.glob("qa_sweep_worker_*.csv"))
     if not worker_files:
@@ -534,7 +534,7 @@ def _run_collect(args, config, alphas: list[float], n_clones: int, n_jaccard: in
     # Try to compute min non-clone distance for annotation
     min_dist = _get_base_min_distance(config)
 
-    output_dir = RESULTS_DIR
+    output_dir = canton_results_path(RESULTS_DIR, config)
     output_dir.mkdir(parents=True, exist_ok=True)
     _save_collect_outputs(combined, config, alphas, n_clones, n_jaccard, output_dir,
                           min_nonclone_dist=min_dist)

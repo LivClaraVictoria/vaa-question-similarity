@@ -51,7 +51,7 @@ from clone_pipeline.applicator import apply_specs
 from clone_pipeline.spec import CloneSpec
 from configs import base_constants as default_config
 from experiments._common import _get_clean_name, _get_question_text_col, _resolve_n
-from vqs.config_utils import load_config
+from vqs.config_utils import load_config, canton_results_path
 from vqs.data_loader import load_dataset
 from vqs.party_visibility import MAJOR_PARTIES, PARTY2COLOR, _build_candidate_party_map, compute_party_visibility
 from vqs.recommendation_engine import RecommendationEngine
@@ -271,7 +271,7 @@ def _run_sweep(args, config, n: int):
     sweep_df = pd.DataFrame(rows)
 
     name = _get_clean_name(config)
-    output_dir = RESULTS_DIR / "phase1" / name
+    output_dir = canton_results_path(RESULTS_DIR, config) / "phase1" / name
     output_dir.mkdir(parents=True, exist_ok=True)
     _save_phase1_outputs(sweep_df, config, n, output_dir)
 
@@ -290,7 +290,7 @@ def _run_worker(args, config, n: int):
         sys.exit(1)
 
     name = _get_clean_name(config)
-    sweep_dir = Path(args.sweep_dir) if args.sweep_dir else RESULTS_DIR / "phase1" / name / "workers"
+    sweep_dir = Path(args.sweep_dir) if args.sweep_dir else canton_results_path(RESULTS_DIR, config) / "phase1" / name / "workers"
     sweep_dir.mkdir(parents=True, exist_ok=True)
 
     pipeline = _setup_pipeline(config)
@@ -334,7 +334,7 @@ def _run_worker(args, config, n: int):
 
 def _run_collect(args, config, n: int):
     name = _get_clean_name(config)
-    sweep_dir = Path(args.sweep_dir) if args.sweep_dir else RESULTS_DIR / "phase1" / name / "workers"
+    sweep_dir = Path(args.sweep_dir) if args.sweep_dir else canton_results_path(RESULTS_DIR, config) / "phase1" / name / "workers"
 
     worker_files = sorted(sweep_dir.glob("party_worker_*.csv"))
     if not worker_files:
@@ -349,7 +349,7 @@ def _run_collect(args, config, n: int):
     combined = pd.concat(dfs, ignore_index=True)
 
     name = _get_clean_name(config)
-    output_dir = RESULTS_DIR / "phase1" / name
+    output_dir = canton_results_path(RESULTS_DIR, config) / "phase1" / name
     output_dir.mkdir(parents=True, exist_ok=True)
 
     _save_phase1_outputs(combined, config, n, output_dir)
@@ -549,7 +549,7 @@ def _run_phase2(args, config, n: int):
         phase1_path = Path(args.phase1_csv)
     else:
         # Auto-detect latest Phase 1 CSV
-        csvs = sorted((RESULTS_DIR / "phase1").glob("**/party_impact_*.csv"))
+        csvs = sorted((canton_results_path(RESULTS_DIR, config) / "phase1").glob("**/party_impact_*.csv"))
         if not csvs:
             print("ERROR: No Phase 1 CSV found. Run Phase 1 first.", file=sys.stderr)
             sys.exit(1)
@@ -761,7 +761,7 @@ def _run_phase2(args, config, n: int):
 
     name = _get_clean_name(config)
     party_subdir = target_party if target_party else "no_target"
-    output_dir = RESULTS_DIR / "phase2" / name / party_subdir
+    output_dir = canton_results_path(RESULTS_DIR, config) / "phase2" / name / party_subdir
     output_dir.mkdir(parents=True, exist_ok=True)
     _save_phase2_outputs(results, config, n, output_dir, target_party)
 
@@ -1382,7 +1382,7 @@ def _run_pre_paraphrases(args, config):
     if args.phase1_csv:
         phase1_path = Path(args.phase1_csv)
     else:
-        csvs = sorted((RESULTS_DIR / "phase1").glob("**/party_impact_*.csv"))
+        csvs = sorted((canton_results_path(RESULTS_DIR, config) / "phase1").glob("**/party_impact_*.csv"))
         if not csvs:
             print("ERROR: No Phase 1 CSV found.", file=sys.stderr)
             sys.exit(1)
@@ -1452,7 +1452,7 @@ def _run_compile(args, config):
     timestamp = datetime.now().strftime("%m%d_%H%M")
     base = f"party_impact_{name}_{timestamp}_compiled"
 
-    phase2_dir = RESULTS_DIR / "phase2" / name
+    phase2_dir = canton_results_path(RESULTS_DIR, config) / "phase2" / name
 
     # Find Phase 2 CSVs with party tags (search in phase2/{name}/*/)
     csvs = {}
@@ -1482,7 +1482,7 @@ def _run_compile(args, config):
         phase1_path = Path(args.phase1_csv)
     else:
         phase1_csvs = sorted(
-            (RESULTS_DIR / "phase1").glob("**/party_impact_*.csv")
+            (canton_results_path(RESULTS_DIR, config) / "phase1").glob("**/party_impact_*.csv")
         )
         phase1_path = phase1_csvs[-1] if phase1_csvs else None
 

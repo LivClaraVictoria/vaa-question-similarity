@@ -41,8 +41,6 @@ Usage:
 """
 
 import argparse
-import hashlib
-import json
 from datetime import datetime
 from itertools import combinations
 from pathlib import Path
@@ -53,6 +51,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from scipy.stats import gaussian_kde, mannwhitneyu, pearsonr, rankdata, spearmanr
+
+from vqs.config_utils import load_config, canton_results_path, respondent_hash_params
+from vqs.result_management import ResultManager
 
 # ---------------------------------------------------------------------------
 # Paths
@@ -81,22 +82,17 @@ _MODEL_CONFIGS = {
 }
 _CORR_CONFIG = "configs/base_pipeline/pipeline_answer_corr_ZH.py"
 
-# §3 — specific cached distance files
+# §3 — metrics compared (cached distance file resolved from the config, so it follows VQS_DISTRICT)
 _SEC3_METRICS = {
     "e5_instruct": {
         "label": "E5-INSTRUCT",
-        "path": CACHE_DIR / "dist_2023_E5-INSTRUCT_ba053f9f59a3.parquet",
+        "config": "configs/base_pipeline/pipeline_e5_instruct_ZH.py",
     },
     "answer_corr_arccos": {
         "label": "ANSWER-CORRELATION-ARCCOS",
-        "path": CACHE_DIR / "dist_2023_ANSWER-CORRELATION-ARCCOS_790a61671ea5.parquet",
+        "config": "configs/base_pipeline/pipeline_answer_corr_arccos_ZH.py",
     },
 }
-
-_DISTANCE_HASH_PARAMS = [
-    "data_year", "dist", "data_choice", "clone_id",
-    "embedding_instruction", "embedding_task", "correlation_answer_source",
-]
 
 
 # ---------------------------------------------------------------------------
@@ -122,8 +118,10 @@ def _to_pair_dict(df: pd.DataFrame) -> dict:
 
 
 def _compute_dist_hash(config) -> str:
-    params = {k: getattr(config, k, None) for k in _DISTANCE_HASH_PARAMS}
-    return hashlib.md5(json.dumps(params, sort_keys=True, default=str).encode()).hexdigest()[:12]
+    """Same hash the distance calculators use for their cache (incl. canton for answer-based metrics)."""
+    params = list(config.DISTANCE_HASH_PARAMS)
+    params += [p for p in respondent_hash_params(config) if p not in params]
+    return ResultManager(config, CACHE_DIR, params).hash
 
 
 def _find_distance_file(config) -> Path | None:
@@ -131,6 +129,9 @@ def _find_distance_file(config) -> Path | None:
     matches = list(CACHE_DIR.glob(f"*{h}.parquet"))
     if matches:
         return matches[0]
+    if respondent_hash_params(config):
+        # Answer-based distances depend on canton/respondents: never substitute another run's file.
+        return None
     dist_name = config.dist
     fallbacks = sorted(CACHE_DIR.glob(f"dist_2023_{dist_name}_*.parquet"))
     if fallbacks:
@@ -254,7 +255,7 @@ def section1_raw_correlations(config, top: int):
     fig.suptitle("Pure Correlation Analysis — All Question Pairs", fontsize=12, y=1.02)
     fig.tight_layout()
 
-    out = _SEC1_OUTPUT_DIR
+    out = canton_results_path(_SEC1_OUTPUT_DIR, config)
     out.mkdir(parents=True, exist_ok=True)
     ts = datetime.now().strftime("%m%d_%H%M")
     base = f"pure_correlation_{ts}"
@@ -277,7 +278,6 @@ def section1_raw_correlations(config, top: int):
 
 def section2_embedding_validation():
     """Spearman rank correlation between each embedding model and ANSWER-CORRELATION."""
-    from vqs.config_utils import load_config
 
     print(f"\n{'=' * 70}")
     print("§2  EMBEDDING MODEL VALIDATION vs ANSWER-CORRELATION GROUND TRUTH")
@@ -378,7 +378,7 @@ def section2_embedding_validation():
         p(f"  {rank:<5} {row['model']:<30} {row['spearman_r']:>+8.4f} "
           f"{w:>+8.4f} {c:>+8.4f} {delta:>+8.4f}")
 
-    out = _SEC2_OUTPUT_DIR
+    out = canton_results_path(_SEC2_OUTPUT_DIR, corr_config)
     out.mkdir(parents=True, exist_ok=True)
     ts = datetime.now().strftime("%m%d_%H%M")
     base = f"emb_vs_corr_{ts}"
@@ -632,12 +632,13 @@ def section3_topic_distances():
 
     for metric_key, metric_info in _SEC3_METRICS.items():
         label = metric_info["label"]
-        dist_path = metric_info["path"]
-        out_dir = _SEC3_OUTPUT_DIR / metric_key
+        metric_config = load_config(Path(metric_info["config"]))
+        dist_path = _find_distance_file(metric_config)
+        out_dir = canton_results_path(_SEC3_OUTPUT_DIR, metric_config) / metric_key
 
         print(f"\n--- {label} ---")
-        if not dist_path.exists():
-            print(f"  ERROR: {dist_path} not found — skipping")
+        if not dist_path:
+            print(f"  ERROR: no cached distances (hash={_compute_dist_hash(metric_config)}) — run the pipeline first; skipping")
             continue
 
         out_dir.mkdir(parents=True, exist_ok=True)
@@ -674,7 +675,7 @@ def section3_topic_distances():
 
     # Cross-metric comparison
     if len(all_intra) == 2 and "e5_instruct" in all_intra and "answer_corr_arccos" in all_intra:
-        comp_dir = _SEC3_OUTPUT_DIR / "comparison"
+        comp_dir = canton_results_path(_SEC3_OUTPUT_DIR, metric_config) / "comparison"
         comp_dir.mkdir(parents=True, exist_ok=True)
 
         e5_intra = all_intra["e5_instruct"][["topic", "n_questions", "n_pairs", "mean"]].rename(
@@ -882,7 +883,7 @@ def section4_mini_maxi_correlations(config, top: int):
     fig.suptitle("Mini vs Full-Only Question Correlations (Voter Answers)", fontsize=13, y=1.01)
     fig.tight_layout()
 
-    out = _SEC4_OUTPUT_DIR
+    out = canton_results_path(_SEC4_OUTPUT_DIR, config)
     out.mkdir(parents=True, exist_ok=True)
     ts = datetime.now().strftime("%m%d_%H%M")
     base = f"mini_maxi_corr_{ts}"
@@ -968,7 +969,6 @@ def main():
         if not args.config:
             print("ERROR: --config is required for §1 and/or §4")
             return
-        from vqs.config_utils import load_config
         config = load_config(Path(args.config))
 
     print("=" * 70)

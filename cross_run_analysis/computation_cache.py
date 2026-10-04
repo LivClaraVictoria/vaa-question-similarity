@@ -7,11 +7,13 @@ import json
 import hashlib
 import pandas as pd
 from pathlib import Path
-from configs.base_constants import COMPARATOR_HASH_PARAMS
+from configs.base_constants import COMPARATOR_HASH_PARAMS, ANSWER_METRIC_HASH_PARAMS
 
 # Fields used to uniquely identify a computation.
 # Must be stable across runs (no timestamps, no file paths).
-_HASH_FIELDS = COMPARATOR_HASH_PARAMS
+# Respondent params are only present in the metadata of answer-based runs (see
+# RecommendationEngine), so embedding-run hashes are unaffected by them.
+_HASH_FIELDS = COMPARATOR_HASH_PARAMS + [p for p in ANSWER_METRIC_HASH_PARAMS if p not in COMPARATOR_HASH_PARAMS]
 
 
 def _stable_fields(meta: dict) -> dict:

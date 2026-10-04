@@ -27,7 +27,7 @@ from experiments._common import _get_clean_name
 from experiments.behavioral_metric._common import split_voters  # noqa: F401 (reused via _peek_distance)
 from experiments.behavioral_metric.deployment_simulation import _calibrate_alphas, _peek_distance
 from vqs.clone_robust_weighting import CloneRobustReweighter
-from vqs.config_utils import load_config
+from vqs.config_utils import load_config, canton_results_path
 from vqs.data_loader import load_dataset
 
 MAX_QUESTIONS = 12  # cap the number of lines so the figure stays readable
@@ -114,7 +114,7 @@ def main(argv=None):
 
     out_dir = (
         Path(args.output_dir) if args.output_dir
-        else default_config.BEHAVIORAL_METRIC_RESULTS_DIR / "weight_stability"
+        else canton_results_path(default_config.BEHAVIORAL_METRIC_RESULTS_DIR / "weight_stability", config)
     )
     out_dir.mkdir(parents=True, exist_ok=True)
     base = f"weight_stability_{_get_clean_name(config)}_{datetime.now().strftime('%m%d_%H%M')}"

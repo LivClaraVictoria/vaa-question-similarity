@@ -46,7 +46,7 @@ from clone_pipeline.applicator import apply_specs
 from clone_pipeline.paraphrase_generator import ensure_paraphrases
 from clone_pipeline.spec import CloneSpec
 from cross_run_analysis.analyzer import CrossRunAnalyzer
-from vqs.config_utils import load_config
+from vqs.config_utils import load_config, canton_results_path
 from vqs.clone_robust_weighting import CloneRobustReweighter
 from vqs.data_loader import load_dataset
 from vqs.recommendation_engine import RecommendationEngine
@@ -621,7 +621,7 @@ def _run_sweep(args, config, lambda_grid, n_seeds, n_jaccard, alpha):
 
     master = pd.DataFrame(all_rows)
 
-    output_dir = RESULTS_DIR
+    output_dir = canton_results_path(RESULTS_DIR, config)
     output_dir.mkdir(parents=True, exist_ok=True)
     _save_collect_outputs(master, config, n_jaccard, alpha, output_dir)
     print("\n=== Noise Slider Sweep Complete ===")
@@ -638,7 +638,7 @@ def _run_worker(args, config, lambda_grid, n_seeds, n_jaccard, alpha):
         print("ERROR: --task-id is required in worker mode", file=sys.stderr)
         sys.exit(1)
 
-    sweep_dir = Path(args.sweep_dir) if args.sweep_dir else RESULTS_DIR / "workers"
+    sweep_dir = Path(args.sweep_dir) if args.sweep_dir else canton_results_path(RESULTS_DIR, config) / "workers"
     sweep_dir.mkdir(parents=True, exist_ok=True)
 
     pipeline = _setup_pipeline(config)
@@ -673,7 +673,7 @@ def _run_worker(args, config, lambda_grid, n_seeds, n_jaccard, alpha):
 
 
 def _run_collect(args, config, n_jaccard, alpha):
-    sweep_dir = Path(args.sweep_dir) if args.sweep_dir else RESULTS_DIR / "workers"
+    sweep_dir = Path(args.sweep_dir) if args.sweep_dir else canton_results_path(RESULTS_DIR, config) / "workers"
 
     worker_files = sorted(sweep_dir.glob("noise_slider_worker_*.csv"))
     if not worker_files:
@@ -684,7 +684,7 @@ def _run_collect(args, config, n_jaccard, alpha):
     dfs = [pd.read_csv(f) for f in worker_files]
     master = pd.concat(dfs, ignore_index=True)
 
-    output_dir = RESULTS_DIR
+    output_dir = canton_results_path(RESULTS_DIR, config)
     output_dir.mkdir(parents=True, exist_ok=True)
     _save_collect_outputs(master, config, n_jaccard, alpha, output_dir)
     print("\n=== Collect Complete ===")

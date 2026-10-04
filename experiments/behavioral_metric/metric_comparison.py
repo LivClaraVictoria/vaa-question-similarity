@@ -26,7 +26,7 @@ import pandas as pd
 from scipy.stats import spearmanr
 
 from configs import base_constants as default_config
-from vqs.config_utils import load_config
+from vqs.config_utils import load_config, canton_results_path
 from vqs.data_loader import load_dataset
 from vqs.similarity_metrics import get_calculator
 
@@ -138,7 +138,7 @@ def main(argv=None):
     out_dir = (
         Path(args.output_dir)
         if args.output_dir
-        else default_config.BEHAVIORAL_METRIC_RESULTS_DIR / "metric_comparison"
+        else canton_results_path(default_config.BEHAVIORAL_METRIC_RESULTS_DIR / "metric_comparison", base)
     )
     out_dir.mkdir(parents=True, exist_ok=True)
     ts = datetime.now().strftime("%m%d_%H%M")

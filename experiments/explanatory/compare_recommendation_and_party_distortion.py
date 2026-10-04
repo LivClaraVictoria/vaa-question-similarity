@@ -30,14 +30,16 @@ import pandas as pd
 import seaborn as sns
 from scipy import stats
 
+from vqs.config_utils import canton_results_path
+
 # ---------------------------------------------------------------------------
 # Paths
 # ---------------------------------------------------------------------------
 
-QUESTION_IMPACT_DIR = Path("experiment_results/question_impact")
-PARTY_IMPACT_DIR = Path("experiment_results/party_impact/high_impact/phase1")
-CATEGORY_CSV = Path("experiment_results/category_analysis/per_question_by_category.csv")
-OUTPUT_DIR = Path("experiment_results/question_impact/impact_comparison")
+QUESTION_IMPACT_DIR = canton_results_path("experiment_results/question_impact")
+PARTY_IMPACT_DIR = canton_results_path("experiment_results/party_impact/high_impact/phase1")
+CATEGORY_CSV = canton_results_path("experiment_results/category_analysis/per_question_by_category.csv")
+OUTPUT_DIR = canton_results_path("experiment_results/question_impact/impact_comparison")
 
 MAJOR_PARTIES = ["SP", "Green", "GLP", "Centre", "FDP", "SVP"]
 

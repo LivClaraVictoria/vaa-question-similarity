@@ -17,13 +17,15 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
+from vqs.config_utils import canton_results_path
+
 # ---------------------------------------------------------------------------
 # Paths
 # ---------------------------------------------------------------------------
 
 DATA_DIR = Path("data/cleaned")
-IMPACT_DIR = Path("experiment_results/question_impact")
-OUTPUT_DIR = Path("experiment_results/category_analysis")
+IMPACT_DIR = canton_results_path("experiment_results/question_impact")
+OUTPUT_DIR = canton_results_path("experiment_results/category_analysis")
 
 
 def _find_impact_csv() -> Path | None:

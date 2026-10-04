@@ -40,20 +40,20 @@ import numpy as np
 import pandas as pd
 from sklearn.manifold import MDS
 
+from experiments.explanatory.distances.distance_structure_analysis import _find_distance_file
+from vqs.config_utils import load_config, canton_results_path
+
 # ---------------------------------------------------------------------------
 # Paths
 # ---------------------------------------------------------------------------
 
 QUESTIONS_PATH = Path("data/cleaned/df_questions.parquet")
 
-# Same cached distance files as in distance_correlation_analysis.py §3
+# Same metrics as distance_structure_analysis.py §3; cached distance files are resolved from
+# these configs (so they follow VQS_DISTRICT for the answer-based metric).
 _METRICS = {
-    "ANSWER-CORRELATION-ARCCOS": Path(
-        "cache/distance_calculations/dist_2023_ANSWER-CORRELATION-ARCCOS_790a61671ea5.parquet"
-    ),
-    "E5-INSTRUCT": Path(
-        "cache/distance_calculations/dist_2023_E5-INSTRUCT_ba053f9f59a3.parquet"
-    ),
+    "ANSWER-CORRELATION-ARCCOS": "configs/base_pipeline/pipeline_answer_corr_arccos_ZH.py",
+    "E5-INSTRUCT": "configs/base_pipeline/pipeline_e5_instruct_ZH.py",
 }
 
 OUTPUT_DIR = Path("experiment_results/distance_analysis/mini_maxi_map")
@@ -131,11 +131,10 @@ def _assign_group(q_id: int, mini_ids: set, corr_maxi_ids: set) -> str:
 def _compute_corr_maxi_from_config(
     config_path: str, mini_ids: set, full_only_ids: list, top_k: int
 ) -> list:
-    from vqs.config_utils import load_config
     from vqs.data_loader import load_dataset
     from experiments.approximate_clones.partisan_distortion import compute_redundancy_scores
 
-    config = load_config(config_path)
+    config = load_config(Path(config_path))
     dataset = load_dataset(config)
     voters_df = dataset["voters"]
 
@@ -311,8 +310,6 @@ def main():
     args = _parse_args()
     ts = datetime.now().strftime("%m%d_%H%M")
 
-    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-
     # Load questions metadata
     questions_df = pd.read_parquet(QUESTIONS_PATH)
     all_ids = [int(x) for x in questions_df["ID_question"].tolist()]
@@ -338,7 +335,14 @@ def main():
     print(f"corr_maxi:           {len(corr_maxi_ids)}")
     print(f"maxi (rest):         {maxi_count}")
 
-    for metric, dist_path in _METRICS.items():
+    for metric, metric_config_path in _METRICS.items():
+        metric_config = load_config(Path(metric_config_path))
+        dist_path = _find_distance_file(metric_config)
+        if dist_path is None:
+            print(f"\n{metric}: no cached distances for this config/canton — run the pipeline first; skipping")
+            continue
+        output_dir = canton_results_path(OUTPUT_DIR, metric_config)
+        output_dir.mkdir(parents=True, exist_ok=True)
         _run_metric(
             metric=metric,
             dist_path=dist_path,
@@ -346,11 +350,10 @@ def main():
             questions_df=questions_df,
             mini_ids=mini_ids,
             corr_maxi_ids=corr_maxi_ids,
-            output_dir=OUTPUT_DIR,
+            output_dir=output_dir,
             ts=ts,
         )
-
-    print(f"\nDone. Outputs in {OUTPUT_DIR}/")
+        print(f"  Outputs in {output_dir}/")
 
 
 if __name__ == "__main__":

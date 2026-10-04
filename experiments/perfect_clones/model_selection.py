@@ -45,7 +45,7 @@ import seaborn as sns
 from configs import base_constants as default_config
 from cross_run_analysis.analyzer import CrossRunAnalyzer
 from experiments._common import _get_clean_name, _resolve_n, DEFAULT_ALPHAS, DEFAULT_ALPHA_REFERENCE
-from vqs.config_utils import load_config
+from vqs.config_utils import load_config, respondent_hash_params, canton_results_path
 from vqs.clone_robust_weighting import CloneRobustReweighter
 from vqs.data_loader import load_dataset
 from vqs.recommendation_engine import RecommendationEngine
@@ -126,9 +126,9 @@ def _get_sweep_hash(config_a, config_b, alphas: list[float], n: int) -> str:
         "alphas": sorted(alphas),
         "n_jaccard": n,
     }
-    for param in default_config.COMPARATOR_HASH_PARAMS:
-        payload[f"a_{param}"] = getattr(config_a, param, None)
-        payload[f"b_{param}"] = getattr(config_b, param, None)
+    for cfg, side in ((config_a, "a"), (config_b, "b")):
+        for param in default_config.COMPARATOR_HASH_PARAMS + respondent_hash_params(cfg):
+            payload[f"{side}_{param}"] = getattr(cfg, param, None)
     s = json.dumps(payload, sort_keys=True, default=str)
     return hashlib.md5(s.encode()).hexdigest()[:12]
 
@@ -141,9 +141,9 @@ def _get_analysis_cache_hash(config_a, config_b, alpha: float, n: int) -> str:
         "alpha": alpha,
         "n_jaccard": n,
     }
-    for param in default_config.COMPARATOR_HASH_PARAMS:
-        payload[f"a_{param}"] = getattr(config_a, param, None)
-        payload[f"b_{param}"] = getattr(config_b, param, None)
+    for cfg, side in ((config_a, "a"), (config_b, "b")):
+        for param in default_config.COMPARATOR_HASH_PARAMS + respondent_hash_params(cfg):
+            payload[f"{side}_{param}"] = getattr(cfg, param, None)
     s = json.dumps(payload, sort_keys=True, default=str)
     return hashlib.md5(s.encode()).hexdigest()[:12]
 
@@ -491,7 +491,7 @@ def _run_sweep(args, config_a, config_b, alphas: list[float], n: int):
 
     sweep_df = pd.DataFrame(sweep_rows)
 
-    output_dir = Path(args.output_dir) if args.output_dir else default_config.ALPHA_SWEEP_RESULTS_DIR
+    output_dir = Path(args.output_dir) if args.output_dir else canton_results_path(default_config.ALPHA_SWEEP_RESULTS_DIR, config_a)
     output_dir.mkdir(parents=True, exist_ok=True)
 
     print("\n--- Saving outputs ---")
@@ -519,7 +519,7 @@ def _run_worker(args, config_a, config_b, alphas: list[float], n: int):
     if args.sweep_dir:
         sweep_dir = Path(args.sweep_dir)
     else:
-        base_dir = Path(args.output_dir) if args.output_dir else default_config.ALPHA_SWEEP_RESULTS_DIR
+        base_dir = Path(args.output_dir) if args.output_dir else canton_results_path(default_config.ALPHA_SWEEP_RESULTS_DIR, config_a)
         name_a = _get_clean_name(config_a)
         name_b = _get_clean_name(config_b)
         subfolder_name = f"alpha_sweep_{name_a}_vs_{name_b}"
@@ -558,7 +558,7 @@ def _run_collect(args, config_a, config_b, alphas: list[float], n: int):
     if args.sweep_dir:
         sweep_dir = Path(args.sweep_dir)
     else:
-        base_dir = Path(args.output_dir) if args.output_dir else default_config.ALPHA_SWEEP_RESULTS_DIR
+        base_dir = Path(args.output_dir) if args.output_dir else canton_results_path(default_config.ALPHA_SWEEP_RESULTS_DIR, config_a)
         name_a = _get_clean_name(config_a)
         name_b = _get_clean_name(config_b)
         subfolder_name = f"alpha_sweep_{name_a}_vs_{name_b}"
@@ -593,7 +593,7 @@ def _run_collect(args, config_a, config_b, alphas: list[float], n: int):
         f"Kendall={std_metrics['base_kendall_mean']:.4f}"
     )
 
-    output_dir = Path(args.output_dir) if args.output_dir else default_config.ALPHA_SWEEP_RESULTS_DIR
+    output_dir = Path(args.output_dir) if args.output_dir else canton_results_path(default_config.ALPHA_SWEEP_RESULTS_DIR, config_a)
     output_dir.mkdir(parents=True, exist_ok=True)
 
     collected_alphas = sorted(sweep_df["alpha"].tolist())
@@ -620,6 +620,13 @@ def main(argv=None):
     # Load configs
     config_a = load_config(Path(args.config_a))
     config_b = load_config(Path(args.config_b))
+    if config_a.district != config_b.district:
+        print(
+            f"ERROR: config_a (district={config_a.district}) and config_b "
+            f"(district={config_b.district}) must target the same canton.",
+            file=sys.stderr,
+        )
+        sys.exit(1)
 
     # Resolve n_jaccard
     n = _resolve_n(config_a, args.n)

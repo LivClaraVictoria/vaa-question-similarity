@@ -50,7 +50,7 @@ from scipy.stats import kruskal, spearmanr
 from clone_pipeline.applicator import apply_specs
 from clone_pipeline.spec import CloneSpec
 from configs import base_constants as default_config
-from vqs.config_utils import load_config
+from vqs.config_utils import load_config, canton_results_path
 from vqs.party_visibility import MAJOR_PARTIES, PARTY2COLOR, _build_candidate_party_map, compute_party_visibility
 
 sys.path.insert(0, str(Path(__file__).resolve().parent / "dependencies" / "rsfp"))
@@ -286,7 +286,7 @@ def _run_sweep(args, config, n: int, n_clones: int):
 
     # Load dataset for correlation analysis (already in pipeline)
     name = _get_clean_name(config)
-    output_dir = RESULTS_DIR / name
+    output_dir = canton_results_path(RESULTS_DIR, config) / name
     output_dir.mkdir(parents=True, exist_ok=True)
     _save_all_outputs(sweep_df, config, n, n_clones, output_dir, pipeline["dataset"])
 
@@ -305,7 +305,7 @@ def _run_worker(args, config, n: int, n_clones: int):
         sys.exit(1)
 
     name = _get_clean_name(config)
-    sweep_dir = Path(args.sweep_dir) if args.sweep_dir else RESULTS_DIR / name / "workers"
+    sweep_dir = Path(args.sweep_dir) if args.sweep_dir else canton_results_path(RESULTS_DIR, config) / name / "workers"
     sweep_dir.mkdir(parents=True, exist_ok=True)
 
     pipeline = _setup_pipeline(config)
@@ -347,7 +347,7 @@ def _run_worker(args, config, n: int, n_clones: int):
 
 def _run_collect(args, config, n: int, n_clones: int):
     name = _get_clean_name(config)
-    sweep_dir = Path(args.sweep_dir) if args.sweep_dir else RESULTS_DIR / name / "workers"
+    sweep_dir = Path(args.sweep_dir) if args.sweep_dir else canton_results_path(RESULTS_DIR, config) / name / "workers"
 
     worker_files = sorted(sweep_dir.glob("pvi_worker_*.csv"))
     if not worker_files:
@@ -363,7 +363,7 @@ def _run_collect(args, config, n: int, n_clones: int):
     print("\n--- Loading dataset for correlation analysis ---")
     dataset = load_dataset(config)
 
-    output_dir = RESULTS_DIR / name
+    output_dir = canton_results_path(RESULTS_DIR, config) / name
     output_dir.mkdir(parents=True, exist_ok=True)
 
     _save_all_outputs(combined, config, n, n_clones, output_dir, dataset)

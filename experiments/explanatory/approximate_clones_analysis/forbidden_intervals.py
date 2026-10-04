@@ -35,7 +35,7 @@ import numpy as np
 import pandas as pd
 
 from experiments._common import _get_question_text_col
-from vqs.config_utils import load_config
+from vqs.config_utils import load_config, canton_results_path, respondent_hash_params
 from vqs.data_loader import load_dataset
 from vqs.similarity_metrics import get_calculator
 
@@ -328,7 +328,9 @@ def run_metric_analysis(
     )
 
     # Load distances: prefer pre-computed CSV to avoid model inference on home node
-    precomputed_csv = _find_precomputed_distances(metric_name)
+    # Pre-computed CSVs carry no canton info: only reuse them for text-embedding metrics,
+    # whose distances are canton-independent.
+    precomputed_csv = None if respondent_hash_params(config) else _find_precomputed_distances(metric_name)
     if precomputed_csv is not None:
         print(f"  Loading pre-computed distances: {precomputed_csv}")
         dist_df = pd.read_csv(precomputed_csv)
@@ -787,7 +789,7 @@ def main() -> None:
             continue
 
         cfg = METRIC_CONFIGS[metric_name]
-        output_dir = BASE_RESULTS_DIR / metric_name
+        output_dir = canton_results_path(BASE_RESULTS_DIR, load_config(Path(cfg["config_path"]))) / metric_name
 
         print(f"\n{'='*65}")
         print(f"  Metric : {metric_name}")
@@ -834,7 +836,7 @@ def main() -> None:
                 timestamp,
             )
 
-    print(f"\nDone. Results in {BASE_RESULTS_DIR}/")
+    print("\nDone.")
 
 
 if __name__ == "__main__":

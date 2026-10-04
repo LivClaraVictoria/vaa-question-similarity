@@ -6,6 +6,7 @@ using the rsfp library. Results are cached by config hash to avoid redundant com
 import pandas as pd
 from dependencies import add_candidate_voting_recommendations
 from vqs.result_management import ResultManager
+from vqs.config_utils import respondent_hash_params
 
 
 class RecommendationEngine:
@@ -29,7 +30,9 @@ class RecommendationEngine:
             self.n_recs = self.config.n_recommendations
 
         # Parameters that affect the recommendation calculations and should be included in the cache hash
-        self.important_params_list = list(config.REC_HASH_PARAMS)
+        # (plus the respondent params of answer-based metrics, whose weights depend on them)
+        base = list(config.REC_HASH_PARAMS)
+        self.important_params_list = base + [p for p in respondent_hash_params(config) if p not in base]
         print(
             f"Initialized RecommendationEngine with important parameters: {self.important_params_list}"
         )

@@ -2,6 +2,7 @@
 Shared config loading utilities used by main.py and all experiment scripts.
 """
 
+import os
 import sys
 from pathlib import Path
 from types import SimpleNamespace
@@ -42,7 +43,61 @@ def load_config(config_path: Path):
     config_vars.pop("__builtins__", None)
     config_vars.pop("__name__", None)
 
+    # `overrides` comes from `from configs.base_constants import *`, i.e. one list object shared
+    # by every config loaded in this process. Copy it so overrides don't leak between configs.
+    config.overrides = list(getattr(config, "overrides", []))
+
+    _apply_district_env(config)
+
     return config
+
+
+def _apply_district_env(config):
+    """
+    Re-targets a canton-scoped config (district != "all") to the canton in env var VQS_DISTRICT.
+    Configs with district="all" (fake data, national runs) are left untouched. Registered as a
+    regular override, so it shows up in run names and metadata.
+    """
+    district = os.environ.get("VQS_DISTRICT")
+    current = getattr(config, "district", "all")
+    if not district or current == "all" or district == current:
+        return
+    if district not in config.DISTRICT2ID:
+        print(f"Error: VQS_DISTRICT='{district}' is not a canton code ({', '.join(config.DISTRICT2ID)}).")
+        sys.exit(1)
+    print(f"VQS_DISTRICT={district}: re-targeting config from district '{current}' to '{district}'.")
+    apply_overrides(config, [f"district={district}"])
+
+
+def respondent_hash_params(config) -> list[str]:
+    """Extra cache-hash params for answer-based metrics (empty for text-embedding metrics)."""
+    from configs import base_constants
+
+    answer_based = getattr(config, "ANSWER_BASED_METRICS", base_constants.ANSWER_BASED_METRICS)
+    if config.dist.upper() in answer_based:
+        return list(getattr(config, "ANSWER_METRIC_HASH_PARAMS", base_constants.ANSWER_METRIC_HASH_PARAMS))
+    return []
+
+
+def canton_results_path(path, config=None) -> Path:
+    """
+    Maps an experiment_results path to the config's canton (or, without a config, to the
+    canton in VQS_DISTRICT — for compile scripts that only read results). The validation
+    canton (and district="all") keeps the original tree; every test canton gets a mirror of
+    the same structure under experiment_results/cantons/<code>/, so cantons compare
+    path-for-path.
+    """
+    if config is None:
+        from configs import base_constants as config
+        district = os.environ.get("VQS_DISTRICT") or config.VALIDATION_DISTRICT
+    else:
+        district = config.district
+    path = Path(path)
+    if district in ("all", config.VALIDATION_DISTRICT):
+        return path
+    abs_path = path if path.is_absolute() else config.PROJECT_ROOT / path
+    rel = abs_path.relative_to(config.RESULTS_DIR)
+    return config.CANTON_RESULTS_DIR / district / rel
 
 
 def apply_overrides(config, overrides):

@@ -26,6 +26,7 @@ from clone_pipeline.applicator import apply_specs
 from clone_pipeline.paraphrase_generator import ensure_paraphrases
 from clone_pipeline.writer import write_cloned_dataset
 from clone_pipeline.loader import _find_parquet
+from vqs.data_loader import filter_to_district
 
 
 def _load_config(config_path: str):
@@ -62,12 +63,17 @@ def main(argv=None):
         CLEANED_DIR, cand_prefix, voters_prefix, questions_path
     )
 
-    # 2. Select questions
+    # 2. Select questions. Data-driven selectors only see respondents of config.district
+    #    ("all" = national); the clones themselves are still written for ALL respondents,
+    #    so the cloned dataset can be evaluated on any canton.
+    selection_data = filter_to_district(
+        {"voters": dataframes["voters"], "candidates": dataframes["candidates"]}, config
+    )
     selector = build_selector(config.selector_type, config.selector_params)
     q_ids = selector.select(
         dataframes["questions"],
-        dataframes["candidates"],
-        dataframes["voters"],
+        selection_data["candidates"],
+        selection_data["voters"],
     )
     print(f"Selected question IDs: {q_ids}")
 

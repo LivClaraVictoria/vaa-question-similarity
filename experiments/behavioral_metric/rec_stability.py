@@ -35,7 +35,7 @@ from experiments._common import _get_clean_name, _resolve_n
 from experiments.behavioral_metric._common import crw_vs_crw, split_voters
 from experiments.behavioral_metric.deployment_simulation import _calibrate_alphas, _peek_distance
 from vqs.clone_robust_weighting import CloneRobustReweighter
-from vqs.config_utils import load_config
+from vqs.config_utils import load_config, canton_results_path
 from vqs.data_loader import load_dataset
 from vqs.recommendation_engine import RecommendationEngine
 from vqs.similarity_metrics import get_calculator
@@ -124,7 +124,7 @@ def main(argv=None):
     perv = pd.concat(rows, ignore_index=True)
 
     out_dir = (Path(args.output_dir) if args.output_dir
-               else default_config.BEHAVIORAL_METRIC_RESULTS_DIR / "rec_stability")
+               else canton_results_path(default_config.BEHAVIORAL_METRIC_RESULTS_DIR / "rec_stability", config))
     out_dir.mkdir(parents=True, exist_ok=True)
     base = f"rec_stability_{_get_clean_name(config)}_{datetime.now().strftime('%m%d_%H%M')}"
     perv.to_csv(out_dir / f"{base}_per_voter.csv", index=False)

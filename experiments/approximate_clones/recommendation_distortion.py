@@ -45,7 +45,7 @@ from sklearn.manifold import MDS
 
 from experiments._common import _get_clean_name, _get_question_text_col, _resolve_n, DEFAULT_ALPHAS
 from cross_run_analysis.analyzer import CrossRunAnalyzer
-from vqs.config_utils import load_config
+from vqs.config_utils import load_config, canton_results_path
 from experiments.approximate_clones.partisan_distortion import (
     add_questions_to_mini,
     compute_redundancy_scores,
@@ -884,40 +884,41 @@ def main(argv=None):
         weight_lookups[metric_label] = wl
 
     # 7. Save outputs
-    RESULTS_DIR.mkdir(parents=True, exist_ok=True)
+    results_dir = canton_results_path(RESULTS_DIR, config)
+    results_dir.mkdir(parents=True, exist_ok=True)
     timestamp = datetime.now().strftime("%m%d_%H%M")
     base = f"approx_clone_sweep_{timestamp}"
 
     # Correlation overview CSV (single file with all per-question data)
-    overview_path = RESULTS_DIR / f"{base}_corr_overview.csv"
+    overview_path = results_dir / f"{base}_corr_overview.csv"
     overview_df.to_csv(overview_path, index=False)
     print(f"\n  -> Correlation overview CSV: {overview_path}")
 
     # Alpha sweep results CSV
     results_df = pd.DataFrame(all_rows)
-    csv_path = RESULTS_DIR / f"{base}.csv"
+    csv_path = results_dir / f"{base}.csv"
     results_df.to_csv(csv_path, index=False)
     print(f"  -> Results CSV: {csv_path}")
 
     # Selection CSV
-    sel_path = RESULTS_DIR / f"{base}_selection.csv"
+    sel_path = results_dir / f"{base}_selection.csv"
     selection_df.to_csv(sel_path, index=False)
     print(f"  -> Selection CSV: {sel_path}")
 
     # Plots
     sns.set_theme(style="whitegrid")
-    _plot_question_map(overview_df, RESULTS_DIR, base)
+    _plot_question_map(overview_df, results_dir, base)
     _plot_corr_heatmap(
         corr_matrix_df, mini_ids, q_ids,
-        full_dataset["questions"], RESULTS_DIR, base,
+        full_dataset["questions"], results_dir, base,
     )
-    _plot_corr_distributions(overview_df, RESULTS_DIR, base)
-    _plot_metrics(all_rows, RESULTS_DIR, base)
+    _plot_corr_distributions(overview_df, results_dir, base)
+    _plot_metrics(all_rows, results_dir, base)
 
     # Report
     _save_report(
         selection_df, all_rows, weight_lookups, n_jaccard,
-        RESULTS_DIR, base,
+        results_dir, base,
     )
 
     print("\n=== Approximate Clone Alpha Sweep Complete ===")

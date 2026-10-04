@@ -62,7 +62,7 @@ from scipy.stats import pearsonr
 
 from configs import base_constants as default_config
 from experiments._common import _get_clean_name, _get_question_text_col, _resolve_n
-from vqs.config_utils import load_config
+from vqs.config_utils import load_config, canton_results_path
 from vqs.data_loader import load_dataset
 from vqs.recommendation_engine import RecommendationEngine
 
@@ -423,7 +423,7 @@ def _run_sweep(args, config, n: int):
     sweep_df = pd.DataFrame(rows)
 
     name = _get_clean_name(config)
-    output_dir = RESULTS_DIR / "phase1" / name
+    output_dir = canton_results_path(RESULTS_DIR, config) / "phase1" / name
     output_dir.mkdir(parents=True, exist_ok=True)
     _save_phase1_outputs(sweep_df, config, n, output_dir)
 
@@ -445,7 +445,7 @@ def _run_worker(args, config, n: int):
     sweep_dir = (
         Path(args.sweep_dir)
         if args.sweep_dir
-        else RESULTS_DIR / "phase1" / "workers" / name
+        else canton_results_path(RESULTS_DIR, config) / "phase1" / "workers" / name
     )
     sweep_dir.mkdir(parents=True, exist_ok=True)
 
@@ -493,7 +493,7 @@ def _run_collect(args, config, n: int):
     sweep_dir = (
         Path(args.sweep_dir)
         if args.sweep_dir
-        else RESULTS_DIR / "phase1" / "workers" / name
+        else canton_results_path(RESULTS_DIR, config) / "phase1" / "workers" / name
     )
 
     worker_files = sorted(sweep_dir.glob("mini_maxi_worker_*.csv"))
@@ -508,7 +508,7 @@ def _run_collect(args, config, n: int):
     dfs = [pd.read_csv(f) for f in worker_files]
     combined = pd.concat(dfs, ignore_index=True)
 
-    output_dir = RESULTS_DIR / "phase1" / name
+    output_dir = canton_results_path(RESULTS_DIR, config) / "phase1" / name
     output_dir.mkdir(parents=True, exist_ok=True)
 
     _save_phase1_outputs(combined, config, n, output_dir)
@@ -866,7 +866,7 @@ def _run_phase2(args, config, n: int):
         phase1_path = Path(args.phase1_csv)
     else:
         csvs = sorted(
-            f for f in (RESULTS_DIR / "phase1").glob("**/mini_maxi_*.csv")
+            f for f in (canton_results_path(RESULTS_DIR, config) / "phase1").glob("**/mini_maxi_*.csv")
             if "worker" not in f.name
         )
         if not csvs:
@@ -1027,9 +1027,9 @@ def _run_phase2(args, config, n: int):
     name = _get_clean_name(config)
     party_subdir = target_party if target_party else "no_target"
     if selection_mode == "corr_weighted":
-        output_dir = RESULTS_DIR / "phase2_corr_weighted" / name / party_subdir
+        output_dir = canton_results_path(RESULTS_DIR, config) / "phase2_corr_weighted" / name / party_subdir
     else:
-        output_dir = RESULTS_DIR / "phase2" / name / party_subdir
+        output_dir = canton_results_path(RESULTS_DIR, config) / "phase2" / name / party_subdir
     output_dir.mkdir(parents=True, exist_ok=True)
     _save_phase2_outputs(results, config, n, output_dir, target_party, selection_mode)
 
@@ -1392,9 +1392,9 @@ def _run_compile(args, config):
     base = f"mini_maxi_compiled_{name}_{timestamp}{sel_tag}"
 
     if selection_mode == "corr_weighted":
-        phase2_dir = RESULTS_DIR / "phase2_corr_weighted" / name
+        phase2_dir = canton_results_path(RESULTS_DIR, config) / "phase2_corr_weighted" / name
     else:
-        phase2_dir = RESULTS_DIR / "phase2" / name
+        phase2_dir = canton_results_path(RESULTS_DIR, config) / "phase2" / name
 
     # Find Phase 2 CSVs (one per party subdirectory)
     dfs = {}

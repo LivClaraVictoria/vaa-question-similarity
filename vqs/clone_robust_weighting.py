@@ -9,6 +9,8 @@ import numpy as np
 import warnings
 from typing import Any, Sequence
 
+from vqs.config_utils import respondent_hash_params
+
 
 class CloneRobustReweighter:
     """
@@ -24,7 +26,9 @@ class CloneRobustReweighter:
             self.weighting_func = self._smoothed_class_uniform_weighting_fn
         else:
             self.weighting_func = self._class_uniform_weighting_fn
-        self.important_params_list = list(config.CRW_HASH_PARAMS)
+        # Weights inherit the distances' dependence on respondents (answer-based metrics only).
+        base = list(config.CRW_HASH_PARAMS)
+        self.important_params_list = base + [p for p in respondent_hash_params(config) if p not in base]
 
         print(
             f"Initialized CloneRobustReweighter with alpha={self.alpha} and important parameters: {self.important_params_list}"

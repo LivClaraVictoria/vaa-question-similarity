@@ -43,7 +43,7 @@ from experiments.behavioral_metric._common import (
     summarize,
 )
 from vqs.clone_robust_weighting import CloneRobustReweighter
-from vqs.config_utils import load_config
+from vqs.config_utils import load_config, canton_results_path
 from vqs.data_loader import load_dataset
 from vqs.recommendation_engine import RecommendationEngine
 from vqs.similarity_metrics import get_calculator
@@ -346,7 +346,7 @@ def main(argv=None):
     # --- Save ---
     out_dir = (
         Path(args.output_dir) if args.output_dir
-        else default_config.BEHAVIORAL_METRIC_RESULTS_DIR / "deployment_sim"
+        else canton_results_path(default_config.BEHAVIORAL_METRIC_RESULTS_DIR / "deployment_sim", config)
     )
     out_dir.mkdir(parents=True, exist_ok=True)
     ts = datetime.now().strftime("%m%d_%H%M")

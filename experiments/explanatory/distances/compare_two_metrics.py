@@ -26,12 +26,14 @@ import argparse
 from pathlib import Path
 from scipy import stats
 
+from vqs.config_utils import canton_results_path
+
 
 OUTPUT_DIR = Path("experiment_results/embedding_correlation_comparison")
 
 
-def load_distances_from_config(config_path: str) -> tuple[pd.DataFrame, str]:
-    """Load a config, compute/load distances via the pipeline, return (df, label)."""
+def load_distances_from_config(config_path: str) -> tuple[pd.DataFrame, str, object]:
+    """Load a config, compute/load distances via the pipeline, return (df, label, config)."""
     from vqs.config_utils import load_config
     from vqs.similarity_metrics import get_calculator
     from vqs.data_loader import load_dataset
@@ -41,7 +43,7 @@ def load_distances_from_config(config_path: str) -> tuple[pd.DataFrame, str]:
     dataset = load_dataset(config)
     calculator = get_calculator(config)
     df = calculator.calculate_distance(dataset, config)
-    return df, label
+    return df, label, config
 
 
 def load_distances_from_file(file_path: str) -> pd.DataFrame:
@@ -205,8 +207,9 @@ def main():
     args = parser.parse_args()
 
     # Load metric A
+    config_a = None
     if args.config_a:
-        df_a, auto_label_a = load_distances_from_config(args.config_a)
+        df_a, auto_label_a, config_a = load_distances_from_config(args.config_a)
     elif args.file_a:
         df_a = load_distances_from_file(args.file_a)
         auto_label_a = Path(args.file_a).stem
@@ -215,7 +218,7 @@ def main():
 
     # Load metric B
     if args.config_b:
-        df_b, auto_label_b = load_distances_from_config(args.config_b)
+        df_b, auto_label_b, _ = load_distances_from_config(args.config_b)
     elif args.file_b:
         df_b = load_distances_from_file(args.file_b)
         auto_label_b = Path(args.file_b).stem
@@ -233,15 +236,16 @@ def main():
         print("ERROR: No overlapping question pairs found. Check that both metrics cover the same questions.")
         return
 
-    # Output
-    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    # Output (per canton when distances come from a config)
+    output_dir = canton_results_path(OUTPUT_DIR, config_a) if config_a is not None else OUTPUT_DIR
+    output_dir.mkdir(parents=True, exist_ok=True)
     print_summary(merged, label_a, label_b)
-    save_merged_csv(merged, label_a, label_b, OUTPUT_DIR)
-    plot_scatter(merged, label_a, label_b, OUTPUT_DIR)
-    plot_rank_comparison(merged, label_a, label_b, OUTPUT_DIR)
-    plot_divergence(merged, label_a, label_b, OUTPUT_DIR)
+    save_merged_csv(merged, label_a, label_b, output_dir)
+    plot_scatter(merged, label_a, label_b, output_dir)
+    plot_rank_comparison(merged, label_a, label_b, output_dir)
+    plot_divergence(merged, label_a, label_b, output_dir)
 
-    print(f"\nAll outputs saved to {OUTPUT_DIR}/")
+    print(f"\nAll outputs saved to {output_dir}/")
 
 
 if __name__ == "__main__":

@@ -227,6 +227,13 @@ save_results = True
 # Canton Filtering
 district = "all"  # "all" = no filtering; canton code (e.g. "ZH") = filter to that canton
 
+# Validation/test split across cantons: all parameters are selected on VALIDATION_DISTRICT.
+# Any other canton is a held-out test canton. Set the env var VQS_DISTRICT=<code> to re-target
+# every canton-scoped config (district != "all") at load time (see vqs.config_utils.load_config);
+# its experiment outputs then go to experiment_results/cantons/<code>/ (see canton_results_path).
+VALIDATION_DISTRICT = "ZH"
+CANTON_RESULTS_DIR = RESULTS_DIR / "cantons"
+
 # Subsetting
 subset_n = None  # for quick testing: set to an integer to subset the data, or None to use full data
 
@@ -383,3 +390,9 @@ DISTANCE_HASH_PARAMS = ["data_year", "dist", "data_choice", "clone_id", "embeddi
 CRW_HASH_PARAMS = DISTANCE_HASH_PARAMS + ["alpha", "crw_paper_choice", "weighting_func_name"]
 REC_HASH_PARAMS = CRW_HASH_PARAMS + ["rec_dist_method", "n_recommendations", "subset_n", "use_OG_weights", "district"]
 COMPARATOR_HASH_PARAMS = REC_HASH_PARAMS
+
+# Answer-based metrics (distances estimated from respondent answers, not question text) also
+# depend on WHICH respondents were used: source, subset, out-of-sample split and canton. These
+# are appended to every stage's hash only for these metrics, so text-embedding caches stay valid.
+ANSWER_BASED_METRICS = {"ANSWER-CORRELATION", "ANSWER-CORRELATION-ARCCOS", "BEHAVIORAL-L1"}
+ANSWER_METRIC_HASH_PARAMS = ["correlation_answer_source", "subset_n", "train_voter_fraction", "split_seed", "district"]

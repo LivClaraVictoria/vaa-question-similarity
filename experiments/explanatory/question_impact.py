@@ -67,7 +67,7 @@ from clone_pipeline.spec import CloneSpec
 from configs import base_constants as default_config
 from cross_run_analysis.analyzer import CrossRunAnalyzer
 from experiments._common import _get_clean_name, _get_question_text_col, _resolve_n
-from vqs.config_utils import load_config
+from vqs.config_utils import load_config, canton_results_path
 from vqs.clone_robust_weighting import CloneRobustReweighter
 from vqs.data_loader import load_dataset
 from vqs.recommendation_engine import RecommendationEngine
@@ -466,7 +466,7 @@ def _run_sweep(args, config, n: int, clone_types: list[str], n_clones: int):
     sweep_df = pd.DataFrame(rows)
 
     # Use collect logic for output
-    output_dir = RESULTS_DIR
+    output_dir = canton_results_path(RESULTS_DIR, config)
     output_dir.mkdir(parents=True, exist_ok=True)
     _save_collect_outputs(sweep_df, config, n, output_dir, pipeline["dataset"])
 
@@ -484,7 +484,7 @@ def _run_worker(args, config, n: int, clone_types: list[str], n_clones: int):
         print("ERROR: --task-id is required in worker mode", file=sys.stderr)
         sys.exit(1)
 
-    sweep_dir = Path(args.sweep_dir) if args.sweep_dir else RESULTS_DIR / "workers"
+    sweep_dir = Path(args.sweep_dir) if args.sweep_dir else canton_results_path(RESULTS_DIR, config) / "workers"
     sweep_dir.mkdir(parents=True, exist_ok=True)
 
     pipeline = _setup_pipeline(config, clone_types=clone_types, n_clones=n_clones)
@@ -524,7 +524,7 @@ def _run_worker(args, config, n: int, clone_types: list[str], n_clones: int):
 
 
 def _run_collect(args, config, n: int):
-    sweep_dir = Path(args.sweep_dir) if args.sweep_dir else RESULTS_DIR / "workers"
+    sweep_dir = Path(args.sweep_dir) if args.sweep_dir else canton_results_path(RESULTS_DIR, config) / "workers"
 
     worker_files = sorted(sweep_dir.glob("question_worker_*.csv"))
     if not worker_files:
@@ -540,7 +540,7 @@ def _run_collect(args, config, n: int):
     print("\n--- Loading dataset for correlation analysis ---")
     dataset = load_dataset(config)
 
-    output_dir = RESULTS_DIR
+    output_dir = canton_results_path(RESULTS_DIR, config)
     output_dir.mkdir(parents=True, exist_ok=True)
 
     _save_collect_outputs(combined, config, n, output_dir, dataset)

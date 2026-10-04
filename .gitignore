@@ -7,7 +7,6 @@ data/removed/**/*.parquet
 .vscode/
 __pycache__/
 scripts/tests.py
-CLAUDE.md
 cache/*
 experiment_results/pipeline_outputs/recommendations/**/*.parquet
 experiment_results/pipeline_outputs/recommendations/**/*.csv
@@ -23,4 +22,3 @@ dependencies/rsfp/data/NRW2023-kandidierende.json
 *.png
 jobs/out/*
 worker*
-CLAUDE.md

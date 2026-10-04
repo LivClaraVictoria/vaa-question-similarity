@@ -27,11 +27,13 @@ import pandas as pd
 import seaborn as sns
 from pathlib import Path
 
+from vqs.config_utils import canton_results_path
+
 # ---------------------------------------------------------------------------
 # Paths
 # ---------------------------------------------------------------------------
-SWEEP_RESULTS_DIR = Path("experiment_results/exp1/question_alpha_sweep")
-OUTPUT_DIR = Path("experiment_results/exp1/question_alpha_sweep/compiled")
+SWEEP_RESULTS_DIR = canton_results_path("experiment_results/exp1/question_alpha_sweep")
+OUTPUT_DIR = canton_results_path("experiment_results/exp1/question_alpha_sweep/compiled")
 
 ALPHA_REFERENCE = 0.3
 

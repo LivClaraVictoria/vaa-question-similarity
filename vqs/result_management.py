@@ -6,6 +6,7 @@ with timestamp prefix for experiment_results/ and hash-based names for cache/.
 
 import json
 import hashlib
+import os
 import pandas as pd
 from pathlib import Path
 from datetime import datetime
@@ -85,21 +86,29 @@ class ResultManager:
         path = self.get_path(readable=readable, extension=extension)
         ext = path.suffix.lower()
 
+        # Write to a hidden temp file, then rename: concurrent jobs (e.g. several cantons sharing
+        # a canton-independent embedding cache) never see a half-written file. The temp name
+        # doesn't match the `*{hash}.{ext}` glob in exists().
+        tmp = path.with_name(f".{path.name}.tmp-{os.getpid()}")
+        written = True
         if data is not None:
             if isinstance(data, pd.DataFrame):
                 if ext == ".parquet":
-                    data.to_parquet(path, index=False)
+                    data.to_parquet(tmp, index=False)
                 else:
-                    data.to_csv(path, index=False)
+                    data.to_csv(tmp, index=False)
             elif ext in [".txt", ".md"] and isinstance(data, str):
-                path.write_text(data, encoding="utf-8")
+                tmp.write_text(data, encoding="utf-8")
             elif ext == ".json":
-                with open(path, "w", encoding="utf-8") as f:
+                with open(tmp, "w", encoding="utf-8") as f:
                     json.dump(data, f, indent=4, default=str)
             else:
+                written = False
                 print(
                     f"Warning: ResultManager auto-save not configured for type {type(data)} to {ext}."
                 )
+            if written:
+                os.replace(tmp, path)
 
         print(f"\nSuccess! File saved to:")
         print(f"  -> {path}")

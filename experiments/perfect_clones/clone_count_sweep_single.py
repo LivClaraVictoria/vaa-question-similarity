@@ -38,7 +38,7 @@ from clone_pipeline.applicator import apply_specs
 from clone_pipeline.spec import CloneSpec
 from cross_run_analysis.analyzer import CrossRunAnalyzer
 from experiments._common import _get_clean_name, _resolve_n
-from vqs.config_utils import load_config
+from vqs.config_utils import load_config, canton_results_path
 from vqs.data_loader import load_dataset
 from vqs.recommendation_engine import RecommendationEngine
 
@@ -328,7 +328,7 @@ def main():
 
     sweep_df = pd.DataFrame(rows)
 
-    output_dir = RESULTS_DIR
+    output_dir = canton_results_path(RESULTS_DIR, config)
     output_dir.mkdir(parents=True, exist_ok=True)
     _save_outputs(sweep_df, config, question_id, n_values, n_jaccard, output_dir)
 

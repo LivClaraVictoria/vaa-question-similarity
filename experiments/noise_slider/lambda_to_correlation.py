@@ -19,7 +19,7 @@ import pandas as pd
 from experiments._common import _get_question_text_col
 from experiments.noise_slider._perturb import admissible_set, perturb_column
 from experiments.noise_slider.robustness import LAMBDA_GRID, _derive_seed
-from vqs.config_utils import load_config
+from vqs.config_utils import load_config, canton_results_path
 from vqs.data_loader import load_dataset
 
 
@@ -27,6 +27,8 @@ N_SEEDS = 10
 
 APPROX_CLONE_R = 0.775          # max |r| among top-5 approximate clones (Exp 3)
 APPROX_CLONE_ARCCOS = 0.684     # arccos(0.775) — min non-clone distance in correlation space
+
+DEFAULT_OUT = "experiment_results/noise_slider/lambda_to_correlation.csv"
 
 
 def _parse_args(argv=None):
@@ -43,9 +45,8 @@ def _parse_args(argv=None):
         help=f"Seeds per λ for averaging (default: {N_SEEDS})",
     )
     parser.add_argument(
-        "--out", type=str,
-        default="experiment_results/noise_slider/lambda_to_correlation.csv",
-        help="Output CSV path",
+        "--out", type=str, default=None,
+        help=f"Output CSV path (default: {DEFAULT_OUT}, mapped to the config's canton)",
     )
     return parser.parse_args(argv)
 
@@ -126,7 +127,7 @@ def main(argv=None):
     print(f"  (CRW integrates [0, α]; clones at arccos(r) > α are undetectable)")
 
     # Save
-    out_path = Path(args.out)
+    out_path = Path(args.out) if args.out else canton_results_path(DEFAULT_OUT, config)
     out_path.parent.mkdir(parents=True, exist_ok=True)
     agg.to_csv(out_path, index=False)
     print(f"\n→ Saved: {out_path}")
