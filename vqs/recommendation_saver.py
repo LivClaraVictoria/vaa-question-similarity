@@ -9,6 +9,7 @@ import json
 from pathlib import Path
 
 from vqs.result_management import ResultManager
+from vqs.config_utils import canton_results_path
 
 """
 Important Assumption: 
@@ -44,7 +45,7 @@ def save_recommendation_results(
     """
 
     # 1. Check for cached files
-    base_path = Path(config.RECOMMENDATION_RESULTS_DIR)
+    base_path = canton_results_path(config.RECOMMENDATION_RESULTS_DIR, config)
 
     output_dir = base_path / config.data_choice
     if config.data_choice == "cloned" and hasattr(config, "clone_id"):

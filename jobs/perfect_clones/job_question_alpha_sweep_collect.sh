@@ -19,7 +19,8 @@ echo "SLURM_JOB_ID: ${SLURM_JOB_ID}"
 python -u -m experiments.perfect_clones.recommendation_distortion \
     --mode collect \
     --config "${PIPELINE_CONFIG}" \
-    --sweep-dir "${SWEEP_DIR}"
+    --sweep-dir "${SWEEP_DIR}" \
+    ${ALPHAS:+--alphas "${ALPHAS}"}
 
 echo "Finished at: $(date)"
 exit 0

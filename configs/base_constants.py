@@ -85,7 +85,8 @@ QUESTIONS_2019_PATH = CLEANED_DIR / "df_questions19.parquet"
 # cache paths
 CACHE_DIR = PROJECT_ROOT / "cache"
 DISTANCE_CACHE_DIR = CACHE_DIR / "distance_calculations"
-RECOMMENDATION_CACHE_DIR = CACHE_DIR / "recommendations"
+# Cached recommendation tables are large (0.5-0.8 GB each); VQS_REC_CACHE_DIR can point them at scratch.
+RECOMMENDATION_CACHE_DIR = Path(os.getenv("VQS_REC_CACHE_DIR") or CACHE_DIR / "recommendations")
 COMPARATOR_CACHE_DIR = CACHE_DIR / "comparisons"
 
 

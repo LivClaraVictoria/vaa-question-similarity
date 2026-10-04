@@ -36,6 +36,8 @@ activate_env() {
 
 # sbatch wrapper: adds log paths, env export and the profile's extra args; prints the job id.
 # Set SUBMIT_DRY_RUN=1 to print the sbatch command instead of submitting.
+# SUBMIT_RES="--cpus-per-task=1 --mem-per-cpu=12G" overrides the #SBATCH resources of heavy jobs
+# (not collect/compile/prepare/pre_paraphrases jobs); SUBMIT_NICE=<n> lowers the priority of every job.
 # Set SUBMIT_AFTER=<id>[:<id>...] to make every job also wait (afterany) for those jobs, and
 # SUBMIT_LOG=<file> to append every submitted job id to that file (used by run_all_cantons.sh).
 submit() {
@@ -53,6 +55,11 @@ submit() {
     if [[ -n "${SUBMIT_AFTER:-}" && -z "${has_dep}" ]]; then
         args=(--dependency="afterany:${SUBMIT_AFTER}" "${args[@]}")
     fi
+    local script="${args[-1]}"
+    if [[ -n "${SUBMIT_RES:-}" && ! "${script##*/}" =~ (collect|compile|prepare|pre_paraphrases) ]]; then
+        args=(${SUBMIT_RES} "${args[@]}")
+    fi
+    [[ -n "${SUBMIT_NICE:-}" ]] && args=(--nice="${SUBMIT_NICE}" "${args[@]}")
     local cmd=(sbatch --parsable --export=ALL
         --output="${LOG_DIR}/${pattern}.out" --error="${LOG_DIR}/${pattern}.err"
         "${SBATCH_EXTRA_ARGS[@]}" "${args[@]}")
@@ -92,6 +99,10 @@ job_preamble() {
     trap "exit 1" HUP INT TERM
     trap 'rm -rf "${TMPDIR}"' EXIT
     export TMPDIR
+
+    # The ranking code is single-threaded; keep BLAS/OpenMP from oversubscribing the allocation.
+    export OMP_NUM_THREADS="${SLURM_CPUS_PER_TASK:-1}" MKL_NUM_THREADS="${SLURM_CPUS_PER_TASK:-1}" \
+           OPENBLAS_NUM_THREADS="${SLURM_CPUS_PER_TASK:-1}"
 
     echo "Running on node: $(hostname) (cluster profile: ${CLUSTER})"
     echo "Canton (VQS_DISTRICT): ${VQS_DISTRICT:-unset, configs use their own district}"

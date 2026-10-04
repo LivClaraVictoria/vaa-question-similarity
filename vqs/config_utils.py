@@ -48,8 +48,27 @@ def load_config(config_path: Path):
     config.overrides = list(getattr(config, "overrides", []))
 
     _apply_district_env(config)
+    _apply_alpha_env(config)
 
     return config
+
+
+def _apply_alpha_env(config):
+    """
+    Sets the CRW alpha from env var VQS_ALPHA for configs that use CRW, so every experiment of a
+    test canton runs at the single alpha chosen on the validation canton. A no-op when the config
+    already has that alpha (names/hashes then match the ZH runs). Sweep scripts overwrite alpha
+    themselves and are unaffected.
+    """
+    raw = os.environ.get("VQS_ALPHA")
+    if not raw or not getattr(config, "apply_clone_robust_weighting", False) \
+            or getattr(config, "data_choice", "") == "fake":
+        return
+    alpha = float(raw)
+    if alpha == getattr(config, "alpha", None):
+        return
+    print(f"VQS_ALPHA={raw}: re-targeting config from alpha {config.alpha} to {alpha}.")
+    apply_overrides(config, [f"alpha={raw}"])
 
 
 def _apply_district_env(config):

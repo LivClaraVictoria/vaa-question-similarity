@@ -37,6 +37,36 @@ class RecommendationEngine:
             f"Initialized RecommendationEngine with important parameters: {self.important_params_list}"
         )
 
+    # Params that determine the un-weighted (baseline) recommendations: data + rec method only.
+    BASELINE_HASH_PARAMS = [
+        "data_year", "data_choice", "clone_id", "district", "rec_dist_method",
+        "n_recommendations", "subset_n", "use_OG_weights",
+    ]
+
+    def _cached_recs(self, kind: str, params: list[str], compute):
+        """Disk-cached recommendation table. ONLY for the base (un-cloned) side: it is identical
+        for every clone task of a canton, whereas cloned tables differ per (question, alpha,
+        clone type) and would explode the cache. Keeps the voter index, which analyze_from_dfs
+        joins on (ResultManager.save drops it)."""
+        rm = ResultManager(
+            config=self.config, dir=self.config.RECOMMENDATION_CACHE_DIR, params_list=params,
+            prefix=f"{kind}_{self.config.data_year}_{self.config.district}",
+        )
+        cached = rm.load()
+        if cached is not None:
+            return cached.set_index("__voter_idx__").rename_axis(None)
+        df = compute()
+        rm.save(data=df.rename_axis("__voter_idx__").reset_index())
+        return df
+
+    def run_baseline_cached(self):
+        """run_baseline() with a disk cache (base side only)."""
+        return self._cached_recs("baseline", self.BASELINE_HASH_PARAMS, self.run_baseline)
+
+    def run_crw_cached(self, df_weights):
+        """run_crw() with a disk cache keyed by the full CRW/rec params (base side only)."""
+        return self._cached_recs("crw", self.important_params_list, lambda: self.run_crw(df_weights))
+
     def run_baseline(self):
         """Calculates recommendations using the original distance weights (no CRW)."""
         print(f"Running Baseline ({self.dist_method})...")

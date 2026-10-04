@@ -22,7 +22,8 @@ python -u -m experiments.perfect_clones.recommendation_distortion \
     --config "${PIPELINE_CONFIG}" \
     --sweep-dir "${SWEEP_DIR}" \
     --clone-type "${CLONE_TYPE}" \
-    --n-clones "${N_CLONES:-5}"
+    --n-clones "${N_CLONES:-5}" \
+    ${ALPHAS:+--alphas "${ALPHAS}"}
 
 echo "Finished at: $(date)"
 exit 0

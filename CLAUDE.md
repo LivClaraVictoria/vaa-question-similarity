@@ -20,8 +20,11 @@ for experiments and entry points. Run everything as modules from the repo root (
   `VQS_DISTRICT=BE bash jobs/perfect_clones/launch_rec_distortion.sh`.
 - Results: ZH keeps the original `experiment_results/` tree; test cantons get the same layout under
   `experiment_results/cantons/<code>/` (`canton_results_path` in Python, `results_root` in `jobs/_lib/common.sh`).
-- All test cantons at once: `bash jobs/cantons/run_all_cantons.sh` (BE first; array experiments of other
-  cantons wait for BE's so shared caches are warm). Manifest + job ids: `experiment_results/cantons/_runs/<ts>/`.
+- Test cantons run ONE alpha (the one chosen on ZH, env `VQS_ALPHA`, no-op if the config already has it) and no
+  alpha sweeps. All test cantons at once: `ALPHA=<zh alpha> bash jobs/cantons/run_all_cantons.sh` (submits a small
+  orchestrator job; progress `experiment_results/cantons/_runs/<ts>/orchestrator.log`, `bash jobs/cantons/status.sh`).
+  BE is first and has priority (others wait for BE's same experiment, then use `--nice`); memory per job is scaled from
+  BE's measured peak (sacct MaxRSS) by voters x candidates; 1 CPU per job (the ranking code is single-threaded).
 - One-seat cantons (AR AI GL NW OW UR) are excluded: 1–3 candidates make ranking metrics meaningless.
 
 ## Caching rules
@@ -31,6 +34,11 @@ for experiments and entry points. Run everything as modules from the repo root (
 - Never re-implement the hash in scripts; build it from the same param lists (see
   `distance_structure_analysis._compute_dist_hash`). Never fall back to "any cached file" for answer-based metrics.
 - `ResultManager.save` writes atomically (temp file + rename): many concurrent jobs share caches.
+- Base-side (un-cloned) baseline/CRW recommendations are cached on disk once per canton
+  (`RecommendationEngine.run_baseline_cached/run_crw_cached`, dir `VQS_REC_CACHE_DIR`, ~0.5-0.8 GB each, keep on
+  scratch). Cloned-side tables are deliberately NOT cached (one per question x alpha x clone type = cache explosion).
+  `ResultManager.save` drops the DataFrame index, but `analyze_from_dfs` joins on the voter index: cached tables
+  must keep it (the engine helpers do).
 
 ## Open design decisions (test cantons)
 - Partisan Phase 2 (`launch_partisan_sweep.sh`) uses the ZH Phase 1 question selection by default

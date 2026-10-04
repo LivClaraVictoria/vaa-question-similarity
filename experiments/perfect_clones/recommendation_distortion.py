@@ -153,7 +153,7 @@ def _load_paraphrases_readonly(config) -> dict:
 def _setup_pipeline(config, n_clones: int, clone_type: str = "easy_paraphrase"):
     """Load dataset, compute base side, load paraphrases, get question IDs."""
     print("\n--- Setting up base pipeline ---")
-    base_side = _setup_side(config)
+    base_side = _setup_side(config, cache_baseline=True)
 
     questions_df = base_side["dataset"]["questions"]
     question_ids = sorted(
@@ -297,7 +297,7 @@ def _compute_question_sweep(
         config.alpha = alpha
         base_reweighter = CloneRobustReweighter(config)
         base_weights = base_reweighter.reweight(base_dist)
-        base_crw = base_rec_engine.run_crw(base_weights)
+        base_crw = base_rec_engine.run_crw_cached(base_weights)
 
         base_match_cols = [c for c in base_crw.columns if "match" in c or "Dist" in c]
         base_combined = base_baseline.join(base_crw[base_match_cols].add_prefix("CRW_"))

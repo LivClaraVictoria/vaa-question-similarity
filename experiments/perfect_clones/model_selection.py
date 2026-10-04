@@ -365,11 +365,13 @@ def _save_outputs(
 # ---------------------------------------------------------------------------
 
 
-def _setup_side(config, dataset=None, dist_df=None):
+def _setup_side(config, dataset=None, dist_df=None, cache_baseline=False):
     """Set up one side of the alpha sweep comparison.
 
     Optionally accepts pre-loaded dataset and/or distance DataFrame
     for in-memory cloning workflows (e.g. question_alpha_sweep_main).
+    cache_baseline: load/store the baseline recommendations on disk (use for the un-cloned base
+    side only, which every task of a sweep would otherwise recompute).
     """
     if dataset is None:
         dataset = load_dataset(config)
@@ -379,7 +381,7 @@ def _setup_side(config, dataset=None, dist_df=None):
         dist_df = calculator.calculate_distance(dataset, config)
 
     rec_engine = RecommendationEngine(config=config, data_map=dataset)
-    baseline = rec_engine.run_baseline()
+    baseline = rec_engine.run_baseline_cached() if cache_baseline else rec_engine.run_baseline()
 
     return {
         "dataset": dataset,
