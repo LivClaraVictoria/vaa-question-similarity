@@ -10,7 +10,7 @@ set -o errexit
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 source "${SCRIPT_DIR}/../_lib/common.sh"
 cd "${PROJECT_DIR}"
-SWEEP_DIR="${PROJECT_DIR}/experiment_results/exp1/model_alpha_sweep/sweep_$(date +%Y%m%d_%H%M%S)"
+SWEEP_DIR="$(results_root)/exp1/model_alpha_sweep/sweep_$(date +%Y%m%d_%H%M%S)"
 mkdir -p "${SWEEP_DIR}"
 
 # Default configs — override via env vars before calling this script

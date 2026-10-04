@@ -9,7 +9,7 @@ set -o errexit
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 source "${SCRIPT_DIR}/../_lib/common.sh"
 cd "${PROJECT_DIR}"
-SWEEP_DIR="${PROJECT_DIR}/experiment_results/party_impact/high_impact/workers_$(date +%Y%m%d_%H%M%S)"
+SWEEP_DIR="$(results_root)/party_impact/high_impact/workers_$(date +%Y%m%d_%H%M%S)"
 mkdir -p "${SWEEP_DIR}"
 
 export PIPELINE_CONFIG="configs/base_pipeline/pipeline_e5_ZH.py"

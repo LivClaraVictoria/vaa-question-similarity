@@ -36,22 +36,48 @@ activate_env() {
 
 # sbatch wrapper: adds log paths, env export and the profile's extra args; prints the job id.
 # Set SUBMIT_DRY_RUN=1 to print the sbatch command instead of submitting.
+# Set SUBMIT_AFTER=<id>[:<id>...] to make every job also wait (afterany) for those jobs, and
+# SUBMIT_LOG=<file> to append every submitted job id to that file (used by run_all_cantons.sh).
 submit() {
     local pattern='%x_%j'
-    local arg
+    local arg has_dep=""
+    local args=()
     for arg in "$@"; do
         [[ "${arg}" == --array* || "${arg}" == -a ]] && pattern='%x_%A_%a'
+        if [[ -n "${SUBMIT_AFTER:-}" && "${arg}" == --dependency=* ]]; then
+            arg="${arg},afterany:${SUBMIT_AFTER}"   # comma = AND with the job's own dependency
+            has_dep=1
+        fi
+        args+=("${arg}")
     done
+    if [[ -n "${SUBMIT_AFTER:-}" && -z "${has_dep}" ]]; then
+        args=(--dependency="afterany:${SUBMIT_AFTER}" "${args[@]}")
+    fi
     local cmd=(sbatch --parsable --export=ALL
         --output="${LOG_DIR}/${pattern}.out" --error="${LOG_DIR}/${pattern}.err"
-        "${SBATCH_EXTRA_ARGS[@]}" "$@")
+        "${SBATCH_EXTRA_ARGS[@]}" "${args[@]}")
     if [[ -n "${SUBMIT_DRY_RUN:-}" ]]; then
         echo "${cmd[*]}" >&2
         echo "DRYRUN"
         return 0
     fi
     mkdir -p "${LOG_DIR}"
-    "${cmd[@]}"
+    local id
+    id=$("${cmd[@]}") || return 1
+    id="${id%%;*}"
+    [[ -n "${SUBMIT_LOG:-}" ]] && echo "${id}" >> "${SUBMIT_LOG}"
+    echo "${id}"
+}
+
+# Root of the experiment_results tree for the active canton (mirrors vqs.config_utils.canton_results_path):
+# the validation canton ZH (or no VQS_DISTRICT) uses experiment_results/, test cantons
+# experiment_results/cantons/<code>/. Launchers put their worker dirs under it.
+results_root() {
+    if [[ -n "${VQS_DISTRICT:-}" && "${VQS_DISTRICT}" != "ZH" ]]; then
+        echo "${PROJECT_DIR}/experiment_results/cantons/${VQS_DISTRICT}"
+    else
+        echo "${PROJECT_DIR}/experiment_results"
+    fi
 }
 
 # Common start of every job: fail fast, private temp dir, node info, env, cd to project root.
