@@ -4,7 +4,8 @@ CRW drift on the unmanipulated questionnaire: how much does CRW alone change eac
 a .json with n_jaccard) and writes a per-voter CSV and a summary CSV to a `crw_drift/` folder beside
 `pipeline_outputs/` (i.e. <results root>/crw_drift/).
 
-Metrics per voter: Jaccard@k and swaps in the top-k, Spearman / Kendall on the full list, share and
+Metrics per voter: Jaccard@k and swaps in the top-k, whether the top-1 candidate changed (its mean over
+voters is the fraction of voters whose top candidate changed), Spearman / Kendall on the full list, share and
 size of rank changes. Higher Jaccard / correlation = CRW changes less.
 
 Usage (any canton; the parquet is canton-specific, the CRW weights are not):
@@ -36,6 +37,7 @@ def compute_crw_drift(recs_path: Path) -> tuple[pd.DataFrame, pd.DataFrame]:
                 "voterID": voter,
                 "jaccard_topk": analyzer._jaccard(plain, crw, n),
                 "swaps_topk": n - len(set(plain[:n]) & set(crw[:n])),
+                "top1_changed": float(plain[:1] != crw[:1]),
                 "spearman": rank.get("spearman", np.nan),
                 "kendall": rank.get("kendall", np.nan),
                 "any_rank_change": pos.get("any_change", np.nan),
@@ -76,6 +78,8 @@ def main():
     per_voter.to_csv(out_dir / f"{recs_path.stem}_crw_drift_per_voter.csv", index=False)
     summary.to_csv(out_dir / f"{recs_path.stem}_crw_drift_summary.csv")
     print(summary.to_string())
+    print(f"\nVoters whose top candidate changed (plain -> CRW): {per_voter['top1_changed'].mean():.4%} "
+          f"({int(per_voter['top1_changed'].sum())} of {len(per_voter)})")
 
 
 if __name__ == "__main__":
