@@ -4,6 +4,7 @@ using the rsfp library. Results are cached by config hash to avoid redundant com
 """
 
 import pandas as pd
+from pathlib import Path
 from dependencies import add_candidate_voting_recommendations
 from vqs.result_management import ResultManager
 from vqs.config_utils import respondent_hash_params
@@ -48,9 +49,11 @@ class RecommendationEngine:
         for every clone task of a canton, whereas cloned tables differ per (question, alpha,
         clone type) and would explode the cache. Keeps the voter index, which analyze_from_dfs
         joins on (ResultManager.save drops it)."""
+        # Own subdirectory: ResultManager finds files by globbing "*{hash}.parquet" (prefix ignored),
+        # and the CRW key equals evaluate_pipeline's key, so sharing a directory made them collide.
         rm = ResultManager(
-            config=self.config, dir=self.config.RECOMMENDATION_CACHE_DIR, params_list=params,
-            prefix=f"{kind}_{self.config.data_year}_{self.config.district}",
+            config=self.config, dir=Path(self.config.RECOMMENDATION_CACHE_DIR) / "base_side",
+            params_list=params, prefix=f"{kind}_{self.config.data_year}_{self.config.district}",
         )
         cached = rm.load()
         if cached is not None:

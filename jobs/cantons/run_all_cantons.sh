@@ -55,7 +55,7 @@ declare -A CANDS=([BE]=685 [AG]=568 [LU]=329 [SG]=288 [VD]=337 [VS]=199 [FR]=137
                   [TI]=144 [SH]=36 [JU]=34)
 # Queue slots per unit, and the memory (GB, 1 CPU) given to the base canton before any measurement.
 declare -A UNIT_SIZE=([pipeline]=1 [rec_distortion]=376 [partisan_sweep]=7)
-declare -A BASE_MEM_GB=([pipeline]=32 [rec_distortion]=20 [partisan_sweep]=32)
+declare -A BASE_MEM_GB=([pipeline]=32 [rec_distortion]=18 [partisan_sweep]=32)
 MIN_MEM_GB=6        # embedding model + data
 MARGIN=1.4
 
