@@ -59,3 +59,13 @@ Run/file/folder names are unintuitive; do not read them literally:
 - Labels `n5` / "x 5" in clone-sweep names/reports are cosmetic; the real clone count is 4.
 - "recommendations" (`pipeline_outputs/recommendations/`, `recs_*`) holds the plain AND CRW rankings per voter.
 - `experiment_results/cantons/<C>/handover/` holds cleanly renamed copies (not the originals) for sharing.
+
+## Known issue: rec_distortion sweeps OOM on the current cluster (to reinvestigate, 2026-10-05)
+- The `qa_sweep_*` worker arrays (`experiments.perfect_clones.recommendation_distortion --mode worker`, launched by
+  `canton_orchestrator` at 6 GB / 1 CPU per task) are frequently OOM-killed (exit 125, ~1 min in). In array 16175741,
+  55 of 75 tasks were OOM, 17 completed. Pending ones also queue on `QOSMaxMemoryPerUser` (per-user memory quota).
+- ~1000 tasks per family show FAILED; the cause was NOT investigated (may be OOM, may be the old cache-key collision).
+- Completed tasks per family (~150+) are usable. Before rerunning: measure peak memory of completed tasks
+  (`sacct -o MaxRSS`), raise the per-task memory or lower concurrency, rerun only the missing tasks.
+- The orchestrator keeps resubmitting `qa_sweep_*` arrays while it runs, so cancel it first, then its arrays.
+- Plan: rerun on a better cluster later; do not blindly resubmit with the same memory request.

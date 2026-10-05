@@ -1,7 +1,8 @@
 #!/bin/bash
-# Launcher: model selection alpha sweep — compares base vs cloned pipeline across 21 alpha values.
-# Submits one SLURM array job (21 workers, one per alpha), then a dependent collect job.
+# Launcher: model selection alpha sweep — compares base vs cloned pipeline across the alpha grid.
+# Submits one SLURM array job (one worker per alpha), then a dependent collect job.
 # Override CONFIG_A / CONFIG_B by setting env vars before calling.
+# Override the alpha grid with ALPHAS="0.01,0.1,0.2" (comma-separated); default = DEFAULT_ALPHAS in experiments/_common.py.
 #
 # Run with: bash jobs/perfect_clones/launch_model_selection.sh
 
@@ -18,14 +19,23 @@ export CONFIG_A="${CONFIG_A:-configs/base_pipeline/pipeline_e5_ZH.py}"
 export CONFIG_B="${CONFIG_B:-configs/experiments/perfect_clones_model_selection/identical_highcandvar_n10_e5_ZH.py}"
 export SWEEP_DIR
 
-N_ALPHAS=21
-MAX_IDX=$((N_ALPHAS - 1))   # 21 alphas (indices 0–20): 0.01, 0.1–1.5 step 0.1, 1.8–3.0 step 0.3
+export ALPHAS   # empty = model_selection.py falls back to DEFAULT_ALPHAS
+
+activate_env
+# Resolve the alpha list exactly as model_selection.py does, so array size always matches.
+N_ALPHAS=$(python -c "
+import os
+from experiments._common import DEFAULT_ALPHAS
+raw = os.environ.get('ALPHAS', '')
+print(len([a for a in raw.split(',') if a.strip()]) if raw.strip() else len(DEFAULT_ALPHAS))
+")
+MAX_IDX=$((N_ALPHAS - 1))
 
 echo "=== Model Selection Alpha Sweep ==="
 echo "  Config A: ${CONFIG_A}"
 echo "  Config B: ${CONFIG_B}"
 echo "  Sweep dir: ${SWEEP_DIR}"
-echo "  Alphas: ${N_ALPHAS} (array 0-${MAX_IDX})"
+echo "  Alphas: ${N_ALPHAS} (array 0-${MAX_IDX}): ${ALPHAS:-<DEFAULT_ALPHAS>}"
 
 # Workers: one per alpha value
 SWEEP_JOB=$(submit --array=0-${MAX_IDX} \

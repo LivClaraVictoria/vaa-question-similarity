@@ -1,0 +1,16 @@
+
+--- Stats Summary 2023---
+Scope: Evaluating top 2 recommendations for Set Similarity, and all 36 slots for Rank Stability.
+
+Set Similarity (Top 2):
+  - Average Jaccard Similarity:       0.9571 (1.0 = identical sets)
+  - Minimum Jaccard Similarity:       0.3333
+  - Avg. Candidates Swapped In/Out:   0.06 candidates per voter
+  - Max Candidates Swapped In/Out:    1 candidates
+
+Rank Stability (All 36):
+  - Voters w/ at least 1 rank change: 96.99%
+  - Avg. candidates changed per voter:  7.70 candidates (21.39% of list)
+  - Avg. positions a candidate moved:   0.26 ranks
+  - Max positions a candidate moved:       7 ranks
+----------------------------

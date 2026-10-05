@@ -1,0 +1,22 @@
+{
+    "config_name": "pipeline_e5_instruct_ZH",
+    "overrides": [
+        "district~GR",
+        "alpha~0.4"
+    ],
+    "n_jaccard": 5,
+    "data_year": 2023,
+    "dist": "E5-INSTRUCT",
+    "data_choice": "cleaned",
+    "clone_id": "cleaned",
+    "embedding_instruction": "Identify the political topic discussed in the following question, regardless of the stance or position taken.",
+    "embedding_task": null,
+    "alpha": 0.4,
+    "crw_paper_choice": "P2",
+    "weighting_func_name": "class_uniform",
+    "rec_dist_method": "L2",
+    "n_recommendations": "all",
+    "subset_n": null,
+    "use_OG_weights": false,
+    "district": "GR"
+}

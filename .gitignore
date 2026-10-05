@@ -22,3 +22,4 @@ dependencies/rsfp/data/NRW2023-kandidierende.json
 *.png
 jobs/out/*
 worker*
+experiment_results/cantons/**/pipeline_outputs/**/*.parquet

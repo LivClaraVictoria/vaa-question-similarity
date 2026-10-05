@@ -61,12 +61,14 @@ import pandas as pd
 import seaborn as sns
 from scipy.stats import spearmanr, kendalltau
 
-from clone_pipeline.applicator import apply_specs
 from clone_pipeline.paraphrase_generator import ensure_paraphrases
 from clone_pipeline.spec import CloneSpec
 from configs import base_constants as default_config
 from cross_run_analysis.analyzer import CrossRunAnalyzer
-from experiments._common import _get_clean_name, _get_question_text_col, _resolve_n
+from experiments._cloning import build_clone_specs, clone_dataset
+from experiments._common import (
+    FLIP_TYPES, PERFECT_MIX_COMPONENTS, _get_clean_name, _get_question_text_col, _resolve_n,
+)
 from vqs.config_utils import load_config, canton_results_path
 from vqs.clone_robust_weighting import CloneRobustReweighter
 from vqs.data_loader import load_dataset
@@ -75,12 +77,6 @@ from vqs.similarity_metrics import get_calculator
 
 N_CLONES = 4
 RESULTS_DIR = default_config.RESULTS_DIR / "question_impact"
-
-# Clone types that require flipping voter/candidate answers
-FLIP_TYPES = {"negation", "negation_easy", "negation_hard"}
-
-# perfect_mix is a composite: 1 clone each of these 4 types
-PERFECT_MIX_COMPONENTS = ["easy_paraphrase", "hard_paraphrase", "negation_easy", "negation_hard"]
 
 
 # ---------------------------------------------------------------------------
@@ -333,31 +329,8 @@ def _compute_question_impact(
     original_clone_id = getattr(config, "clone_id", None)
 
     for clone_type in clone_types:
-        # perfect_mix: 1 clone each of 4 types (total = n_clones)
-        if clone_type == "perfect_mix":
-            specs = [
-                CloneSpec(
-                    source_q_id=q_id, clone_type=ct,
-                    n_clones=n_clones // len(PERFECT_MIX_COMPONENTS),
-                    flip_answers=(ct in FLIP_TYPES),
-                )
-                for ct in PERFECT_MIX_COMPONENTS
-            ]
-        else:
-            flip = clone_type in FLIP_TYPES
-            specs = [CloneSpec(
-                source_q_id=q_id, clone_type=clone_type,
-                n_clones=n_clones, flip_answers=flip,
-            )]
-        cloned_data = apply_specs(
-            specs=specs,
-            dataframes={
-                "questions": dataset["questions"],
-                "voters": dataset["voters"],
-                "candidates": dataset["candidates"],
-            },
-            paraphrases=paraphrases,
-        )
+        specs = build_clone_specs(q_id, clone_type, n_clones)
+        cloned_data = clone_dataset(dataset, specs, paraphrases)
 
         # Compute cloned baseline recs
         cloned_engine = RecommendationEngine(config=config, data_map=cloned_data)

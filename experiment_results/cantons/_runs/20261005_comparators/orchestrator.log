@@ -1,3 +1,8 @@
 [10-05 15:29:13] Orchestrator start: alpha=0.4, 18 units, base BE, max queued 950
 [10-05 15:29:17] launched rec_distortion AG (10 GB, 1 CPU): 6 submissions
 [10-05 15:29:20] launched rec_distortion LU (6 GB, 1 CPU): 6 submissions
+[10-05 16:47:51] launched rec_distortion SG (6 GB, 1 CPU): 6 submissions
+[10-05 18:55:36] launched rec_distortion VD (6 GB, 1 CPU): 6 submissions
+[10-05 20:55:18] launched rec_distortion VS (6 GB, 1 CPU): 6 submissions
+[10-05 21:51:15] launched rec_distortion FR (6 GB, 1 CPU): 6 submissions
+[10-05 22:37:53] launched rec_distortion SO (6 GB, 1 CPU): 6 submissions

@@ -22,7 +22,7 @@ export PIPELINE_CONFIG="${PIPELINE_CONFIG:-configs/base_pipeline/pipeline_e5_ins
 export ALPHA="${ALPHA:-0.4}"
 export N_SEEDS="${N_SEEDS:-20}"
 export LAMBDAS="${LAMBDAS:-}"
-export SUBSET_N="${SUBSET_N:-5000}"
+export SUBSET_N="${SUBSET_N-5000}"   # no colon: SUBSET_N="" really means all voters
 export SWEEP_DIR
 
 # Determine question count directly from the questions parquet.

@@ -397,23 +397,28 @@ METRICS = ["jaccard", "spearman", "kendall"]
 SIDES = ["base", "crw"]
 
 
-def _aggregate(master_df: pd.DataFrame) -> pd.DataFrame:
+def _per_seed_means(master_df: pd.DataFrame) -> pd.DataFrame:
+    """Mean over voters at each (q_id, lambda, seed). Small (questions x lambdas x seeds rows), so
+    collect can reduce one worker CSV at a time instead of holding every per-voter row in memory
+    (a full voter set is ~500M rows)."""
+    metric_cols = [f"{side}_{m}" for side in SIDES for m in METRICS]
+    return (
+        master_df
+        .groupby(["question_id", "lambda", "seed"])[metric_cols]
+        .mean()
+        .reset_index()
+    )
+
+
+def _aggregate(per_seed: pd.DataFrame) -> pd.DataFrame:
     """
-    Per (q_id, lambda): mean over voters-in-seed → 20 per-seed values.
+    Input: per-seed means (see _per_seed_means), one value per (q_id, lambda, seed).
     Across seeds: mean, 90%-trimmed min (drop 1 smallest), 90%-trimmed max.
     Across q_ids at fixed lambda: mean of mean / mean of lo / mean of hi.
 
     Returns one row per λ with {side}_{metric}_{stat} columns.
     """
     metric_cols = [f"{side}_{m}" for side in SIDES for m in METRICS]
-
-    # Step 1: mean over voters at each (q_id, lambda, seed).
-    per_seed = (
-        master_df
-        .groupby(["question_id", "lambda", "seed"])[metric_cols]
-        .mean()
-        .reset_index()
-    )
 
     # Step 2: trimmed stats across seeds for each (q_id, lambda).
     def _trimmed(v: pd.Series) -> tuple[float, float, float]:
@@ -460,7 +465,13 @@ def _aggregate(master_df: pd.DataFrame) -> pd.DataFrame:
 # ---------------------------------------------------------------------------
 
 
-def _plot(agg_df: pd.DataFrame, out_path: Path, config, n_jaccard: int) -> None:
+def _voters_label(config, n_voters: int) -> str:
+    if config.subset_n is not None:
+        return f"SUBSAMPLE of {n_voters:,} voters (first {config.subset_n:,} rows)"
+    return f"all {n_voters:,} voters"
+
+
+def _plot(agg_df: pd.DataFrame, out_path: Path, config, n_jaccard: int, n_voters: int) -> None:
     """Three solid CRW lines + three dashed baseline lines + 90% fills."""
     sns.set_theme(style="whitegrid")
     colors = {"jaccard": "#2196F3", "spearman": "#4CAF50", "kendall": "#FF9800"}
@@ -491,7 +502,7 @@ def _plot(agg_df: pd.DataFrame, out_path: Path, config, n_jaccard: int) -> None:
     ax.set_title(
         f"Noise Slider — Robustness\n"
         f"(mixed k=4 clones, α={ALPHA}, {NUM_SEEDS} seeds, top-{n_jaccard}, "
-        f"{config.district})",
+        f"{config.district}, {_voters_label(config, n_voters)})",
         fontsize=12,
     )
     ax.legend(loc="best", fontsize=8, ncol=2)
@@ -507,12 +518,13 @@ def _plot(agg_df: pd.DataFrame, out_path: Path, config, n_jaccard: int) -> None:
 
 
 def _save_report(
-    master: pd.DataFrame,
+    master: pd.DataFrame,   # per-seed means (needs question_id, lambda, seed)
     agg: pd.DataFrame,
     config,
     n_jaccard: int,
     alpha: float,
     out_path: Path,
+    n_voters: int,
 ) -> None:
     lines = [
         "=" * 90,
@@ -520,6 +532,8 @@ def _save_report(
         "=" * 90,
         f"Generated : {datetime.now().strftime('%Y-%m-%d %H:%M')}",
         f"Config    : {_get_clean_name(config)}",
+        f"District  : {config.district}",
+        f"Voters    : {_voters_label(config, n_voters)}",
         f"Questions : {master['question_id'].nunique()}",
         f"λ grid    : {sorted(master['lambda'].unique().tolist())}",
         f"Seeds/λ   : {master['seed'].nunique()}",
@@ -623,7 +637,10 @@ def _run_sweep(args, config, lambda_grid, n_seeds, n_jaccard, alpha):
 
     output_dir = canton_results_path(RESULTS_DIR, config)
     output_dir.mkdir(parents=True, exist_ok=True)
-    _save_collect_outputs(master, config, n_jaccard, alpha, output_dir)
+    _save_collect_outputs(
+        _per_seed_means(master), int(master["voterID"].nunique()),
+        config, n_jaccard, alpha, output_dir, master=master,
+    )
     print("\n=== Noise Slider Sweep Complete ===")
 
 
@@ -681,12 +698,23 @@ def _run_collect(args, config, n_jaccard, alpha):
         sys.exit(1)
 
     print(f"\n=== Collect: reading {len(worker_files)} worker CSVs from {sweep_dir} ===")
-    dfs = [pd.read_csv(f) for f in worker_files]
-    master = pd.concat(dfs, ignore_index=True)
+    # Reduce each worker CSV to per-seed means right away: the raw per-voter rows stay in the worker
+    # CSVs (no master CSV; it would be ~500M rows for a full voter set and does not fit in memory).
+    cols = ["question_id", "lambda", "seed", "voterID"] + [
+        f"{side}_{m}" for side in SIDES for m in METRICS
+    ]
+    parts, voter_counts = [], set()
+    for f in worker_files:
+        df = pd.read_csv(f, usecols=cols)
+        voter_counts.add(int(df["voterID"].nunique()))
+        parts.append(_per_seed_means(df))
+    if len(voter_counts) != 1:
+        print(f"WARNING: workers disagree on voter count: {sorted(voter_counts)}", file=sys.stderr)
+    per_seed = pd.concat(parts, ignore_index=True)
 
     output_dir = canton_results_path(RESULTS_DIR, config)
     output_dir.mkdir(parents=True, exist_ok=True)
-    _save_collect_outputs(master, config, n_jaccard, alpha, output_dir)
+    _save_collect_outputs(per_seed, max(voter_counts), config, n_jaccard, alpha, output_dir)
     print("\n=== Collect Complete ===")
 
 
@@ -696,30 +724,39 @@ def _run_collect(args, config, n_jaccard, alpha):
 
 
 def _save_collect_outputs(
-    master: pd.DataFrame,
+    per_seed: pd.DataFrame,
+    n_voters: int,
     config,
     n_jaccard: int,
     alpha: float,
     output_dir: Path,
+    master: pd.DataFrame | None = None,
 ) -> None:
     name = _get_clean_name(config)
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    base = f"{name}_{timestamp}"
+    # Subsample vs full voter set is part of every output name, so runs never share a file name.
+    voters_tag = f"subsample{n_voters}" if config.subset_n is not None else f"allvoters{n_voters}"
+    base = f"{name}_{voters_tag}_{timestamp}"
 
-    master_path = output_dir / f"master_{base}.csv"
-    master.to_csv(master_path, index=False)
-    print(f"  -> Master CSV: {master_path.name}  ({len(master)} rows)")
+    if master is not None:  # sweep mode only; collect keeps the per-voter rows in the worker CSVs
+        master_path = output_dir / f"master_{base}.csv"
+        master.to_csv(master_path, index=False)
+        print(f"  -> Master CSV: {master_path.name}  ({len(master)} rows)")
 
-    agg = _aggregate(master)
+    per_seed_path = output_dir / f"per_seed_{base}.csv"
+    per_seed.to_csv(per_seed_path, index=False)
+    print(f"  -> Per-seed means CSV: {per_seed_path.name}  ({len(per_seed)} rows)")
+
+    agg = _aggregate(per_seed)
     agg_path = output_dir / f"aggregated_{base}.csv"
     agg.to_csv(agg_path, index=False)
     print(f"  -> Aggregated CSV: {agg_path.name}")
 
     plot_path = output_dir / f"plot_{base}.png"
-    _plot(agg, plot_path, config, n_jaccard)
+    _plot(agg, plot_path, config, n_jaccard, n_voters)
 
     report_path = output_dir / f"report_{base}.txt"
-    _save_report(master, agg, config, n_jaccard, alpha, report_path)
+    _save_report(per_seed, agg, config, n_jaccard, alpha, report_path, n_voters)
 
 
 # ---------------------------------------------------------------------------

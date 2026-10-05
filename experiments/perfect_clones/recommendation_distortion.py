@@ -45,7 +45,6 @@ import json
 import sys
 from datetime import datetime
 from pathlib import Path
-from types import SimpleNamespace
 
 import matplotlib
 
@@ -60,18 +59,15 @@ from experiments._common import (
     _resolve_n,
     _get_question_text_col,
     DEFAULT_ALPHAS,
-    FLIP_TYPES,
     PERFECT_MIX_COMPONENTS,
 )
+from experiments._cloning import build_clone_specs, recs_at_alpha, setup_cloned_side
 from experiments.perfect_clones.model_selection import _setup_side
-from clone_pipeline.applicator import apply_specs
 from clone_pipeline.paraphrase_generator import ensure_paraphrases
 from clone_pipeline.spec import CloneSpec
 from cross_run_analysis.analyzer import CrossRunAnalyzer
 from vqs.config_utils import load_config, canton_results_path
-from vqs.clone_robust_weighting import CloneRobustReweighter
 from vqs.data_loader import load_dataset
-from vqs.recommendation_engine import RecommendationEngine
 from vqs.similarity_metrics import get_calculator
 
 DEFAULT_N_CLONES = 5
@@ -120,6 +116,11 @@ def _parse_args(argv=None):
         help=f"Number of clones per question (default: {DEFAULT_N_CLONES})",
     )
     parser.add_argument(
+        "--q-ids", type=str, default=None,
+        help="Comma-separated question IDs to sweep (default: all questions). "
+             "--task-id then indexes into this list in the order given.",
+    )
+    parser.add_argument(
         "-n", type=int, default=None,
         help="Override top-k for Jaccard (default: derived from config)",
     )
@@ -129,6 +130,10 @@ def _parse_args(argv=None):
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
+
+
+def _parse_q_ids(args) -> list[int] | None:
+    return [int(q) for q in args.q_ids.split(",") if q.strip()] if args.q_ids else None
 
 
 def _load_paraphrases_readonly(config) -> dict:
@@ -150,8 +155,9 @@ def _load_paraphrases_readonly(config) -> dict:
 # ---------------------------------------------------------------------------
 
 
-def _setup_pipeline(config, n_clones: int, clone_type: str = "easy_paraphrase"):
-    """Load dataset, compute base side, load paraphrases, get question IDs."""
+def _setup_pipeline(config, n_clones: int, clone_type: str = "easy_paraphrase",
+                    q_ids: list[int] | None = None):
+    """Load dataset, compute base side, load paraphrases, get question IDs (restricted to q_ids if given)."""
     print("\n--- Setting up base pipeline ---")
     base_side = _setup_side(config, cache_baseline=True)
 
@@ -161,6 +167,12 @@ def _setup_pipeline(config, n_clones: int, clone_type: str = "easy_paraphrase"):
             questions_df["ID_question"] < 9_000_000, "ID_question"
         ].tolist()
     )
+
+    if q_ids is not None:
+        unknown = [q for q in q_ids if q not in question_ids]
+        if unknown:
+            raise ValueError(f"--q-ids not in the dataset: {unknown}")
+        question_ids = list(q_ids)
 
     print(f"  Questions: {len(question_ids)}")
     print(f"  Clone type: {clone_type}")
@@ -246,70 +258,20 @@ def _compute_question_sweep(
     paraphrases = pipeline["paraphrases"]
     q_text = pipeline["question_texts"][q_id]
 
-    # Build clone specs
-    if clone_type == "perfect_mix":
-        specs = [
-            CloneSpec(
-                source_q_id=q_id, clone_type=ct,
-                n_clones=n_clones // len(PERFECT_MIX_COMPONENTS),
-                flip_answers=(ct in FLIP_TYPES),
-            )
-            for ct in PERFECT_MIX_COMPONENTS
-        ]
-    else:
-        flip = clone_type in FLIP_TYPES
-        specs = [CloneSpec(
-            source_q_id=q_id, clone_type=clone_type,
-            n_clones=n_clones, flip_answers=flip,
-        )]
-
-    cloned_data = apply_specs(
-        specs=specs,
-        dataframes={
-            "questions": dataset["questions"],
-            "voters": dataset["voters"],
-            "candidates": dataset["candidates"],
-        },
-        paraphrases=paraphrases,
+    # Clone the question in memory and set up the cloned side (distances, rec engine, baseline once per question)
+    cloned_config, cloned_side = setup_cloned_side(
+        config, dataset,
+        build_clone_specs(q_id, clone_type, n_clones),
+        paraphrases,
+        clone_id=f"qa_sweep_{clone_type}_n{n_clones}_q{q_id}",
     )
-
-    # Compute distances for cloned data (in-memory, no cache)
-    cloned_config = SimpleNamespace(**vars(config))
-    cloned_config.clone_id = f"qa_sweep_{clone_type}_n{n_clones}_q{q_id}"
-
-    calculator = get_calculator(cloned_config)
-    cloned_dist = calculator.calculate_distance(cloned_data, cloned_config)
-
-    # Build cloned-side rec engine and baseline (once per question, reused across alphas)
-    cloned_rec_engine = RecommendationEngine(config=cloned_config, data_map=cloned_data)
-    cloned_baseline = cloned_rec_engine.run_baseline()
-
-    # Base side: combine baseline with CRW for each alpha (in-memory)
-    base_rec_engine = base_side["rec_engine"]
-    base_baseline = base_side["baseline"]
-    base_dist = base_side["dist_df"]
 
     analyzer = CrossRunAnalyzer.from_n(n_jaccard)
     rows = []
 
     for i, alpha in enumerate(alphas):
-        # --- Base side: compute CRW recs for this alpha ---
-        config.alpha = alpha
-        base_reweighter = CloneRobustReweighter(config)
-        base_weights = base_reweighter.reweight(base_dist)
-        base_crw = base_rec_engine.run_crw_cached(base_weights)
-
-        base_match_cols = [c for c in base_crw.columns if "match" in c or "Dist" in c]
-        base_combined = base_baseline.join(base_crw[base_match_cols].add_prefix("CRW_"))
-
-        # --- Cloned side: compute CRW recs for this alpha ---
-        cloned_config.alpha = alpha
-        cloned_reweighter = CloneRobustReweighter(cloned_config)
-        cloned_weights = cloned_reweighter.reweight(cloned_dist)
-        cloned_crw = cloned_rec_engine.run_crw(cloned_weights)
-
-        cloned_match_cols = [c for c in cloned_crw.columns if "match" in c or "Dist" in c]
-        cloned_combined = cloned_baseline.join(cloned_crw[cloned_match_cols].add_prefix("CRW_"))
+        base_combined = recs_at_alpha(config, base_side, alpha, cached=True)
+        cloned_combined = recs_at_alpha(cloned_config, cloned_side, alpha)
 
         # --- Cross-run analysis (in-memory, no cache) ---
         results = analyzer.analyze_from_dfs(base_combined, cloned_combined)
@@ -423,7 +385,7 @@ def _run_prepare(config, n_clones: int, clone_type: str = "easy_paraphrase"):
 
 def _run_sweep(args, config, alphas: list[float], n_clones: int, n_jaccard: int,
                clone_type: str = "easy_paraphrase"):
-    pipeline = _setup_pipeline(config, n_clones, clone_type=clone_type)
+    pipeline = _setup_pipeline(config, n_clones, clone_type=clone_type, q_ids=_parse_q_ids(args))
     question_ids = pipeline["question_ids"]
 
     all_rows = []
@@ -459,7 +421,7 @@ def _run_worker(args, config, alphas: list[float], n_clones: int, n_jaccard: int
     sweep_dir = Path(args.sweep_dir) if args.sweep_dir else canton_results_path(RESULTS_DIR, config) / "workers"
     sweep_dir.mkdir(parents=True, exist_ok=True)
 
-    pipeline = _setup_pipeline(config, n_clones, clone_type=clone_type)
+    pipeline = _setup_pipeline(config, n_clones, clone_type=clone_type, q_ids=_parse_q_ids(args))
     question_ids = pipeline["question_ids"]
 
     if task_id < 0 or task_id >= len(question_ids):

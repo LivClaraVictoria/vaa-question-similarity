@@ -17,6 +17,9 @@ job_preamble
 
 echo "SLURM_JOB_ID: ${SLURM_JOB_ID}, SLURM_ARRAY_TASK_ID: ${SLURM_ARRAY_TASK_ID}"
 
+ALPHAS_FLAG=""
+[[ -n "${ALPHAS}" ]] && ALPHAS_FLAG="--alphas ${ALPHAS}"
+
 OUTPUT_DIR_FLAG=""
 [[ -n "${OUTPUT_DIR}" ]] && OUTPUT_DIR_FLAG="--output-dir ${OUTPUT_DIR}"
 
@@ -26,6 +29,7 @@ python -u -m experiments.perfect_clones.model_selection \
     --config_a "${CONFIG_A}" \
     --config_b "${CONFIG_B}" \
     --sweep-dir "${SWEEP_DIR}" \
+    ${ALPHAS_FLAG} \
     ${OUTPUT_DIR_FLAG}
 
 echo "Finished at: $(date)"

@@ -1,6 +1,7 @@
 #!/bin/bash
 # Worker (SLURM array): run alpha sweep for one question × one clone type (75 q × 5 types).
-# Env vars: PIPELINE_CONFIG, SWEEP_DIR, CLONE_TYPE. Array index selects the question.
+# Env vars: PIPELINE_CONFIG, SWEEP_DIR, CLONE_TYPE; optional ALPHAS, Q_IDS (comma-separated).
+# Array index selects the question (within Q_IDS if set, else among all questions).
 #SBATCH --mail-type=NONE
 #SBATCH --mem-per-cpu=4G
 #SBATCH --nodes=1
@@ -23,7 +24,8 @@ python -u -m experiments.perfect_clones.recommendation_distortion \
     --sweep-dir "${SWEEP_DIR}" \
     --clone-type "${CLONE_TYPE}" \
     --n-clones "${N_CLONES:-5}" \
-    ${ALPHAS:+--alphas "${ALPHAS}"}
+    ${ALPHAS:+--alphas "${ALPHAS}"} \
+    ${Q_IDS:+--q-ids "${Q_IDS}"}
 
 echo "Finished at: $(date)"
 exit 0

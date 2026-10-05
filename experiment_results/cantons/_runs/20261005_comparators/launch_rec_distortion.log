@@ -38,3 +38,103 @@
 
   Total workers: 375 (75 questions × 5 clone types)
   Monitor: squeue -u $USER
+=== Per-Question Alpha Sweep (All Clone Types) ===
+  Config: configs/base_pipeline/pipeline_e5_instruct_ZH_a04.py
+  Sweep dir: /cluster/home/liweiss/projects/vaa-question-similarity/experiment_results/cantons/SG/exp1/question_alpha_sweep/workers_allct_20261005_164743
+  Clone types: easy_paraphrase hard_paraphrase negation_easy negation_hard perfect_mix
+  N clones: 4
+
+  Questions: 75 (array 0-74)
+
+--- Submitting worker arrays ---
+  easy_paraphrase: job array 16149439 (75 tasks)
+  hard_paraphrase: job array 16149441 (75 tasks)
+  negation_easy: job array 16149443 (75 tasks)
+  negation_hard: job array 16149445 (75 tasks)
+  perfect_mix: job array 16149446 (75 tasks)
+
+--- Submitting collect job ---
+  Collect submitted: job 16149448 (depends on 16149439:16149441:16149443:16149445:16149446)
+
+  Total workers: 375 (75 questions × 5 clone types)
+  Monitor: squeue -u $USER
+=== Per-Question Alpha Sweep (All Clone Types) ===
+  Config: configs/base_pipeline/pipeline_e5_instruct_ZH_a04.py
+  Sweep dir: /cluster/home/liweiss/projects/vaa-question-similarity/experiment_results/cantons/VD/exp1/question_alpha_sweep/workers_allct_20261005_185531
+  Clone types: easy_paraphrase hard_paraphrase negation_easy negation_hard perfect_mix
+  N clones: 4
+
+  Questions: 75 (array 0-74)
+
+--- Submitting worker arrays ---
+  easy_paraphrase: job array 16165331 (75 tasks)
+  hard_paraphrase: job array 16165334 (75 tasks)
+  negation_easy: job array 16165335 (75 tasks)
+  negation_hard: job array 16165336 (75 tasks)
+  perfect_mix: job array 16165337 (75 tasks)
+
+--- Submitting collect job ---
+  Collect submitted: job 16165338 (depends on 16165331:16165334:16165335:16165336:16165337)
+
+  Total workers: 375 (75 questions × 5 clone types)
+  Monitor: squeue -u $USER
+=== Per-Question Alpha Sweep (All Clone Types) ===
+  Config: configs/base_pipeline/pipeline_e5_instruct_ZH_a04.py
+  Sweep dir: /cluster/home/liweiss/projects/vaa-question-similarity/experiment_results/cantons/VS/exp1/question_alpha_sweep/workers_allct_20261005_205510
+  Clone types: easy_paraphrase hard_paraphrase negation_easy negation_hard perfect_mix
+  N clones: 4
+
+  Questions: 75 (array 0-74)
+
+--- Submitting worker arrays ---
+  easy_paraphrase: job array 16175741 (75 tasks)
+  hard_paraphrase: job array 16175742 (75 tasks)
+  negation_easy: job array 16175744 (75 tasks)
+  negation_hard: job array 16175745 (75 tasks)
+  perfect_mix: job array 16175746 (75 tasks)
+
+--- Submitting collect job ---
+  Collect submitted: job 16175747 (depends on 16175741:16175742:16175744:16175745:16175746)
+
+  Total workers: 375 (75 questions × 5 clone types)
+  Monitor: squeue -u $USER
+=== Per-Question Alpha Sweep (All Clone Types) ===
+  Config: configs/base_pipeline/pipeline_e5_instruct_ZH_a04.py
+  Sweep dir: /cluster/home/liweiss/projects/vaa-question-similarity/experiment_results/cantons/FR/exp1/question_alpha_sweep/workers_allct_20261005_215100
+  Clone types: easy_paraphrase hard_paraphrase negation_easy negation_hard perfect_mix
+  N clones: 4
+
+  Questions: 75 (array 0-74)
+
+--- Submitting worker arrays ---
+  easy_paraphrase: job array 16183588 (75 tasks)
+  hard_paraphrase: job array 16183591 (75 tasks)
+  negation_easy: job array 16183594 (75 tasks)
+  negation_hard: job array 16183596 (75 tasks)
+  perfect_mix: job array 16183599 (75 tasks)
+
+--- Submitting collect job ---
+  Collect submitted: job 16183604 (depends on 16183588:16183591:16183594:16183596:16183599)
+
+  Total workers: 375 (75 questions × 5 clone types)
+  Monitor: squeue -u $USER
+=== Per-Question Alpha Sweep (All Clone Types) ===
+  Config: configs/base_pipeline/pipeline_e5_instruct_ZH_a04.py
+  Sweep dir: /cluster/home/liweiss/projects/vaa-question-similarity/experiment_results/cantons/SO/exp1/question_alpha_sweep/workers_allct_20261005_223745
+  Clone types: easy_paraphrase hard_paraphrase negation_easy negation_hard perfect_mix
+  N clones: 4
+
+  Questions: 75 (array 0-74)
+
+--- Submitting worker arrays ---
+  easy_paraphrase: job array 16191768 (75 tasks)
+  hard_paraphrase: job array 16191770 (75 tasks)
+  negation_easy: job array 16191772 (75 tasks)
+  negation_hard: job array 16191775 (75 tasks)
+  perfect_mix: job array 16191777 (75 tasks)
+
+--- Submitting collect job ---
+  Collect submitted: job 16191780 (depends on 16191768:16191770:16191772:16191775:16191777)
+
+  Total workers: 375 (75 questions × 5 clone types)
+  Monitor: squeue -u $USER
