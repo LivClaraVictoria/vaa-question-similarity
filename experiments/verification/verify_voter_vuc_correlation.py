@@ -85,7 +85,7 @@ def main():
     print(f"\n{'=' * 70}")
     if rho >= 0.97:
         print("RESULT: ρ ≥ 0.97 — voters-only is an excellent approximation of VuC.")
-        print("  → Add a one-sentence footnote in thesis. No re-running needed.")
+        print("  → Add a one-sentence footnote in the paper. No re-running needed.")
     elif rho >= 0.90:
         print("RESULT: 0.90 ≤ ρ < 0.97 — good approximation; check CRW weight stability.")
     else:

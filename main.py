@@ -1,5 +1,5 @@
 """
-Unified CLI for all thesis experiments (VAA question similarity / clone-robust weighting).
+Unified CLI for all paper experiments (VAA question similarity / clone-robust weighting).
 
 Subcommands:
   pipeline              Run full pipeline: distances → CRW → recommendations

@@ -14,7 +14,6 @@ Three modes:
     - sweep   : sequential run over all questions (local sanity-check mode).
     - collect : aggregate worker CSVs → master + aggregated CSV + plot + report.
 
-See: /home/liweiss/.claude/plans/noise-slider-experiment-implement-vectorized-yeti.md
 """
 
 import argparse

@@ -14,7 +14,7 @@
 #     voters x candidates from the peak (sacct MaxRSS) measured on the base canton BE.
 # Priority: BE is submitted first and runs alone per experiment; every other canton waits until
 # BE's jobs of that experiment are done and is submitted with --nice, so BE always wins when the
-# memory quota is exhausted. Euler's per-user cap on queued jobs is respected (MAX_QUEUED).
+# memory quota is exhausted. The cluster's per-user cap on queued jobs is respected (MAX_QUEUED).
 #
 # Run with:  ALPHA=0.4 bash jobs/cantons/run_all_cantons.sh      (ALPHA = the alpha chosen on ZH)
 # Options:   SUBMIT_DRY_RUN=1   print the sbatch commands only (runs inline, no waiting)

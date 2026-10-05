@@ -23,3 +23,12 @@ dependencies/rsfp/data/NRW2023-kandidierende.json
 jobs/out/*
 worker*
 experiment_results/cantons/**/pipeline_outputs/**/*.parquet
+
+# Local-only files (machine-specific config, internal notes) — not part of the published repo
+jobs/cluster.local.sh
+jobs/clusters/local/
+.claude/
+CLAUDE.md
+HANDOFF.md
+ANONYMIZATION_REVERT.md
+gmon.out

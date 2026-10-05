@@ -537,7 +537,7 @@ def _save_collect_outputs(
     base = f"question_alpha_sweep_{name}{ct_suffix}_n{n_clones}_{timestamp}"
 
     # --- CSV ---
-    # Add min non-clone distance as a column (constant across rows, useful for thesis figures)
+    # Add min non-clone distance as a column (constant across rows, useful for the paper's figures)
     if min_nonclone_dist is not None:
         df = df.copy()
         df["min_nonclone_dist"] = min_nonclone_dist

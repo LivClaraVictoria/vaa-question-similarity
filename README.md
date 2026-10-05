@@ -1,6 +1,6 @@
 # VAA Question Similarity & Clone-Robust Weighting
 
-This repository contains the codebase for my Bachelor Thesis analyzing semantic similarity between political questions in the Swiss Voting Advice Application (VAA), SmartVote. The resulting full-version paper can be found in `paper/Clone_robust_VAAs_full_paper.pdf'.
+This repository contains the codebase for the paper analyzing semantic similarity between political questions in the Swiss Voting Advice Application (VAA), SmartVote. The full version of the paper can be found in `paper/paper_full_version.pdf`.
 
 **Core Research Question:** How do voter-candidate recommendations change when identical or near-identical questions are added to the VAA questionnaire, and can Clone-Robust Weighting (CRW) correct this distortion?
 
@@ -16,7 +16,7 @@ This repository contains the codebase for my Bachelor Thesis analyzing semantic 
 
 ## External Dependency
 
-`dependencies/rsfp/` is based on the code from Dustin Brunner's master thesis ["Toward Robust Voting Advice Applications: Lessons from Smartvote"](https://gitlab.ethz.ch/disco-students/fs24/recommender-systems-for-politics). The code was incorporated as a full subfolder rather than a git submodule. Minor compatibility changes were applied (no structural changes): imports were converted to relative imports. See `dependencies/README.md` for details.
+`dependencies/rsfp/` builds on the rsfp code of prior work (reference withheld for anonymous review). The code was incorporated as a full subfolder rather than a git submodule. Minor compatibility changes were applied (no structural changes): imports were converted to relative imports. See `dependencies/README.md` for details.
 
 ---
 
@@ -44,7 +44,7 @@ The codebase is organized into core infrastructure, experiment scripts, and conf
 * `vqs/`: Core library (distance metrics, CRW algorithm, recommendation engine).
 * `clone_pipeline/`: Synthetic clone generation and LLM paraphrase caching.
 * `cross_run_analysis/`: Tools to compare baseline vs. CRW-weighted pipeline runs.
-* `experiments/`: Executable scripts for thesis experiments, organized by narrative:
+* `experiments/`: Executable scripts for the paper's experiments, organized by narrative:
   * `perfect_clones/`: Recommendation and partisan distortion experiments using synthetic clones.
   * `approximate_clones/`: Recommendation and partisan distortion experiments using correlated but textually distinct questions.
   * `explanatory/`: Supporting analyses (distance structure, question impact, model benchmark, etc.).
@@ -71,7 +71,7 @@ All scripts should be executed as Python modules (e.g., `python -m <module>`) fr
 
 ## The Experiments
 
-The thesis narrative is built on two primary experiments and subsequent analyses. Below is a guide on where to find them and how to execute them.
+The paper's narrative is built on two primary experiments and subsequent analyses. Below is a guide on where to find them and how to execute them.
 
 ### Step 0: Model Selection
 
@@ -179,7 +179,7 @@ Key scripts:
 
 **Location:** `experiments/abandoned/`
 
-Experiments retained for completeness but not part of the thesis narrative.
+Experiments retained for completeness but not part of the paper's narrative.
 
 * `question_removal.py`: tested whether CRW can compensate for removed questions (underrepresentation of a topic). CRW's mechanism is downweighting dense clusters; meaningfully upweighting sparse topics is beyond its design.
 
@@ -207,10 +207,11 @@ The pipeline uses a Python-based inheritance system for configuration.
 
 For heavy workloads (alpha sweeps, parallel pipeline runs), use the scripts in `jobs/`. The architecture uses a launcher + generic worker pattern to maximize parallelism: launchers (`launch_*.sh`) run on the login node with plain `bash` and submit the workers (`job_*.sh`).
 
-**Cluster profiles.** The scripts are cluster-agnostic: `#SBATCH` headers only request portable resources (`--time`, `--cpus-per-task`, `--mem-per-cpu`). Everything cluster-specific (conda location, log directory, HuggingFace cache, extra `sbatch` flags such as node exclusions, modules to load) lives in one profile per cluster:
+**Cluster profiles.** The scripts are cluster-agnostic: `#SBATCH` headers only request portable resources (`--time`, `--cpus-per-task`, `--mem-per-cpu`). Everything cluster-specific (conda location, log directory, HuggingFace cache, extra `sbatch` flags such as node exclusions, modules to load) lives in a cluster profile plus an optional local settings file:
 
-* `jobs/cluster.conf` — selects the active profile (`CLUSTER=euler` or `CLUSTER=tik`). Override per call: `CLUSTER=tik bash jobs/...`.
-* `jobs/clusters/euler.sh`, `jobs/clusters/tik.sh` — the profiles. To add a cluster, copy one and adjust it.
+* `jobs/clusters/slurm.sh` — generic SLURM profile; every value is a variable with a neutral default.
+* `jobs/cluster.local.sh` — machine-specific overrides (conda location, log dir, HF cache, extra `sbatch` args, setup command, data path). Copy `jobs/cluster.local.example.sh`; the file is gitignored.
+* `jobs/cluster.conf` — loads the local settings and selects the active profile (default `slurm`). Private profiles can live in the gitignored `jobs/clusters/local/<name>.sh`. Override per call: `CLUSTER=<name> bash jobs/...`.
 * `jobs/_lib/common.sh` — shared helpers: `submit` (sbatch wrapper adding logs/profile flags), `activate_env`, `job_preamble`.
 
 The project root is derived from the checkout location, so jobs run from wherever the repository is cloned. Environment variables of the submitting shell (e.g. `OPENAI_API_KEY`) are forwarded to the jobs.

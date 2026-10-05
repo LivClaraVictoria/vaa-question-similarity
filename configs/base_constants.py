@@ -90,8 +90,8 @@ RECOMMENDATION_CACHE_DIR = Path(os.getenv("VQS_REC_CACHE_DIR") or CACHE_DIR / "r
 COMPARATOR_CACHE_DIR = CACHE_DIR / "comparisons"
 
 
-# --- FROM DUSTIN'S BASE CONSTANTS.PY ---
-# District to ID mapping (taken from constants.py in Dustin's repo)
+# --- FROM RSFP CONSTANTS.PY ---
+# District to ID mapping (taken from constants.py in the rsfp code)
 # Important note on column names in the dataframes: in 2023 dataset, it's "ID_district" for candidates, "districtID" for voters, in 2019 dataset, it's "ID_district" for both
 DISTRICT2ID = {
     "AG": 927,
@@ -360,11 +360,11 @@ n_recommendations: str | int | None = None  # Options: "all", int or None.
 #     "GE": 12,
 #     "JU": 2,
 
-# Taken from constants.py in Dustin's repo, which in turn is based on the official seat distribution for the Swiss National Council elections. Note that the number of seats per canton can change slightly from election to election based on population changes, so these numbers are specific to the 2019 and 2023 elections.
+# Taken from constants.py in the rsfp code, which in turn is based on the official seat distribution for the Swiss National Council elections. Note that the number of seats per canton can change slightly from election to election based on population changes, so these numbers are specific to the 2019 and 2023 elections.
 
 
 """
-(see https://gitlab.ethz.ch/disco-students/fs24/recommender-systems-for-politics or the submodule for more info)
+(see dependencies/rsfp/ for more info)
 Options for rec_dist_method:
 "L2",
 "L2_sv",

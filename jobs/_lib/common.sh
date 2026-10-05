@@ -6,19 +6,23 @@
 #   Job script: source "${PROJECT_DIR:-${SLURM_SUBMIT_DIR}}/jobs/_lib/common.sh"
 #               job_preamble
 #
-# All cluster-specific settings live in jobs/clusters/<name>.sh; the active one is chosen in
-# jobs/cluster.conf (or with CLUSTER=<name> in the environment).
+# All cluster-specific settings live in jobs/clusters/<name>.sh (private profiles in the gitignored
+# jobs/clusters/local/); the active one is chosen in jobs/cluster.conf, jobs/cluster.local.sh or with
+# CLUSTER=<name> in the environment.
 
 # Project root = two levels above this file, wherever the checkout lives.
 PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 export PROJECT_DIR
 
 source "${PROJECT_DIR}/jobs/cluster.conf"
-if [[ ! -f "${PROJECT_DIR}/jobs/clusters/${CLUSTER}.sh" ]]; then
-    echo "Unknown cluster profile '${CLUSTER}' (expected jobs/clusters/${CLUSTER}.sh)" >&2
+_profile="${PROJECT_DIR}/jobs/clusters/${CLUSTER}.sh"
+[[ -f "${_profile}" ]] || _profile="${PROJECT_DIR}/jobs/clusters/local/${CLUSTER}.sh"
+if [[ ! -f "${_profile}" ]]; then
+    echo "Unknown cluster profile '${CLUSTER}' (expected jobs/clusters/[local/]${CLUSTER}.sh)" >&2
     return 1 2>/dev/null || exit 1
 fi
-source "${PROJECT_DIR}/jobs/clusters/${CLUSTER}.sh"
+source "${_profile}"
+unset _profile
 export CLUSTER
 
 # Activate the project's conda environment as configured by the cluster profile.

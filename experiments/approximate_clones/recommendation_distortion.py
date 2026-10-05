@@ -227,7 +227,7 @@ def _compute_correlation_overview(
     """Compute per-question correlation stats and MDS coordinates.
 
     Returns (overview_df, corr_matrix_df).
-    overview_df has one row per question with all stats needed for thesis plots.
+    overview_df has one row per question with all stats needed for the paper's plots.
     """
     voters_df = full_dataset["voters"]
     text_col = _get_question_text_col(questions_df)

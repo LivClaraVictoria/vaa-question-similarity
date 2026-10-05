@@ -1,4 +1,4 @@
-name: bachelor-thesis
+name: vaa
 channels:
   - defaults
 dependencies:
@@ -170,4 +170,3 @@ dependencies:
       - webencodings==0.5.1
       - websocket-client==1.8.0
       - widgetsnbextension==4.0.10
-# prefix: C:\Users\liv\miniconda3\envs\bachelor-thesis

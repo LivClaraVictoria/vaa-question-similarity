@@ -264,7 +264,7 @@ def main():
     else:
         p(f"  No meaningful difference (delta={delta_jac:+.4f}).")
         p(f"  CRW does not meaningfully rebalance natural topic imbalance.")
-        p(f"  Useful finding for thesis limitations section.")
+        p(f"  Useful finding for the limitations section.")
 
     # 8. Save results
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)

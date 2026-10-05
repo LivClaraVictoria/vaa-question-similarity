@@ -1,7 +1,6 @@
 # Toward Robust Voting Advice Applications: Lessons from Smartvote
 
-This repository contains all code written for the master's thesis "Toward Robust Voting Advice Applications: Lessons from Smartvote" by [Dustin Brunner](https://www.linkedin.com/in/dustinbrunner/). 
-The thesis was written in Spring 2024 at the [Distributed Computing Group (DISCO)](https://disco.ethz.ch/) from ETH Zürich.
+This folder contains code from prior work (reference withheld for anonymous review).
 
 ## Table of Contents
 - [Introduction](#introduction)
@@ -24,7 +23,7 @@ This project explores methods to enhance the robustness of VAAs against manipula
 Here’s a detailed explanation of the folder structure and the purpose of each file:
 
 ```bash
-recommender-systems-for-politics/  # Root directory
+rsfp/  # Root directory
 ├── rsfp/  # Main project code
 │   ├── data.py                    # SVDataFrame class, functions for building dataframes, cleaning, and preprocessing
 │   ├── matching.py                # Candidate & List Recommendation functions, includes all evaluated distance metrics
@@ -76,8 +75,8 @@ To ensure that everything works correctly in this project, the following files m
 
 1. Clone the repository and change directory. This step may take 5-10 minutes depending on your internet connection as the datasets included in the repository are quite large (~4 GiB).
 ```bash
-git clone https://gitlab.ethz.ch/disco-students/fs24/recommender-systems-for-politics.git
-cd recommender-systems-for-politics
+git clone <rsfp repository URL withheld for anonymous review>
+cd rsfp
 ```
 2. Create conda environment and activate it
 ```bash
