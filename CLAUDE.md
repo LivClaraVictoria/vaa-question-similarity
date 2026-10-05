@@ -46,3 +46,16 @@ for experiments and entry points. Run everything as modules from the repo root (
 - Approximate clones re-select the top-5 correlated questions on each canton's own voters (rule transfer).
 - Variance-based clone selectors (`combinedvar`, `highvotervar`, `highcandvar`) used national data
   (`district = "all"` in clone configs); set `district = "ZH"` there for strictly ZH-only selections.
+
+## Known naming pitfalls (to be fixed in the future)
+Run/file/folder names are unintuitive; do not read them literally:
+- Names come from the config *file* name plus override suffixes, not from the data. Test-canton runs reuse
+  the ZH config, so Bern outputs are called e.g. `recs_pipeline_e5_instruct_ZH_district~BE_alpha~0.4_*` or
+  `pipeline_e5_instruct_ZH_a03_districtBE_alpha0.4`: "ZH" = the config the parameters were chosen on, the data
+  is BE (see `district~BE` / `districtBE` and the metadata JSON `overrides`).
+- "a03" in a config name is only the filename; the alpha actually used is the one in the `alpha~`/`alpha0.4`
+  suffix (`VQS_ALPHA` overrides the config). Partisan runs on test cantons use the `_a03` config at alpha 0.4:
+  compare against ZH's `..._ZH_a04` results, never `..._ZH_a03`.
+- Labels `n5` / "x 5" in clone-sweep names/reports are cosmetic; the real clone count is 4.
+- "recommendations" (`pipeline_outputs/recommendations/`, `recs_*`) holds the plain AND CRW rankings per voter.
+- `experiment_results/cantons/<C>/handover/` holds cleanly renamed copies (not the originals) for sharing.

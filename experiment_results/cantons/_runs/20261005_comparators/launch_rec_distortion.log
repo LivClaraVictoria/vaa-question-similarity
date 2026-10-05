@@ -1,0 +1,40 @@
+=== Per-Question Alpha Sweep (All Clone Types) ===
+  Config: configs/base_pipeline/pipeline_e5_instruct_ZH_a04.py
+  Sweep dir: /cluster/home/liweiss/projects/vaa-question-similarity/experiment_results/cantons/AG/exp1/question_alpha_sweep/workers_allct_20261005_152914
+  Clone types: easy_paraphrase hard_paraphrase negation_easy negation_hard perfect_mix
+  N clones: 4
+
+  Questions: 75 (array 0-74)
+
+--- Submitting worker arrays ---
+  easy_paraphrase: job array 16142216 (75 tasks)
+  hard_paraphrase: job array 16142217 (75 tasks)
+  negation_easy: job array 16142218 (75 tasks)
+  negation_hard: job array 16142219 (75 tasks)
+  perfect_mix: job array 16142220 (75 tasks)
+
+--- Submitting collect job ---
+  Collect submitted: job 16142221 (depends on 16142216:16142217:16142218:16142219:16142220)
+
+  Total workers: 375 (75 questions × 5 clone types)
+  Monitor: squeue -u $USER
+=== Per-Question Alpha Sweep (All Clone Types) ===
+  Config: configs/base_pipeline/pipeline_e5_instruct_ZH_a04.py
+  Sweep dir: /cluster/home/liweiss/projects/vaa-question-similarity/experiment_results/cantons/LU/exp1/question_alpha_sweep/workers_allct_20261005_152917
+  Clone types: easy_paraphrase hard_paraphrase negation_easy negation_hard perfect_mix
+  N clones: 4
+
+  Questions: 75 (array 0-74)
+
+--- Submitting worker arrays ---
+  easy_paraphrase: job array 16142222 (75 tasks)
+  hard_paraphrase: job array 16142223 (75 tasks)
+  negation_easy: job array 16142224 (75 tasks)
+  negation_hard: job array 16142225 (75 tasks)
+  perfect_mix: job array 16142226 (75 tasks)
+
+--- Submitting collect job ---
+  Collect submitted: job 16142227 (depends on 16142222:16142223:16142224:16142225:16142226)
+
+  Total workers: 375 (75 questions × 5 clone types)
+  Monitor: squeue -u $USER

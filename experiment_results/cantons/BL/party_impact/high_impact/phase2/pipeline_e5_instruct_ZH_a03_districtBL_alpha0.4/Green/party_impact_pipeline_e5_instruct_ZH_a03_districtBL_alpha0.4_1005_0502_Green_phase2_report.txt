@@ -1,0 +1,51 @@
+================================================================================
+PARTY IMPACT ANALYSIS — PHASE 2 REPORT (CUMULATIVE)
+================================================================================
+Generated: 2026-10-05 05:02
+Target party: Green
+Top-k (n): 7
+Questions cloned: 5
+
+SELECTED QUESTIONS:
+  Q32217: "As part of the reform of the BVG (occupational pension plan), pensions"
+  Q32240: "Are you in favor of introducing a minimum wage of CHF 4,000 for all fu"
+  Q32251: "Would you be in favor of the introduction of increasing electricity ta"
+  Q32221: "Are you in favor of the introduction of a tax on foods containing suga"
+  Q32266: "Should the Federal Council be allowed to authorize other states to re-"
+
+================================================================================
+SCENARIO A — WORST-CASE: 4 mixed clones per question (20 total clones)
+  Clone types: easy paraphrase, hard paraphrase, negation (easy), negation (hard)
+================================================================================
+   Party  Original  Attacked   CRW Fix  Δ Attack     Δ CRW  Reduced
+----------------------------------------------------------------------
+      SP    11.99%    11.76%    11.80%    -0.23    -0.36     -58%
+   Green    15.78%    19.92%    18.85%    +4.13    +3.23      22%
+     GLP    22.00%    21.96%    22.07%    -0.04    +0.12    -206%
+  Centre    21.32%    18.68%    19.22%    -2.64    -2.14      19%
+     FDP    10.15%     8.43%     9.17%    -1.73    -1.05      39%
+     SVP     4.87%     5.05%     4.97%    +0.18    +0.07      62%
+
+================================================================================
+SCENARIO B — REALISTIC: 1 easy paraphrase per question (5 total clones)
+================================================================================
+   Party  Original  Attacked   CRW Fix  Δ Attack     Δ CRW  Reduced
+----------------------------------------------------------------------
+      SP    11.99%    11.78%    12.13%    -0.21    -0.03      86%
+   Green    15.78%    17.49%    16.45%    +1.71    +0.83      51%
+     GLP    22.00%    22.02%    21.84%    +0.02    -0.11    -500%
+  Centre    21.32%    20.22%    20.80%    -1.10    -0.56      49%
+     FDP    10.15%     9.74%    10.06%    -0.41    -0.16      60%
+     SVP     4.87%     4.88%     4.94%    +0.01    +0.04    -200%
+
+================================================================================
+CRW NATURAL DRIFT (CRW on original questionnaire, no clones)
+================================================================================
+        SP: 11.99% -> 12.16% (Δ+0.17pp)
+     Green: 15.78% -> 15.62% (Δ-0.17pp)
+       GLP: 22.00% -> 21.95% (Δ-0.05pp)
+    Centre: 21.32% -> 21.36% (Δ+0.04pp)
+       FDP: 10.15% -> 10.22% (Δ+0.07pp)
+       SVP: 4.87% -> 4.90% (Δ+0.03pp)
+
+================================================================================

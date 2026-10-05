@@ -1,0 +1,60 @@
+[10-04 22:48:05] Orchestrator start: alpha=0.4, 57 units, base BE, max queued 950
+[10-04 22:48:07] launched pipeline BE (32 GB, 1 CPU): 1 submissions
+[10-04 22:48:15] launched rec_distortion BE (20 GB, 1 CPU): 6 submissions
+[10-04 22:48:20] launched partisan_sweep BE (32 GB, 1 CPU): 7 submissions
+[10-04 22:50:51] measured pipeline peak on BE: 5.8 GB
+[10-04 22:50:51] launched pipeline SG (6 GB, 1 CPU): 1 submissions
+[10-04 22:50:54] launched pipeline AG (6 GB, 1 CPU): 1 submissions
+[10-04 22:50:54] launched pipeline LU (6 GB, 1 CPU): 1 submissions
+[10-04 22:50:59] launched pipeline VD (6 GB, 1 CPU): 1 submissions
+[10-04 22:51:06] launched pipeline VS (6 GB, 1 CPU): 1 submissions
+[10-04 22:51:14] launched pipeline FR (6 GB, 1 CPU): 1 submissions
+[10-04 22:51:24] launched pipeline SO (6 GB, 1 CPU): 1 submissions
+[10-04 22:51:36] launched pipeline BL (6 GB, 1 CPU): 1 submissions
+[10-04 22:51:51] launched pipeline TG (6 GB, 1 CPU): 1 submissions
+[10-04 22:52:07] launched pipeline BS (6 GB, 1 CPU): 1 submissions
+[10-04 22:52:22] launched pipeline GR (6 GB, 1 CPU): 1 submissions
+[10-04 22:52:41] launched pipeline GE (6 GB, 1 CPU): 1 submissions
+[10-04 22:53:01] launched pipeline SZ (6 GB, 1 CPU): 1 submissions
+[10-04 22:53:21] launched pipeline ZG (6 GB, 1 CPU): 1 submissions
+[10-04 22:53:44] launched pipeline NE (6 GB, 1 CPU): 1 submissions
+[10-04 22:54:08] launched pipeline TI (6 GB, 1 CPU): 1 submissions
+[10-04 22:54:35] launched pipeline SH (6 GB, 1 CPU): 1 submissions
+[10-04 22:55:04] launched pipeline JU (6 GB, 1 CPU): 1 submissions
+[10-05 02:53:16] measured rec_distortion peak on BE: 14.3 GB
+[10-05 02:53:21] launched rec_distortion AG (10 GB, 1 CPU): 6 submissions
+[10-05 02:54:12] launched rec_distortion LU (6 GB, 1 CPU): 6 submissions
+[10-05 02:54:45] measured partisan_sweep peak on BE: 6.9 GB
+[10-05 02:55:37] launched partisan_sweep TI (6 GB, 1 CPU): 7 submissions
+[10-05 02:55:38] launched partisan_sweep AG (6 GB, 1 CPU): 7 submissions
+[10-05 02:55:38] launched partisan_sweep LU (6 GB, 1 CPU): 7 submissions
+[10-05 02:55:39] launched partisan_sweep SG (6 GB, 1 CPU): 7 submissions
+[10-05 02:56:05] launched partisan_sweep VD (6 GB, 1 CPU): 7 submissions
+[10-05 02:56:07] launched partisan_sweep VS (6 GB, 1 CPU): 7 submissions
+[10-05 02:56:55] launched partisan_sweep FR (6 GB, 1 CPU): 7 submissions
+[10-05 02:56:59] launched partisan_sweep SO (6 GB, 1 CPU): 7 submissions
+[10-05 02:57:30] launched partisan_sweep BL (6 GB, 1 CPU): 7 submissions
+[10-05 02:58:43] launched partisan_sweep TG (6 GB, 1 CPU): 7 submissions
+[10-05 02:59:11] launched partisan_sweep BS (6 GB, 1 CPU): 7 submissions
+[10-05 02:59:17] launched partisan_sweep GR (6 GB, 1 CPU): 7 submissions
+[10-05 03:00:33] launched partisan_sweep GE (6 GB, 1 CPU): 7 submissions
+[10-05 03:01:05] launched partisan_sweep SZ (6 GB, 1 CPU): 7 submissions
+[10-05 03:01:55] launched partisan_sweep ZG (6 GB, 1 CPU): 7 submissions
+[10-05 03:02:26] launched partisan_sweep NE (6 GB, 1 CPU): 7 submissions
+[10-05 03:03:18] launched partisan_sweep SH (6 GB, 1 CPU): 7 submissions
+[10-05 03:04:39] launched partisan_sweep JU (6 GB, 1 CPU): 7 submissions
+[10-05 03:46:51] launched rec_distortion SG (6 GB, 1 CPU): 6 submissions
+[10-05 04:48:32] launched rec_distortion VD (6 GB, 1 CPU): 6 submissions
+[10-05 05:43:36] launched rec_distortion VS (6 GB, 1 CPU): 6 submissions
+[10-05 06:29:52] FAILED rec_distortion TI (attempt 1), cancelled its partial jobs, will retry
+[10-05 06:32:22] FAILED rec_distortion FR (attempt 1), cancelled its partial jobs, will retry
+[10-05 06:46:57] launched rec_distortion FR (6 GB, 1 CPU): 6 submissions
+[10-05 07:44:23] launched rec_distortion SO (6 GB, 1 CPU): 6 submissions
+[10-05 08:30:28] launched rec_distortion BL (6 GB, 1 CPU): 6 submissions
+[10-05 08:52:24] launched rec_distortion TG (6 GB, 1 CPU): 6 submissions
+[10-05 09:18:46] launched rec_distortion BS (6 GB, 1 CPU): 6 submissions
+[10-05 09:51:11] launched rec_distortion GR (6 GB, 1 CPU): 6 submissions
+[10-05 10:14:10] launched rec_distortion GE (6 GB, 1 CPU): 6 submissions
+[10-05 10:39:07] launched rec_distortion SZ (6 GB, 1 CPU): 6 submissions
+[10-05 11:11:26] launched rec_distortion ZG (6 GB, 1 CPU): 6 submissions
+[10-05 12:09:14] launched rec_distortion NE (6 GB, 1 CPU): 6 submissions

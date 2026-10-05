@@ -1,0 +1,1 @@
+alpha=0.4 cantons=BE AG LU SG VD VS FR SO BL TG BS GR GE SZ ZG NE TI SH JU experiments=pipeline rec_distortion partisan_sweep

@@ -20,6 +20,7 @@ python -u -m experiments.perfect_clones.recommendation_distortion \
     --mode collect \
     --config "${PIPELINE_CONFIG}" \
     --sweep-dir "${SWEEP_DIR}" \
+    --n-clones "${N_CLONES:-5}" \
     ${ALPHAS:+--alphas "${ALPHAS}"}
 
 echo "Finished at: $(date)"

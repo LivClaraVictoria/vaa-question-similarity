@@ -1,0 +1,54 @@
+=== Per-Question Alpha Sweep (All Clone Types) ===
+  Config: configs/base_pipeline/pipeline_e5_instruct_ZH_a04.py
+  Sweep dir: /cluster/home/liweiss/projects/vaa-question-similarity/experiment_results/cantons/BE/exp1/question_alpha_sweep/workers_allct_20261004_221443
+  Clone types: easy_paraphrase hard_paraphrase negation_easy negation_hard perfect_mix
+  N clones: 4
+
+  Questions: 75 (array 0-74)
+
+--- Submitting worker arrays ---
+  easy_paraphrase: job array 16078742 (75 tasks)
+  hard_paraphrase: job array 16078743 (75 tasks)
+  negation_easy: job array 16078744 (75 tasks)
+  negation_hard: job array 16078745 (75 tasks)
+  perfect_mix: job array 16078746 (75 tasks)
+
+--- Submitting collect job ---
+  Collect submitted: job 16078747 (depends on 16078742:16078743:16078744:16078745:16078746)
+
+  Total workers: 375 (75 questions × 5 clone types)
+  Monitor: squeue -u $USER
+=== Per-Question Alpha Sweep (All Clone Types) ===
+  Config: configs/base_pipeline/pipeline_e5_instruct_ZH_a04.py
+  Sweep dir: /cluster/home/liweiss/projects/vaa-question-similarity/experiment_results/cantons/AG/exp1/question_alpha_sweep/workers_allct_20261004_221449
+  Clone types: easy_paraphrase hard_paraphrase negation_easy negation_hard perfect_mix
+  N clones: 4
+
+  Questions: 75 (array 0-74)
+
+--- Submitting worker arrays ---
+  easy_paraphrase: job array 16078749 (75 tasks)
+  hard_paraphrase: job array 16078750 (75 tasks)
+  negation_easy: job array 16078751 (75 tasks)
+  negation_hard: job array 16078752 (75 tasks)
+  perfect_mix: job array 16078753 (75 tasks)
+
+--- Submitting collect job ---
+  Collect submitted: job 16078754 (depends on 16078749:16078750:16078751:16078752:16078753)
+
+  Total workers: 375 (75 questions × 5 clone types)
+  Monitor: squeue -u $USER
+=== Per-Question Alpha Sweep (All Clone Types) ===
+  Config: configs/base_pipeline/pipeline_e5_instruct_ZH_a04.py
+  Sweep dir: /cluster/home/liweiss/projects/vaa-question-similarity/experiment_results/cantons/LU/exp1/question_alpha_sweep/workers_allct_20261004_221457
+  Clone types: easy_paraphrase hard_paraphrase negation_easy negation_hard perfect_mix
+  N clones: 4
+
+  Questions: 75 (array 0-74)
+
+--- Submitting worker arrays ---
+  easy_paraphrase: job array 16078763 (75 tasks)
+  hard_paraphrase: job array 16078764 (75 tasks)
+  negation_easy: job array 16078765 (75 tasks)
+sbatch: error: QOSMaxSubmitJobPerUserLimit
+sbatch: error: Batch job submission failed: Job violates accounting/QOS policy (job submit limit, user's size and/or time limits)

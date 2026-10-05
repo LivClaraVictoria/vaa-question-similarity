@@ -1,0 +1,51 @@
+================================================================================
+PARTY IMPACT ANALYSIS — PHASE 2 REPORT (CUMULATIVE)
+================================================================================
+Generated: 2026-10-05 05:09
+Target party: GLP
+Top-k (n): 4
+Questions cloned: 5
+
+SELECTED QUESTIONS:
+  Q32222: "Should insured persons contribute more to health care costs (e.g., inc"
+  Q32242: "Should private households be free to choose their electricity supplier"
+  Q32233: "Would you be in favour of doctors being allowed to administer direct a"
+  Q32214: "Do you support an increase in the retirement age (e.g., to 67)?"
+  Q32237: "Should married couples be taxed separately (individual taxation)? [BeP"
+
+================================================================================
+SCENARIO A — WORST-CASE: 4 mixed clones per question (20 total clones)
+  Clone types: easy paraphrase, hard paraphrase, negation (easy), negation (hard)
+================================================================================
+   Party  Original  Attacked   CRW Fix  Δ Attack     Δ CRW  Reduced
+----------------------------------------------------------------------
+      SP    16.23%    15.92%    15.64%    -0.31    -0.71    -131%
+   Green    11.97%    11.60%    12.02%    -0.36    +0.15      59%
+     GLP    10.80%    13.66%    12.97%    +2.86    +2.13      25%
+  Centre    24.38%    25.10%    24.53%    +0.73    +0.25      65%
+     FDP    24.47%    22.43%    23.18%    -2.04    -1.32      35%
+     SVP     6.53%     5.39%     5.80%    -1.14    -0.85      25%
+
+================================================================================
+SCENARIO B — REALISTIC: 1 easy paraphrase per question (5 total clones)
+================================================================================
+   Party  Original  Attacked   CRW Fix  Δ Attack     Δ CRW  Reduced
+----------------------------------------------------------------------
+      SP    16.23%    15.51%    15.92%    -0.72    -0.43      41%
+   Green    11.97%    12.31%    12.05%    +0.35    +0.18      48%
+     GLP    10.80%    11.90%    11.33%    +1.11    +0.50      55%
+  Centre    24.38%    24.20%    24.07%    -0.17    -0.21     -23%
+     FDP    24.47%    24.45%    24.59%    -0.02    +0.09    -267%
+     SVP     6.53%     6.26%     6.50%    -0.28    -0.15      46%
+
+================================================================================
+CRW NATURAL DRIFT (CRW on original questionnaire, no clones)
+================================================================================
+        SP: 16.23% -> 16.35% (Δ+0.12pp)
+     Green: 11.97% -> 11.87% (Δ-0.09pp)
+       GLP: 10.80% -> 10.84% (Δ+0.04pp)
+    Centre: 24.38% -> 24.28% (Δ-0.09pp)
+       FDP: 24.47% -> 24.50% (Δ+0.03pp)
+       SVP: 6.53% -> 6.65% (Δ+0.12pp)
+
+================================================================================

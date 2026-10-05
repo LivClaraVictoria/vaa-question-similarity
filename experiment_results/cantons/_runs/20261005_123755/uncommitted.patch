@@ -1,0 +1,152 @@
+diff --git a/cross_run_analysis/analyzer.py b/cross_run_analysis/analyzer.py
+index 9aaaf39..21497e6 100755
+--- a/cross_run_analysis/analyzer.py
++++ b/cross_run_analysis/analyzer.py
+@@ -69,6 +69,7 @@ class CrossRunAnalyzer:
+                 mem = process.memory_info().rss / (1024**2)
+                 print(f"  > {i}/{total} ({i/total*100:.1f}%) | RAM: {mem:.1f} MB")
+ 
++            k_cols = self._jaccard_at_ks(std_a, std_b, crw_a, crw_b)
+             b_jac = self._jaccard(std_a, std_b, self.n)
+             b_rank = self._rank_stats(std_a, std_b)
+             b_pos = self._position_stats(std_a, std_b)
+@@ -99,6 +100,7 @@ class CrossRunAnalyzer:
+                     "crw_n_changed": c_pos.get("n_changed", np.nan),
+                     "crw_avg_pos_moved": c_pos.get("avg_pos_moved", np.nan),
+                     "crw_max_pos_moved": c_pos.get("max_pos_moved", np.nan),
++                    **k_cols,
+                 }
+             )
+ 
+@@ -152,6 +154,34 @@ class CrossRunAnalyzer:
+         k, _ = kendalltau(ranks_a, ranks_b)
+         return {"spearman": s, "kendall": k}
+ 
++    @staticmethod
++    def _jaccard_curve(list_a: list, list_b: list, kmax: int) -> np.ndarray:
++        """Jaccard of the top-k sets for k = 1..kmax in one pass (entries beyond a list's end are NaN)."""
++        out = np.full(kmax, np.nan)
++        seen_a, seen_b, inter = set(), set(), 0
++        for i in range(min(kmax, len(list_a), len(list_b))):
++            a, b = list_a[i], list_b[i]
++            inter += a in seen_b
++            seen_a.add(a)
++            inter += b in seen_a
++            seen_b.add(b)
++            out[i] = inter / (2 * (i + 1) - inter)
++        return out
++
++    def _jaccard_at_ks(self, std_a, std_b, crw_a, crw_b) -> dict:
++        """{base,crw}_jaccard_k{k} for every k in self.k_grid (empty dict if no grid was set)."""
++        grid = getattr(self, "k_grid", None)
++        if not grid:
++            return {}
++        kmax = max(grid)
++        base = self._jaccard_curve(std_a, std_b, kmax)
++        crw = self._jaccard_curve(crw_a, crw_b, kmax)
++        cols = {}
++        for k in grid:
++            cols[f"base_jaccard_k{k}"] = base[k - 1]
++            cols[f"crw_jaccard_k{k}"] = crw[k - 1]
++        return cols
++
+     def _jaccard(self, list_a: list, list_b: list, n: int) -> float:
+         s1, s2 = set(list_a[:n]), set(list_b[:n])
+         if not s1 and not s2:
+@@ -183,9 +213,12 @@ class CrossRunAnalyzer:
+         return df[["ranked_standard", "ranked_crw"]]
+ 
+     @classmethod
+-    def from_n(cls, n: int) -> "CrossRunAnalyzer":
+-        """Lightweight constructor for programmatic use (no file paths or metadata needed)."""
++    def from_n(cls, n: int, k_grid: list[int] | None = None) -> "CrossRunAnalyzer":
++        """Lightweight constructor for programmatic use (no file paths or metadata needed).
++        k_grid: also report Jaccard@k for each k (columns base_/crw_jaccard_k{k}), so the choice of k
++        can be revisited without recomputing rankings."""
+         instance = object.__new__(cls)
++        instance.k_grid = k_grid
+         instance.n = n
+         instance.n_override = n
+         instance.run_a_path = None
+diff --git a/experiments/_common.py b/experiments/_common.py
+index 4fe40b7..311744f 100644
+--- a/experiments/_common.py
++++ b/experiments/_common.py
+@@ -58,3 +58,8 @@ def _get_question_text_col(df: pd.DataFrame) -> str:
+         if "question_en" in col.lower():
+             return col
+     raise ValueError("No question text column found")
++
++
++# Jaccard@k is reported for all of these k in every sweep row (columns base_/crw_jaccard_k{k}), so
++# the per-canton choice of k can change without recomputing: every k up to 40 (ZH: 36 seats), then sparse.
++JACCARD_K_GRID = list(range(1, 41)) + [45, 50, 60, 80, 100]
+diff --git a/experiments/perfect_clones/recommendation_distortion.py b/experiments/perfect_clones/recommendation_distortion.py
+index f255cbf..8b73342 100644
+--- a/experiments/perfect_clones/recommendation_distortion.py
++++ b/experiments/perfect_clones/recommendation_distortion.py
+@@ -58,6 +58,7 @@ import seaborn as sns
+ from experiments._common import (
+     _get_clean_name,
+     _resolve_n,
++    JACCARD_K_GRID,
+     _get_question_text_col,
+     DEFAULT_ALPHAS,
+     FLIP_TYPES,
+@@ -289,7 +290,7 @@ def _compute_question_sweep(
+     base_baseline = base_side["baseline"]
+     base_dist = base_side["dist_df"]
+ 
+-    analyzer = CrossRunAnalyzer.from_n(n_jaccard)
++    analyzer = CrossRunAnalyzer.from_n(n_jaccard, k_grid=JACCARD_K_GRID)
+     rows = []
+ 
+     for i, alpha in enumerate(alphas):
+@@ -338,6 +339,8 @@ def _compute_question_sweep(
+             "base_spearman_mean": std_metrics["base_spearman_mean"],
+             "base_kendall_mean": std_metrics["base_kendall_mean"],
+             **{k: v for k, v in row.items() if k != "alpha"},
++            # mean Jaccard@k for the whole k grid (see experiments._common.JACCARD_K_GRID)
++            **{c: results[c].mean() for c in results.columns if "_jaccard_k" in c},
+         })
+ 
+         print(
+diff --git a/jobs/cantons/run_all_cantons.sh b/jobs/cantons/run_all_cantons.sh
+index 2d5fa13..f4d1573 100644
+--- a/jobs/cantons/run_all_cantons.sh
++++ b/jobs/cantons/run_all_cantons.sh
+@@ -55,7 +55,7 @@ declare -A CANDS=([BE]=685 [AG]=568 [LU]=329 [SG]=288 [VD]=337 [VS]=199 [FR]=137
+                   [TI]=144 [SH]=36 [JU]=34)
+ # Queue slots per unit, and the memory (GB, 1 CPU) given to the base canton before any measurement.
+ declare -A UNIT_SIZE=([pipeline]=1 [rec_distortion]=376 [partisan_sweep]=7)
+-declare -A BASE_MEM_GB=([pipeline]=32 [rec_distortion]=20 [partisan_sweep]=32)
++declare -A BASE_MEM_GB=([pipeline]=32 [rec_distortion]=18 [partisan_sweep]=32)
+ MIN_MEM_GB=6        # embedding model + data
+ MARGIN=1.4
+ 
+diff --git a/vqs/recommendation_engine.py b/vqs/recommendation_engine.py
+index 188020d..68352f6 100755
+--- a/vqs/recommendation_engine.py
++++ b/vqs/recommendation_engine.py
+@@ -4,6 +4,7 @@ using the rsfp library. Results are cached by config hash to avoid redundant com
+ """
+ 
+ import pandas as pd
++from pathlib import Path
+ from dependencies import add_candidate_voting_recommendations
+ from vqs.result_management import ResultManager
+ from vqs.config_utils import respondent_hash_params
+@@ -48,9 +49,11 @@ class RecommendationEngine:
+         for every clone task of a canton, whereas cloned tables differ per (question, alpha,
+         clone type) and would explode the cache. Keeps the voter index, which analyze_from_dfs
+         joins on (ResultManager.save drops it)."""
++        # Own subdirectory: ResultManager finds files by globbing "*{hash}.parquet" (prefix ignored),
++        # and the CRW key equals evaluate_pipeline's key, so sharing a directory made them collide.
+         rm = ResultManager(
+-            config=self.config, dir=self.config.RECOMMENDATION_CACHE_DIR, params_list=params,
+-            prefix=f"{kind}_{self.config.data_year}_{self.config.district}",
++            config=self.config, dir=Path(self.config.RECOMMENDATION_CACHE_DIR) / "base_side",
++            params_list=params, prefix=f"{kind}_{self.config.data_year}_{self.config.district}",
+         )
+         cached = rm.load()
+         if cached is not None:

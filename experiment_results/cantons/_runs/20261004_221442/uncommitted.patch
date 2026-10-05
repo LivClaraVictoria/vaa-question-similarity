@@ -1,0 +1,1753 @@
+diff --git a/clone_pipeline/cli.py b/clone_pipeline/cli.py
+index 5f0231e..b5d0b0b 100644
+--- a/clone_pipeline/cli.py
++++ b/clone_pipeline/cli.py
+@@ -26,6 +26,7 @@ from clone_pipeline.applicator import apply_specs
+ from clone_pipeline.paraphrase_generator import ensure_paraphrases
+ from clone_pipeline.writer import write_cloned_dataset
+ from clone_pipeline.loader import _find_parquet
++from vqs.data_loader import filter_to_district
+ 
+ 
+ def _load_config(config_path: str):
+@@ -62,12 +63,17 @@ def main(argv=None):
+         CLEANED_DIR, cand_prefix, voters_prefix, questions_path
+     )
+ 
+-    # 2. Select questions
++    # 2. Select questions. Data-driven selectors only see respondents of config.district
++    #    ("all" = national); the clones themselves are still written for ALL respondents,
++    #    so the cloned dataset can be evaluated on any canton.
++    selection_data = filter_to_district(
++        {"voters": dataframes["voters"], "candidates": dataframes["candidates"]}, config
++    )
+     selector = build_selector(config.selector_type, config.selector_params)
+     q_ids = selector.select(
+         dataframes["questions"],
+-        dataframes["candidates"],
+-        dataframes["voters"],
++        selection_data["candidates"],
++        selection_data["voters"],
+     )
+     print(f"Selected question IDs: {q_ids}")
+ 
+diff --git a/configs/base_constants.py b/configs/base_constants.py
+index f836151..64df601 100755
+--- a/configs/base_constants.py
++++ b/configs/base_constants.py
+@@ -227,6 +227,13 @@ save_results = True
+ # Canton Filtering
+ district = "all"  # "all" = no filtering; canton code (e.g. "ZH") = filter to that canton
+ 
++# Validation/test split across cantons: all parameters are selected on VALIDATION_DISTRICT.
++# Any other canton is a held-out test canton. Set the env var VQS_DISTRICT=<code> to re-target
++# every canton-scoped config (district != "all") at load time (see vqs.config_utils.load_config);
++# its experiment outputs then go to experiment_results/cantons/<code>/ (see canton_results_path).
++VALIDATION_DISTRICT = "ZH"
++CANTON_RESULTS_DIR = RESULTS_DIR / "cantons"
++
+ # Subsetting
+ subset_n = None  # for quick testing: set to an integer to subset the data, or None to use full data
+ 
+@@ -383,3 +390,9 @@ DISTANCE_HASH_PARAMS = ["data_year", "dist", "data_choice", "clone_id", "embeddi
+ CRW_HASH_PARAMS = DISTANCE_HASH_PARAMS + ["alpha", "crw_paper_choice", "weighting_func_name"]
+ REC_HASH_PARAMS = CRW_HASH_PARAMS + ["rec_dist_method", "n_recommendations", "subset_n", "use_OG_weights", "district"]
+ COMPARATOR_HASH_PARAMS = REC_HASH_PARAMS
++
++# Answer-based metrics (distances estimated from respondent answers, not question text) also
++# depend on WHICH respondents were used: source, subset, out-of-sample split and canton. These
++# are appended to every stage's hash only for these metrics, so text-embedding caches stay valid.
++ANSWER_BASED_METRICS = {"ANSWER-CORRELATION", "ANSWER-CORRELATION-ARCCOS", "BEHAVIORAL-L1"}
++ANSWER_METRIC_HASH_PARAMS = ["correlation_answer_source", "subset_n", "train_voter_fraction", "split_seed", "district"]
+diff --git a/configs/create_clones/base_clone_creator.py b/configs/create_clones/base_clone_creator.py
+index a822e65..04a150a 100755
+--- a/configs/create_clones/base_clone_creator.py
++++ b/configs/create_clones/base_clone_creator.py
+@@ -5,6 +5,11 @@ data_year = 2023
+ selector_type = "manual"  # Options: "manual", "random", "high_candidate_variance", "combined_variance"
+ selector_params = {}
+ 
++# Canton whose respondents the data-driven selectors (variance-based) see; "all" = national.
++# Clones are always written for all respondents. Kept at "all" so existing clone sets reproduce;
++# set to VALIDATION_DISTRICT for selections that must not see test-canton data.
++district = "all"
++
+ # Default: 1 to 1 identical clones of all selected questions, cloned 10 times each
+ clone_specs_config = [
+     {"clone_type": "identical", "n_clones": 10, "flip_answers": False},
+diff --git a/cross_run_analysis/computation_cache.py b/cross_run_analysis/computation_cache.py
+index 632b1dd..f9a8bae 100755
+--- a/cross_run_analysis/computation_cache.py
++++ b/cross_run_analysis/computation_cache.py
+@@ -7,11 +7,13 @@ import json
+ import hashlib
+ import pandas as pd
+ from pathlib import Path
+-from configs.base_constants import COMPARATOR_HASH_PARAMS
++from configs.base_constants import COMPARATOR_HASH_PARAMS, ANSWER_METRIC_HASH_PARAMS
+ 
+ # Fields used to uniquely identify a computation.
+ # Must be stable across runs (no timestamps, no file paths).
+-_HASH_FIELDS = COMPARATOR_HASH_PARAMS
++# Respondent params are only present in the metadata of answer-based runs (see
++# RecommendationEngine), so embedding-run hashes are unaffected by them.
++_HASH_FIELDS = COMPARATOR_HASH_PARAMS + [p for p in ANSWER_METRIC_HASH_PARAMS if p not in COMPARATOR_HASH_PARAMS]
+ 
+ 
+ def _stable_fields(meta: dict) -> dict:
+diff --git a/experiments/approximate_clones/partisan_distortion.py b/experiments/approximate_clones/partisan_distortion.py
+index 8539b9c..06fb59d 100644
+--- a/experiments/approximate_clones/partisan_distortion.py
++++ b/experiments/approximate_clones/partisan_distortion.py
+@@ -62,7 +62,7 @@ from scipy.stats import pearsonr
+ 
+ from configs import base_constants as default_config
+ from experiments._common import _get_clean_name, _get_question_text_col, _resolve_n
+-from vqs.config_utils import load_config
++from vqs.config_utils import load_config, canton_results_path
+ from vqs.data_loader import load_dataset
+ from vqs.recommendation_engine import RecommendationEngine
+ 
+@@ -423,7 +423,7 @@ def _run_sweep(args, config, n: int):
+     sweep_df = pd.DataFrame(rows)
+ 
+     name = _get_clean_name(config)
+-    output_dir = RESULTS_DIR / "phase1" / name
++    output_dir = canton_results_path(RESULTS_DIR, config) / "phase1" / name
+     output_dir.mkdir(parents=True, exist_ok=True)
+     _save_phase1_outputs(sweep_df, config, n, output_dir)
+ 
+@@ -445,7 +445,7 @@ def _run_worker(args, config, n: int):
+     sweep_dir = (
+         Path(args.sweep_dir)
+         if args.sweep_dir
+-        else RESULTS_DIR / "phase1" / "workers" / name
++        else canton_results_path(RESULTS_DIR, config) / "phase1" / "workers" / name
+     )
+     sweep_dir.mkdir(parents=True, exist_ok=True)
+ 
+@@ -493,7 +493,7 @@ def _run_collect(args, config, n: int):
+     sweep_dir = (
+         Path(args.sweep_dir)
+         if args.sweep_dir
+-        else RESULTS_DIR / "phase1" / "workers" / name
++        else canton_results_path(RESULTS_DIR, config) / "phase1" / "workers" / name
+     )
+ 
+     worker_files = sorted(sweep_dir.glob("mini_maxi_worker_*.csv"))
+@@ -508,7 +508,7 @@ def _run_collect(args, config, n: int):
+     dfs = [pd.read_csv(f) for f in worker_files]
+     combined = pd.concat(dfs, ignore_index=True)
+ 
+-    output_dir = RESULTS_DIR / "phase1" / name
++    output_dir = canton_results_path(RESULTS_DIR, config) / "phase1" / name
+     output_dir.mkdir(parents=True, exist_ok=True)
+ 
+     _save_phase1_outputs(combined, config, n, output_dir)
+@@ -866,7 +866,7 @@ def _run_phase2(args, config, n: int):
+         phase1_path = Path(args.phase1_csv)
+     else:
+         csvs = sorted(
+-            f for f in (RESULTS_DIR / "phase1").glob("**/mini_maxi_*.csv")
++            f for f in (canton_results_path(RESULTS_DIR, config) / "phase1").glob("**/mini_maxi_*.csv")
+             if "worker" not in f.name
+         )
+         if not csvs:
+@@ -1027,9 +1027,9 @@ def _run_phase2(args, config, n: int):
+     name = _get_clean_name(config)
+     party_subdir = target_party if target_party else "no_target"
+     if selection_mode == "corr_weighted":
+-        output_dir = RESULTS_DIR / "phase2_corr_weighted" / name / party_subdir
++        output_dir = canton_results_path(RESULTS_DIR, config) / "phase2_corr_weighted" / name / party_subdir
+     else:
+-        output_dir = RESULTS_DIR / "phase2" / name / party_subdir
++        output_dir = canton_results_path(RESULTS_DIR, config) / "phase2" / name / party_subdir
+     output_dir.mkdir(parents=True, exist_ok=True)
+     _save_phase2_outputs(results, config, n, output_dir, target_party, selection_mode)
+ 
+@@ -1392,9 +1392,9 @@ def _run_compile(args, config):
+     base = f"mini_maxi_compiled_{name}_{timestamp}{sel_tag}"
+ 
+     if selection_mode == "corr_weighted":
+-        phase2_dir = RESULTS_DIR / "phase2_corr_weighted" / name
++        phase2_dir = canton_results_path(RESULTS_DIR, config) / "phase2_corr_weighted" / name
+     else:
+-        phase2_dir = RESULTS_DIR / "phase2" / name
++        phase2_dir = canton_results_path(RESULTS_DIR, config) / "phase2" / name
+ 
+     # Find Phase 2 CSVs (one per party subdirectory)
+     dfs = {}
+diff --git a/experiments/approximate_clones/recommendation_distortion.py b/experiments/approximate_clones/recommendation_distortion.py
+index d89df00..a081aac 100644
+--- a/experiments/approximate_clones/recommendation_distortion.py
++++ b/experiments/approximate_clones/recommendation_distortion.py
+@@ -45,7 +45,7 @@ from sklearn.manifold import MDS
+ 
+ from experiments._common import _get_clean_name, _get_question_text_col, _resolve_n, DEFAULT_ALPHAS
+ from cross_run_analysis.analyzer import CrossRunAnalyzer
+-from vqs.config_utils import load_config
++from vqs.config_utils import load_config, canton_results_path
+ from experiments.approximate_clones.partisan_distortion import (
+     add_questions_to_mini,
+     compute_redundancy_scores,
+@@ -884,40 +884,41 @@ def main(argv=None):
+         weight_lookups[metric_label] = wl
+ 
+     # 7. Save outputs
+-    RESULTS_DIR.mkdir(parents=True, exist_ok=True)
++    results_dir = canton_results_path(RESULTS_DIR, config)
++    results_dir.mkdir(parents=True, exist_ok=True)
+     timestamp = datetime.now().strftime("%m%d_%H%M")
+     base = f"approx_clone_sweep_{timestamp}"
+ 
+     # Correlation overview CSV (single file with all per-question data)
+-    overview_path = RESULTS_DIR / f"{base}_corr_overview.csv"
++    overview_path = results_dir / f"{base}_corr_overview.csv"
+     overview_df.to_csv(overview_path, index=False)
+     print(f"\n  -> Correlation overview CSV: {overview_path}")
+ 
+     # Alpha sweep results CSV
+     results_df = pd.DataFrame(all_rows)
+-    csv_path = RESULTS_DIR / f"{base}.csv"
++    csv_path = results_dir / f"{base}.csv"
+     results_df.to_csv(csv_path, index=False)
+     print(f"  -> Results CSV: {csv_path}")
+ 
+     # Selection CSV
+-    sel_path = RESULTS_DIR / f"{base}_selection.csv"
++    sel_path = results_dir / f"{base}_selection.csv"
+     selection_df.to_csv(sel_path, index=False)
+     print(f"  -> Selection CSV: {sel_path}")
+ 
+     # Plots
+     sns.set_theme(style="whitegrid")
+-    _plot_question_map(overview_df, RESULTS_DIR, base)
++    _plot_question_map(overview_df, results_dir, base)
+     _plot_corr_heatmap(
+         corr_matrix_df, mini_ids, q_ids,
+-        full_dataset["questions"], RESULTS_DIR, base,
++        full_dataset["questions"], results_dir, base,
+     )
+-    _plot_corr_distributions(overview_df, RESULTS_DIR, base)
+-    _plot_metrics(all_rows, RESULTS_DIR, base)
++    _plot_corr_distributions(overview_df, results_dir, base)
++    _plot_metrics(all_rows, results_dir, base)
+ 
+     # Report
+     _save_report(
+         selection_df, all_rows, weight_lookups, n_jaccard,
+-        RESULTS_DIR, base,
++        results_dir, base,
+     )
+ 
+     print("\n=== Approximate Clone Alpha Sweep Complete ===")
+diff --git a/experiments/behavioral_metric/deployment_simulation.py b/experiments/behavioral_metric/deployment_simulation.py
+index 2b0660b..ee36cb6 100644
+--- a/experiments/behavioral_metric/deployment_simulation.py
++++ b/experiments/behavioral_metric/deployment_simulation.py
+@@ -43,7 +43,7 @@ from experiments.behavioral_metric._common import (
+     summarize,
+ )
+ from vqs.clone_robust_weighting import CloneRobustReweighter
+-from vqs.config_utils import load_config
++from vqs.config_utils import load_config, canton_results_path
+ from vqs.data_loader import load_dataset
+ from vqs.recommendation_engine import RecommendationEngine
+ from vqs.similarity_metrics import get_calculator
+@@ -346,7 +346,7 @@ def main(argv=None):
+     # --- Save ---
+     out_dir = (
+         Path(args.output_dir) if args.output_dir
+-        else default_config.BEHAVIORAL_METRIC_RESULTS_DIR / "deployment_sim"
++        else canton_results_path(default_config.BEHAVIORAL_METRIC_RESULTS_DIR / "deployment_sim", config)
+     )
+     out_dir.mkdir(parents=True, exist_ok=True)
+     ts = datetime.now().strftime("%m%d_%H%M")
+diff --git a/experiments/behavioral_metric/metric_comparison.py b/experiments/behavioral_metric/metric_comparison.py
+index fdb9d56..ffc432e 100644
+--- a/experiments/behavioral_metric/metric_comparison.py
++++ b/experiments/behavioral_metric/metric_comparison.py
+@@ -26,7 +26,7 @@ import pandas as pd
+ from scipy.stats import spearmanr
+ 
+ from configs import base_constants as default_config
+-from vqs.config_utils import load_config
++from vqs.config_utils import load_config, canton_results_path
+ from vqs.data_loader import load_dataset
+ from vqs.similarity_metrics import get_calculator
+ 
+@@ -138,7 +138,7 @@ def main(argv=None):
+     out_dir = (
+         Path(args.output_dir)
+         if args.output_dir
+-        else default_config.BEHAVIORAL_METRIC_RESULTS_DIR / "metric_comparison"
++        else canton_results_path(default_config.BEHAVIORAL_METRIC_RESULTS_DIR / "metric_comparison", base)
+     )
+     out_dir.mkdir(parents=True, exist_ok=True)
+     ts = datetime.now().strftime("%m%d_%H%M")
+diff --git a/experiments/behavioral_metric/rec_stability.py b/experiments/behavioral_metric/rec_stability.py
+index d53d780..e8f3403 100644
+--- a/experiments/behavioral_metric/rec_stability.py
++++ b/experiments/behavioral_metric/rec_stability.py
+@@ -35,7 +35,7 @@ from experiments._common import _get_clean_name, _resolve_n
+ from experiments.behavioral_metric._common import crw_vs_crw, split_voters
+ from experiments.behavioral_metric.deployment_simulation import _calibrate_alphas, _peek_distance
+ from vqs.clone_robust_weighting import CloneRobustReweighter
+-from vqs.config_utils import load_config
++from vqs.config_utils import load_config, canton_results_path
+ from vqs.data_loader import load_dataset
+ from vqs.recommendation_engine import RecommendationEngine
+ from vqs.similarity_metrics import get_calculator
+@@ -124,7 +124,7 @@ def main(argv=None):
+     perv = pd.concat(rows, ignore_index=True)
+ 
+     out_dir = (Path(args.output_dir) if args.output_dir
+-               else default_config.BEHAVIORAL_METRIC_RESULTS_DIR / "rec_stability")
++               else canton_results_path(default_config.BEHAVIORAL_METRIC_RESULTS_DIR / "rec_stability", config))
+     out_dir.mkdir(parents=True, exist_ok=True)
+     base = f"rec_stability_{_get_clean_name(config)}_{datetime.now().strftime('%m%d_%H%M')}"
+     perv.to_csv(out_dir / f"{base}_per_voter.csv", index=False)
+diff --git a/experiments/behavioral_metric/weight_stability.py b/experiments/behavioral_metric/weight_stability.py
+index 9757fa0..bf9c5c1 100644
+--- a/experiments/behavioral_metric/weight_stability.py
++++ b/experiments/behavioral_metric/weight_stability.py
+@@ -27,7 +27,7 @@ from experiments._common import _get_clean_name
+ from experiments.behavioral_metric._common import split_voters  # noqa: F401 (reused via _peek_distance)
+ from experiments.behavioral_metric.deployment_simulation import _calibrate_alphas, _peek_distance
+ from vqs.clone_robust_weighting import CloneRobustReweighter
+-from vqs.config_utils import load_config
++from vqs.config_utils import load_config, canton_results_path
+ from vqs.data_loader import load_dataset
+ 
+ MAX_QUESTIONS = 12  # cap the number of lines so the figure stays readable
+@@ -114,7 +114,7 @@ def main(argv=None):
+ 
+     out_dir = (
+         Path(args.output_dir) if args.output_dir
+-        else default_config.BEHAVIORAL_METRIC_RESULTS_DIR / "weight_stability"
++        else canton_results_path(default_config.BEHAVIORAL_METRIC_RESULTS_DIR / "weight_stability", config)
+     )
+     out_dir.mkdir(parents=True, exist_ok=True)
+     base = f"weight_stability_{_get_clean_name(config)}_{datetime.now().strftime('%m%d_%H%M')}"
+diff --git a/experiments/explanatory/approximate_clones_analysis/approximate_clone_distance.py b/experiments/explanatory/approximate_clones_analysis/approximate_clone_distance.py
+index bae9a30..2d3b918 100644
+--- a/experiments/explanatory/approximate_clones_analysis/approximate_clone_distance.py
++++ b/experiments/explanatory/approximate_clones_analysis/approximate_clone_distance.py
+@@ -40,20 +40,20 @@ import numpy as np
+ import pandas as pd
+ from sklearn.manifold import MDS
+ 
++from experiments.explanatory.distances.distance_structure_analysis import _find_distance_file
++from vqs.config_utils import load_config, canton_results_path
++
+ # ---------------------------------------------------------------------------
+ # Paths
+ # ---------------------------------------------------------------------------
+ 
+ QUESTIONS_PATH = Path("data/cleaned/df_questions.parquet")
+ 
+-# Same cached distance files as in distance_correlation_analysis.py §3
++# Same metrics as distance_structure_analysis.py §3; cached distance files are resolved from
++# these configs (so they follow VQS_DISTRICT for the answer-based metric).
+ _METRICS = {
+-    "ANSWER-CORRELATION-ARCCOS": Path(
+-        "cache/distance_calculations/dist_2023_ANSWER-CORRELATION-ARCCOS_790a61671ea5.parquet"
+-    ),
+-    "E5-INSTRUCT": Path(
+-        "cache/distance_calculations/dist_2023_E5-INSTRUCT_ba053f9f59a3.parquet"
+-    ),
++    "ANSWER-CORRELATION-ARCCOS": "configs/base_pipeline/pipeline_answer_corr_arccos_ZH.py",
++    "E5-INSTRUCT": "configs/base_pipeline/pipeline_e5_instruct_ZH.py",
+ }
+ 
+ OUTPUT_DIR = Path("experiment_results/distance_analysis/mini_maxi_map")
+@@ -131,11 +131,10 @@ def _assign_group(q_id: int, mini_ids: set, corr_maxi_ids: set) -> str:
+ def _compute_corr_maxi_from_config(
+     config_path: str, mini_ids: set, full_only_ids: list, top_k: int
+ ) -> list:
+-    from vqs.config_utils import load_config
+     from vqs.data_loader import load_dataset
+     from experiments.approximate_clones.partisan_distortion import compute_redundancy_scores
+ 
+-    config = load_config(config_path)
++    config = load_config(Path(config_path))
+     dataset = load_dataset(config)
+     voters_df = dataset["voters"]
+ 
+@@ -311,8 +310,6 @@ def main():
+     args = _parse_args()
+     ts = datetime.now().strftime("%m%d_%H%M")
+ 
+-    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+-
+     # Load questions metadata
+     questions_df = pd.read_parquet(QUESTIONS_PATH)
+     all_ids = [int(x) for x in questions_df["ID_question"].tolist()]
+@@ -338,7 +335,14 @@ def main():
+     print(f"corr_maxi:           {len(corr_maxi_ids)}")
+     print(f"maxi (rest):         {maxi_count}")
+ 
+-    for metric, dist_path in _METRICS.items():
++    for metric, metric_config_path in _METRICS.items():
++        metric_config = load_config(Path(metric_config_path))
++        dist_path = _find_distance_file(metric_config)
++        if dist_path is None:
++            print(f"\n{metric}: no cached distances for this config/canton — run the pipeline first; skipping")
++            continue
++        output_dir = canton_results_path(OUTPUT_DIR, metric_config)
++        output_dir.mkdir(parents=True, exist_ok=True)
+         _run_metric(
+             metric=metric,
+             dist_path=dist_path,
+@@ -346,11 +350,10 @@ def main():
+             questions_df=questions_df,
+             mini_ids=mini_ids,
+             corr_maxi_ids=corr_maxi_ids,
+-            output_dir=OUTPUT_DIR,
++            output_dir=output_dir,
+             ts=ts,
+         )
+-
+-    print(f"\nDone. Outputs in {OUTPUT_DIR}/")
++        print(f"  Outputs in {output_dir}/")
+ 
+ 
+ if __name__ == "__main__":
+diff --git a/experiments/explanatory/approximate_clones_analysis/forbidden_intervals.py b/experiments/explanatory/approximate_clones_analysis/forbidden_intervals.py
+index c84d827..b46c5db 100644
+--- a/experiments/explanatory/approximate_clones_analysis/forbidden_intervals.py
++++ b/experiments/explanatory/approximate_clones_analysis/forbidden_intervals.py
+@@ -35,7 +35,7 @@ import numpy as np
+ import pandas as pd
+ 
+ from experiments._common import _get_question_text_col
+-from vqs.config_utils import load_config
++from vqs.config_utils import load_config, canton_results_path, respondent_hash_params
+ from vqs.data_loader import load_dataset
+ from vqs.similarity_metrics import get_calculator
+ 
+@@ -328,7 +328,9 @@ def run_metric_analysis(
+     )
+ 
+     # Load distances: prefer pre-computed CSV to avoid model inference on home node
+-    precomputed_csv = _find_precomputed_distances(metric_name)
++    # Pre-computed CSVs carry no canton info: only reuse them for text-embedding metrics,
++    # whose distances are canton-independent.
++    precomputed_csv = None if respondent_hash_params(config) else _find_precomputed_distances(metric_name)
+     if precomputed_csv is not None:
+         print(f"  Loading pre-computed distances: {precomputed_csv}")
+         dist_df = pd.read_csv(precomputed_csv)
+@@ -787,7 +789,7 @@ def main() -> None:
+             continue
+ 
+         cfg = METRIC_CONFIGS[metric_name]
+-        output_dir = BASE_RESULTS_DIR / metric_name
++        output_dir = canton_results_path(BASE_RESULTS_DIR, load_config(Path(cfg["config_path"]))) / metric_name
+ 
+         print(f"\n{'='*65}")
+         print(f"  Metric : {metric_name}")
+@@ -834,7 +836,7 @@ def main() -> None:
+                 timestamp,
+             )
+ 
+-    print(f"\nDone. Results in {BASE_RESULTS_DIR}/")
++    print("\nDone.")
+ 
+ 
+ if __name__ == "__main__":
+diff --git a/experiments/explanatory/category_analysis.py b/experiments/explanatory/category_analysis.py
+index dcd90ce..17aaefe 100644
+--- a/experiments/explanatory/category_analysis.py
++++ b/experiments/explanatory/category_analysis.py
+@@ -17,13 +17,15 @@ from pathlib import Path
+ import numpy as np
+ import pandas as pd
+ 
++from vqs.config_utils import canton_results_path
++
+ # ---------------------------------------------------------------------------
+ # Paths
+ # ---------------------------------------------------------------------------
+ 
+ DATA_DIR = Path("data/cleaned")
+-IMPACT_DIR = Path("experiment_results/question_impact")
+-OUTPUT_DIR = Path("experiment_results/category_analysis")
++IMPACT_DIR = canton_results_path("experiment_results/question_impact")
++OUTPUT_DIR = canton_results_path("experiment_results/category_analysis")
+ 
+ 
+ def _find_impact_csv() -> Path | None:
+diff --git a/experiments/explanatory/compare_answer_vs_difference_correlations.py b/experiments/explanatory/compare_answer_vs_difference_correlations.py
+index ba397dd..f5a08a1 100644
+--- a/experiments/explanatory/compare_answer_vs_difference_correlations.py
++++ b/experiments/explanatory/compare_answer_vs_difference_correlations.py
+@@ -22,7 +22,7 @@ from pathlib import Path
+ from scipy.stats import spearmanr
+ import seaborn as sns
+ 
+-from vqs.config_utils import load_config
++from vqs.config_utils import load_config, canton_results_path
+ from vqs.data_loader import load_dataset
+ 
+ CONFIG_PATH = "configs/base_pipeline/pipeline_e5_ZH.py"
+@@ -32,9 +32,9 @@ SEED = 42
+ 
+ 
+ def main():
+-    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+-
+     config = load_config(Path(CONFIG_PATH))
++    output_dir = canton_results_path(OUTPUT_DIR, config)
++    output_dir.mkdir(parents=True, exist_ok=True)
+     dataset = load_dataset(config)
+     df_voters = dataset["voters"]
+     df_candidates = dataset["candidates"]
+@@ -113,9 +113,9 @@ def main():
+         fontsize=13,
+     )
+     fig.tight_layout()
+-    fig.savefig(OUTPUT_DIR / "answer_vs_difference_scatter.png", dpi=300)
++    fig.savefig(output_dir / "answer_vs_difference_scatter.png", dpi=300)
+     plt.close(fig)
+-    print(f"\n  -> Scatter: {OUTPUT_DIR / 'answer_vs_difference_scatter.png'}")
++    print(f"\n  -> Scatter: {output_dir / 'answer_vs_difference_scatter.png'}")
+ 
+     # --- Plot 2: Side-by-side heatmaps ---
+     fig, axes = plt.subplots(1, 3, figsize=(22, 7))
+@@ -134,9 +134,9 @@ def main():
+ 
+     fig.suptitle("Absolute Correlation Matrices: Answer-Space vs Difference-Space", fontsize=13)
+     fig.tight_layout()
+-    fig.savefig(OUTPUT_DIR / "correlation_heatmaps.png", dpi=300)
++    fig.savefig(output_dir / "correlation_heatmaps.png", dpi=300)
+     plt.close(fig)
+-    print(f"  -> Heatmaps: {OUTPUT_DIR / 'correlation_heatmaps.png'}")
++    print(f"  -> Heatmaps: {output_dir / 'correlation_heatmaps.png'}")
+ 
+     # --- Plot 3: Distribution comparison ---
+     fig, ax = plt.subplots(figsize=(8, 5))
+@@ -149,9 +149,9 @@ def main():
+     ax.set_title("Distribution of Pairwise |r| Across Correlation Spaces")
+     ax.legend()
+     fig.tight_layout()
+-    fig.savefig(OUTPUT_DIR / "correlation_distributions.png", dpi=300)
++    fig.savefig(output_dir / "correlation_distributions.png", dpi=300)
+     plt.close(fig)
+-    print(f"  -> Distributions: {OUTPUT_DIR / 'correlation_distributions.png'}")
++    print(f"  -> Distributions: {output_dir / 'correlation_distributions.png'}")
+ 
+     # --- Save CSV ---
+     pairs = []
+@@ -163,8 +163,8 @@ def main():
+             "candidate_abs_r": cand_abs_r[len(pairs)],
+             "difference_abs_r": diff_abs_r[len(pairs)],
+         })
+-    pd.DataFrame(pairs).to_csv(OUTPUT_DIR / "pairwise_correlations.csv", index=False)
+-    print(f"  -> CSV: {OUTPUT_DIR / 'pairwise_correlations.csv'}")
++    pd.DataFrame(pairs).to_csv(output_dir / "pairwise_correlations.csv", index=False)
++    print(f"  -> CSV: {output_dir / 'pairwise_correlations.csv'}")
+ 
+ 
+ if __name__ == "__main__":
+diff --git a/experiments/explanatory/compare_recommendation_and_party_distortion.py b/experiments/explanatory/compare_recommendation_and_party_distortion.py
+index cf827d9..9fd19d8 100644
+--- a/experiments/explanatory/compare_recommendation_and_party_distortion.py
++++ b/experiments/explanatory/compare_recommendation_and_party_distortion.py
+@@ -30,14 +30,16 @@ import pandas as pd
+ import seaborn as sns
+ from scipy import stats
+ 
++from vqs.config_utils import canton_results_path
++
+ # ---------------------------------------------------------------------------
+ # Paths
+ # ---------------------------------------------------------------------------
+ 
+-QUESTION_IMPACT_DIR = Path("experiment_results/question_impact")
+-PARTY_IMPACT_DIR = Path("experiment_results/party_impact/high_impact/phase1")
+-CATEGORY_CSV = Path("experiment_results/category_analysis/per_question_by_category.csv")
+-OUTPUT_DIR = Path("experiment_results/question_impact/impact_comparison")
++QUESTION_IMPACT_DIR = canton_results_path("experiment_results/question_impact")
++PARTY_IMPACT_DIR = canton_results_path("experiment_results/party_impact/high_impact/phase1")
++CATEGORY_CSV = canton_results_path("experiment_results/category_analysis/per_question_by_category.csv")
++OUTPUT_DIR = canton_results_path("experiment_results/question_impact/impact_comparison")
+ 
+ MAJOR_PARTIES = ["SP", "Green", "GLP", "Centre", "FDP", "SVP"]
+ 
+diff --git a/experiments/explanatory/distances/compare_two_metrics.py b/experiments/explanatory/distances/compare_two_metrics.py
+index 12d98bd..ba858b6 100644
+--- a/experiments/explanatory/distances/compare_two_metrics.py
++++ b/experiments/explanatory/distances/compare_two_metrics.py
+@@ -26,12 +26,14 @@ import argparse
+ from pathlib import Path
+ from scipy import stats
+ 
++from vqs.config_utils import canton_results_path
++
+ 
+ OUTPUT_DIR = Path("experiment_results/embedding_correlation_comparison")
+ 
+ 
+-def load_distances_from_config(config_path: str) -> tuple[pd.DataFrame, str]:
+-    """Load a config, compute/load distances via the pipeline, return (df, label)."""
++def load_distances_from_config(config_path: str) -> tuple[pd.DataFrame, str, object]:
++    """Load a config, compute/load distances via the pipeline, return (df, label, config)."""
+     from vqs.config_utils import load_config
+     from vqs.similarity_metrics import get_calculator
+     from vqs.data_loader import load_dataset
+@@ -41,7 +43,7 @@ def load_distances_from_config(config_path: str) -> tuple[pd.DataFrame, str]:
+     dataset = load_dataset(config)
+     calculator = get_calculator(config)
+     df = calculator.calculate_distance(dataset, config)
+-    return df, label
++    return df, label, config
+ 
+ 
+ def load_distances_from_file(file_path: str) -> pd.DataFrame:
+@@ -205,8 +207,9 @@ def main():
+     args = parser.parse_args()
+ 
+     # Load metric A
++    config_a = None
+     if args.config_a:
+-        df_a, auto_label_a = load_distances_from_config(args.config_a)
++        df_a, auto_label_a, config_a = load_distances_from_config(args.config_a)
+     elif args.file_a:
+         df_a = load_distances_from_file(args.file_a)
+         auto_label_a = Path(args.file_a).stem
+@@ -215,7 +218,7 @@ def main():
+ 
+     # Load metric B
+     if args.config_b:
+-        df_b, auto_label_b = load_distances_from_config(args.config_b)
++        df_b, auto_label_b, _ = load_distances_from_config(args.config_b)
+     elif args.file_b:
+         df_b = load_distances_from_file(args.file_b)
+         auto_label_b = Path(args.file_b).stem
+@@ -233,15 +236,16 @@ def main():
+         print("ERROR: No overlapping question pairs found. Check that both metrics cover the same questions.")
+         return
+ 
+-    # Output
+-    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
++    # Output (per canton when distances come from a config)
++    output_dir = canton_results_path(OUTPUT_DIR, config_a) if config_a is not None else OUTPUT_DIR
++    output_dir.mkdir(parents=True, exist_ok=True)
+     print_summary(merged, label_a, label_b)
+-    save_merged_csv(merged, label_a, label_b, OUTPUT_DIR)
+-    plot_scatter(merged, label_a, label_b, OUTPUT_DIR)
+-    plot_rank_comparison(merged, label_a, label_b, OUTPUT_DIR)
+-    plot_divergence(merged, label_a, label_b, OUTPUT_DIR)
++    save_merged_csv(merged, label_a, label_b, output_dir)
++    plot_scatter(merged, label_a, label_b, output_dir)
++    plot_rank_comparison(merged, label_a, label_b, output_dir)
++    plot_divergence(merged, label_a, label_b, output_dir)
+ 
+-    print(f"\nAll outputs saved to {OUTPUT_DIR}/")
++    print(f"\nAll outputs saved to {output_dir}/")
+ 
+ 
+ if __name__ == "__main__":
+diff --git a/experiments/explanatory/distances/distance_structure_analysis.py b/experiments/explanatory/distances/distance_structure_analysis.py
+index 6e16ea2..d2a8007 100644
+--- a/experiments/explanatory/distances/distance_structure_analysis.py
++++ b/experiments/explanatory/distances/distance_structure_analysis.py
+@@ -41,8 +41,6 @@ Usage:
+ """
+ 
+ import argparse
+-import hashlib
+-import json
+ from datetime import datetime
+ from itertools import combinations
+ from pathlib import Path
+@@ -54,6 +52,9 @@ import numpy as np
+ import pandas as pd
+ from scipy.stats import gaussian_kde, mannwhitneyu, pearsonr, rankdata, spearmanr
+ 
++from vqs.config_utils import load_config, canton_results_path, respondent_hash_params
++from vqs.result_management import ResultManager
++
+ # ---------------------------------------------------------------------------
+ # Paths
+ # ---------------------------------------------------------------------------
+@@ -81,23 +82,18 @@ _MODEL_CONFIGS = {
+ }
+ _CORR_CONFIG = "configs/base_pipeline/pipeline_answer_corr_ZH.py"
+ 
+-# §3 — specific cached distance files
++# §3 — metrics compared (cached distance file resolved from the config, so it follows VQS_DISTRICT)
+ _SEC3_METRICS = {
+     "e5_instruct": {
+         "label": "E5-INSTRUCT",
+-        "path": CACHE_DIR / "dist_2023_E5-INSTRUCT_ba053f9f59a3.parquet",
++        "config": "configs/base_pipeline/pipeline_e5_instruct_ZH.py",
+     },
+     "answer_corr_arccos": {
+         "label": "ANSWER-CORRELATION-ARCCOS",
+-        "path": CACHE_DIR / "dist_2023_ANSWER-CORRELATION-ARCCOS_790a61671ea5.parquet",
++        "config": "configs/base_pipeline/pipeline_answer_corr_arccos_ZH.py",
+     },
+ }
+ 
+-_DISTANCE_HASH_PARAMS = [
+-    "data_year", "dist", "data_choice", "clone_id",
+-    "embedding_instruction", "embedding_task", "correlation_answer_source",
+-]
+-
+ 
+ # ---------------------------------------------------------------------------
+ # Shared helpers
+@@ -122,8 +118,10 @@ def _to_pair_dict(df: pd.DataFrame) -> dict:
+ 
+ 
+ def _compute_dist_hash(config) -> str:
+-    params = {k: getattr(config, k, None) for k in _DISTANCE_HASH_PARAMS}
+-    return hashlib.md5(json.dumps(params, sort_keys=True, default=str).encode()).hexdigest()[:12]
++    """Same hash the distance calculators use for their cache (incl. canton for answer-based metrics)."""
++    params = list(config.DISTANCE_HASH_PARAMS)
++    params += [p for p in respondent_hash_params(config) if p not in params]
++    return ResultManager(config, CACHE_DIR, params).hash
+ 
+ 
+ def _find_distance_file(config) -> Path | None:
+@@ -131,6 +129,9 @@ def _find_distance_file(config) -> Path | None:
+     matches = list(CACHE_DIR.glob(f"*{h}.parquet"))
+     if matches:
+         return matches[0]
++    if respondent_hash_params(config):
++        # Answer-based distances depend on canton/respondents: never substitute another run's file.
++        return None
+     dist_name = config.dist
+     fallbacks = sorted(CACHE_DIR.glob(f"dist_2023_{dist_name}_*.parquet"))
+     if fallbacks:
+@@ -254,7 +255,7 @@ def section1_raw_correlations(config, top: int):
+     fig.suptitle("Pure Correlation Analysis — All Question Pairs", fontsize=12, y=1.02)
+     fig.tight_layout()
+ 
+-    out = _SEC1_OUTPUT_DIR
++    out = canton_results_path(_SEC1_OUTPUT_DIR, config)
+     out.mkdir(parents=True, exist_ok=True)
+     ts = datetime.now().strftime("%m%d_%H%M")
+     base = f"pure_correlation_{ts}"
+@@ -277,7 +278,6 @@ def section1_raw_correlations(config, top: int):
+ 
+ def section2_embedding_validation():
+     """Spearman rank correlation between each embedding model and ANSWER-CORRELATION."""
+-    from vqs.config_utils import load_config
+ 
+     print(f"\n{'=' * 70}")
+     print("§2  EMBEDDING MODEL VALIDATION vs ANSWER-CORRELATION GROUND TRUTH")
+@@ -378,7 +378,7 @@ def section2_embedding_validation():
+         p(f"  {rank:<5} {row['model']:<30} {row['spearman_r']:>+8.4f} "
+           f"{w:>+8.4f} {c:>+8.4f} {delta:>+8.4f}")
+ 
+-    out = _SEC2_OUTPUT_DIR
++    out = canton_results_path(_SEC2_OUTPUT_DIR, corr_config)
+     out.mkdir(parents=True, exist_ok=True)
+     ts = datetime.now().strftime("%m%d_%H%M")
+     base = f"emb_vs_corr_{ts}"
+@@ -632,12 +632,13 @@ def section3_topic_distances():
+ 
+     for metric_key, metric_info in _SEC3_METRICS.items():
+         label = metric_info["label"]
+-        dist_path = metric_info["path"]
+-        out_dir = _SEC3_OUTPUT_DIR / metric_key
++        metric_config = load_config(Path(metric_info["config"]))
++        dist_path = _find_distance_file(metric_config)
++        out_dir = canton_results_path(_SEC3_OUTPUT_DIR, metric_config) / metric_key
+ 
+         print(f"\n--- {label} ---")
+-        if not dist_path.exists():
+-            print(f"  ERROR: {dist_path} not found — skipping")
++        if not dist_path:
++            print(f"  ERROR: no cached distances (hash={_compute_dist_hash(metric_config)}) — run the pipeline first; skipping")
+             continue
+ 
+         out_dir.mkdir(parents=True, exist_ok=True)
+@@ -674,7 +675,7 @@ def section3_topic_distances():
+ 
+     # Cross-metric comparison
+     if len(all_intra) == 2 and "e5_instruct" in all_intra and "answer_corr_arccos" in all_intra:
+-        comp_dir = _SEC3_OUTPUT_DIR / "comparison"
++        comp_dir = canton_results_path(_SEC3_OUTPUT_DIR, metric_config) / "comparison"
+         comp_dir.mkdir(parents=True, exist_ok=True)
+ 
+         e5_intra = all_intra["e5_instruct"][["topic", "n_questions", "n_pairs", "mean"]].rename(
+@@ -882,7 +883,7 @@ def section4_mini_maxi_correlations(config, top: int):
+     fig.suptitle("Mini vs Full-Only Question Correlations (Voter Answers)", fontsize=13, y=1.01)
+     fig.tight_layout()
+ 
+-    out = _SEC4_OUTPUT_DIR
++    out = canton_results_path(_SEC4_OUTPUT_DIR, config)
+     out.mkdir(parents=True, exist_ok=True)
+     ts = datetime.now().strftime("%m%d_%H%M")
+     base = f"mini_maxi_corr_{ts}"
+@@ -968,7 +969,6 @@ def main():
+         if not args.config:
+             print("ERROR: --config is required for §1 and/or §4")
+             return
+-        from vqs.config_utils import load_config
+         config = load_config(Path(args.config))
+ 
+     print("=" * 70)
+diff --git a/experiments/explanatory/question_impact.py b/experiments/explanatory/question_impact.py
+index 441bea5..5502de5 100644
+--- a/experiments/explanatory/question_impact.py
++++ b/experiments/explanatory/question_impact.py
+@@ -67,7 +67,7 @@ from clone_pipeline.spec import CloneSpec
+ from configs import base_constants as default_config
+ from cross_run_analysis.analyzer import CrossRunAnalyzer
+ from experiments._common import _get_clean_name, _get_question_text_col, _resolve_n
+-from vqs.config_utils import load_config
++from vqs.config_utils import load_config, canton_results_path
+ from vqs.clone_robust_weighting import CloneRobustReweighter
+ from vqs.data_loader import load_dataset
+ from vqs.recommendation_engine import RecommendationEngine
+@@ -466,7 +466,7 @@ def _run_sweep(args, config, n: int, clone_types: list[str], n_clones: int):
+     sweep_df = pd.DataFrame(rows)
+ 
+     # Use collect logic for output
+-    output_dir = RESULTS_DIR
++    output_dir = canton_results_path(RESULTS_DIR, config)
+     output_dir.mkdir(parents=True, exist_ok=True)
+     _save_collect_outputs(sweep_df, config, n, output_dir, pipeline["dataset"])
+ 
+@@ -484,7 +484,7 @@ def _run_worker(args, config, n: int, clone_types: list[str], n_clones: int):
+         print("ERROR: --task-id is required in worker mode", file=sys.stderr)
+         sys.exit(1)
+ 
+-    sweep_dir = Path(args.sweep_dir) if args.sweep_dir else RESULTS_DIR / "workers"
++    sweep_dir = Path(args.sweep_dir) if args.sweep_dir else canton_results_path(RESULTS_DIR, config) / "workers"
+     sweep_dir.mkdir(parents=True, exist_ok=True)
+ 
+     pipeline = _setup_pipeline(config, clone_types=clone_types, n_clones=n_clones)
+@@ -524,7 +524,7 @@ def _run_worker(args, config, n: int, clone_types: list[str], n_clones: int):
+ 
+ 
+ def _run_collect(args, config, n: int):
+-    sweep_dir = Path(args.sweep_dir) if args.sweep_dir else RESULTS_DIR / "workers"
++    sweep_dir = Path(args.sweep_dir) if args.sweep_dir else canton_results_path(RESULTS_DIR, config) / "workers"
+ 
+     worker_files = sorted(sweep_dir.glob("question_worker_*.csv"))
+     if not worker_files:
+@@ -540,7 +540,7 @@ def _run_collect(args, config, n: int):
+     print("\n--- Loading dataset for correlation analysis ---")
+     dataset = load_dataset(config)
+ 
+-    output_dir = RESULTS_DIR
++    output_dir = canton_results_path(RESULTS_DIR, config)
+     output_dir.mkdir(parents=True, exist_ok=True)
+ 
+     _save_collect_outputs(combined, config, n, output_dir, dataset)
+diff --git a/experiments/noise_slider/lambda_to_correlation.py b/experiments/noise_slider/lambda_to_correlation.py
+index 7af134f..edbf265 100644
+--- a/experiments/noise_slider/lambda_to_correlation.py
++++ b/experiments/noise_slider/lambda_to_correlation.py
+@@ -19,7 +19,7 @@ import pandas as pd
+ from experiments._common import _get_question_text_col
+ from experiments.noise_slider._perturb import admissible_set, perturb_column
+ from experiments.noise_slider.robustness import LAMBDA_GRID, _derive_seed
+-from vqs.config_utils import load_config
++from vqs.config_utils import load_config, canton_results_path
+ from vqs.data_loader import load_dataset
+ 
+ 
+@@ -28,6 +28,8 @@ N_SEEDS = 10
+ APPROX_CLONE_R = 0.775          # max |r| among top-5 approximate clones (Exp 3)
+ APPROX_CLONE_ARCCOS = 0.684     # arccos(0.775) — min non-clone distance in correlation space
+ 
++DEFAULT_OUT = "experiment_results/noise_slider/lambda_to_correlation.csv"
++
+ 
+ def _parse_args(argv=None):
+     parser = argparse.ArgumentParser(
+@@ -43,9 +45,8 @@ def _parse_args(argv=None):
+         help=f"Seeds per λ for averaging (default: {N_SEEDS})",
+     )
+     parser.add_argument(
+-        "--out", type=str,
+-        default="experiment_results/noise_slider/lambda_to_correlation.csv",
+-        help="Output CSV path",
++        "--out", type=str, default=None,
++        help=f"Output CSV path (default: {DEFAULT_OUT}, mapped to the config's canton)",
+     )
+     return parser.parse_args(argv)
+ 
+@@ -126,7 +127,7 @@ def main(argv=None):
+     print(f"  (CRW integrates [0, α]; clones at arccos(r) > α are undetectable)")
+ 
+     # Save
+-    out_path = Path(args.out)
++    out_path = Path(args.out) if args.out else canton_results_path(DEFAULT_OUT, config)
+     out_path.parent.mkdir(parents=True, exist_ok=True)
+     agg.to_csv(out_path, index=False)
+     print(f"\n→ Saved: {out_path}")
+diff --git a/experiments/noise_slider/robustness.py b/experiments/noise_slider/robustness.py
+index 404b23e..635eb01 100644
+--- a/experiments/noise_slider/robustness.py
++++ b/experiments/noise_slider/robustness.py
+@@ -46,7 +46,7 @@ from clone_pipeline.applicator import apply_specs
+ from clone_pipeline.paraphrase_generator import ensure_paraphrases
+ from clone_pipeline.spec import CloneSpec
+ from cross_run_analysis.analyzer import CrossRunAnalyzer
+-from vqs.config_utils import load_config
++from vqs.config_utils import load_config, canton_results_path
+ from vqs.clone_robust_weighting import CloneRobustReweighter
+ from vqs.data_loader import load_dataset
+ from vqs.recommendation_engine import RecommendationEngine
+@@ -621,7 +621,7 @@ def _run_sweep(args, config, lambda_grid, n_seeds, n_jaccard, alpha):
+ 
+     master = pd.DataFrame(all_rows)
+ 
+-    output_dir = RESULTS_DIR
++    output_dir = canton_results_path(RESULTS_DIR, config)
+     output_dir.mkdir(parents=True, exist_ok=True)
+     _save_collect_outputs(master, config, n_jaccard, alpha, output_dir)
+     print("\n=== Noise Slider Sweep Complete ===")
+@@ -638,7 +638,7 @@ def _run_worker(args, config, lambda_grid, n_seeds, n_jaccard, alpha):
+         print("ERROR: --task-id is required in worker mode", file=sys.stderr)
+         sys.exit(1)
+ 
+-    sweep_dir = Path(args.sweep_dir) if args.sweep_dir else RESULTS_DIR / "workers"
++    sweep_dir = Path(args.sweep_dir) if args.sweep_dir else canton_results_path(RESULTS_DIR, config) / "workers"
+     sweep_dir.mkdir(parents=True, exist_ok=True)
+ 
+     pipeline = _setup_pipeline(config)
+@@ -673,7 +673,7 @@ def _run_worker(args, config, lambda_grid, n_seeds, n_jaccard, alpha):
+ 
+ 
+ def _run_collect(args, config, n_jaccard, alpha):
+-    sweep_dir = Path(args.sweep_dir) if args.sweep_dir else RESULTS_DIR / "workers"
++    sweep_dir = Path(args.sweep_dir) if args.sweep_dir else canton_results_path(RESULTS_DIR, config) / "workers"
+ 
+     worker_files = sorted(sweep_dir.glob("noise_slider_worker_*.csv"))
+     if not worker_files:
+@@ -684,7 +684,7 @@ def _run_collect(args, config, n_jaccard, alpha):
+     dfs = [pd.read_csv(f) for f in worker_files]
+     master = pd.concat(dfs, ignore_index=True)
+ 
+-    output_dir = RESULTS_DIR
++    output_dir = canton_results_path(RESULTS_DIR, config)
+     output_dir.mkdir(parents=True, exist_ok=True)
+     _save_collect_outputs(master, config, n_jaccard, alpha, output_dir)
+     print("\n=== Collect Complete ===")
+diff --git a/experiments/perfect_clones/clone_count_sweep.py b/experiments/perfect_clones/clone_count_sweep.py
+index 0501779..eb012db 100644
+--- a/experiments/perfect_clones/clone_count_sweep.py
++++ b/experiments/perfect_clones/clone_count_sweep.py
+@@ -48,7 +48,7 @@ from clone_pipeline.applicator import apply_specs
+ from clone_pipeline.spec import CloneSpec
+ from cross_run_analysis.analyzer import CrossRunAnalyzer
+ from experiments._common import _get_clean_name, _get_question_text_col, _resolve_n
+-from vqs.config_utils import load_config
++from vqs.config_utils import load_config, canton_results_path
+ from vqs.data_loader import load_dataset
+ from vqs.recommendation_engine import RecommendationEngine
+ 
+@@ -287,7 +287,7 @@ def _run_sweep(args, config, n_values: list[int], n_jaccard: int):
+ 
+     sweep_df = pd.DataFrame(all_rows)
+ 
+-    output_dir = RESULTS_DIR
++    output_dir = canton_results_path(RESULTS_DIR, config)
+     output_dir.mkdir(parents=True, exist_ok=True)
+     _save_collect_outputs(sweep_df, config, n_values, n_jaccard, output_dir)
+ 
+@@ -305,7 +305,7 @@ def _run_worker(args, config, n_values: list[int], n_jaccard: int):
+         print("ERROR: --task-id is required in worker mode", file=sys.stderr)
+         sys.exit(1)
+ 
+-    sweep_dir = Path(args.sweep_dir) if args.sweep_dir else RESULTS_DIR / "workers"
++    sweep_dir = Path(args.sweep_dir) if args.sweep_dir else canton_results_path(RESULTS_DIR, config) / "workers"
+     sweep_dir.mkdir(parents=True, exist_ok=True)
+ 
+     pipeline = _setup_pipeline(config)
+@@ -343,7 +343,7 @@ def _run_worker(args, config, n_values: list[int], n_jaccard: int):
+ 
+ 
+ def _run_collect(args, config, n_values: list[int], n_jaccard: int):
+-    sweep_dir = Path(args.sweep_dir) if args.sweep_dir else RESULTS_DIR / "workers"
++    sweep_dir = Path(args.sweep_dir) if args.sweep_dir else canton_results_path(RESULTS_DIR, config) / "workers"
+ 
+     worker_files = sorted(sweep_dir.glob("ccs_worker_*.csv"))
+     if not worker_files:
+@@ -355,7 +355,7 @@ def _run_collect(args, config, n_values: list[int], n_jaccard: int):
+     dfs = [pd.read_csv(f) for f in worker_files]
+     combined = pd.concat(dfs, ignore_index=True)
+ 
+-    output_dir = RESULTS_DIR
++    output_dir = canton_results_path(RESULTS_DIR, config)
+     output_dir.mkdir(parents=True, exist_ok=True)
+ 
+     _save_collect_outputs(combined, config, n_values, n_jaccard, output_dir)
+diff --git a/experiments/perfect_clones/clone_count_sweep_single.py b/experiments/perfect_clones/clone_count_sweep_single.py
+index 113f717..a129379 100644
+--- a/experiments/perfect_clones/clone_count_sweep_single.py
++++ b/experiments/perfect_clones/clone_count_sweep_single.py
+@@ -38,7 +38,7 @@ from clone_pipeline.applicator import apply_specs
+ from clone_pipeline.spec import CloneSpec
+ from cross_run_analysis.analyzer import CrossRunAnalyzer
+ from experiments._common import _get_clean_name, _resolve_n
+-from vqs.config_utils import load_config
++from vqs.config_utils import load_config, canton_results_path
+ from vqs.data_loader import load_dataset
+ from vqs.recommendation_engine import RecommendationEngine
+ 
+@@ -328,7 +328,7 @@ def main():
+ 
+     sweep_df = pd.DataFrame(rows)
+ 
+-    output_dir = RESULTS_DIR
++    output_dir = canton_results_path(RESULTS_DIR, config)
+     output_dir.mkdir(parents=True, exist_ok=True)
+     _save_outputs(sweep_df, config, question_id, n_values, n_jaccard, output_dir)
+ 
+diff --git a/experiments/perfect_clones/compile_question_results.py b/experiments/perfect_clones/compile_question_results.py
+index 0c8fd5c..90d6fc5 100644
+--- a/experiments/perfect_clones/compile_question_results.py
++++ b/experiments/perfect_clones/compile_question_results.py
+@@ -27,11 +27,13 @@ import pandas as pd
+ import seaborn as sns
+ from pathlib import Path
+ 
++from vqs.config_utils import canton_results_path
++
+ # ---------------------------------------------------------------------------
+ # Paths
+ # ---------------------------------------------------------------------------
+-SWEEP_RESULTS_DIR = Path("experiment_results/exp1/question_alpha_sweep")
+-OUTPUT_DIR = Path("experiment_results/exp1/question_alpha_sweep/compiled")
++SWEEP_RESULTS_DIR = canton_results_path("experiment_results/exp1/question_alpha_sweep")
++OUTPUT_DIR = canton_results_path("experiment_results/exp1/question_alpha_sweep/compiled")
+ 
+ ALPHA_REFERENCE = 0.3
+ 
+diff --git a/experiments/perfect_clones/model_selection.py b/experiments/perfect_clones/model_selection.py
+index 87a4c90..040d99e 100644
+--- a/experiments/perfect_clones/model_selection.py
++++ b/experiments/perfect_clones/model_selection.py
+@@ -45,7 +45,7 @@ import seaborn as sns
+ from configs import base_constants as default_config
+ from cross_run_analysis.analyzer import CrossRunAnalyzer
+ from experiments._common import _get_clean_name, _resolve_n, DEFAULT_ALPHAS, DEFAULT_ALPHA_REFERENCE
+-from vqs.config_utils import load_config
++from vqs.config_utils import load_config, respondent_hash_params, canton_results_path
+ from vqs.clone_robust_weighting import CloneRobustReweighter
+ from vqs.data_loader import load_dataset
+ from vqs.recommendation_engine import RecommendationEngine
+@@ -126,9 +126,9 @@ def _get_sweep_hash(config_a, config_b, alphas: list[float], n: int) -> str:
+         "alphas": sorted(alphas),
+         "n_jaccard": n,
+     }
+-    for param in default_config.COMPARATOR_HASH_PARAMS:
+-        payload[f"a_{param}"] = getattr(config_a, param, None)
+-        payload[f"b_{param}"] = getattr(config_b, param, None)
++    for cfg, side in ((config_a, "a"), (config_b, "b")):
++        for param in default_config.COMPARATOR_HASH_PARAMS + respondent_hash_params(cfg):
++            payload[f"{side}_{param}"] = getattr(cfg, param, None)
+     s = json.dumps(payload, sort_keys=True, default=str)
+     return hashlib.md5(s.encode()).hexdigest()[:12]
+ 
+@@ -141,9 +141,9 @@ def _get_analysis_cache_hash(config_a, config_b, alpha: float, n: int) -> str:
+         "alpha": alpha,
+         "n_jaccard": n,
+     }
+-    for param in default_config.COMPARATOR_HASH_PARAMS:
+-        payload[f"a_{param}"] = getattr(config_a, param, None)
+-        payload[f"b_{param}"] = getattr(config_b, param, None)
++    for cfg, side in ((config_a, "a"), (config_b, "b")):
++        for param in default_config.COMPARATOR_HASH_PARAMS + respondent_hash_params(cfg):
++            payload[f"{side}_{param}"] = getattr(cfg, param, None)
+     s = json.dumps(payload, sort_keys=True, default=str)
+     return hashlib.md5(s.encode()).hexdigest()[:12]
+ 
+@@ -491,7 +491,7 @@ def _run_sweep(args, config_a, config_b, alphas: list[float], n: int):
+ 
+     sweep_df = pd.DataFrame(sweep_rows)
+ 
+-    output_dir = Path(args.output_dir) if args.output_dir else default_config.ALPHA_SWEEP_RESULTS_DIR
++    output_dir = Path(args.output_dir) if args.output_dir else canton_results_path(default_config.ALPHA_SWEEP_RESULTS_DIR, config_a)
+     output_dir.mkdir(parents=True, exist_ok=True)
+ 
+     print("\n--- Saving outputs ---")
+@@ -519,7 +519,7 @@ def _run_worker(args, config_a, config_b, alphas: list[float], n: int):
+     if args.sweep_dir:
+         sweep_dir = Path(args.sweep_dir)
+     else:
+-        base_dir = Path(args.output_dir) if args.output_dir else default_config.ALPHA_SWEEP_RESULTS_DIR
++        base_dir = Path(args.output_dir) if args.output_dir else canton_results_path(default_config.ALPHA_SWEEP_RESULTS_DIR, config_a)
+         name_a = _get_clean_name(config_a)
+         name_b = _get_clean_name(config_b)
+         subfolder_name = f"alpha_sweep_{name_a}_vs_{name_b}"
+@@ -558,7 +558,7 @@ def _run_collect(args, config_a, config_b, alphas: list[float], n: int):
+     if args.sweep_dir:
+         sweep_dir = Path(args.sweep_dir)
+     else:
+-        base_dir = Path(args.output_dir) if args.output_dir else default_config.ALPHA_SWEEP_RESULTS_DIR
++        base_dir = Path(args.output_dir) if args.output_dir else canton_results_path(default_config.ALPHA_SWEEP_RESULTS_DIR, config_a)
+         name_a = _get_clean_name(config_a)
+         name_b = _get_clean_name(config_b)
+         subfolder_name = f"alpha_sweep_{name_a}_vs_{name_b}"
+@@ -593,7 +593,7 @@ def _run_collect(args, config_a, config_b, alphas: list[float], n: int):
+         f"Kendall={std_metrics['base_kendall_mean']:.4f}"
+     )
+ 
+-    output_dir = Path(args.output_dir) if args.output_dir else default_config.ALPHA_SWEEP_RESULTS_DIR
++    output_dir = Path(args.output_dir) if args.output_dir else canton_results_path(default_config.ALPHA_SWEEP_RESULTS_DIR, config_a)
+     output_dir.mkdir(parents=True, exist_ok=True)
+ 
+     collected_alphas = sorted(sweep_df["alpha"].tolist())
+@@ -620,6 +620,13 @@ def main(argv=None):
+     # Load configs
+     config_a = load_config(Path(args.config_a))
+     config_b = load_config(Path(args.config_b))
++    if config_a.district != config_b.district:
++        print(
++            f"ERROR: config_a (district={config_a.district}) and config_b "
++            f"(district={config_b.district}) must target the same canton.",
++            file=sys.stderr,
++        )
++        sys.exit(1)
+ 
+     # Resolve n_jaccard
+     n = _resolve_n(config_a, args.n)
+diff --git a/experiments/perfect_clones/partisan_distortion.py b/experiments/perfect_clones/partisan_distortion.py
+index 531c6cd..558ab23 100644
+--- a/experiments/perfect_clones/partisan_distortion.py
++++ b/experiments/perfect_clones/partisan_distortion.py
+@@ -51,7 +51,7 @@ from clone_pipeline.applicator import apply_specs
+ from clone_pipeline.spec import CloneSpec
+ from configs import base_constants as default_config
+ from experiments._common import _get_clean_name, _get_question_text_col, _resolve_n
+-from vqs.config_utils import load_config
++from vqs.config_utils import load_config, canton_results_path
+ from vqs.data_loader import load_dataset
+ from vqs.party_visibility import MAJOR_PARTIES, PARTY2COLOR, _build_candidate_party_map, compute_party_visibility
+ from vqs.recommendation_engine import RecommendationEngine
+@@ -271,7 +271,7 @@ def _run_sweep(args, config, n: int):
+     sweep_df = pd.DataFrame(rows)
+ 
+     name = _get_clean_name(config)
+-    output_dir = RESULTS_DIR / "phase1" / name
++    output_dir = canton_results_path(RESULTS_DIR, config) / "phase1" / name
+     output_dir.mkdir(parents=True, exist_ok=True)
+     _save_phase1_outputs(sweep_df, config, n, output_dir)
+ 
+@@ -290,7 +290,7 @@ def _run_worker(args, config, n: int):
+         sys.exit(1)
+ 
+     name = _get_clean_name(config)
+-    sweep_dir = Path(args.sweep_dir) if args.sweep_dir else RESULTS_DIR / "phase1" / name / "workers"
++    sweep_dir = Path(args.sweep_dir) if args.sweep_dir else canton_results_path(RESULTS_DIR, config) / "phase1" / name / "workers"
+     sweep_dir.mkdir(parents=True, exist_ok=True)
+ 
+     pipeline = _setup_pipeline(config)
+@@ -334,7 +334,7 @@ def _run_worker(args, config, n: int):
+ 
+ def _run_collect(args, config, n: int):
+     name = _get_clean_name(config)
+-    sweep_dir = Path(args.sweep_dir) if args.sweep_dir else RESULTS_DIR / "phase1" / name / "workers"
++    sweep_dir = Path(args.sweep_dir) if args.sweep_dir else canton_results_path(RESULTS_DIR, config) / "phase1" / name / "workers"
+ 
+     worker_files = sorted(sweep_dir.glob("party_worker_*.csv"))
+     if not worker_files:
+@@ -349,7 +349,7 @@ def _run_collect(args, config, n: int):
+     combined = pd.concat(dfs, ignore_index=True)
+ 
+     name = _get_clean_name(config)
+-    output_dir = RESULTS_DIR / "phase1" / name
++    output_dir = canton_results_path(RESULTS_DIR, config) / "phase1" / name
+     output_dir.mkdir(parents=True, exist_ok=True)
+ 
+     _save_phase1_outputs(combined, config, n, output_dir)
+@@ -549,7 +549,7 @@ def _run_phase2(args, config, n: int):
+         phase1_path = Path(args.phase1_csv)
+     else:
+         # Auto-detect latest Phase 1 CSV
+-        csvs = sorted((RESULTS_DIR / "phase1").glob("**/party_impact_*.csv"))
++        csvs = sorted((canton_results_path(RESULTS_DIR, config) / "phase1").glob("**/party_impact_*.csv"))
+         if not csvs:
+             print("ERROR: No Phase 1 CSV found. Run Phase 1 first.", file=sys.stderr)
+             sys.exit(1)
+@@ -761,7 +761,7 @@ def _run_phase2(args, config, n: int):
+ 
+     name = _get_clean_name(config)
+     party_subdir = target_party if target_party else "no_target"
+-    output_dir = RESULTS_DIR / "phase2" / name / party_subdir
++    output_dir = canton_results_path(RESULTS_DIR, config) / "phase2" / name / party_subdir
+     output_dir.mkdir(parents=True, exist_ok=True)
+     _save_phase2_outputs(results, config, n, output_dir, target_party)
+ 
+@@ -1382,7 +1382,7 @@ def _run_pre_paraphrases(args, config):
+     if args.phase1_csv:
+         phase1_path = Path(args.phase1_csv)
+     else:
+-        csvs = sorted((RESULTS_DIR / "phase1").glob("**/party_impact_*.csv"))
++        csvs = sorted((canton_results_path(RESULTS_DIR, config) / "phase1").glob("**/party_impact_*.csv"))
+         if not csvs:
+             print("ERROR: No Phase 1 CSV found.", file=sys.stderr)
+             sys.exit(1)
+@@ -1452,7 +1452,7 @@ def _run_compile(args, config):
+     timestamp = datetime.now().strftime("%m%d_%H%M")
+     base = f"party_impact_{name}_{timestamp}_compiled"
+ 
+-    phase2_dir = RESULTS_DIR / "phase2" / name
++    phase2_dir = canton_results_path(RESULTS_DIR, config) / "phase2" / name
+ 
+     # Find Phase 2 CSVs with party tags (search in phase2/{name}/*/)
+     csvs = {}
+@@ -1482,7 +1482,7 @@ def _run_compile(args, config):
+         phase1_path = Path(args.phase1_csv)
+     else:
+         phase1_csvs = sorted(
+-            (RESULTS_DIR / "phase1").glob("**/party_impact_*.csv")
++            (canton_results_path(RESULTS_DIR, config) / "phase1").glob("**/party_impact_*.csv")
+         )
+         phase1_path = phase1_csvs[-1] if phase1_csvs else None
+ 
+diff --git a/experiments/perfect_clones/party_visibility_impact.py b/experiments/perfect_clones/party_visibility_impact.py
+index 24e5b1c..b957ce7 100644
+--- a/experiments/perfect_clones/party_visibility_impact.py
++++ b/experiments/perfect_clones/party_visibility_impact.py
+@@ -50,7 +50,7 @@ from scipy.stats import kruskal, spearmanr
+ from clone_pipeline.applicator import apply_specs
+ from clone_pipeline.spec import CloneSpec
+ from configs import base_constants as default_config
+-from vqs.config_utils import load_config
++from vqs.config_utils import load_config, canton_results_path
+ from vqs.party_visibility import MAJOR_PARTIES, PARTY2COLOR, _build_candidate_party_map, compute_party_visibility
+ 
+ sys.path.insert(0, str(Path(__file__).resolve().parent / "dependencies" / "rsfp"))
+@@ -286,7 +286,7 @@ def _run_sweep(args, config, n: int, n_clones: int):
+ 
+     # Load dataset for correlation analysis (already in pipeline)
+     name = _get_clean_name(config)
+-    output_dir = RESULTS_DIR / name
++    output_dir = canton_results_path(RESULTS_DIR, config) / name
+     output_dir.mkdir(parents=True, exist_ok=True)
+     _save_all_outputs(sweep_df, config, n, n_clones, output_dir, pipeline["dataset"])
+ 
+@@ -305,7 +305,7 @@ def _run_worker(args, config, n: int, n_clones: int):
+         sys.exit(1)
+ 
+     name = _get_clean_name(config)
+-    sweep_dir = Path(args.sweep_dir) if args.sweep_dir else RESULTS_DIR / name / "workers"
++    sweep_dir = Path(args.sweep_dir) if args.sweep_dir else canton_results_path(RESULTS_DIR, config) / name / "workers"
+     sweep_dir.mkdir(parents=True, exist_ok=True)
+ 
+     pipeline = _setup_pipeline(config)
+@@ -347,7 +347,7 @@ def _run_worker(args, config, n: int, n_clones: int):
+ 
+ def _run_collect(args, config, n: int, n_clones: int):
+     name = _get_clean_name(config)
+-    sweep_dir = Path(args.sweep_dir) if args.sweep_dir else RESULTS_DIR / name / "workers"
++    sweep_dir = Path(args.sweep_dir) if args.sweep_dir else canton_results_path(RESULTS_DIR, config) / name / "workers"
+ 
+     worker_files = sorted(sweep_dir.glob("pvi_worker_*.csv"))
+     if not worker_files:
+@@ -363,7 +363,7 @@ def _run_collect(args, config, n: int, n_clones: int):
+     print("\n--- Loading dataset for correlation analysis ---")
+     dataset = load_dataset(config)
+ 
+-    output_dir = RESULTS_DIR / name
++    output_dir = canton_results_path(RESULTS_DIR, config) / name
+     output_dir.mkdir(parents=True, exist_ok=True)
+ 
+     _save_all_outputs(combined, config, n, n_clones, output_dir, dataset)
+diff --git a/experiments/perfect_clones/recommendation_distortion.py b/experiments/perfect_clones/recommendation_distortion.py
+index f9e04e2..aa8d4ec 100644
+--- a/experiments/perfect_clones/recommendation_distortion.py
++++ b/experiments/perfect_clones/recommendation_distortion.py
+@@ -68,7 +68,7 @@ from clone_pipeline.applicator import apply_specs
+ from clone_pipeline.paraphrase_generator import ensure_paraphrases
+ from clone_pipeline.spec import CloneSpec
+ from cross_run_analysis.analyzer import CrossRunAnalyzer
+-from vqs.config_utils import load_config
++from vqs.config_utils import load_config, canton_results_path
+ from vqs.clone_robust_weighting import CloneRobustReweighter
+ from vqs.data_loader import load_dataset
+ from vqs.recommendation_engine import RecommendationEngine
+@@ -437,7 +437,7 @@ def _run_sweep(args, config, alphas: list[float], n_clones: int, n_jaccard: int,
+ 
+     sweep_df = pd.DataFrame(all_rows)
+ 
+-    output_dir = RESULTS_DIR
++    output_dir = canton_results_path(RESULTS_DIR, config)
+     output_dir.mkdir(parents=True, exist_ok=True)
+     _save_collect_outputs(sweep_df, config, alphas, n_clones, n_jaccard, output_dir)
+ 
+@@ -456,7 +456,7 @@ def _run_worker(args, config, alphas: list[float], n_clones: int, n_jaccard: int
+         print("ERROR: --task-id is required in worker mode", file=sys.stderr)
+         sys.exit(1)
+ 
+-    sweep_dir = Path(args.sweep_dir) if args.sweep_dir else RESULTS_DIR / "workers"
++    sweep_dir = Path(args.sweep_dir) if args.sweep_dir else canton_results_path(RESULTS_DIR, config) / "workers"
+     sweep_dir.mkdir(parents=True, exist_ok=True)
+ 
+     pipeline = _setup_pipeline(config, n_clones, clone_type=clone_type)
+@@ -518,7 +518,7 @@ def _get_base_min_distance(config) -> float | None:
+ 
+ 
+ def _run_collect(args, config, alphas: list[float], n_clones: int, n_jaccard: int):
+-    sweep_dir = Path(args.sweep_dir) if args.sweep_dir else RESULTS_DIR / "workers"
++    sweep_dir = Path(args.sweep_dir) if args.sweep_dir else canton_results_path(RESULTS_DIR, config) / "workers"
+ 
+     worker_files = sorted(sweep_dir.glob("qa_sweep_worker_*.csv"))
+     if not worker_files:
+@@ -534,7 +534,7 @@ def _run_collect(args, config, alphas: list[float], n_clones: int, n_jaccard: in
+     # Try to compute min non-clone distance for annotation
+     min_dist = _get_base_min_distance(config)
+ 
+-    output_dir = RESULTS_DIR
++    output_dir = canton_results_path(RESULTS_DIR, config)
+     output_dir.mkdir(parents=True, exist_ok=True)
+     _save_collect_outputs(combined, config, alphas, n_clones, n_jaccard, output_dir,
+                           min_nonclone_dist=min_dist)
+diff --git a/jobs/_lib/common.sh b/jobs/_lib/common.sh
+index 21de7b1..4d732a5 100644
+--- a/jobs/_lib/common.sh
++++ b/jobs/_lib/common.sh
+@@ -36,22 +36,48 @@ activate_env() {
+ 
+ # sbatch wrapper: adds log paths, env export and the profile's extra args; prints the job id.
+ # Set SUBMIT_DRY_RUN=1 to print the sbatch command instead of submitting.
++# Set SUBMIT_AFTER=<id>[:<id>...] to make every job also wait (afterany) for those jobs, and
++# SUBMIT_LOG=<file> to append every submitted job id to that file (used by run_all_cantons.sh).
+ submit() {
+     local pattern='%x_%j'
+-    local arg
++    local arg has_dep=""
++    local args=()
+     for arg in "$@"; do
+         [[ "${arg}" == --array* || "${arg}" == -a ]] && pattern='%x_%A_%a'
++        if [[ -n "${SUBMIT_AFTER:-}" && "${arg}" == --dependency=* ]]; then
++            arg="${arg},afterany:${SUBMIT_AFTER}"   # comma = AND with the job's own dependency
++            has_dep=1
++        fi
++        args+=("${arg}")
+     done
++    if [[ -n "${SUBMIT_AFTER:-}" && -z "${has_dep}" ]]; then
++        args=(--dependency="afterany:${SUBMIT_AFTER}" "${args[@]}")
++    fi
+     local cmd=(sbatch --parsable --export=ALL
+         --output="${LOG_DIR}/${pattern}.out" --error="${LOG_DIR}/${pattern}.err"
+-        "${SBATCH_EXTRA_ARGS[@]}" "$@")
++        "${SBATCH_EXTRA_ARGS[@]}" "${args[@]}")
+     if [[ -n "${SUBMIT_DRY_RUN:-}" ]]; then
+         echo "${cmd[*]}" >&2
+         echo "DRYRUN"
+         return 0
+     fi
+     mkdir -p "${LOG_DIR}"
+-    "${cmd[@]}"
++    local id
++    id=$("${cmd[@]}") || return 1
++    id="${id%%;*}"
++    [[ -n "${SUBMIT_LOG:-}" ]] && echo "${id}" >> "${SUBMIT_LOG}"
++    echo "${id}"
++}
++
++# Root of the experiment_results tree for the active canton (mirrors vqs.config_utils.canton_results_path):
++# the validation canton ZH (or no VQS_DISTRICT) uses experiment_results/, test cantons
++# experiment_results/cantons/<code>/. Launchers put their worker dirs under it.
++results_root() {
++    if [[ -n "${VQS_DISTRICT:-}" && "${VQS_DISTRICT}" != "ZH" ]]; then
++        echo "${PROJECT_DIR}/experiment_results/cantons/${VQS_DISTRICT}"
++    else
++        echo "${PROJECT_DIR}/experiment_results"
++    fi
+ }
+ 
+ # Common start of every job: fail fast, private temp dir, node info, env, cd to project root.
+diff --git a/jobs/approximate_clones/launch_partisan_full.sh b/jobs/approximate_clones/launch_partisan_full.sh
+index 6c09275..c6f89aa 100644
+--- a/jobs/approximate_clones/launch_partisan_full.sh
++++ b/jobs/approximate_clones/launch_partisan_full.sh
+@@ -9,7 +9,7 @@ set -o errexit
+ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+ source "${SCRIPT_DIR}/../_lib/common.sh"
+ cd "${PROJECT_DIR}"
+-SWEEP_DIR="${PROJECT_DIR}/experiment_results/party_impact/mini_maxi/phase1/workers/sweep_$(date +%Y%m%d_%H%M%S)"
++SWEEP_DIR="$(results_root)/party_impact/mini_maxi/phase1/workers/sweep_$(date +%Y%m%d_%H%M%S)"
+ mkdir -p "${SWEEP_DIR}"
+ 
+ export PIPELINE_CONFIG="configs/base_pipeline/pipeline_e5_instruct_ZH_a03.py"
+diff --git a/jobs/noise_slider/launch_robustness.sh b/jobs/noise_slider/launch_robustness.sh
+index 58b6484..4d0bd43 100755
+--- a/jobs/noise_slider/launch_robustness.sh
++++ b/jobs/noise_slider/launch_robustness.sh
+@@ -15,7 +15,7 @@ set -o errexit
+ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+ source "${SCRIPT_DIR}/../_lib/common.sh"
+ cd "${PROJECT_DIR}"
+-SWEEP_DIR="${PROJECT_DIR}/experiment_results/noise_slider/robustness/workers_$(date +%Y%m%d_%H%M%S)"
++SWEEP_DIR="$(results_root)/noise_slider/robustness/workers_$(date +%Y%m%d_%H%M%S)"
+ mkdir -p "${SWEEP_DIR}"
+ 
+ export PIPELINE_CONFIG="${PIPELINE_CONFIG:-configs/base_pipeline/pipeline_e5_instruct_ZH_a04.py}"
+diff --git a/jobs/perfect_clones/launch_clone_count_sweep.sh b/jobs/perfect_clones/launch_clone_count_sweep.sh
+index 89b2d2d..d747469 100755
+--- a/jobs/perfect_clones/launch_clone_count_sweep.sh
++++ b/jobs/perfect_clones/launch_clone_count_sweep.sh
+@@ -8,7 +8,7 @@ set -o errexit
+ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+ source "${SCRIPT_DIR}/../_lib/common.sh"
+ cd "${PROJECT_DIR}"
+-SWEEP_DIR="${PROJECT_DIR}/experiment_results/clone_count_sweep/workers_$(date +%Y%m%d_%H%M%S)"
++SWEEP_DIR="$(results_root)/clone_count_sweep/workers_$(date +%Y%m%d_%H%M%S)"
+ mkdir -p "${SWEEP_DIR}"
+ 
+ export PIPELINE_CONFIG="configs/base_pipeline/pipeline_e5_ZH.py"
+diff --git a/jobs/perfect_clones/launch_model_selection.sh b/jobs/perfect_clones/launch_model_selection.sh
+index 32ce2ec..6745176 100755
+--- a/jobs/perfect_clones/launch_model_selection.sh
++++ b/jobs/perfect_clones/launch_model_selection.sh
+@@ -10,7 +10,7 @@ set -o errexit
+ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+ source "${SCRIPT_DIR}/../_lib/common.sh"
+ cd "${PROJECT_DIR}"
+-SWEEP_DIR="${PROJECT_DIR}/experiment_results/exp1/model_alpha_sweep/sweep_$(date +%Y%m%d_%H%M%S)"
++SWEEP_DIR="$(results_root)/exp1/model_alpha_sweep/sweep_$(date +%Y%m%d_%H%M%S)"
+ mkdir -p "${SWEEP_DIR}"
+ 
+ # Default configs — override via env vars before calling this script
+diff --git a/jobs/perfect_clones/launch_partisan.sh b/jobs/perfect_clones/launch_partisan.sh
+index 40b024a..7c50365 100644
+--- a/jobs/perfect_clones/launch_partisan.sh
++++ b/jobs/perfect_clones/launch_partisan.sh
+@@ -9,7 +9,7 @@ set -o errexit
+ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+ source "${SCRIPT_DIR}/../_lib/common.sh"
+ cd "${PROJECT_DIR}"
+-SWEEP_DIR="${PROJECT_DIR}/experiment_results/party_impact/high_impact/workers_$(date +%Y%m%d_%H%M%S)"
++SWEEP_DIR="$(results_root)/party_impact/high_impact/workers_$(date +%Y%m%d_%H%M%S)"
+ mkdir -p "${SWEEP_DIR}"
+ 
+ export PIPELINE_CONFIG="configs/base_pipeline/pipeline_e5_ZH.py"
+diff --git a/jobs/perfect_clones/launch_party_vis_impact.sh b/jobs/perfect_clones/launch_party_vis_impact.sh
+index 344bb15..ebcecfd 100644
+--- a/jobs/perfect_clones/launch_party_vis_impact.sh
++++ b/jobs/perfect_clones/launch_party_vis_impact.sh
+@@ -8,7 +8,7 @@ set -o errexit
+ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+ source "${SCRIPT_DIR}/../_lib/common.sh"
+ cd "${PROJECT_DIR}"
+-SWEEP_DIR="${PROJECT_DIR}/experiment_results/question_impact/party_visibility_impact/workers_$(date +%Y%m%d_%H%M%S)"
++SWEEP_DIR="$(results_root)/question_impact/party_visibility_impact/workers_$(date +%Y%m%d_%H%M%S)"
+ mkdir -p "${SWEEP_DIR}"
+ 
+ export PIPELINE_CONFIG="configs/base_pipeline/pipeline_e5_ZH.py"
+diff --git a/jobs/perfect_clones/launch_question_clone_sweep.sh b/jobs/perfect_clones/launch_question_clone_sweep.sh
+index a61d677..fc7c38b 100644
+--- a/jobs/perfect_clones/launch_question_clone_sweep.sh
++++ b/jobs/perfect_clones/launch_question_clone_sweep.sh
+@@ -9,7 +9,7 @@ set -o errexit
+ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+ source "${SCRIPT_DIR}/../_lib/common.sh"
+ cd "${PROJECT_DIR}"
+-SWEEP_DIR="${PROJECT_DIR}/experiment_results/question_impact/clone_sweep_$(date +%Y%m%d_%H%M%S)"
++SWEEP_DIR="$(results_root)/question_impact/clone_sweep_$(date +%Y%m%d_%H%M%S)"
+ mkdir -p "${SWEEP_DIR}"
+ 
+ export PIPELINE_CONFIG="configs/base_pipeline/pipeline_e5_instruct_ZH_a03.py"
+diff --git a/jobs/perfect_clones/launch_question_impact.sh b/jobs/perfect_clones/launch_question_impact.sh
+index cdb382d..92d2878 100644
+--- a/jobs/perfect_clones/launch_question_impact.sh
++++ b/jobs/perfect_clones/launch_question_impact.sh
+@@ -8,7 +8,7 @@ set -o errexit
+ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+ source "${SCRIPT_DIR}/../_lib/common.sh"
+ cd "${PROJECT_DIR}"
+-SWEEP_DIR="${PROJECT_DIR}/experiment_results/question_impact/workers_$(date +%Y%m%d_%H%M%S)"
++SWEEP_DIR="$(results_root)/question_impact/workers_$(date +%Y%m%d_%H%M%S)"
+ mkdir -p "${SWEEP_DIR}"
+ 
+ export PIPELINE_CONFIG="configs/base_pipeline/pipeline_e5_ZH.py"
+diff --git a/jobs/perfect_clones/launch_rec_distortion.sh b/jobs/perfect_clones/launch_rec_distortion.sh
+index 9505f97..cc9c2f5 100755
+--- a/jobs/perfect_clones/launch_rec_distortion.sh
++++ b/jobs/perfect_clones/launch_rec_distortion.sh
+@@ -10,7 +10,7 @@ set -o errexit
+ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+ source "${SCRIPT_DIR}/../_lib/common.sh"
+ cd "${PROJECT_DIR}"
+-SWEEP_DIR="${PROJECT_DIR}/experiment_results/exp1/question_alpha_sweep/workers_allct_$(date +%Y%m%d_%H%M%S)"
++SWEEP_DIR="$(results_root)/exp1/question_alpha_sweep/workers_allct_$(date +%Y%m%d_%H%M%S)"
+ mkdir -p "${SWEEP_DIR}"
+ 
+ export PIPELINE_CONFIG="configs/base_pipeline/pipeline_e5_instruct_ZH_a04.py"
+diff --git a/vqs/clone_robust_weighting.py b/vqs/clone_robust_weighting.py
+index 9e0cece..5b75b16 100755
+--- a/vqs/clone_robust_weighting.py
++++ b/vqs/clone_robust_weighting.py
+@@ -9,6 +9,8 @@ import numpy as np
+ import warnings
+ from typing import Any, Sequence
+ 
++from vqs.config_utils import respondent_hash_params
++
+ 
+ class CloneRobustReweighter:
+     """
+@@ -24,7 +26,9 @@ class CloneRobustReweighter:
+             self.weighting_func = self._smoothed_class_uniform_weighting_fn
+         else:
+             self.weighting_func = self._class_uniform_weighting_fn
+-        self.important_params_list = list(config.CRW_HASH_PARAMS)
++        # Weights inherit the distances' dependence on respondents (answer-based metrics only).
++        base = list(config.CRW_HASH_PARAMS)
++        self.important_params_list = base + [p for p in respondent_hash_params(config) if p not in base]
+ 
+         print(
+             f"Initialized CloneRobustReweighter with alpha={self.alpha} and important parameters: {self.important_params_list}"
+diff --git a/vqs/config_utils.py b/vqs/config_utils.py
+index 579ceff..0299c62 100644
+--- a/vqs/config_utils.py
++++ b/vqs/config_utils.py
+@@ -2,6 +2,7 @@
+ Shared config loading utilities used by main.py and all experiment scripts.
+ """
+ 
++import os
+ import sys
+ from pathlib import Path
+ from types import SimpleNamespace
+@@ -42,9 +43,63 @@ def load_config(config_path: Path):
+     config_vars.pop("__builtins__", None)
+     config_vars.pop("__name__", None)
+ 
++    # `overrides` comes from `from configs.base_constants import *`, i.e. one list object shared
++    # by every config loaded in this process. Copy it so overrides don't leak between configs.
++    config.overrides = list(getattr(config, "overrides", []))
++
++    _apply_district_env(config)
++
+     return config
+ 
+ 
++def _apply_district_env(config):
++    """
++    Re-targets a canton-scoped config (district != "all") to the canton in env var VQS_DISTRICT.
++    Configs with district="all" (fake data, national runs) are left untouched. Registered as a
++    regular override, so it shows up in run names and metadata.
++    """
++    district = os.environ.get("VQS_DISTRICT")
++    current = getattr(config, "district", "all")
++    if not district or current == "all" or district == current:
++        return
++    if district not in config.DISTRICT2ID:
++        print(f"Error: VQS_DISTRICT='{district}' is not a canton code ({', '.join(config.DISTRICT2ID)}).")
++        sys.exit(1)
++    print(f"VQS_DISTRICT={district}: re-targeting config from district '{current}' to '{district}'.")
++    apply_overrides(config, [f"district={district}"])
++
++
++def respondent_hash_params(config) -> list[str]:
++    """Extra cache-hash params for answer-based metrics (empty for text-embedding metrics)."""
++    from configs import base_constants
++
++    answer_based = getattr(config, "ANSWER_BASED_METRICS", base_constants.ANSWER_BASED_METRICS)
++    if config.dist.upper() in answer_based:
++        return list(getattr(config, "ANSWER_METRIC_HASH_PARAMS", base_constants.ANSWER_METRIC_HASH_PARAMS))
++    return []
++
++
++def canton_results_path(path, config=None) -> Path:
++    """
++    Maps an experiment_results path to the config's canton (or, without a config, to the
++    canton in VQS_DISTRICT — for compile scripts that only read results). The validation
++    canton (and district="all") keeps the original tree; every test canton gets a mirror of
++    the same structure under experiment_results/cantons/<code>/, so cantons compare
++    path-for-path.
++    """
++    if config is None:
++        from configs import base_constants as config
++        district = os.environ.get("VQS_DISTRICT") or config.VALIDATION_DISTRICT
++    else:
++        district = config.district
++    path = Path(path)
++    if district in ("all", config.VALIDATION_DISTRICT):
++        return path
++    abs_path = path if path.is_absolute() else config.PROJECT_ROOT / path
++    rel = abs_path.relative_to(config.RESULTS_DIR)
++    return config.CANTON_RESULTS_DIR / district / rel
++
++
+ def apply_overrides(config, overrides):
+     """
+     Parses a list of "key=value" strings and updates the config object.
+diff --git a/vqs/data_loader.py b/vqs/data_loader.py
+index 8c33343..75de3ad 100755
+--- a/vqs/data_loader.py
++++ b/vqs/data_loader.py
+@@ -8,6 +8,30 @@ import pandas as pd
+ from dependencies import SVDataFrame
+ 
+ 
++def filter_to_district(data_map: dict, config) -> dict:
++    """Filters data_map["voters"] / data_map["candidates"] (in place) to config.district."""
++    if config.district == "all" or not ("voters" in data_map or "candidates" in data_map):
++        return data_map
++
++    cantonID_map = config.DISTRICT2ID if config.data_year == 2023 else config.DISTRICT2ID19
++    target_id = cantonID_map.get(config.district)
++    if target_id is None:
++        # A silent fallback to all cantons would mix validation and test data.
++        raise ValueError(f"District '{config.district}' not found for year {config.data_year}.")
++
++    print(f"Filtering data for district: {config.district} (ID: {target_id})")
++    if "voters" in data_map:
++        df = data_map["voters"]
++        voter_district_col = "districtID" if config.data_year == 2023 else "ID_district"
++        data_map["voters"] = df[df[voter_district_col] == target_id].copy()
++
++    # Filter Candidates (ID_election)
++    if "candidates" in data_map:
++        df = data_map["candidates"]
++        data_map["candidates"] = df[df["ID_district"] == target_id].copy()
++    return data_map
++
++
+ # # Conceptual preview - don't implement yet
+ def load_parquet_by_prefix(directory, prefix):
+     # Find any file that starts with "df_voters19" and ends with ".parquet"
+@@ -77,35 +101,8 @@ def load_dataset(config) -> dict:
+         )
+ 
+     # Optional Canton Filtering
+-    if (
+-        config.district != "all"
+-        and config.data_choice != "fake"
+-        and ("voters" in data_map or "candidates" in data_map)
+-    ):
+-        print(f"Filtering voters and candidates for district: {config.district}...")
+-
+-        cantonID_map = (
+-            config.DISTRICT2ID if config.data_year == 2023 else config.DISTRICT2ID19
+-        )
+-        target_id = cantonID_map.get(config.district)
+-
+-        if target_id is None:
+-            print(
+-                f"Warning: District '{config.district}' not found for year {config.data_year}. Skipping filter."
+-            )
+-        else:
+-            print(f"Filtering data for district: {config.district} (ID: {target_id})")
+-            if "voters" in data_map:
+-                df = data_map["voters"]
+-                voter_district_col = (
+-                    "districtID" if config.data_year == 2023 else "ID_district"
+-                )
+-                data_map["voters"] = df[df[voter_district_col] == target_id].copy()
+-
+-            # Filter Candidates (ID_election)
+-            if "candidates" in data_map:
+-                df = data_map["candidates"]
+-                data_map["candidates"] = df[df["ID_district"] == target_id].copy()
++    if config.data_choice != "fake":
++        filter_to_district(data_map, config)
+ 
+     # Optional subsetting for quick testing
+     if hasattr(config, "subset_n") and config.subset_n is not None:
+diff --git a/vqs/recommendation_engine.py b/vqs/recommendation_engine.py
+index 88d40da..2d8682b 100755
+--- a/vqs/recommendation_engine.py
++++ b/vqs/recommendation_engine.py
+@@ -6,6 +6,7 @@ using the rsfp library. Results are cached by config hash to avoid redundant com
+ import pandas as pd
+ from dependencies import add_candidate_voting_recommendations
+ from vqs.result_management import ResultManager
++from vqs.config_utils import respondent_hash_params
+ 
+ 
+ class RecommendationEngine:
+@@ -29,7 +30,9 @@ class RecommendationEngine:
+             self.n_recs = self.config.n_recommendations
+ 
+         # Parameters that affect the recommendation calculations and should be included in the cache hash
+-        self.important_params_list = list(config.REC_HASH_PARAMS)
++        # (plus the respondent params of answer-based metrics, whose weights depend on them)
++        base = list(config.REC_HASH_PARAMS)
++        self.important_params_list = base + [p for p in respondent_hash_params(config) if p not in base]
+         print(
+             f"Initialized RecommendationEngine with important parameters: {self.important_params_list}"
+         )
+diff --git a/vqs/result_management.py b/vqs/result_management.py
+index 59331ed..69275a9 100755
+--- a/vqs/result_management.py
++++ b/vqs/result_management.py
+@@ -6,6 +6,7 @@ with timestamp prefix for experiment_results/ and hash-based names for cache/.
+ 
+ import json
+ import hashlib
++import os
+ import pandas as pd
+ from pathlib import Path
+ from datetime import datetime
+@@ -85,21 +86,29 @@ class ResultManager:
+         path = self.get_path(readable=readable, extension=extension)
+         ext = path.suffix.lower()
+ 
++        # Write to a hidden temp file, then rename: concurrent jobs (e.g. several cantons sharing
++        # a canton-independent embedding cache) never see a half-written file. The temp name
++        # doesn't match the `*{hash}.{ext}` glob in exists().
++        tmp = path.with_name(f".{path.name}.tmp-{os.getpid()}")
++        written = True
+         if data is not None:
+             if isinstance(data, pd.DataFrame):
+                 if ext == ".parquet":
+-                    data.to_parquet(path, index=False)
++                    data.to_parquet(tmp, index=False)
+                 else:
+-                    data.to_csv(path, index=False)
++                    data.to_csv(tmp, index=False)
+             elif ext in [".txt", ".md"] and isinstance(data, str):
+-                path.write_text(data, encoding="utf-8")
++                tmp.write_text(data, encoding="utf-8")
+             elif ext == ".json":
+-                with open(path, "w", encoding="utf-8") as f:
++                with open(tmp, "w", encoding="utf-8") as f:
+                     json.dump(data, f, indent=4, default=str)
+             else:
++                written = False
+                 print(
+                     f"Warning: ResultManager auto-save not configured for type {type(data)} to {ext}."
+                 )
++            if written:
++                os.replace(tmp, path)
+ 
+         print(f"\nSuccess! File saved to:")
+         print(f"  -> {path}")
+diff --git a/vqs/similarity_metrics.py b/vqs/similarity_metrics.py
+index d61b7ef..dac94a2 100755
+--- a/vqs/similarity_metrics.py
++++ b/vqs/similarity_metrics.py
+@@ -12,6 +12,7 @@ import numpy as np
+ import pandas as pd
+ from sentence_transformers import SentenceTransformer  # type: ignore
+ from vqs.result_management import ResultManager
++from vqs.config_utils import respondent_hash_params
+ 
+ 
+ # --- 1. Base Class ---
+@@ -379,13 +380,13 @@ class AnswerBasedDistanceCalculator(ABC):
+         self.value_name = "Distance"
+ 
+         # Answer-based metrics additionally depend on WHICH respondents are used: the
+-        # source, any voter subset (subset_n), and the out-of-sample voter split. These are
+-        # deliberately NOT in the global DISTANCE_HASH_PARAMS (that would invalidate every
+-        # embedding cache, which is text-only), so we append them here. Params missing from
+-        # the config resolve to None in the hash.
+-        extra = ["correlation_answer_source", "subset_n", "train_voter_fraction", "split_seed"]
++        # source, any voter subset (subset_n), the out-of-sample voter split, and the canton
++        # (voters are filtered by district before this runs). These are deliberately NOT in
++        # the global DISTANCE_HASH_PARAMS (that would invalidate every embedding cache, which
++        # is text-only), so we append them here. Params missing from the config resolve to
++        # None in the hash.
+         base = list(config.DISTANCE_HASH_PARAMS)
+-        self.important_params_list = base + [p for p in extra if p not in base]
++        self.important_params_list = base + [p for p in respondent_hash_params(config) if p not in base]
+ 
+         source = getattr(config, "correlation_answer_source", None) or "voters"
+         print(

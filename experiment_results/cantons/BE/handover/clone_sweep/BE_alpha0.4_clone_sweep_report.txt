@@ -1,0 +1,46 @@
+==========================================================================================
+PER-QUESTION ALPHA SWEEP REPORT
+==========================================================================================
+Generated: 2026-10-05 02:50
+Config: pipeline_e5_instruct_ZH_a04_districtBE
+Clone type: easy_paraphrase × 5
+Alpha range: [0.4]
+Jaccard top-k (n): 24
+Questions tested: 75
+
+TOP 10 MOST CORRECTABLE QUESTIONS (by CRW Jaccard improvement):
+------------------------------------------------------------------------------------------
+Rank     QID   BaseJac   BestCRW   Improv  OptAlpha  Text
+------------------------------------------------------------------------------------------
+   1   32221    0.7687    0.9262  +0.1575      0.40  Are you in favor of the introduction of a tax
+   2   32267    0.6919    0.8479  +0.1560      0.40  Should automatic facial recognition be banned
+   3   32252    0.7121    0.8668  +0.1547      0.40  Are you in favor of further relaxing the prot
+   4   32232    0.6918    0.8436  +0.1518      0.40  Should cannabis use be legalized? [BePart que
+   5   32267    0.6919    0.8432  +0.1512      0.40  Should automatic facial recognition be banned
+   6   32252    0.7121    0.8595  +0.1474      0.40  Are you in favor of further relaxing the prot
+   7   32214    0.6524    0.7985  +0.1461      0.40  Do you support an increase in the retirement 
+   8   32232    0.6918    0.8372  +0.1454      0.40  Should cannabis use be legalized? [BePart que
+   9   32245    0.7147    0.8580  +0.1433      0.40  Should busy sections of highways be widened?
+  10   32246    0.7288    0.8702  +0.1414      0.40  Should Switzerland ban the registration of ne
+
+BOTTOM 10 LEAST CORRECTABLE QUESTIONS:
+------------------------------------------------------------------------------------------
+   1   32283    0.8954    0.8938  -0.0016      0.40  Should the federal government spend more or l
+   2   32281    0.9128    0.9114  -0.0014      0.40  Should the federal government spend more or l
+   3   32250    0.9037    0.9025  -0.0012      0.40  Should the state guarantee a comprehensive pu
+   4   32287    0.8904    0.8903  -0.0001      0.40  Should the federal government spend more or l
+   5   32281    0.9128    0.9132  +0.0003      0.40  Should the federal government spend more or l
+   6   32273    0.8153    0.8157  +0.0004      0.40  Should Switzerland return to a strict interpr
+   7   32282    0.9219    0.9225  +0.0007      0.40  Should the federal government spend more or l
+   8   32286    0.9264    0.9293  +0.0029      0.40  Should the federal government spend more or l
+   9   32274    0.8075    0.8118  +0.0043      0.40  What is your position the following statement
+  10   32216    0.8275    0.8320  +0.0045      0.40  For married couples, the pension is currently
+
+==========================================================================================
+OVERALL STATISTICS:
+  Baseline Jaccard — mean: 0.8102, median: 0.8153
+  Best CRW Jaccard — mean: 0.8684, median: 0.8753
+  Improvement — mean: 0.0582, median: 0.0541, min: -0.0016, max: 0.1575
+  Optimal alpha — mean: 0.40, median: 0.40, mode: 0.40
+  Questions with improvement > 0: 371/375
+==========================================================================================

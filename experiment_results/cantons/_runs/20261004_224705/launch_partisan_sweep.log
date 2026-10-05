@@ -1,0 +1,437 @@
+=== Party Sweep: Phase 2 for all 6 parties ===
+  Config:    configs/base_pipeline/pipeline_e5_instruct_ZH_a03.py
+  Canton:    BE
+  Phase1 CSV: experiment_results/party_impact/high_impact/phase1/pipeline_e5_ZH/party_impact_pipeline_e5_ZH_0302_0057.csv
+  Top-K:     5
+  Parties:   SP Green GLP Centre FDP SVP
+
+--- Step 1: Pre-generating paraphrases ---
+  Submitted pre-paraphrase job: 16081626
+
+--- Step 2: Submitting Phase 2 jobs (parallel, depend on 16081626) ---
+  SP: job 16081629
+  Green: job 16081630
+  GLP: job 16081633
+  Centre: job 16081636
+  FDP: job 16081640
+  SVP: job 16081643
+
+=== All jobs submitted ===
+  Pre-paraphrase: 16081626
+  Phase 2 jobs:   16081629 16081630 16081633 16081636 16081640 16081643
+
+Monitor with: squeue -u $USER
+=== Party Sweep: Phase 2 for all 6 parties ===
+  Config:    configs/base_pipeline/pipeline_e5_instruct_ZH_a03.py
+  Canton:    TI
+  Phase1 CSV: experiment_results/party_impact/high_impact/phase1/pipeline_e5_ZH/party_impact_pipeline_e5_ZH_0302_0057.csv
+  Top-K:     5
+  Parties:   SP Green GLP Centre FDP SVP
+
+--- Step 1: Pre-generating paraphrases ---
+  Submitted pre-paraphrase job: 16093219
+
+--- Step 2: Submitting Phase 2 jobs (parallel, depend on 16093219) ---
+  SP: job 16093220
+  Green: job 16093221
+  GLP: job 16093227
+  Centre: job 16093229
+  FDP: job 16093230
+  SVP: job 16093245
+
+=== All jobs submitted ===
+  Pre-paraphrase: 16093219
+  Phase 2 jobs:   16093220 16093221 16093227 16093229 16093230 16093245
+
+Monitor with: squeue -u $USER
+=== Party Sweep: Phase 2 for all 6 parties ===
+  Config:    configs/base_pipeline/pipeline_e5_instruct_ZH_a03.py
+  Canton:    AG
+  Phase1 CSV: experiment_results/party_impact/high_impact/phase1/pipeline_e5_ZH/party_impact_pipeline_e5_ZH_0302_0057.csv
+  Top-K:     5
+  Parties:   SP Green GLP Centre FDP SVP
+
+--- Step 1: Pre-generating paraphrases ---
+  Submitted pre-paraphrase job: 16093247
+
+--- Step 2: Submitting Phase 2 jobs (parallel, depend on 16093247) ---
+  SP: job 16093249
+  Green: job 16093251
+  GLP: job 16093252
+  Centre: job 16093254
+  FDP: job 16093255
+  SVP: job 16093257
+
+=== All jobs submitted ===
+  Pre-paraphrase: 16093247
+  Phase 2 jobs:   16093249 16093251 16093252 16093254 16093255 16093257
+
+Monitor with: squeue -u $USER
+=== Party Sweep: Phase 2 for all 6 parties ===
+  Config:    configs/base_pipeline/pipeline_e5_instruct_ZH_a03.py
+  Canton:    LU
+  Phase1 CSV: experiment_results/party_impact/high_impact/phase1/pipeline_e5_ZH/party_impact_pipeline_e5_ZH_0302_0057.csv
+  Top-K:     5
+  Parties:   SP Green GLP Centre FDP SVP
+
+--- Step 1: Pre-generating paraphrases ---
+  Submitted pre-paraphrase job: 16093258
+
+--- Step 2: Submitting Phase 2 jobs (parallel, depend on 16093258) ---
+  SP: job 16093259
+  Green: job 16093260
+  GLP: job 16093261
+  Centre: job 16093262
+  FDP: job 16093263
+  SVP: job 16093264
+
+=== All jobs submitted ===
+  Pre-paraphrase: 16093258
+  Phase 2 jobs:   16093259 16093260 16093261 16093262 16093263 16093264
+
+Monitor with: squeue -u $USER
+=== Party Sweep: Phase 2 for all 6 parties ===
+  Config:    configs/base_pipeline/pipeline_e5_instruct_ZH_a03.py
+  Canton:    SG
+  Phase1 CSV: experiment_results/party_impact/high_impact/phase1/pipeline_e5_ZH/party_impact_pipeline_e5_ZH_0302_0057.csv
+  Top-K:     5
+  Parties:   SP Green GLP Centre FDP SVP
+
+--- Step 1: Pre-generating paraphrases ---
+  Submitted pre-paraphrase job: 16093265
+
+--- Step 2: Submitting Phase 2 jobs (parallel, depend on 16093265) ---
+  SP: job 16093266
+  Green: job 16093267
+  GLP: job 16093268
+  Centre: job 16093269
+  FDP: job 16093270
+  SVP: job 16093271
+
+=== All jobs submitted ===
+  Pre-paraphrase: 16093265
+  Phase 2 jobs:   16093266 16093267 16093268 16093269 16093270 16093271
+
+Monitor with: squeue -u $USER
+=== Party Sweep: Phase 2 for all 6 parties ===
+  Config:    configs/base_pipeline/pipeline_e5_instruct_ZH_a03.py
+  Canton:    VD
+  Phase1 CSV: experiment_results/party_impact/high_impact/phase1/pipeline_e5_ZH/party_impact_pipeline_e5_ZH_0302_0057.csv
+  Top-K:     5
+  Parties:   SP Green GLP Centre FDP SVP
+
+--- Step 1: Pre-generating paraphrases ---
+  Submitted pre-paraphrase job: 16093272
+
+--- Step 2: Submitting Phase 2 jobs (parallel, depend on 16093272) ---
+  SP: job 16093274
+  Green: job 16093275
+  GLP: job 16093277
+  Centre: job 16093278
+  FDP: job 16093279
+  SVP: job 16093280
+
+=== All jobs submitted ===
+  Pre-paraphrase: 16093272
+  Phase 2 jobs:   16093274 16093275 16093277 16093278 16093279 16093280
+
+Monitor with: squeue -u $USER
+=== Party Sweep: Phase 2 for all 6 parties ===
+  Config:    configs/base_pipeline/pipeline_e5_instruct_ZH_a03.py
+  Canton:    VS
+  Phase1 CSV: experiment_results/party_impact/high_impact/phase1/pipeline_e5_ZH/party_impact_pipeline_e5_ZH_0302_0057.csv
+  Top-K:     5
+  Parties:   SP Green GLP Centre FDP SVP
+
+--- Step 1: Pre-generating paraphrases ---
+  Submitted pre-paraphrase job: 16093282
+
+--- Step 2: Submitting Phase 2 jobs (parallel, depend on 16093282) ---
+  SP: job 16093284
+  Green: job 16093285
+  GLP: job 16093286
+  Centre: job 16093287
+  FDP: job 16093288
+  SVP: job 16093289
+
+=== All jobs submitted ===
+  Pre-paraphrase: 16093282
+  Phase 2 jobs:   16093284 16093285 16093286 16093287 16093288 16093289
+
+Monitor with: squeue -u $USER
+=== Party Sweep: Phase 2 for all 6 parties ===
+  Config:    configs/base_pipeline/pipeline_e5_instruct_ZH_a03.py
+  Canton:    FR
+  Phase1 CSV: experiment_results/party_impact/high_impact/phase1/pipeline_e5_ZH/party_impact_pipeline_e5_ZH_0302_0057.csv
+  Top-K:     5
+  Parties:   SP Green GLP Centre FDP SVP
+
+--- Step 1: Pre-generating paraphrases ---
+  Submitted pre-paraphrase job: 16093299
+
+--- Step 2: Submitting Phase 2 jobs (parallel, depend on 16093299) ---
+  SP: job 16093302
+  Green: job 16093303
+  GLP: job 16093317
+  Centre: job 16093318
+  FDP: job 16093319
+  SVP: job 16093320
+
+=== All jobs submitted ===
+  Pre-paraphrase: 16093299
+  Phase 2 jobs:   16093302 16093303 16093317 16093318 16093319 16093320
+
+Monitor with: squeue -u $USER
+=== Party Sweep: Phase 2 for all 6 parties ===
+  Config:    configs/base_pipeline/pipeline_e5_instruct_ZH_a03.py
+  Canton:    SO
+  Phase1 CSV: experiment_results/party_impact/high_impact/phase1/pipeline_e5_ZH/party_impact_pipeline_e5_ZH_0302_0057.csv
+  Top-K:     5
+  Parties:   SP Green GLP Centre FDP SVP
+
+--- Step 1: Pre-generating paraphrases ---
+  Submitted pre-paraphrase job: 16093338
+
+--- Step 2: Submitting Phase 2 jobs (parallel, depend on 16093338) ---
+  SP: job 16093339
+  Green: job 16093340
+  GLP: job 16093341
+  Centre: job 16093342
+  FDP: job 16093343
+  SVP: job 16093344
+
+=== All jobs submitted ===
+  Pre-paraphrase: 16093338
+  Phase 2 jobs:   16093339 16093340 16093341 16093342 16093343 16093344
+
+Monitor with: squeue -u $USER
+=== Party Sweep: Phase 2 for all 6 parties ===
+  Config:    configs/base_pipeline/pipeline_e5_instruct_ZH_a03.py
+  Canton:    BL
+  Phase1 CSV: experiment_results/party_impact/high_impact/phase1/pipeline_e5_ZH/party_impact_pipeline_e5_ZH_0302_0057.csv
+  Top-K:     5
+  Parties:   SP Green GLP Centre FDP SVP
+
+--- Step 1: Pre-generating paraphrases ---
+  Submitted pre-paraphrase job: 16093348
+
+--- Step 2: Submitting Phase 2 jobs (parallel, depend on 16093348) ---
+  SP: job 16093350
+  Green: job 16093351
+  GLP: job 16093354
+  Centre: job 16093355
+  FDP: job 16093356
+  SVP: job 16093357
+
+=== All jobs submitted ===
+  Pre-paraphrase: 16093348
+  Phase 2 jobs:   16093350 16093351 16093354 16093355 16093356 16093357
+
+Monitor with: squeue -u $USER
+=== Party Sweep: Phase 2 for all 6 parties ===
+  Config:    configs/base_pipeline/pipeline_e5_instruct_ZH_a03.py
+  Canton:    TG
+  Phase1 CSV: experiment_results/party_impact/high_impact/phase1/pipeline_e5_ZH/party_impact_pipeline_e5_ZH_0302_0057.csv
+  Top-K:     5
+  Parties:   SP Green GLP Centre FDP SVP
+
+--- Step 1: Pre-generating paraphrases ---
+  Submitted pre-paraphrase job: 16093361
+
+--- Step 2: Submitting Phase 2 jobs (parallel, depend on 16093361) ---
+  SP: job 16093363
+  Green: job 16093364
+  GLP: job 16093365
+  Centre: job 16093366
+  FDP: job 16093367
+  SVP: job 16093368
+
+=== All jobs submitted ===
+  Pre-paraphrase: 16093361
+  Phase 2 jobs:   16093363 16093364 16093365 16093366 16093367 16093368
+
+Monitor with: squeue -u $USER
+=== Party Sweep: Phase 2 for all 6 parties ===
+  Config:    configs/base_pipeline/pipeline_e5_instruct_ZH_a03.py
+  Canton:    BS
+  Phase1 CSV: experiment_results/party_impact/high_impact/phase1/pipeline_e5_ZH/party_impact_pipeline_e5_ZH_0302_0057.csv
+  Top-K:     5
+  Parties:   SP Green GLP Centre FDP SVP
+
+--- Step 1: Pre-generating paraphrases ---
+  Submitted pre-paraphrase job: 16093373
+
+--- Step 2: Submitting Phase 2 jobs (parallel, depend on 16093373) ---
+  SP: job 16093374
+  Green: job 16093388
+  GLP: job 16093389
+  Centre: job 16093391
+  FDP: job 16093392
+  SVP: job 16093393
+
+=== All jobs submitted ===
+  Pre-paraphrase: 16093373
+  Phase 2 jobs:   16093374 16093388 16093389 16093391 16093392 16093393
+
+Monitor with: squeue -u $USER
+=== Party Sweep: Phase 2 for all 6 parties ===
+  Config:    configs/base_pipeline/pipeline_e5_instruct_ZH_a03.py
+  Canton:    GR
+  Phase1 CSV: experiment_results/party_impact/high_impact/phase1/pipeline_e5_ZH/party_impact_pipeline_e5_ZH_0302_0057.csv
+  Top-K:     5
+  Parties:   SP Green GLP Centre FDP SVP
+
+--- Step 1: Pre-generating paraphrases ---
+  Submitted pre-paraphrase job: 16093394
+
+--- Step 2: Submitting Phase 2 jobs (parallel, depend on 16093394) ---
+  SP: job 16093395
+  Green: job 16093396
+  GLP: job 16093397
+  Centre: job 16093398
+  FDP: job 16093399
+  SVP: job 16093400
+
+=== All jobs submitted ===
+  Pre-paraphrase: 16093394
+  Phase 2 jobs:   16093395 16093396 16093397 16093398 16093399 16093400
+
+Monitor with: squeue -u $USER
+=== Party Sweep: Phase 2 for all 6 parties ===
+  Config:    configs/base_pipeline/pipeline_e5_instruct_ZH_a03.py
+  Canton:    GE
+  Phase1 CSV: experiment_results/party_impact/high_impact/phase1/pipeline_e5_ZH/party_impact_pipeline_e5_ZH_0302_0057.csv
+  Top-K:     5
+  Parties:   SP Green GLP Centre FDP SVP
+
+--- Step 1: Pre-generating paraphrases ---
+  Submitted pre-paraphrase job: 16093407
+
+--- Step 2: Submitting Phase 2 jobs (parallel, depend on 16093407) ---
+  SP: job 16093409
+  Green: job 16093410
+  GLP: job 16093412
+  Centre: job 16093417
+  FDP: job 16093418
+  SVP: job 16093419
+
+=== All jobs submitted ===
+  Pre-paraphrase: 16093407
+  Phase 2 jobs:   16093409 16093410 16093412 16093417 16093418 16093419
+
+Monitor with: squeue -u $USER
+=== Party Sweep: Phase 2 for all 6 parties ===
+  Config:    configs/base_pipeline/pipeline_e5_instruct_ZH_a03.py
+  Canton:    SZ
+  Phase1 CSV: experiment_results/party_impact/high_impact/phase1/pipeline_e5_ZH/party_impact_pipeline_e5_ZH_0302_0057.csv
+  Top-K:     5
+  Parties:   SP Green GLP Centre FDP SVP
+
+--- Step 1: Pre-generating paraphrases ---
+  Submitted pre-paraphrase job: 16093435
+
+--- Step 2: Submitting Phase 2 jobs (parallel, depend on 16093435) ---
+  SP: job 16093436
+  Green: job 16093437
+  GLP: job 16093438
+  Centre: job 16093440
+  FDP: job 16093442
+  SVP: job 16093443
+
+=== All jobs submitted ===
+  Pre-paraphrase: 16093435
+  Phase 2 jobs:   16093436 16093437 16093438 16093440 16093442 16093443
+
+Monitor with: squeue -u $USER
+=== Party Sweep: Phase 2 for all 6 parties ===
+  Config:    configs/base_pipeline/pipeline_e5_instruct_ZH_a03.py
+  Canton:    ZG
+  Phase1 CSV: experiment_results/party_impact/high_impact/phase1/pipeline_e5_ZH/party_impact_pipeline_e5_ZH_0302_0057.csv
+  Top-K:     5
+  Parties:   SP Green GLP Centre FDP SVP
+
+--- Step 1: Pre-generating paraphrases ---
+  Submitted pre-paraphrase job: 16093457
+
+--- Step 2: Submitting Phase 2 jobs (parallel, depend on 16093457) ---
+  SP: job 16093458
+  Green: job 16093459
+  GLP: job 16093460
+  Centre: job 16093461
+  FDP: job 16093462
+  SVP: job 16093463
+
+=== All jobs submitted ===
+  Pre-paraphrase: 16093457
+  Phase 2 jobs:   16093458 16093459 16093460 16093461 16093462 16093463
+
+Monitor with: squeue -u $USER
+=== Party Sweep: Phase 2 for all 6 parties ===
+  Config:    configs/base_pipeline/pipeline_e5_instruct_ZH_a03.py
+  Canton:    NE
+  Phase1 CSV: experiment_results/party_impact/high_impact/phase1/pipeline_e5_ZH/party_impact_pipeline_e5_ZH_0302_0057.csv
+  Top-K:     5
+  Parties:   SP Green GLP Centre FDP SVP
+
+--- Step 1: Pre-generating paraphrases ---
+  Submitted pre-paraphrase job: 16093476
+
+--- Step 2: Submitting Phase 2 jobs (parallel, depend on 16093476) ---
+  SP: job 16093477
+  Green: job 16093478
+  GLP: job 16093479
+  Centre: job 16093482
+  FDP: job 16093483
+  SVP: job 16093484
+
+=== All jobs submitted ===
+  Pre-paraphrase: 16093476
+  Phase 2 jobs:   16093477 16093478 16093479 16093482 16093483 16093484
+
+Monitor with: squeue -u $USER
+=== Party Sweep: Phase 2 for all 6 parties ===
+  Config:    configs/base_pipeline/pipeline_e5_instruct_ZH_a03.py
+  Canton:    SH
+  Phase1 CSV: experiment_results/party_impact/high_impact/phase1/pipeline_e5_ZH/party_impact_pipeline_e5_ZH_0302_0057.csv
+  Top-K:     5
+  Parties:   SP Green GLP Centre FDP SVP
+
+--- Step 1: Pre-generating paraphrases ---
+  Submitted pre-paraphrase job: 16093545
+
+--- Step 2: Submitting Phase 2 jobs (parallel, depend on 16093545) ---
+  SP: job 16093546
+  Green: job 16093560
+  GLP: job 16093562
+  Centre: job 16093563
+  FDP: job 16093565
+  SVP: job 16093566
+
+=== All jobs submitted ===
+  Pre-paraphrase: 16093545
+  Phase 2 jobs:   16093546 16093560 16093562 16093563 16093565 16093566
+
+Monitor with: squeue -u $USER
+=== Party Sweep: Phase 2 for all 6 parties ===
+  Config:    configs/base_pipeline/pipeline_e5_instruct_ZH_a03.py
+  Canton:    JU
+  Phase1 CSV: experiment_results/party_impact/high_impact/phase1/pipeline_e5_ZH/party_impact_pipeline_e5_ZH_0302_0057.csv
+  Top-K:     5
+  Parties:   SP Green GLP Centre FDP SVP
+
+--- Step 1: Pre-generating paraphrases ---
+  Submitted pre-paraphrase job: 16093569
+
+--- Step 2: Submitting Phase 2 jobs (parallel, depend on 16093569) ---
+  SP: job 16093577
+  Green: job 16093582
+  GLP: job 16093585
+  Centre: job 16093640
+  FDP: job 16093642
+  SVP: job 16093643
+
+=== All jobs submitted ===
+  Pre-paraphrase: 16093569
+  Phase 2 jobs:   16093577 16093582 16093585 16093640 16093642 16093643
+
+Monitor with: squeue -u $USER
