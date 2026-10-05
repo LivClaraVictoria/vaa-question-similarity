@@ -1,7 +1,8 @@
 """
 CRW drift on the unmanipulated questionnaire: how much does CRW alone change each voter's ranking
 (plain vs CRW, no clones)? Reads a pipeline recommendations parquet (which holds both rankings and
-a .json with n_jaccard) and writes a per-voter CSV and a summary CSV next to it.
+a .json with n_jaccard) and writes a per-voter CSV and a summary CSV to a `crw_drift/` folder beside
+`pipeline_outputs/` (i.e. <results root>/crw_drift/).
 
 Metrics per voter: Jaccard@k and swaps in the top-k, Spearman / Kendall on the full list, share and
 size of rank changes. Higher Jaccard / correlation = CRW changes less.
@@ -56,14 +57,19 @@ def compute_crw_drift(recs_path: Path) -> tuple[pd.DataFrame, pd.DataFrame]:
     return per_voter, summary.round(5)
 
 
+def default_out_dir(recs_path: Path) -> Path:
+    root = next(p.parent for p in recs_path.resolve().parents if p.name == "pipeline_outputs")
+    return root / "crw_drift"
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--recs", required=True, help="Path to a recs_*.parquet (with its .json beside it).")
-    parser.add_argument("--out-dir", default=None, help="Output directory (default: next to the parquet).")
+    parser.add_argument("--out-dir", default=None, help="Output directory (default: <results root>/crw_drift).")
     args = parser.parse_args()
 
     recs_path = Path(args.recs)
-    out_dir = Path(args.out_dir) if args.out_dir else recs_path.parent
+    out_dir = Path(args.out_dir) if args.out_dir else default_out_dir(recs_path)
     out_dir.mkdir(parents=True, exist_ok=True)
 
     per_voter, summary = compute_crw_drift(recs_path)
