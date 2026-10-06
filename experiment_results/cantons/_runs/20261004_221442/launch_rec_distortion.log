@@ -1,6 +1,6 @@
 === Per-Question Alpha Sweep (All Clone Types) ===
   Config: configs/base_pipeline/pipeline_e5_instruct_ZH_a04.py
-  Sweep dir: /cluster/home/liweiss/projects/vaa-question-similarity/experiment_results/cantons/BE/exp1/question_alpha_sweep/workers_allct_20261004_221443
+  Sweep dir: experiment_results/cantons/BE/exp1/question_alpha_sweep/workers_allct_20261004_221443
   Clone types: easy_paraphrase hard_paraphrase negation_easy negation_hard perfect_mix
   N clones: 4
 
@@ -20,7 +20,7 @@
   Monitor: squeue -u $USER
 === Per-Question Alpha Sweep (All Clone Types) ===
   Config: configs/base_pipeline/pipeline_e5_instruct_ZH_a04.py
-  Sweep dir: /cluster/home/liweiss/projects/vaa-question-similarity/experiment_results/cantons/AG/exp1/question_alpha_sweep/workers_allct_20261004_221449
+  Sweep dir: experiment_results/cantons/AG/exp1/question_alpha_sweep/workers_allct_20261004_221449
   Clone types: easy_paraphrase hard_paraphrase negation_easy negation_hard perfect_mix
   N clones: 4
 
@@ -40,7 +40,7 @@
   Monitor: squeue -u $USER
 === Per-Question Alpha Sweep (All Clone Types) ===
   Config: configs/base_pipeline/pipeline_e5_instruct_ZH_a04.py
-  Sweep dir: /cluster/home/liweiss/projects/vaa-question-similarity/experiment_results/cantons/LU/exp1/question_alpha_sweep/workers_allct_20261004_221457
+  Sweep dir: experiment_results/cantons/LU/exp1/question_alpha_sweep/workers_allct_20261004_221457
   Clone types: easy_paraphrase hard_paraphrase negation_easy negation_hard perfect_mix
   N clones: 4
 

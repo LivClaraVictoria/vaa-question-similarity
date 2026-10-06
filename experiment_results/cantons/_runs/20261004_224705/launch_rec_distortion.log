@@ -1,6 +1,6 @@
 === Per-Question Alpha Sweep (All Clone Types) ===
   Config: configs/base_pipeline/pipeline_e5_instruct_ZH_a04.py
-  Sweep dir: /cluster/home/liweiss/projects/vaa-question-similarity/experiment_results/cantons/BE/exp1/question_alpha_sweep/workers_allct_20261004_224807
+  Sweep dir: experiment_results/cantons/BE/exp1/question_alpha_sweep/workers_allct_20261004_224807
   Clone types: easy_paraphrase hard_paraphrase negation_easy negation_hard perfect_mix
   N clones: 4
 
@@ -20,7 +20,7 @@
   Monitor: squeue -u $USER
 === Per-Question Alpha Sweep (All Clone Types) ===
   Config: configs/base_pipeline/pipeline_e5_instruct_ZH_a04.py
-  Sweep dir: /cluster/home/liweiss/projects/vaa-question-similarity/experiment_results/cantons/AG/exp1/question_alpha_sweep/workers_allct_20261005_025318
+  Sweep dir: experiment_results/cantons/AG/exp1/question_alpha_sweep/workers_allct_20261005_025318
   Clone types: easy_paraphrase hard_paraphrase negation_easy negation_hard perfect_mix
   N clones: 4
 
@@ -40,7 +40,7 @@
   Monitor: squeue -u $USER
 === Per-Question Alpha Sweep (All Clone Types) ===
   Config: configs/base_pipeline/pipeline_e5_instruct_ZH_a04.py
-  Sweep dir: /cluster/home/liweiss/projects/vaa-question-similarity/experiment_results/cantons/LU/exp1/question_alpha_sweep/workers_allct_20261005_025321
+  Sweep dir: experiment_results/cantons/LU/exp1/question_alpha_sweep/workers_allct_20261005_025321
   Clone types: easy_paraphrase hard_paraphrase negation_easy negation_hard perfect_mix
   N clones: 4
 
@@ -60,7 +60,7 @@
   Monitor: squeue -u $USER
 === Per-Question Alpha Sweep (All Clone Types) ===
   Config: configs/base_pipeline/pipeline_e5_instruct_ZH_a04.py
-  Sweep dir: /cluster/home/liweiss/projects/vaa-question-similarity/experiment_results/cantons/SG/exp1/question_alpha_sweep/workers_allct_20261005_034618
+  Sweep dir: experiment_results/cantons/SG/exp1/question_alpha_sweep/workers_allct_20261005_034618
   Clone types: easy_paraphrase hard_paraphrase negation_easy negation_hard perfect_mix
   N clones: 4
 
@@ -80,7 +80,7 @@
   Monitor: squeue -u $USER
 === Per-Question Alpha Sweep (All Clone Types) ===
   Config: configs/base_pipeline/pipeline_e5_instruct_ZH_a04.py
-  Sweep dir: /cluster/home/liweiss/projects/vaa-question-similarity/experiment_results/cantons/VD/exp1/question_alpha_sweep/workers_allct_20261005_044700
+  Sweep dir: experiment_results/cantons/VD/exp1/question_alpha_sweep/workers_allct_20261005_044700
   Clone types: easy_paraphrase hard_paraphrase negation_easy negation_hard perfect_mix
   N clones: 4
 
@@ -100,7 +100,7 @@
   Monitor: squeue -u $USER
 === Per-Question Alpha Sweep (All Clone Types) ===
   Config: configs/base_pipeline/pipeline_e5_instruct_ZH_a04.py
-  Sweep dir: /cluster/home/liweiss/projects/vaa-question-similarity/experiment_results/cantons/VS/exp1/question_alpha_sweep/workers_allct_20261005_054333
+  Sweep dir: experiment_results/cantons/VS/exp1/question_alpha_sweep/workers_allct_20261005_054333
   Clone types: easy_paraphrase hard_paraphrase negation_easy negation_hard perfect_mix
   N clones: 4
 
@@ -120,7 +120,7 @@
   Monitor: squeue -u $USER
 === Per-Question Alpha Sweep (All Clone Types) ===
   Config: configs/base_pipeline/pipeline_e5_instruct_ZH_a04.py
-  Sweep dir: /cluster/home/liweiss/projects/vaa-question-similarity/experiment_results/cantons/TI/exp1/question_alpha_sweep/workers_allct_20261005_062725
+  Sweep dir: experiment_results/cantons/TI/exp1/question_alpha_sweep/workers_allct_20261005_062725
   Clone types: easy_paraphrase hard_paraphrase negation_easy negation_hard perfect_mix
   N clones: 4
 
@@ -131,7 +131,7 @@
 sbatch: error: Batch job submission failed: Socket timed out on send/recv operation
 === Per-Question Alpha Sweep (All Clone Types) ===
   Config: configs/base_pipeline/pipeline_e5_instruct_ZH_a04.py
-  Sweep dir: /cluster/home/liweiss/projects/vaa-question-similarity/experiment_results/cantons/FR/exp1/question_alpha_sweep/workers_allct_20261005_062952
+  Sweep dir: experiment_results/cantons/FR/exp1/question_alpha_sweep/workers_allct_20261005_062952
   Clone types: easy_paraphrase hard_paraphrase negation_easy negation_hard perfect_mix
   N clones: 4
 
@@ -146,7 +146,7 @@ sbatch: error: QOSMaxSubmitJobPerUserLimit
 sbatch: error: Batch job submission failed: Job violates accounting/QOS policy (job submit limit, user's size and/or time limits)
 === Per-Question Alpha Sweep (All Clone Types) ===
   Config: configs/base_pipeline/pipeline_e5_instruct_ZH_a04.py
-  Sweep dir: /cluster/home/liweiss/projects/vaa-question-similarity/experiment_results/cantons/FR/exp1/question_alpha_sweep/workers_allct_20261005_064347
+  Sweep dir: experiment_results/cantons/FR/exp1/question_alpha_sweep/workers_allct_20261005_064347
   Clone types: easy_paraphrase hard_paraphrase negation_easy negation_hard perfect_mix
   N clones: 4
 
@@ -166,7 +166,7 @@ sbatch: error: Batch job submission failed: Job violates accounting/QOS policy (
   Monitor: squeue -u $USER
 === Per-Question Alpha Sweep (All Clone Types) ===
   Config: configs/base_pipeline/pipeline_e5_instruct_ZH_a04.py
-  Sweep dir: /cluster/home/liweiss/projects/vaa-question-similarity/experiment_results/cantons/SO/exp1/question_alpha_sweep/workers_allct_20261005_074420
+  Sweep dir: experiment_results/cantons/SO/exp1/question_alpha_sweep/workers_allct_20261005_074420
   Clone types: easy_paraphrase hard_paraphrase negation_easy negation_hard perfect_mix
   N clones: 4
 
@@ -186,7 +186,7 @@ sbatch: error: Batch job submission failed: Job violates accounting/QOS policy (
   Monitor: squeue -u $USER
 === Per-Question Alpha Sweep (All Clone Types) ===
   Config: configs/base_pipeline/pipeline_e5_instruct_ZH_a04.py
-  Sweep dir: /cluster/home/liweiss/projects/vaa-question-similarity/experiment_results/cantons/BL/exp1/question_alpha_sweep/workers_allct_20261005_082943
+  Sweep dir: experiment_results/cantons/BL/exp1/question_alpha_sweep/workers_allct_20261005_082943
   Clone types: easy_paraphrase hard_paraphrase negation_easy negation_hard perfect_mix
   N clones: 4
 
@@ -206,7 +206,7 @@ sbatch: error: Batch job submission failed: Job violates accounting/QOS policy (
   Monitor: squeue -u $USER
 === Per-Question Alpha Sweep (All Clone Types) ===
   Config: configs/base_pipeline/pipeline_e5_instruct_ZH_a04.py
-  Sweep dir: /cluster/home/liweiss/projects/vaa-question-similarity/experiment_results/cantons/TG/exp1/question_alpha_sweep/workers_allct_20261005_085131
+  Sweep dir: experiment_results/cantons/TG/exp1/question_alpha_sweep/workers_allct_20261005_085131
   Clone types: easy_paraphrase hard_paraphrase negation_easy negation_hard perfect_mix
   N clones: 4
 
@@ -226,7 +226,7 @@ sbatch: error: Batch job submission failed: Job violates accounting/QOS policy (
   Monitor: squeue -u $USER
 === Per-Question Alpha Sweep (All Clone Types) ===
   Config: configs/base_pipeline/pipeline_e5_instruct_ZH_a04.py
-  Sweep dir: /cluster/home/liweiss/projects/vaa-question-similarity/experiment_results/cantons/BS/exp1/question_alpha_sweep/workers_allct_20261005_091756
+  Sweep dir: experiment_results/cantons/BS/exp1/question_alpha_sweep/workers_allct_20261005_091756
   Clone types: easy_paraphrase hard_paraphrase negation_easy negation_hard perfect_mix
   N clones: 4
 
@@ -246,7 +246,7 @@ sbatch: error: Batch job submission failed: Job violates accounting/QOS policy (
   Monitor: squeue -u $USER
 === Per-Question Alpha Sweep (All Clone Types) ===
   Config: configs/base_pipeline/pipeline_e5_instruct_ZH_a04.py
-  Sweep dir: /cluster/home/liweiss/projects/vaa-question-similarity/experiment_results/cantons/GR/exp1/question_alpha_sweep/workers_allct_20261005_095028
+  Sweep dir: experiment_results/cantons/GR/exp1/question_alpha_sweep/workers_allct_20261005_095028
   Clone types: easy_paraphrase hard_paraphrase negation_easy negation_hard perfect_mix
   N clones: 4
 
@@ -266,7 +266,7 @@ sbatch: error: Batch job submission failed: Job violates accounting/QOS policy (
   Monitor: squeue -u $USER
 === Per-Question Alpha Sweep (All Clone Types) ===
   Config: configs/base_pipeline/pipeline_e5_instruct_ZH_a04.py
-  Sweep dir: /cluster/home/liweiss/projects/vaa-question-similarity/experiment_results/cantons/GE/exp1/question_alpha_sweep/workers_allct_20261005_101406
+  Sweep dir: experiment_results/cantons/GE/exp1/question_alpha_sweep/workers_allct_20261005_101406
   Clone types: easy_paraphrase hard_paraphrase negation_easy negation_hard perfect_mix
   N clones: 4
 
@@ -286,7 +286,7 @@ sbatch: error: Batch job submission failed: Job violates accounting/QOS policy (
   Monitor: squeue -u $USER
 === Per-Question Alpha Sweep (All Clone Types) ===
   Config: configs/base_pipeline/pipeline_e5_instruct_ZH_a04.py
-  Sweep dir: /cluster/home/liweiss/projects/vaa-question-similarity/experiment_results/cantons/SZ/exp1/question_alpha_sweep/workers_allct_20261005_103905
+  Sweep dir: experiment_results/cantons/SZ/exp1/question_alpha_sweep/workers_allct_20261005_103905
   Clone types: easy_paraphrase hard_paraphrase negation_easy negation_hard perfect_mix
   N clones: 4
 
@@ -306,7 +306,7 @@ sbatch: error: Batch job submission failed: Job violates accounting/QOS policy (
   Monitor: squeue -u $USER
 === Per-Question Alpha Sweep (All Clone Types) ===
   Config: configs/base_pipeline/pipeline_e5_instruct_ZH_a04.py
-  Sweep dir: /cluster/home/liweiss/projects/vaa-question-similarity/experiment_results/cantons/ZG/exp1/question_alpha_sweep/workers_allct_20261005_111123
+  Sweep dir: experiment_results/cantons/ZG/exp1/question_alpha_sweep/workers_allct_20261005_111123
   Clone types: easy_paraphrase hard_paraphrase negation_easy negation_hard perfect_mix
   N clones: 4
 
@@ -326,7 +326,7 @@ sbatch: error: Batch job submission failed: Job violates accounting/QOS policy (
   Monitor: squeue -u $USER
 === Per-Question Alpha Sweep (All Clone Types) ===
   Config: configs/base_pipeline/pipeline_e5_instruct_ZH_a04.py
-  Sweep dir: /cluster/home/liweiss/projects/vaa-question-similarity/experiment_results/cantons/NE/exp1/question_alpha_sweep/workers_allct_20261005_120908
+  Sweep dir: experiment_results/cantons/NE/exp1/question_alpha_sweep/workers_allct_20261005_120908
   Clone types: easy_paraphrase hard_paraphrase negation_easy negation_hard perfect_mix
   N clones: 4
 

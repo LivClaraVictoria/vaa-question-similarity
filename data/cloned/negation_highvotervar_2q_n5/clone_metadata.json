@@ -1,6 +1,6 @@
 {
   "data_year": 2023,
-  "source_dir": "/usr/itetnas04/data-scratch-01/liweiss/data/vaa-question-similarity/data/cleaned",
+  "source_dir": "data/cleaned",
   "generated_at": "2026-02-25T03:04:02.253295",
   "specs": [
     {
