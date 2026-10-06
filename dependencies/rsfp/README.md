@@ -1,6 +1,6 @@
 # Toward Robust Voting Advice Applications: Lessons from Smartvote
 
-This folder contains code from prior work (reference withheld for anonymous review).
+This folder contains the code accompanying Berdoz et al., "Recommender Systems for Democracy: Toward Adversarial Robustness in Voting Advice Applications" (IJCAI 2025).
 
 ## Table of Contents
 - [Introduction](#introduction)
@@ -73,10 +73,9 @@ To ensure that everything works correctly in this project, the following files m
 
 ## Installation
 
-1. Clone the repository and change directory. This step may take 5-10 minutes depending on your internet connection as the datasets included in the repository are quite large (~4 GiB).
+1. Change into this folder (`dependencies/rsfp/` of this repository).
 ```bash
-git clone <rsfp repository URL withheld for anonymous review>
-cd rsfp
+cd dependencies/rsfp
 ```
 2. Create conda environment and activate it
 ```bash

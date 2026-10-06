@@ -16,7 +16,7 @@ This repository contains the codebase for the paper analyzing semantic similarit
 
 ## External Dependency
 
-`dependencies/rsfp/` builds on the rsfp code of prior work (reference withheld for anonymous review). The code was incorporated as a full subfolder rather than a git submodule. Minor compatibility changes were applied (no structural changes): imports were converted to relative imports. See `dependencies/README.md` for details.
+`dependencies/rsfp/` builds on the `rsfp` code accompanying Berdoz et al., "Recommender Systems for Democracy: Toward Adversarial Robustness in Voting Advice Applications" (IJCAI 2025). The code was incorporated as a full subfolder rather than a git submodule. Minor compatibility changes were applied (no structural changes): imports were converted to relative imports. See `dependencies/README.md` for details.
 
 ---
 
